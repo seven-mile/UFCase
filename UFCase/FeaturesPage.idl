@@ -1,0 +1,12 @@
+import "FeatureTreeElement.idl";
+
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass FeaturesPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        FeaturesPage();
+
+        Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> FeatureDataSource{ get; };
+    }
+}

@@ -1,0 +1,9 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass SysInfoPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        SysInfoPage();
+        
+    }
+}

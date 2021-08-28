@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Page Include="MainWindow.xaml" />
+    <Page Include="FeaturesPage.xaml">
+      <Filter>components\features</Filter>
+    </Page>
+    <Page Include="ProgressPage.xaml">
+      <Filter>libraries\util</Filter>
+    </Page>
+    <Page Include="ErrorPage.xaml">
+      <Filter>libraries\util</Filter>
+    </Page>
+    <Page Include="SysInfoPage.xaml">
+      <Filter>components\sysinfo</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+    <Midl Include="MainWindow.idl" />
+    <Midl Include="FeatureTreeElement.idl">
+      <Filter>components\features</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CbsApi_i.c">
+      <Filter>libraries\cbsapi</Filter>
+    </ClCompile>
+    <ClCompile Include="CbsApi_p.c">
+      <Filter>libraries\cbsapi</Filter>
+    </ClCompile>
+    <ClCompile Include="dlldata.c">
+      <Filter>libraries\cbsapi</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureTreeModel.cpp">
+      <Filter>components\features</Filter>
+    </ClCompile>
+    <ClCompile Include="CbsSessionManager.cpp">
+      <Filter>libraries\cbsapi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CbsApi.h">
+      <Filter>libraries\cbsapi</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureTreeModel.h">
+      <Filter>components\features</Filter>
+    </ClInclude>
+    <ClInclude Include="CbsSessionManager.h">
+      <Filter>libraries\cbsapi</Filter>
+    </ClInclude>
+    <ClInclude Include="SSShimApi.h">
+      <Filter>libraries\cbsapi</Filter>
+    </ClInclude>
+    <ClInclude Include="MallocUtil.h">
+      <Filter>libraries\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="framework">
+      <UniqueIdentifier>{1a452f4c-a1ba-4975-8387-e818e1bc333e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{d9378ea3-18fa-4d1d-a8a6-c4b2f8b841a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries">
+      <UniqueIdentifier>{38eb061c-6e1f-4c2b-a5fe-781325d28ac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\cbsapi">
+      <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\features">
+      <UniqueIdentifier>{bb8db857-6887-4c65-964d-88daafa36fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\util">
+      <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\sysinfo">
+      <UniqueIdentifier>{7d12d582-ea58-40b4-a581-896ddff473bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest">
+      <Filter>framework</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Filter>framework</Filter>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>framework</Filter>
+    </None>
+  </ItemGroup>
+</Project>

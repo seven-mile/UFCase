@@ -1,0 +1,14 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass FeatureTreeElement
+    {
+        FeatureTreeElement(String name, String desc, Boolean enabled, Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children);
+        
+        String Name{ get; set; };
+        String Description{ get; set; };
+        Boolean IsEnabled{ get; set; };
+        Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> Children{ get; };
+    }
+}

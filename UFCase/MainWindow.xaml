@@ -1,0 +1,52 @@
+﻿<Window
+    x:Class="UFCase.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UFCase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Grid>
+        <Border x:Name="AppTitleBar"
+                IsHitTestVisible="False"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Height="40"
+                Canvas.ZIndex="1" 
+                Margin="40,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="AppTitle"
+                    Text="UFCase - NG [Compact Mode]"
+                    VerticalAlignment="Center"
+                    Margin="12, 0, 0, 0"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+        
+        <NavigationView x:Name="NavView"
+                        IsTitleBarAutoPaddingEnabled="True"
+                        IsBackEnabled="{x:Bind ContentFrame.CanGoBack}"
+                        SelectionChanged="NavigationView_SelectionChanged"
+                        SelectedItem="{x:Bind HomeItem}"
+                        Canvas.ZIndex="0">
+            <NavigationView.PaneHeader>
+                <StackPanel BorderThickness="0" Orientation="Horizontal">
+                    <PersonPicture HorizontalAlignment="Left" Margin="15,5,5,5" Height="32" ProfilePicture="https://techprofile.blob.core.windows.net/images/MPwEzwAAAwAAAAAAAAAAAA.png?8D8324" />
+                    <TextBlock Margin="20" Text="UFCase" FontSize="16" />
+                </StackPanel>
+            </NavigationView.PaneHeader>
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="HomeItem" Content="SysInfo" Icon="Admin" />
+                <NavigationViewItem Content="Features" Icon="AllApps" />
+                <NavigationViewItem Content="Optionals" Icon="Add" />
+                <NavigationViewItem Content="Packages">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="ContentFrame" />
+        </NavigationView>
+    </Grid>
+</Window>

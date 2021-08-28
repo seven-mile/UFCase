@@ -1,0 +1,11 @@
+namespace UFCase
+{
+    
+    [default_interface]
+    runtimeclass ProgressPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        ProgressPage();
+        
+        Microsoft.UI.Xaml.Controls.ProgressBar ProgBar;
+    }
+}

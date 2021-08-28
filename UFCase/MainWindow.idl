@@ -1,0 +1,12 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+
+        Microsoft.UI.Xaml.Controls.NavigationViewItem HomeItem;
+        Microsoft.UI.Xaml.Controls.NavigationView NavView;
+        Microsoft.UI.Xaml.Controls.Frame ContentFrame;
+    }
+}

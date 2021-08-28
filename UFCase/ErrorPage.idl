@@ -1,0 +1,21 @@
+namespace UFCase
+{
+
+    [default_interface]
+    runtimeclass HrError
+    {
+        HrError();
+
+        Int32 Code;
+        String Message;
+    }
+
+    [default_interface]
+    runtimeclass ErrorPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        ErrorPage();
+        
+        Microsoft.UI.Xaml.Controls.TextBlock TitleBlock;
+        Microsoft.UI.Xaml.Controls.TextBlock MsgBlock;
+    }
+}
