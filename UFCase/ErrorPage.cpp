@@ -7,12 +7,33 @@
 #include "ErrorPage.g.cpp"
 #endif
 
+#include <filesystem>
+
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 
 namespace winrt::UFCase::implementation
 {
     HrError::HrError() : m_code() { }
+
+    HrError::HrError(int hr) : m_code(hr)
+    {
+        std::wstring pathstrMsgdll(GetWindowsDirectoryW(nullptr, 0), L'\0');
+        if (pathstrMsgdll.size() !=
+            GetWindowsDirectoryW(pathstrMsgdll.data(), pathstrMsgdll.size()))
+            winrt::throw_last_error();
+
+        std::filesystem::path pathMsgdll(pathstrMsgdll);
+        pathMsgdll /= L"servicing\\CbsMsg.dll";
+
+        auto hmsg = LoadLibraryW(pathMsgdll.c_str());
+        LPWSTR buffer;
+        if (!FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_ALLOCATE_BUFFER,
+            hmsg, hr, 0, reinterpret_cast<LPWSTR>(&buffer), 0, nullptr))
+            winrt::throw_last_error();
+        m_msg = buffer;
+        LocalFree(buffer);
+    }
 
     int HrError::Code()
     {

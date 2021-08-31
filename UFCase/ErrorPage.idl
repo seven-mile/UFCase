@@ -5,6 +5,7 @@ namespace UFCase
     runtimeclass HrError
     {
         HrError();
+        HrError(Int32 hr);
 
         Int32 Code;
         String Message;

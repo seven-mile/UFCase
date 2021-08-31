@@ -13,6 +13,7 @@ namespace winrt::UFCase::implementation
     struct HrError : HrErrorT<HrError>
     {
         HrError();
+        HrError(int hr);
 
         int Code();
         void Code(int val);
