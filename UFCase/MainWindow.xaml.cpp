@@ -5,6 +5,7 @@
 #endif
 
 
+#include "SysInfoPage.g.h"
 
 #include "FeaturesPage.g.h"
 #include "FeatureTreeElement.g.h"
@@ -68,7 +69,9 @@ namespace winrt::UFCase::implementation
         auto cancel_token = co_await winrt::get_cancellation_token();
         auto frame = this->ContentFrame();
         if (page_name == L"SysInfo") {
-            
+            frame.Navigate(xaml_typename<SysInfoPage>());
+
+            co_return;
         }
         else if (page_name == L"Features") {
             co_await winrt::resume_background();

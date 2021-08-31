@@ -1,0 +1,34 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SysInfoStaticElement 
+    {
+        SysInfoStaticElement();
+        // Basic Env
+        String FirmwareType;
+        String Architecture;
+
+        // OS
+        String OSDisplayName;
+        String OSVersion;
+        Boolean IsWinPE;
+
+        // Firmware
+        String Manufacturer;
+        String CPUDisplayName;
+    }
+
+
+    [bindable]
+    [default_interface]
+    runtimeclass SysInfoRealtimeElement 
+    {
+        SysInfoRealtimeElement();
+        
+        Double CPUUtilization { get; };
+
+        UInt64 UsedMemoryInBytes { get; };
+        UInt64 AllMemoryInBytes { get; };
+    }
+}

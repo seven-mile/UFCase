@@ -21,6 +21,9 @@
     <Midl Include="FeatureTreeElement.idl">
       <Filter>components\features</Filter>
     </Midl>
+    <Midl Include="SysInfoElement.idl">
+      <Filter>components\sysinfo</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -90,9 +93,6 @@
     <Filter Include="components\sysinfo">
       <UniqueIdentifier>{7d12d582-ea58-40b4-a581-896ddff473bc}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">

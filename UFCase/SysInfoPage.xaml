@@ -7,7 +7,67 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border x:Name="StaticInfoPane" Margin="70" Height="Auto" VerticalAlignment="Top"
+            BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1"
+            Background="#EDEDED">
         
-    </StackPanel>
+        <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+        
+                <Grid.Resources>
+                    <x:Int32 x:Key="RowHeight">40</x:Int32>
+                    <Style x:Key="LabelBlock" TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="FontFamily" Value="Segoe UI" />
+                    </Style>
+                    <Style x:Key="InfoBox" TargetType="TextBox">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="AcceptsReturn" Value="True" />
+                    </Style>
+                </Grid.Resources>
+
+                <!-- Property Name -->
+                <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Architecture" />
+                <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="OS Name" />
+                <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="OS Version" />
+                <TextBlock Grid.Column="1" Grid.Row="4" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
+                <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
+                <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource LabelBlock}" Text="CPU" />
+            
+                <!-- Property Value -->
+                <TextBox Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.FirmwareType}" />
+                <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Architecture}" />
+                <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSDisplayName}" />
+                <TextBox Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSVersion}" />
+                <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.IsWinPE}" />
+                <TextBox Grid.Column="2" Grid.Row="5" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Manufacturer}" />
+                <TextBox Grid.Column="2" Grid.Row="6" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.CPUDisplayName}" />
+            
+            </Grid>
+        </ScrollViewer>
+    </Border>
+    
 </Page>

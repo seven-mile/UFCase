@@ -4,6 +4,8 @@
 #include "SysInfoPage.g.cpp"
 #endif
 
+#include <winrt/Microsoft.UI.Xaml.Hosting.h>
+
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 
@@ -12,6 +14,30 @@ namespace winrt::UFCase::implementation
     SysInfoPage::SysInfoPage()
     {
         InitializeComponent();
+
+        InitializeComposition();
+    }
+
+    void SysInfoPage::InitializeComposition()
+    {
+        { // StaticInfoPane
+            // not working???
+            // todo: new drop shadow
+            //auto comp = Hosting::ElementCompositionPreview::GetElementVisual(StaticInfoPane()).Compositor();
+            //auto shad = comp.CreateDropShadow();
+            //shad.BlurRadius(5);
+            //shad.Offset({0,0,0});
+            //shad.Color(winrt::Windows::UI::Colors::DarkGray());
+            //auto sprit = comp.CreateSpriteVisual();
+            //sprit.Shadow(shad);
+            //sprit.Size(StaticInfoPane().ActualSize());
+            //Hosting::ElementCompositionPreview::SetElementChildVisual(StaticInfoPane(), sprit);
+        }
+    }
+
+    UFCase::SysInfoStaticElement SysInfoPage::StaticInfo()
+    {
+        return m_static;
     }
 
 }

@@ -1,5 +1,11 @@
 ﻿#pragma once
 
+#include <winrt/Windows.UI.Composition.h>
+
+namespace winrt {
+    using namespace Windows::UI::Composition;
+}
+
 #include "SysInfoPage.g.h"
 
 namespace winrt::UFCase::implementation
@@ -8,7 +14,12 @@ namespace winrt::UFCase::implementation
     {
         SysInfoPage();
 
+        void InitializeComposition();
 
+        UFCase::SysInfoStaticElement StaticInfo();
+
+    private:
+        UFCase::SysInfoStaticElement m_static;
     };
 }
 
