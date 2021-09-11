@@ -11,6 +11,8 @@
 #include "CbsSessionManager.h"
 #include "MallocUtil.h"
 
+#include <wil/resource.h>
+
 namespace winrt {
 	using namespace Windows::System::Diagnostics;
 }
@@ -35,20 +37,20 @@ namespace winrt::UFCase::implementation
 				break;
 			}
 		}
-		{ // m_arch
-			using namespace Windows::ApplicationModel;
-			using namespace Windows::System;
+		//{ // m_arch
+		//	using namespace Windows::ApplicationModel;
+		//	using namespace Windows::System;
 
-			switch (Package::Current().Id().Architecture()) {
-			case ProcessorArchitecture::Arm: this->m_arch = L"Arm"; break;
-			case ProcessorArchitecture::Arm64: this->m_arch = L"Arm64"; break;
-			case ProcessorArchitecture::X86: this->m_arch = L"X86"; break;
-			case ProcessorArchitecture::X64: this->m_arch = L"X64"; break;
-			case ProcessorArchitecture::Neutral: this->m_arch = L"Neutral"; break;
-			case ProcessorArchitecture::X86OnArm64: this->m_arch = L"X86OnArm64"; break;
-			default: this->m_arch = L"Unknown"; break;
-			}
-		}
+		//	switch (Package::Current().Id().Architecture()) {
+		//	case ProcessorArchitecture::Arm: this->m_arch = L"Arm"; break;
+		//	case ProcessorArchitecture::Arm64: this->m_arch = L"Arm64"; break;
+		//	case ProcessorArchitecture::X86: this->m_arch = L"X86"; break;
+		//	case ProcessorArchitecture::X64: this->m_arch = L"X64"; break;
+		//	case ProcessorArchitecture::Neutral: this->m_arch = L"Neutral"; break;
+		//	case ProcessorArchitecture::X86OnArm64: this->m_arch = L"X86OnArm64"; break;
+		//	default: this->m_arch = L"Unknown"; break;
+		//	}
+		//}
 		{ // CBS Product Info
 			auto pSess = CbsSessionManager::instance().ApplyNew();
 			// init online session
@@ -73,6 +75,11 @@ namespace winrt::UFCase::implementation
 			this->m_os = std::wstring(wv.substr(0, wv.find_first_of(L'~')));
 			// OSVersion
 			this->m_ver = std::wstring(wv.substr(wv.find_last_of(L'~')+1));
+
+			// OSArchitechture
+			const auto token_pos = wv.find_first_of(L'~') + 1;
+			const auto arch_pos = wv.find_first_of(L'~', token_pos) + 1;
+			this->m_arch = std::wstring(wv.substr(arch_pos, wv.substr(arch_pos).find_first_of(L'~')));
 		}
 		{ // WinPE
 			this->m_ispe = false;
@@ -81,8 +88,8 @@ namespace winrt::UFCase::implementation
 			// option3: HKLM\SYSTEM\CurrentControlSet\Control\MiniNT
 
 			// use option2
-			HKEY hKey;
-			auto lst = RegOpenKey(HKEY_LOCAL_MACHINE, L"Microsoft\\Windows NT\\CurrentVersion\\WinPE", &hKey);
+			wil::unique_hkey hkey;
+			auto lst = RegOpenKey(HKEY_LOCAL_MACHINE, L"Microsoft\\Windows NT\\CurrentVersion\\WinPE", wil::out_param(hkey));
 			if (lst == ERROR_SUCCESS) {
 				this->m_ispe = true;
 			} else if (lst == ERROR_FILE_NOT_FOUND) {
@@ -96,24 +103,24 @@ namespace winrt::UFCase::implementation
 		}
 		{ // Manufacturer
 			// HKLM\HARDWARE\DESCRIPTION\System\BIOS\SystemManufacturer
-			HKEY hKey;
+			wil::unique_hkey hkey;
 			winrt::check_win32(RegOpenKey(HKEY_LOCAL_MACHINE,
-				L"HARDWARE\\DESCRIPTION\\System\\BIOS", &hKey));
+				L"HARDWARE\\DESCRIPTION\\System\\BIOS", wil::out_param(hkey)));
 			DWORD dwType, dwCnt;
-			winrt::check_win32(RegQueryValueEx(hKey, L"SystemManufacturer", 0, &dwType, nullptr, &dwCnt));
+			winrt::check_win32(RegQueryValueEx(hkey.get(), L"SystemManufacturer", 0, &dwType, nullptr, &dwCnt));
 			std::vector<BYTE> buffer; buffer.assign(dwCnt, 0);
-			winrt::check_win32(RegQueryValueEx(hKey, L"SystemManufacturer", 0, &dwType, buffer.data(), &dwCnt));
+			winrt::check_win32(RegQueryValueEx(hkey.get(), L"SystemManufacturer", 0, &dwType, buffer.data(), &dwCnt));
 			this->m_manu = reinterpret_cast<LPWSTR>(buffer.data());
 		}
 		{ // CPUDisplayName
 			// HKLM\HARDWARE\DESCRIPTION\System\CentralProcessor\0\ProcessorNameString
-			HKEY hKey;
+			wil::unique_hkey hkey;
 			winrt::check_win32(RegOpenKey(HKEY_LOCAL_MACHINE,
-				L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", &hKey));
+				L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", wil::out_param(hkey)));
 			DWORD dwType, dwCnt;
-			winrt::check_win32(RegQueryValueEx(hKey, L"ProcessorNameString", 0, &dwType, nullptr, &dwCnt));
+			winrt::check_win32(RegQueryValueEx(hkey.get(), L"ProcessorNameString", 0, &dwType, nullptr, &dwCnt));
 			std::vector<BYTE> buffer; buffer.assign(dwCnt, 0);
-			winrt::check_win32(RegQueryValueEx(hKey, L"ProcessorNameString", 0, &dwType, buffer.data(), &dwCnt));
+			winrt::check_win32(RegQueryValueEx(hkey.get(), L"ProcessorNameString", 0, &dwType, buffer.data(), &dwCnt));
 			this->m_cpu = reinterpret_cast<LPWSTR>(buffer.data());
 		}
 	}
