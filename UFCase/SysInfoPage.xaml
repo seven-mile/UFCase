@@ -9,7 +9,7 @@
 
     <Border x:Name="StaticInfoPane" Margin="70" Height="Auto" VerticalAlignment="Top"
             BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1"
-            Background="#EDEDED">
+            Background="{ThemeResource ControlHoverColorBrush}">
         
         <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >

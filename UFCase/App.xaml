@@ -10,6 +10,20 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <Color x:Key="ControlHoverColor">#12FFFFFF</Color>
+                    <SolidColorBrush x:Key="ControlHoverColorBrush" Color="{StaticResource ControlHoverColor}" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="ControlHoverColor">#12000000</Color>
+                    <SolidColorBrush x:Key="ControlHoverColorBrush" Color="{StaticResource ControlHoverColor}" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="ControlHoverColor">#12FFFFFF</Color>
+                    <SolidColorBrush x:Key="ControlHoverColorBrush" Color="{StaticResource ControlHoverColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
             <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>
