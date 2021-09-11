@@ -26,12 +26,12 @@ namespace winrt::UFCase::implementation
 
         if (m_appw = GetAppWindowForCurrentWindow()) {
             m_appw.TitleBar().ExtendsContentIntoTitleBar(true);
-            AppTitleBar().Height(m_appw.TitleBar().Height());
+            this->AppTitleBar().Height(m_appw.TitleBar().Height());
             m_appw.TitleBar().BackgroundColor(winrt::Colors::White());
             
         } else {
             this->ExtendsContentIntoTitleBar(true);
-            this->SetTitleBar(AppTitleBar());
+            this->SetTitleBar(this->AppTitleBar());
         }
         this->SizeChanged([&](auto &, WindowSizeChangedEventArgs const &e){
             m_appw.TitleBar().SetDragRectangles({

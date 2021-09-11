@@ -81,9 +81,6 @@
     <Filter Include="libraries\cbsapi">
       <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="assets">
-      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
-    </Filter>
     <Filter Include="components\features">
       <UniqueIdentifier>{bb8db857-6887-4c65-964d-88daafa36fdb}</UniqueIdentifier>
     </Filter>
