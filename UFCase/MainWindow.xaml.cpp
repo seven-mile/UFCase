@@ -62,6 +62,25 @@ namespace winrt::UFCase::implementation
         return appWindow;
     }
 
+    void MainWindow::HandleHrError(winrt::hresult_error err)
+    {
+        auto frame = this->ContentFrame();
+        frame.DispatcherQueue().TryEnqueue([frame, err](){
+            UFCase::HrError hr_err{};
+            hr_err.Code(err.code());
+            hr_err.Message(err.message());
+
+            frame.Navigate(xaml_typename<ErrorPage>(), box_value(hr_err));
+        });
+    }
+
+    void MainWindow::NavigationView_SelectionChanged(NavigationView const&, NavigationViewSelectionChangedEventArgs const& args)
+    {
+        if (const auto item = args.SelectedItem().as<NavigationViewItem>()) {
+            this->NavigateTo(unbox_value<hstring>(item.Content()));
+        }
+    }
+
     winrt::IAsyncAction MainWindow::NavigateTo(winrt::hstring page_name)
     {
     try {
@@ -83,17 +102,19 @@ namespace winrt::UFCase::implementation
             cancel_token.callback([=](){ op.Cancel(); });
 
             // move model pointer and reserve thread context to extend lifetime
-            op.Completed([pModel = std::move(pModel), ptr = this->get_strong(), ui_thread, frame]
-                    (auto &info, auto &status) -> winrt::IAsyncAction {
+            op.Completed([pModel = std::move(pModel), ptr = this->get_strong(), frame]
+                    (const decltype(op) &info, const winrt::AsyncStatus &status) -> winrt::IAsyncAction {
                 if (status != winrt::AsyncStatus::Completed) {
                     ptr->HandleHrError(winrt::hresult_error(
                             status == winrt::AsyncStatus::Canceled ?
                             HRESULT_FROM_WIN32(ERROR_CANCELLED)
                             : info.ErrorCode().value));
                 } else {
-                    co_await ui_thread;
-                    frame.Navigate(xaml_typename<FeaturesPage>(), box_value(info.GetResults()));
+                    frame.DispatcherQueue().TryEnqueue([frame, info](){
+                        frame.Navigate(xaml_typename<FeaturesPage>(), box_value(info.GetResults()));
+                    });
                 }
+                co_return;
             });
 
             co_await ui_thread;
@@ -117,25 +138,6 @@ namespace winrt::UFCase::implementation
     }
 
         this->HandleHrError(winrt::hresult_not_implemented());
-    }
-
-    void MainWindow::HandleHrError(winrt::hresult_error err)
-    {
-        auto frame = this->ContentFrame();
-        frame.DispatcherQueue().TryEnqueue([frame, err](){
-            UFCase::HrError hr_err{};
-            hr_err.Code(err.code());
-            hr_err.Message(err.message());
-
-            frame.Navigate(xaml_typename<ErrorPage>(), box_value(hr_err));
-        });
-    }
-
-    void MainWindow::NavigationView_SelectionChanged(NavigationView const&, NavigationViewSelectionChangedEventArgs const& args)
-    {
-        if (const auto item = args.SelectedItem().as<NavigationViewItem>()) {
-            this->NavigateTo(unbox_value<hstring>(item.Content()));
-        }
     }
 
 }
