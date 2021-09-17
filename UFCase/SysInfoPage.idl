@@ -8,5 +8,6 @@ namespace UFCase
         SysInfoPage();
         
         SysInfoStaticElement StaticInfo { get; };
+        SysInfoRealtimeElement RealtimeInfo { get; };
     }
 }

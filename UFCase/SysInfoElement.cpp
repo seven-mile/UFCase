@@ -185,26 +185,97 @@ namespace winrt::UFCase::implementation
 
 	SysInfoRealtimeElement::SysInfoRealtimeElement()
 	{
+		using namespace std::chrono_literals;
+		m_timer.Interval(1s);
+		m_update_token = m_timer.Tick([this, &chg = this->m_propertyChanged]
+			(auto &/*sender*/, auto &/*args*/){
+			chg(*this, winrt::Data::PropertyChangedEventArgs{L"CPUUtilization"});
+			chg(*this, winrt::Data::PropertyChangedEventArgs{L"MemoryUsage"});
+		});
+
+		m_timer.Start();
+	}
+	SysInfoRealtimeElement::~SysInfoRealtimeElement()
+	{
+		m_timer.Stop();
+	}
+	winrt::DispatcherTimer SysInfoRealtimeElement::Timer()
+	{
+		return m_timer;
 	}
 	double SysInfoRealtimeElement::CPUUtilization()
 	{
-		auto info = SystemDiagnosticInfo::GetForCurrentSystem();
-		auto rep = info.CpuUsage().GetReport();
+		// thread local variable means
+		// you can't calculate it util
+		// the last calculation in this thread completes
+		thread_local winrt::TimeSpan old_all{}, old_idle{};
+		auto rep = SystemDiagnosticInfo::GetForCurrentSystem()
+			.CpuUsage().GetReport();
+		auto cur_all = rep.KernelTime() + rep.UserTime();
+		auto dur_all = cur_all - old_all;
+		auto cur_idle = rep.IdleTime();
+		auto dur_idle = cur_idle - old_idle;
 
-		return 1.0 - (rep.IdleTime() / (rep.KernelTime() + rep.IdleTime() + rep.UserTime()));
+		old_all = cur_all;
+		old_idle = cur_idle;
+
+		m_cpu_util = 100 * (1.0 - 1.0 * dur_idle.count() / dur_all.count());
+
+		// update comment
+		this->m_propertyChanged(*this, winrt::Data::PropertyChangedEventArgs{L"CPUUtilizationComment"});
+
+		return m_cpu_util;
 	}
-	uint64_t SysInfoRealtimeElement::UsedMemoryInBytes()
+	winrt::hstring SysInfoRealtimeElement::CPUUtilizationComment()
 	{
-		auto info = SystemDiagnosticInfo::GetForCurrentSystem();
-		auto rep = info.MemoryUsage().GetReport();
-
-		return rep.CommittedSizeInBytes() + rep.TotalPhysicalSizeInBytes() - rep.AvailableSizeInBytes();
+		return std::format(L"{:.1f}%", m_cpu_util).c_str();
 	}
-	uint64_t SysInfoRealtimeElement::AllMemoryInBytes()
+	double SysInfoRealtimeElement::MemoryUsage()
 	{
-		auto info = SystemDiagnosticInfo::GetForCurrentSystem();
-		auto rep = info.MemoryUsage().GetReport();
+		auto rep = winrt::SystemDiagnosticInfo::GetForCurrentSystem()
+			.MemoryUsage().GetReport();
+		auto usg = 100.0 * UsedMemoryInBytes(rep) / AllMemoryInBytes(rep);
 
-		return rep.CommittedSizeInBytes() + rep.TotalPhysicalSizeInBytes();
+		// update comment
+		this->m_propertyChanged(*this, winrt::Data::PropertyChangedEventArgs{L"MemoryUsageComment"});
+
+		return usg;
+	}
+	winrt::hstring SysInfoRealtimeElement::MemoryUsageComment()
+	{
+		auto rep = winrt::SystemDiagnosticInfo::GetForCurrentSystem()
+			.MemoryUsage().GetReport();
+		return std::format(L"{}/{}",
+			TextizeBytes(m_used_mem).c_str(), TextizeBytes(m_all_mem).c_str()).c_str();
+	}
+	winrt::event_token SysInfoRealtimeElement::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
+	{
+		return m_propertyChanged.add(value);
+	}
+	void SysInfoRealtimeElement::PropertyChanged(winrt::event_token const& token)
+	{
+		m_propertyChanged.remove(token);
+	}
+	uint64_t SysInfoRealtimeElement::UsedMemoryInBytes(winrt::SystemMemoryUsageReport rep)
+	{
+		return m_used_mem = rep.CommittedSizeInBytes();
+	}
+	uint64_t SysInfoRealtimeElement::AllMemoryInBytes(winrt::SystemMemoryUsageReport rep)
+	{
+		return m_all_mem = rep.CommittedSizeInBytes() + rep.AvailableSizeInBytes();
+	}
+	winrt::hstring SysInfoRealtimeElement::TextizeBytes(uint64_t val)
+	{
+		double fv = static_cast<double>(val);
+		static const wchar_t *unit[] = {
+			L"B", L"KB", L"MB", L"GB", L"TB", L"PB"
+		};
+
+		for (auto &str : unit) {
+			if (fv <= 1024)
+				return std::format(L"{:.1f}{}", fv, str).c_str();
+			fv /= 1024.0;
+		}
+		throw std::invalid_argument("value in bytes is too large!");
 	}
 }

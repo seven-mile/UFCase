@@ -17,9 +17,12 @@ namespace winrt::UFCase::implementation
         void InitializeComposition();
 
         UFCase::SysInfoStaticElement StaticInfo();
+        UFCase::SysInfoRealtimeElement RealtimeInfo();
+        void ToggleSwitch_Toggled(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e);
 
     private:
         UFCase::SysInfoStaticElement m_static;
+        UFCase::SysInfoRealtimeElement m_realtime;
     };
 }
 

@@ -22,13 +22,16 @@ namespace UFCase
 
     [bindable]
     [default_interface]
-    runtimeclass SysInfoRealtimeElement 
+    runtimeclass SysInfoRealtimeElement : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         SysInfoRealtimeElement();
+
+        Microsoft.UI.Xaml.DispatcherTimer Timer { get; };
         
         Double CPUUtilization { get; };
+        String CPUUtilizationComment { get; };
 
-        UInt64 UsedMemoryInBytes { get; };
-        UInt64 AllMemoryInBytes { get; };
+        Double MemoryUsage { get; };
+        String MemoryUsageComment { get; };
     }
 }
