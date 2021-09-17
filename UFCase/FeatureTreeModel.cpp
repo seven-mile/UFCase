@@ -6,6 +6,8 @@
 
 #include <functional>
 
+#include <wil/resource.h>
+
 namespace winrt::UFCase
 {
 
@@ -69,20 +71,15 @@ FeatureTreeModel::ConstructUpdateTree()
             // calc current progress
             report_prog(ENUM_UPDATE_PROG + uint32_t(std::floor(1.0 * idx / all * (100 - ENUM_UPDATE_PROG))));
 
-            PWSTR strRawName, strName, strParentName, strSet, strDesc;
-            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyName, &strRawName));
-            auto mszRawName = make_malloc(strRawName);
-            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyDisplayName, &strName));
-            auto mszName = make_malloc(strName);
-            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyDescription, &strDesc));
-            auto mszDesc = make_malloc(strDesc);
+            unique_malloc_wstring szRawName, szName, szDesc, szParentName, szSet;
+            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyName, wil::out_param(szRawName)));
+            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyDisplayName, wil::out_param(szName)));
+            winrt::check_hresult(pUpd->GetProperty(CbsUpdatePropertyDescription, wil::out_param(szDesc)));
 
-            if (lstrlenW(mszName.get()) <= 0) continue;
+            if (lstrlenW(szName.get()) <= 0) continue;
 
             const int CBS_E_ARRAY_ELEMENT_MISSING = -2146498551;
-            auto hr = pUpd->GetParentUpdate(0, &strParentName, &strSet);
-            auto mszParentName = make_malloc(strParentName);
-            auto mszSet = make_malloc(strSet);
+            auto hr = pUpd->GetParentUpdate(0, wil::out_param(szParentName), wil::out_param(szSet));
 
             _CbsInstallState stCur, stInt, stReq;
             winrt::check_hresult(pUpd->GetInstallState(&stCur, &stInt, &stReq));
@@ -91,13 +88,13 @@ FeatureTreeModel::ConstructUpdateTree()
             const bool hasParent = hr != CBS_E_ARRAY_ELEMENT_MISSING;
             if (hasParent) {
                 if (SUCCEEDED(hr))
-                    AddDependency(mszParentName.get(), mszName.get(), mszDesc.get(), isEnabled, mszRawName.get());
+                    AddDependency(szParentName.get(), szName.get(), szDesc.get(), isEnabled, szRawName.get());
                 else {
                     winrt::check_hresult(hr);
                 }
             }
             else {
-                AddDependency(GetRoot(), mszName.get(), mszDesc.get(), isEnabled, mszRawName.get());
+                AddDependency(GetRoot(), szName.get(), szDesc.get(), isEnabled, szRawName.get());
             }
             idx++;
         }

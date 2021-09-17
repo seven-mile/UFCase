@@ -17,14 +17,14 @@ constexpr auto malloc_deleter = [](T *ptr){
 };
 
 template<class T>
-using malloc_ptr = std::unique_ptr<T, decltype(malloc_deleter<T>)>;
+using unique_malloc = std::unique_ptr<T, decltype(malloc_deleter<T>)>;
 
 template<class T>
-inline constexpr malloc_ptr<T> make_malloc(T* &raw) {
+inline constexpr unique_malloc<T> make_malloc(T* &raw) {
 	//auto &&val = std::make_unique<T, decltype(malloc_deleter<T>)>(*raw);
-	auto val = malloc_ptr<T>(static_cast<T*>(raw), malloc_deleter<T>);
+	auto val = unique_malloc<T>(static_cast<T*>(raw), malloc_deleter<T>);
 	raw = nullptr;
 	return std::move(val);
 }
 
-using malloc_wstring = malloc_ptr<wchar_t>;
+using unique_malloc_wstring = unique_malloc<wchar_t>;

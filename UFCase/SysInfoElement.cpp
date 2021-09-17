@@ -7,7 +7,6 @@
 #include "SysInfoRealtimeElement.g.cpp"
 #endif
 
-#include <winrt/Windows.System.Diagnostics.h>
 #include "CbsSessionManager.h"
 #include "MallocUtil.h"
 
@@ -19,7 +18,9 @@ namespace winrt {
 
 namespace winrt::UFCase::implementation
 {
-	UFCase::implementation::SysInfoStaticElement::SysInfoStaticElement()
+	// Static Part
+
+	SysInfoStaticElement::SysInfoStaticElement()
 	{
 		{ // m_firm
 			FIRMWARE_TYPE type{};
@@ -64,9 +65,8 @@ namespace winrt::UFCase::implementation
 			pSess->OpenPackage(0, pId.get(), nullptr, pRawPkg.put());
 			auto pPkg = pRawPkg.as<ICbsPackage>();
 
-			PWSTR rawIdStr;
-			pPkg->GetProperty(CbsPackagePropertyIdentityString, &rawIdStr);
-			auto strId = make_malloc(rawIdStr);
+			unique_malloc_wstring strId;
+			pPkg->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(strId));
 			
 			// ref: [Product]-[Feature]-Package~[PublicKeyToken]~[Architecture]~[Language]~[Version]
 			std::wstring_view wv = strId.get();
@@ -106,7 +106,7 @@ namespace winrt::UFCase::implementation
 			wil::unique_hkey hkey;
 			winrt::check_win32(RegOpenKey(HKEY_LOCAL_MACHINE,
 				L"HARDWARE\\DESCRIPTION\\System\\BIOS", wil::out_param(hkey)));
-			DWORD dwType, dwCnt;
+			DWORD dwType, dwCnt{};
 			winrt::check_win32(RegQueryValueEx(hkey.get(), L"SystemManufacturer", 0, &dwType, nullptr, &dwCnt));
 			std::vector<BYTE> buffer; buffer.assign(dwCnt, 0);
 			winrt::check_win32(RegQueryValueEx(hkey.get(), L"SystemManufacturer", 0, &dwType, buffer.data(), &dwCnt));
@@ -117,7 +117,7 @@ namespace winrt::UFCase::implementation
 			wil::unique_hkey hkey;
 			winrt::check_win32(RegOpenKey(HKEY_LOCAL_MACHINE,
 				L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", wil::out_param(hkey)));
-			DWORD dwType, dwCnt;
+			DWORD dwType, dwCnt{};
 			winrt::check_win32(RegQueryValueEx(hkey.get(), L"ProcessorNameString", 0, &dwType, nullptr, &dwCnt));
 			std::vector<BYTE> buffer; buffer.assign(dwCnt, 0);
 			winrt::check_win32(RegQueryValueEx(hkey.get(), L"ProcessorNameString", 0, &dwType, buffer.data(), &dwCnt));
