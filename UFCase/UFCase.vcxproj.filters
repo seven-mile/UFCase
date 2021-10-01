@@ -32,28 +32,19 @@
     <ClCompile Include="pch.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="CbsApi_i.c">
-      <Filter>libraries\cbsapi</Filter>
-    </ClCompile>
-    <ClCompile Include="CbsApi_p.c">
-      <Filter>libraries\cbsapi</Filter>
-    </ClCompile>
-    <ClCompile Include="dlldata.c">
-      <Filter>libraries\cbsapi</Filter>
-    </ClCompile>
     <ClCompile Include="FeatureTreeModel.cpp">
       <Filter>components\features</Filter>
     </ClCompile>
     <ClCompile Include="CbsSessionManager.cpp">
       <Filter>libraries\cbsapi</Filter>
     </ClCompile>
+    <ClCompile Include="CbsApiProxy.c">
+      <Filter>libraries\cbsapi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
-    </ClInclude>
-    <ClInclude Include="CbsApi.h">
-      <Filter>libraries\cbsapi</Filter>
     </ClInclude>
     <ClInclude Include="FeatureTreeModel.h">
       <Filter>components\features</Filter>
@@ -105,5 +96,10 @@
     <None Include="packages.config">
       <Filter>framework</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CbsApi.idl">
+      <Filter>libraries\cbsapi</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -109,7 +109,6 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CbsApi.h" />
     <ClInclude Include="CbsSessionManager.h" />
     <ClInclude Include="ErrorPage.h">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
@@ -163,19 +162,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CbsApi_i.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="CbsApi_p.c">
+    <ClCompile Include="CbsApiProxy.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CbsSessionManager.cpp" />
-    <ClCompile Include="dlldata.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="ErrorPage.cpp">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -217,6 +208,40 @@
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Midl>
+    <CustomBuild Include="CbsApi.idl">
+      <EnableWindowsRuntime Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableWindowsRuntime>
+      <EnableWindowsRuntime Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</EnableWindowsRuntime>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </MetadataFileName>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi.h</HeaderFileName>
+      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dlldata.c</DllDataFileName>
+      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_p.c</ProxyFileName>
+      <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Stub</GenerateClientFiles>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </MetadataFileName>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi.h</HeaderFileName>
+      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dlldata.c</DllDataFileName>
+      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_p.c</ProxyFileName>
+      <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Stub</GenerateClientFiles>
+      <AdditionalMetadataDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </AdditionalMetadataDirectories>
+      <AdditionalMetadataDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </AdditionalMetadataDirectories>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </AdditionalOptions>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">midl.exe /amd64 /client stub "%(Filename)%(Extension)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">midl.exe /amd64 /client stub "%(Filename)%(Extension)"</Command>
+      <OutputItemType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </OutputItemType>
+      <OutputItemType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </OutputItemType>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
+    </CustomBuild>
     <Midl Include="ErrorPage.idl">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
       <SubType>Code</SubType>
