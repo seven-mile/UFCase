@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <objidl.h>
-
 #include <memory>
 
 inline auto GetGlobalMalloc() {

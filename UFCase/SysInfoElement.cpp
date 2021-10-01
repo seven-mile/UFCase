@@ -12,6 +12,8 @@
 
 #include <wil/resource.h>
 
+#include <format>
+
 namespace winrt {
 	using namespace Windows::System::Diagnostics;
 }
