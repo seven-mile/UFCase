@@ -29,13 +29,12 @@ namespace winrt::UFCase::implementation
             appw.TitleBar().BackgroundColor(winrt::Colors::Transparent());
             this->AppTitleBar().Height(appw.TitleBar().Height());
 
-            this->SizeChanged([=](auto &, WindowSizeChangedEventArgs const &e){
-                const int NavBarHeight = 48, NavBarWidth = 48;
-
-                appw.TitleBar().SetDragRectangles({
-                    {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width)-NavBarWidth), NavBarHeight}
-                });
-            });
+            //this->SizeChanged([tb = appw.TitleBar()](auto &, WindowSizeChangedEventArgs const &e){
+            //    const int NavBarHeight = 48, NavBarWidth = 48;
+            //    tb.SetDragRectangles({
+            //        {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight}
+            //    });
+            //});
         } else {
             this->ExtendsContentIntoTitleBar(true);
             this->SetTitleBar(this->AppTitleBar());
