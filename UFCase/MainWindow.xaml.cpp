@@ -13,8 +13,6 @@
 
 #include "ErrorPage.g.h"
 
-#include <format>
-
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -24,20 +22,22 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
-        if (m_appw = GetAppWindowForCurrentWindow()) {
-            m_appw.TitleBar().ExtendsContentIntoTitleBar(true);
-            this->AppTitleBar().Height(m_appw.TitleBar().Height());
-            m_appw.TitleBar().BackgroundColor(winrt::Colors::White());
-            
+        if (auto appw = GetAppWindowForCurrentWindow()) {
+            appw.TitleBar().ExtendsContentIntoTitleBar(true);
+            this->AppTitleBar().Height(appw.TitleBar().Height());
+            appw.TitleBar().BackgroundColor(winrt::Colors::White());
+
+            this->SizeChanged([=](auto &, WindowSizeChangedEventArgs const &e){
+                const int NavBarHeight = 48, NavBarWidth = 48;
+
+                appw.TitleBar().SetDragRectangles({
+                    {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width)-NavBarWidth), NavBarHeight}
+                });
+            });
         } else {
             this->ExtendsContentIntoTitleBar(true);
             this->SetTitleBar(this->AppTitleBar());
         }
-        this->SizeChanged([&](auto &, WindowSizeChangedEventArgs const &e){
-            m_appw.TitleBar().SetDragRectangles({
-                winrt::Windows::Graphics::RectInt32{40, 0, std::max(0, static_cast<int>(e.Size().Width)-40), 40}
-            });
-        });
     }
 
     winrt::AppWindow MainWindow::GetAppWindowForCurrentWindow()

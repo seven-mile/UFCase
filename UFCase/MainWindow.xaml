@@ -8,13 +8,20 @@
     mc:Ignorable="d">
     
     <Grid>
+        <Grid.Resources>
+            <!-- This top margin is the height of the custom TitleBar -->
+            <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+            <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
+            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
+        </Grid.Resources>
+        
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="False"
                 VerticalAlignment="Top"
                 Background="Transparent"
                 Height="40"
                 Canvas.ZIndex="1" 
-                Margin="40,0,0,0">
+                Margin="48,8,0,0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="AppTitle"
                     Text="UFCase - NG [Compact Mode]"
@@ -25,17 +32,17 @@
         </Border>
         
         <NavigationView x:Name="NavView"
-                        IsTitleBarAutoPaddingEnabled="True"
+                        IsTitleBarAutoPaddingEnabled="False"
                         IsBackEnabled="{x:Bind ContentFrame.CanGoBack}"
                         SelectionChanged="NavigationView_SelectionChanged"
                         SelectedItem="{x:Bind HomeItem}"
                         Canvas.ZIndex="0">
-            <NavigationView.PaneHeader>
+            <!--<NavigationView.PaneHeader>
                 <StackPanel BorderThickness="0" Orientation="Horizontal">
                     <PersonPicture HorizontalAlignment="Left" Margin="15,5,5,5" Height="32" ProfilePicture="https://techprofile.blob.core.windows.net/images/MPwEzwAAAwAAAAAAAAAAAA.png?8D8324" />
                     <TextBlock Margin="20" Text="UFCase" FontSize="16" />
                 </StackPanel>
-            </NavigationView.PaneHeader>
+            </NavigationView.PaneHeader>-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="HomeItem" Content="SysInfo" Icon="Admin" />
                 <NavigationViewItem Content="Features" Icon="AllApps" />

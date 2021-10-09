@@ -30,8 +30,6 @@ namespace winrt::UFCase::implementation
 
         // Control Events
         void NavigationView_SelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args);
-    private:
-        winrt::AppWindow m_appw = nullptr;
     };
 }
 
