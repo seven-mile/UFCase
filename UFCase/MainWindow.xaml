@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <Grid>
+    <Grid Background="#F3F3F3">
         <Grid.Resources>
             <!-- This top margin is the height of the custom TitleBar -->
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
@@ -35,6 +35,7 @@
                         IsTitleBarAutoPaddingEnabled="False"
                         IsBackEnabled="{x:Bind ContentFrame.CanGoBack}"
                         SelectionChanged="NavigationView_SelectionChanged"
+                        DisplayModeChanged="NavView_DisplayModeChanged"
                         SelectedItem="{x:Bind HomeItem}"
                         Canvas.ZIndex="0">
             <!--<NavigationView.PaneHeader>

@@ -7,126 +7,154 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Margin="70" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        
-        <StackPanel x:Name="ToolBarPane" Margin="0,0,0,10" Height="AUto" VerticalAlignment="Top"
-                    Orientation="Horizontal">
-            <TextBlock Text="Auto Refresh" TextAlignment="Center" FontSize="20" />
-            <ToggleSwitch IsOn="True" Toggled="ToggleSwitch_Toggled" />
-        </StackPanel>
-        
-        <Border x:Name="StaticInfoPane" Margin="0,10,0,10" Height="Auto" VerticalAlignment="Top"
-                Background="{ThemeResource ControlHoverColorBrush}" MaxHeight="500"
-                BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
-        
-            <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="10*" />
-                    </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
+        <StackPanel Margin="70" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            
+            <Expander x:Name="StaticInfoPane" Margin="0,10,0,10" Height="Auto"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                      Style="{StaticResource MicaCardExpander}" IsExpanded="True">
                 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <Expander.Header>
+                    <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <FontIcon VerticalAlignment="Center" Margin="10"
+                                    FontFamily="Segoe MDL2 Assets" FontSize="20" Glyph="&#xE9D9;" />
+                        <TextBlock Text="System Specifications"
+                                   Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Expander.Header>
+                
+                <Expander.Content>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="10*" />
+                        </Grid.ColumnDefinitions>
+                
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
         
-                    <Grid.Resources>
-                        <x:Int32 x:Key="RowHeight">40</x:Int32>
-                        <Style x:Key="LabelBlock" TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                            <Setter Property="FontSize" Value="20" />
-                            <Setter Property="FontFamily" Value="Segoe UI" />
-                        </Style>
-                        <Style x:Key="InfoBox" TargetType="TextBox">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="FontSize" Value="20" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="IsEnabled" Value="True" />
-                            <Setter Property="IsReadOnly" Value="True" />
-                            <Setter Property="AcceptsReturn" Value="True" />
-                        </Style>
-                    </Grid.Resources>
+                        <Grid.Resources>
+                            <x:Int32 x:Key="RowHeight">40</x:Int32>
+                            <Style x:Key="LabelBlock" TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="FontFamily" Value="Segoe UI" />
+                            </Style>
+                            <Style x:Key="InfoBox" TargetType="TextBox">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Setter Property="IsReadOnly" Value="True" />
+                                <Setter Property="AcceptsReturn" Value="True" />
+                            </Style>
+                        </Grid.Resources>
 
-                    <!-- Property Name -->
-                    <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Architecture" />
-                    <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="OS Name" />
-                    <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="OS Version" />
-                    <TextBlock Grid.Column="1" Grid.Row="4" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
-                    <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
-                    <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource LabelBlock}" Text="CPU" />
+                        <!-- Property Name -->
+                        <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Architecture" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="OS Name" />
+                        <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="OS Version" />
+                        <TextBlock Grid.Column="1" Grid.Row="4" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
+                        <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
+                        <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource LabelBlock}" Text="CPU" />
             
-                    <!-- Property Value -->
-                    <TextBox Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.FirmwareType}" />
-                    <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Architecture}" />
-                    <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSDisplayName}" />
-                    <TextBox Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSVersion}" />
-                    <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.IsWinPE}" />
-                    <TextBox Grid.Column="2" Grid.Row="5" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Manufacturer}" />
-                    <TextBox Grid.Column="2" Grid.Row="6" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.CPUDisplayName}" />
+                        <!-- Property Value -->
+                        <TextBox Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.FirmwareType}" />
+                        <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Architecture}" />
+                        <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSDisplayName}" />
+                        <TextBox Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.OSVersion}" />
+                        <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.IsWinPE}" />
+                        <TextBox Grid.Column="2" Grid.Row="5" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.Manufacturer}" />
+                        <TextBox Grid.Column="2" Grid.Row="6" Style="{StaticResource InfoBox}" Text="{x:Bind StaticInfo.CPUDisplayName}" />
             
-                </Grid>
-            </ScrollViewer>
-        </Border>
+                    </Grid>
+                </Expander.Content>
+            </Expander>
         
-        <Border x:Name="RealTimeInfoPane" Margin="0,10,0,0" Height="Auto" VerticalAlignment="Top">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="10*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <Expander x:Name="RealTimeInfoPane" Margin="0,10,0,0" Height="Auto"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                      Style="{StaticResource MicaCardExpander}" IsExpanded="True">
+                <Expander.Header>
+                    <Grid>
+                        <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <FontIcon VerticalAlignment="Center" Margin="10"
+                                      FontFamily="Segoe MDL2 Assets" FontSize="20" Glyph="&#xE9D9;" />
+                            <TextBlock Text="Realtime Diagnostics"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        
+                        <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <!--<TextBlock Text="Auto Refresh" Margin="0,0,5,0" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />-->
+                            <ToggleSwitch IsOn="True" Toggled="ToggleSwitch_Toggled" OnContent="AutoRefresh" OffContent="Frozen" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+                </Expander.Header>
+                <Expander.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="10*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                 
-                <Grid.Resources>
-                    <Style x:Key="LabelBlock" TargetType="TextBlock">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                        <Setter Property="FontSize" Value="20" />
-                        <Setter Property="FontFamily" Value="Segoe UI" />
-                    </Style>
-                    <Style x:Key="InfoBarChart" TargetType="ProgressBar">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="IsIndeterminate" Value="False" />
-                    </Style>
-                    <Style x:Key="InfoBox" TargetType="TextBox">
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="TextWrapping" Value="Wrap" />
-                        <Setter Property="FontSize" Value="20" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="IsEnabled" Value="True" />
-                        <Setter Property="IsReadOnly" Value="True" />
-                        <Setter Property="AcceptsReturn" Value="True" />
-                    </Style>
-                </Grid.Resources>
+                        <Grid.Resources>
+                            <Style x:Key="LabelBlock" TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="FontFamily" Value="Segoe UI" />
+                            </Style>
+                            <Style x:Key="InfoBarChart" TargetType="ProgressBar">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="IsIndeterminate" Value="False" />
+                            </Style>
+                            <Style x:Key="InfoBox" TargetType="TextBox">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Setter Property="IsReadOnly" Value="True" />
+                                <Setter Property="AcceptsReturn" Value="True" />
+                            </Style>
+                        </Grid.Resources>
                 
-                <!-- Property Name -->
-                <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Memory" />
+                        <!-- Property Name -->
+                        <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Memory" />
                 
-                <!-- Property BarChart -->
-                <ProgressBar Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.CPUUtilization, Mode=OneWay}" />
-                <ProgressBar Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.MemoryUsage, Mode=OneWay}" />
+                        <!-- Property BarChart -->
+                        <ProgressBar Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.CPUUtilization, Mode=OneWay}" />
+                        <ProgressBar Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.MemoryUsage, Mode=OneWay}" />
                 
-                <!-- Property Comment -->
-                <TextBox Grid.Column="3" Grid.Row="0" Style="{StaticResource InfoBox}" Text="{x:Bind RealtimeInfo.CPUUtilizationComment, Mode=OneWay}" />
-                <TextBox Grid.Column="3" Grid.Row="1" Style="{StaticResource InfoBox}" Text="{x:Bind RealtimeInfo.MemoryUsageComment, Mode=OneWay}" />
-            </Grid>
-        </Border>
-    </StackPanel>
+                        <!-- Property Comment -->
+                        <TextBox Grid.Column="3" Grid.Row="0" Style="{StaticResource InfoBox}" Text="{x:Bind RealtimeInfo.CPUUtilizationComment, Mode=OneWay}" />
+                        <TextBox Grid.Column="3" Grid.Row="1" Style="{StaticResource InfoBox}" Text="{x:Bind RealtimeInfo.MemoryUsageComment, Mode=OneWay}" />
+                    </Grid>
+                </Expander.Content>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
     
 </Page>

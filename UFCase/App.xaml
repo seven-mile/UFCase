@@ -9,6 +9,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary>
+                    <Style x:Key="MicaCardBorder" TargetType="Border">
+                        <Setter Property="Background" Value="{ThemeResource LayerFillColorDefaultBrush}"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+                    </Style>
+                    <Style x:Key="MicaCardExpander" TargetType="Expander">
+                        <Setter Property="Background" Value="{ThemeResource LayerFillColorDefaultBrush}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">

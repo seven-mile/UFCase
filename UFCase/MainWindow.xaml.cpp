@@ -23,9 +23,11 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
 
         if (auto appw = GetAppWindowForCurrentWindow()) {
+            appw.Title(this->AppTitle().Text());
             appw.TitleBar().ExtendsContentIntoTitleBar(true);
+            appw.TitleBar().ButtonBackgroundColor(winrt::Colors::Transparent());
+            appw.TitleBar().BackgroundColor(winrt::Colors::Transparent());
             this->AppTitleBar().Height(appw.TitleBar().Height());
-            appw.TitleBar().BackgroundColor(winrt::Colors::White());
 
             this->SizeChanged([=](auto &, WindowSizeChangedEventArgs const &e){
                 const int NavBarHeight = 48, NavBarWidth = 48;
@@ -77,6 +79,15 @@ namespace winrt::UFCase::implementation
     {
         if (const auto item = args.SelectedItem().as<NavigationViewItem>()) {
             this->NavigateTo(unbox_value<hstring>(item.Content()));
+        }
+    }
+
+    void MainWindow::NavView_DisplayModeChanged(NavigationView const&, NavigationViewDisplayModeChangedEventArgs const& args)
+    {
+        if (args.DisplayMode() == NavigationViewDisplayMode::Minimal) {
+            this->AppTitleBar().Margin({96,8,0,0});
+        } else {
+            this->AppTitleBar().Margin({48,8,0,0});
         }
     }
 
@@ -140,4 +151,6 @@ namespace winrt::UFCase::implementation
     }
 
 }
+
+
 
