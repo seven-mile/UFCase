@@ -9,7 +9,7 @@
   <Identity
     Name="b9e5b7d3-879b-46f7-adc5-40da29a6955b"
     Publisher="CN=7mile"
-    Version="0.4.7.0" />
+    Version="0.4.8.0" />
 
   <Properties>
     <DisplayName>UFCase (Package)</DisplayName>

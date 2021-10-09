@@ -30,7 +30,7 @@
   <PropertyGroup>
     <ProjectGuid>c27aaf2d-f8c0-4aed-8be2-7622b63fed8e</ProjectGuid>
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\UFCase\UFCase.vcxproj</EntryPointProjectUniqueName>
