@@ -20,7 +20,7 @@ namespace winrt::UFCase::implementation
     {
         std::wstring pathstrMsgdll(GetWindowsDirectoryW(nullptr, 0), L'\0');
         if (pathstrMsgdll.size() !=
-            GetWindowsDirectoryW(pathstrMsgdll.data(), pathstrMsgdll.size()))
+            GetWindowsDirectoryW(pathstrMsgdll.data(), static_cast<UINT>(pathstrMsgdll.size())))
             winrt::throw_last_error();
 
         std::filesystem::path pathMsgdll(pathstrMsgdll);

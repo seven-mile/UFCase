@@ -26,10 +26,10 @@ namespace winrt::UFCase::implementation
             prog_bar.Value(pr);
         };
 
-        if (auto val = e.Parameter().try_as<IAsyncActionWithProgress<uint32_t>>()) {
-            val.Progress(handler);
-        } else if (auto val = e.Parameter().try_as<IAsyncOperationWithProgress<IObservableVector<FeatureTreeElement>, uint32_t>>()) {
-            val.Progress(handler);
+        if (auto op_action = e.Parameter().try_as<IAsyncActionWithProgress<uint32_t>>()) {
+            op_action.Progress(handler);
+        } else if (auto op_feature = e.Parameter().try_as<IAsyncOperationWithProgress<IObservableVector<FeatureTreeElement>, uint32_t>>()) {
+            op_feature.Progress(handler);
         } else {
             throw winrt::hresult_invalid_argument();
         }

@@ -45,7 +45,7 @@ namespace winrt::UFCase::implementation
         return m_realtime;
     }
 
-    void SysInfoPage::ToggleSwitch_Toggled(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+    void SysInfoPage::ToggleSwitch_Toggled(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const&)
     {
         auto swch = sender.as<winrt::ToggleSwitch>();
         if (swch.IsOn())

@@ -51,9 +51,8 @@ namespace winrt::UFCase::implementation
             winrt::check_hresult(window.as<IWindowNative>()->get_WindowHandle(&hWnd));
 
             // Get the WindowId for the HWND
-            winrt::WindowId windowId;
             
-            if (SUCCEEDED(GetWindowIdFromWindowHandle(hWnd, &windowId)))
+            if (auto windowId = GetWindowIdFromWindow(hWnd); windowId.Value)
             {
                 // Get the AppWindow for the WindowId
                 appWindow = winrt::AppWindow::GetFromWindowId(windowId);
