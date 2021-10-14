@@ -8,12 +8,19 @@
     mc:Ignorable="d">
     
     <StackPanel Orientation="Horizontal" Margin="70,150,70,150">
-        <Border Width="72">
-            <FontIcon VerticalAlignment="Top" FontFamily="Segoe Fluent Icons" FontSize="50" Glyph="&#xEB90;" Margin="10" />
+        <Border Width="Auto">
+            <FontIcon VerticalAlignment="Top" FontFamily="Segoe Fluent Icons" FontSize="{x:Bind TitleBlock.FontSize}" Glyph="&#xEB90;" Margin="17" >
+                <FontIcon.Foreground>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#ff0033" Offset="0" />
+                        <GradientStop Color="#cc0000" Offset="1" />
+                    </LinearGradientBrush>
+                </FontIcon.Foreground>
+            </FontIcon>
         </Border>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="50,0,0,0">
-            <TextBlock x:Name="TitleBlock" VerticalAlignment="Top" FontSize="50" HorizontalAlignment="Left" Text="WWWWW" />
-            <TextBlock x:Name="MsgBlock" VerticalAlignment="Top"  FontSize="25"  TextWrapping="WrapWholeWords" Margin="0,40,0,20" Text="Orzzro" />
+            <TextBlock x:Name="TitleBlock" VerticalAlignment="Top" Style="{StaticResource DisplayTextBlockStyle}" HorizontalAlignment="Left" Text="Error Title" />
+            <TextBlock x:Name="MsgBlock" VerticalAlignment="Top" FontSize="25" TextWrapping="WrapWholeWords" Margin="0,40,0,20" Text="Error Message" />
         </StackPanel>
     </StackPanel>
 </Page>
