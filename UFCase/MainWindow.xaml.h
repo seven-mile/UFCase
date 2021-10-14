@@ -15,6 +15,7 @@ namespace winrt
 {
     using namespace Microsoft::UI::Windowing;
     using namespace Microsoft::UI;
+    using Windows::UI::Color;
 }
 
 namespace winrt::UFCase::implementation

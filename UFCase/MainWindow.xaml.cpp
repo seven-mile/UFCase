@@ -24,10 +24,16 @@ namespace winrt::UFCase::implementation
 
         if (auto appw = GetAppWindowForCurrentWindow()) {
             appw.Title(this->AppTitle().Text());
-            appw.TitleBar().ExtendsContentIntoTitleBar(true);
-            appw.TitleBar().ButtonBackgroundColor(winrt::Colors::Transparent());
-            appw.TitleBar().BackgroundColor(winrt::Colors::Transparent());
-            this->AppTitleBar().Height(appw.TitleBar().Height());
+            auto &&appt = appw.TitleBar();
+            appt.ExtendsContentIntoTitleBar(true);
+
+            appt.BackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
+            appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
+
+            this->AppTitleBar().Height(appt.Height());
 
             //this->SizeChanged([tb = appw.TitleBar()](auto &, WindowSizeChangedEventArgs const &e){
             //    const int NavBarHeight = 48, NavBarWidth = 48;
