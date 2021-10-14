@@ -9,7 +9,7 @@
     
     <StackPanel Orientation="Horizontal" Margin="70,150,70,150">
         <Border Width="72">
-            <FontIcon VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" FontSize="50" Glyph="&#xEB90;" Margin="10" />
+            <FontIcon VerticalAlignment="Top" FontFamily="Segoe Fluent Icons" FontSize="50" Glyph="&#xEB90;" Margin="10" />
         </Border>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="50,0,0,0">
             <TextBlock x:Name="TitleBlock" VerticalAlignment="Top" FontSize="50" HorizontalAlignment="Left" Text="WWWWW" />
