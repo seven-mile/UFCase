@@ -194,12 +194,10 @@ namespace winrt::UFCase::implementation
 			chg(*this, winrt::Data::PropertyChangedEventArgs{L"CPUUtilization"});
 			chg(*this, winrt::Data::PropertyChangedEventArgs{L"MemoryUsage"});
 		});
-
-		m_timer.Start();
 	}
 	SysInfoRealtimeElement::~SysInfoRealtimeElement()
 	{
-		m_timer.Stop();
+		m_timer.Tick(m_update_token);
 	}
 	winrt::DispatcherTimer SysInfoRealtimeElement::Timer()
 	{

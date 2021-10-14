@@ -58,6 +58,9 @@
     <ClInclude Include="MallocUtil.h">
       <Filter>libraries\util</Filter>
     </ClInclude>
+    <ClInclude Include="AppConfig.hpp">
+      <Filter>libraries\appconfig</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">
@@ -80,6 +83,9 @@
     </Filter>
     <Filter Include="components\sysinfo">
       <UniqueIdentifier>{7d12d582-ea58-40b4-a581-896ddff473bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\appconfig">
+      <UniqueIdentifier>{55eaf09c-4e3b-41b5-9ead-cec9990028e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

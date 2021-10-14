@@ -3,7 +3,7 @@
 #include <winrt/Windows.UI.Composition.h>
 
 namespace winrt {
-    using namespace Windows::UI::Composition;
+    using namespace Windows::Data::Json;
 }
 
 #include "SysInfoPage.g.h"
@@ -14,11 +14,9 @@ namespace winrt::UFCase::implementation
     {
         SysInfoPage();
 
-        void InitializeComposition();
-
         UFCase::SysInfoStaticElement StaticInfo();
         UFCase::SysInfoRealtimeElement RealtimeInfo();
-        void ToggleSwitch_Toggled(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e);
+        IAsyncAction ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const& e);
 
     private:
         UFCase::SysInfoStaticElement m_static;

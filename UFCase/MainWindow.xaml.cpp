@@ -13,14 +13,34 @@
 
 #include "ErrorPage.g.h"
 
+#include "AppConfig.hpp"
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace winrt::UFCase::implementation
 {
+    // helpers
+    template<typename T>
+    inline auto GetAppRes(winrt::hstring const &key) {
+        return winrt::unbox_value<T>(Application::Current().Resources().TryLookup(winrt::box_value(key)));
+    }
+
+    template<typename T>
+    inline auto GetAppRes(winrt::hstring const &key, T const &default_value) noexcept {
+        return winrt::unbox_value_or<T>(Application::Current().Resources().TryLookup(winrt::box_value(key)), default_value);
+    }
+
     MainWindow::MainWindow()
     {
         InitializeComponent();
+
+        auto stack_source = g_appConfig.GetNamedObject(L"stack");
+        if (static_cast<int>(stack_source.GetNamedNumber(L"source")) == 0) {
+            this->AppTitle().Text(L"UFCase [Online Image] [Non-Admin]");
+        } else {
+            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", stack_source.GetNamedString(L"argBootdrive")).c_str());
+        }
 
         if (auto appw = GetAppWindowForCurrentWindow()) {
             appw.Title(this->AppTitle().Text());

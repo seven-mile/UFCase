@@ -18,7 +18,7 @@
                 <Expander.Header>
                     <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
                         <FontIcon VerticalAlignment="Center" Margin="10"
-                                    FontFamily="Segoe MDL2 Assets" FontSize="20" Glyph="&#xE9D9;" />
+                                    FontFamily="Segoe MDL2 Assets" FontSize="20" Glyph="&#xE946;" />
                         <TextBlock Text="System Specifications"
                                    Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                     </StackPanel>
@@ -99,7 +99,7 @@
                         
                         <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Right">
                             <!--<TextBlock Text="Auto Refresh" Margin="0,0,5,0" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />-->
-                            <ToggleSwitch IsOn="True" Toggled="ToggleSwitch_Toggled" OnContent="AutoRefresh" OffContent="Frozen" VerticalAlignment="Center" />
+                            <ToggleSwitch x:Name="AutoRefreshSwitch" Toggled="ToggleSwitch_Toggled" OnContent="AutoRefresh" OffContent="Frozen" VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>
                 </Expander.Header>
@@ -139,6 +139,8 @@
                                 <Setter Property="AcceptsReturn" Value="True" />
                             </Style>
                         </Grid.Resources>
+                        
+                        
                 
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />
@@ -154,6 +156,7 @@
                     </Grid>
                 </Expander.Content>
             </Expander>
+            
         </StackPanel>
     </ScrollViewer>
     

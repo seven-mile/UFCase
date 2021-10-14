@@ -103,6 +103,7 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppConfig.hpp" />
     <ClInclude Include="CbsSessionManager.h" />
     <ClInclude Include="ErrorPage.h">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
