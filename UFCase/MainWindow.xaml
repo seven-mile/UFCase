@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <Grid Background="#F3F3F3">
+    <Grid Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
         <Grid.Resources>
             <!-- This top margin is the height of the custom TitleBar -->
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
@@ -24,7 +24,7 @@
                 Margin="48,8,0,0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="AppTitle"
-                    Text="UFCase - NG [Compact Mode]"
+                    Text="UFCase"
                     VerticalAlignment="Center"
                     Margin="12, 0, 0, 0"
                     Style="{StaticResource CaptionTextBlockStyle}" />
@@ -38,12 +38,6 @@
                         DisplayModeChanged="NavView_DisplayModeChanged"
                         SelectedItem="{x:Bind HomeItem}"
                         Canvas.ZIndex="0">
-            <!--<NavigationView.PaneHeader>
-                <StackPanel BorderThickness="0" Orientation="Horizontal">
-                    <PersonPicture HorizontalAlignment="Left" Margin="15,5,5,5" Height="32" ProfilePicture="https://techprofile.blob.core.windows.net/images/MPwEzwAAAwAAAAAAAAAAAA.png?8D8324" />
-                    <TextBlock Margin="20" Text="UFCase" FontSize="16" />
-                </StackPanel>
-            </NavigationView.PaneHeader>-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="HomeItem" Content="SysInfo" Icon="Admin" />
                 <NavigationViewItem Content="Features" Icon="AllApps" />
