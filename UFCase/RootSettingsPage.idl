@@ -1,0 +1,8 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass RootSettingsPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        RootSettingsPage();
+    }
+}

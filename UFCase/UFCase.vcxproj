@@ -134,6 +134,14 @@
       <DependentUpon>ProgressPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="RootSettingsPage.xaml.h">
+      <DependentUpon>RootSettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SettingsPage.xaml.h">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SSShimApi.h" />
     <ClInclude Include="SysInfoElement.h">
       <DependentUpon>SysInfoElement.idl</DependentUpon>
@@ -141,6 +149,10 @@
     </ClInclude>
     <ClInclude Include="SysInfoPage.h">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="TemplateSettingsPage.xaml.h">
+      <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
   </ItemGroup>
@@ -156,7 +168,16 @@
     <Page Include="ProgressPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="RootSettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SysInfoPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TemplateSettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -197,12 +218,24 @@
       <DependentUpon>ProgressPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="RootSettingsPage.xaml.cpp">
+      <DependentUpon>RootSettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SettingsPage.xaml.cpp">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="SysInfoElement.cpp">
       <DependentUpon>SysInfoElement.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="SysInfoPage.cpp">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="TemplateSettingsPage.xaml.cpp">
+      <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
   </ItemGroup>
@@ -267,11 +300,23 @@
       <DependentUpon>ProgressPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="RootSettingsPage.idl">
+      <DependentUpon>RootSettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SettingsPage.idl">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="SysInfoElement.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SysInfoPage.idl">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="TemplateSettingsPage.idl">
+      <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
   </ItemGroup>

@@ -1,0 +1,8 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass TemplateSettingsPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        TemplateSettingsPage();
+    }
+}

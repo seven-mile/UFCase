@@ -1,0 +1,10 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass SettingsPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        SettingsPage();
+
+        Windows.Foundation.Collections.IObservableVector<String> SettingsPath;
+    }
+}

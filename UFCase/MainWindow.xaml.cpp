@@ -4,8 +4,8 @@
 #include "MainWindow.g.cpp"
 #endif
 
-
 #include "SysInfoPage.g.h"
+#include "SettingsPage.g.h"
 
 #include "FeaturesPage.g.h"
 #include "FeatureTreeElement.g.h"
@@ -187,7 +187,9 @@ namespace winrt::UFCase::implementation
 
         }
         else if (page_name == L"Settings") {
-        
+            frame.Navigate(xaml_typename<SettingsPage>());
+
+            co_return;
         }
     } catch (const winrt::hresult_error &e) {
         this->HandleHrError(e);

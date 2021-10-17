@@ -38,6 +38,42 @@
                         DisplayModeChanged="NavView_DisplayModeChanged"
                         SelectedItem="{x:Bind HomeItem}"
                         Canvas.ZIndex="0">
+            
+            <NavigationView.PaneHeader>
+                <ToggleSwitch x:Name="TipToggle" Margin="10,0,0,0" OnContent="ShowTT" OffContent="HideTT">
+                </ToggleSwitch>
+            </NavigationView.PaneHeader>
+            
+            <NavigationView.PaneCustomContent>
+                <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
+                          ItemsSource="{x:Bind ImageProv.Images}">
+                    <ComboBox.Resources>
+                        <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
+                                     Title="Switch Windows Image"
+                                     Subtitle="You can specify Online or Offline image here! All the contents will be reloaded after switching and the changes you made will be lost. Take care of it!"
+                                     IsOpen="{x:Bind TipToggle.IsOn, Mode=TwoWay}">
+                            <TeachingTip.IconSource>
+                                <SymbolIconSource Symbol="Switch" />
+                            </TeachingTip.IconSource>
+                        </TeachingTip>
+                    </ComboBox.Resources>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:ImageItem">
+                            <StackPanel Orientation="Horizontal" Height="Auto" HorizontalAlignment="Stretch">
+                                <ImageIcon Source="{x:Bind Icon}" VerticalAlignment="Stretch" Width="35" Margin="0,7,7,7" />
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{x:Bind Version}" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}">
+                                        <Run Text="{x:Bind Type}" />
+                                        <Run Text="{x:Bind Bootdrive}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </NavigationView.PaneCustomContent>
+            
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="HomeItem" Content="SysInfo" Icon="Admin" />
                 <NavigationViewItem Content="Features" Icon="AllApps" />
@@ -48,6 +84,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            
             <Frame x:Name="ContentFrame" />
         </NavigationView>
     </Grid>

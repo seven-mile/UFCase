@@ -14,6 +14,15 @@
     <Page Include="SysInfoPage.xaml">
       <Filter>components\sysinfo</Filter>
     </Page>
+    <Page Include="SettingsPage.xaml">
+      <Filter>components\settings</Filter>
+    </Page>
+    <Page Include="TemplateSettingsPage.xaml">
+      <Filter>components\settings\subpages</Filter>
+    </Page>
+    <Page Include="RootSettingsPage.xaml">
+      <Filter>components\settings\subpages</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -89,6 +98,12 @@
     </Filter>
     <Filter Include="libraries\appconfig">
       <UniqueIdentifier>{55eaf09c-4e3b-41b5-9ead-cec9990028e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\settings">
+      <UniqueIdentifier>{41ce4714-fa1c-404c-9307-c554dbc55c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\settings\subpages">
+      <UniqueIdentifier>{828c1d4e-e4ff-4598-92ec-d485598fefd6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

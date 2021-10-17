@@ -1,0 +1,82 @@
+﻿<Page
+    x:Class="UFCase.TemplateSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UFCase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="10,20,10,40" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <TextBlock Style="{StaticResource SettingGroupHeader}" Text="Group1" />
+        <Border x:Name="Group1" Style="{StaticResource SettingsMicaCard}" Margin="0,10,0,10">
+            <RadioButtons MaxColumns="1">
+                <RadioButtons.Header>
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap"
+                                Text="pdwImageCount[out] A pointer to a DWORD that receives the number of mounted images.pMountInfo[out opt] Pointer to a variable that receives the array of mounted image structures. The size of the information written varies depending on the type of structured defined by the fInfoLevelId parameter.cbMountInfoLength[in] The size of the buffer pointed to by the pMountInfo parameter, in bytes.pcbReturnLength[out] A pointer to a variable in which the function returns the size of the requested information. If the function was successful, this is the size of the information written to the buffer pointed to by the pMountInfo parameter, but if the buffer was too small; this is the minimum size of buffer needed to receive the information successfully." />
+                </RadioButtons.Header>
+                <RadioButtons.Items>
+                    <x:String>Option1</x:String>
+                    <x:String>Option2</x:String>
+                    <x:String>Option3</x:String>
+                </RadioButtons.Items>
+            </RadioButtons>
+        </Border>
+        <TextBlock Style="{StaticResource SettingGroupHeader}" Text="Group2" />
+        <Border x:Name="Group2" Style="{StaticResource SettingsMicaCard}" Margin="0,10,0,10" Padding="15,15,15,15">
+            <Grid>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Some setting 1" />
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Some setting description: hello the cruel world" />
+                </StackPanel>
+                    
+                <AppBarButton HorizontalAlignment="Right" Icon="Accept" LabelPosition="Collapsed" />
+            </Grid>
+        </Border>
+        <TextBlock Style="{StaticResource SettingGroupHeader}" Text="Group3" />
+        <Border x:Name="Group3" Style="{StaticResource SettingsMicaCard}" Margin="0,10,0,10">
+            <Grid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76D;" Margin="5,0,15,0" />
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
+                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Other setting description: goodbye the cruel world" />
+                    </StackPanel>
+                </StackPanel>
+                    
+                <FontIcon HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" />
+            </Grid>
+        </Border>
+        <TextBlock Style="{StaticResource SettingGroupHeader}" Text="Group4" />
+        <Button x:Name="Group4Row1" Style="{StaticResource SettingsMicaCardCommandLink}" Margin="0,10,0,10">
+            <Grid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76D;" Margin="5,0,15,0" />
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
+                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Other setting description: goodbye the cruel world" />
+                    </StackPanel>
+                </StackPanel>
+                    
+                <FontIcon HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" />
+            </Grid>
+        </Button>
+        <Button x:Name="Group4Row2" Style="{StaticResource SettingsMicaCardCommandLink}" Margin="0,0,0,10">
+            <Grid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76D;" Margin="5,0,15,0" />
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
+                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Other setting description: goodbye the cruel world" />
+                    </StackPanel>
+                </StackPanel>
+                    
+                <FontIcon HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" />
+            </Grid>
+        </Button>
+    </StackPanel>
+</Page>
