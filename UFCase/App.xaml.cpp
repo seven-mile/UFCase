@@ -51,23 +51,15 @@ namespace winrt::UFCase::implementation
         // defaultly servicing online image.
 
         auto pathRoaming = AppDataPaths::GetDefault().RoamingAppData();
+        constexpr wchar_t cfg_filename[] = L"Config.json";
 
-        if (auto cfg_path = std::filesystem::path(pathRoaming.c_str()) / L"config.json";
+        if (auto cfg_path = std::filesystem::path(pathRoaming.c_str()) / cfg_filename;
                 std::filesystem::exists(cfg_path)) {
             co_await ReadAppConfigFromFile(g_appConfigPath = cfg_path.c_str());
         } else {
-            co_await ApplicationData::Current().RoamingFolder().CreateFileAsync(L"config.json");
+            co_await ApplicationData::Current().RoamingFolder().CreateFileAsync(cfg_filename);
 
-            g_appConfig = Windows::Data::Json::JsonObject::Parse(LR"(
-            {
-                "stack": {
-                    "source": 0,
-                    "argBootdrive": "D:\\MyCache\\Eb"
-                },
-                "sysInfo": {
-                    "autoRefresh": true
-                }
-            })");
+            co_await ReadAppConfigFromFile(L"ms-appx:///Configs/DefaultAppConfig.json");
             co_await WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
         }
 

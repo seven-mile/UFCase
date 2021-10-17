@@ -11,8 +11,14 @@ namespace winrt::UFCase {
         using namespace Windows::Storage;
         using namespace Windows::Data::Json;
 
-        auto cfg_file = co_await StorageFile::GetFileFromPathAsync(path);
-        if (!cfg_file.IsAvailable()) throw_hresult(E_ACCESSDENIED);
+        StorageFile cfg_file {nullptr};
+        
+        if (path.starts_with(L"ms-appx://")) {
+            cfg_file = co_await StorageFile::GetFileFromApplicationUriAsync(Uri(path));
+        } else {
+            cfg_file = co_await StorageFile::GetFileFromPathAsync(path);
+        }
+        if (!cfg_file || !cfg_file.IsAvailable()) throw_hresult(E_ACCESSDENIED);
         auto content = co_await FileIO::ReadTextAsync(cfg_file);
         
         g_appConfig = JsonObject::Parse(content);
