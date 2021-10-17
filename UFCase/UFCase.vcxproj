@@ -118,6 +118,10 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FeatureTreeModel.h" />
+    <ClInclude Include="ImageProvider.h">
+      <DependentUpon>ImageProvider.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="MallocUtil.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
@@ -175,6 +179,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FeatureTreeModel.cpp" />
+    <ClCompile Include="ImageProvider.cpp">
+      <DependentUpon>ImageProvider.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -246,6 +254,9 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FeatureTreeElement.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ImageProvider.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="MainWindow.idl">

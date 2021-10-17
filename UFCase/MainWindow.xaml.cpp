@@ -35,36 +35,9 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
-        auto stack_source = g_appConfig.GetNamedObject(L"stack");
-        if (static_cast<int>(stack_source.GetNamedNumber(L"source")) == 0) {
-            this->AppTitle().Text(L"UFCase [Online Image] [Non-Admin]");
-        } else {
-            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", stack_source.GetNamedString(L"argBootdrive")).c_str());
-        }
+        this->UpdateTitleByConfig();
 
-        if (auto appw = GetAppWindowForCurrentWindow()) {
-            appw.Title(this->AppTitle().Text());
-            auto &&appt = appw.TitleBar();
-            appt.ExtendsContentIntoTitleBar(true);
-
-            appt.BackgroundColor(winrt::Colors::Transparent());
-            appt.ButtonBackgroundColor(winrt::Colors::Transparent());
-            appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
-            appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
-            appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
-
-            this->AppTitleBar().Height(appt.Height());
-
-            //this->SizeChanged([tb = appw.TitleBar()](auto &, WindowSizeChangedEventArgs const &e){
-            //    const int NavBarHeight = 48, NavBarWidth = 48;
-            //    tb.SetDragRectangles({
-            //        {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight}
-            //    });
-            //});
-        } else {
-            this->ExtendsContentIntoTitleBar(true);
-            this->SetTitleBar(this->AppTitleBar());
-        }
+        this->ConfigWindowTitlebar();
     }
 
     winrt::AppWindow MainWindow::GetAppWindowForCurrentWindow()
@@ -100,6 +73,50 @@ namespace winrt::UFCase::implementation
         });
     }
 
+    void MainWindow::UpdateTitleByConfig()
+    {
+        auto stack_source = g_appConfig.GetNamedObject(L"stack");
+        if (static_cast<int>(stack_source.GetNamedNumber(L"source")) == 0) {
+            this->AppTitle().Text(L"UFCase [Online Image] [Non-Admin]");
+        } else {
+            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", stack_source.GetNamedString(L"argBootdrive")).c_str());
+        }
+    }
+
+    void MainWindow::ConfigWindowTitlebar()
+    {
+        if (auto appw = GetAppWindowForCurrentWindow()) {
+            appw.Title(this->AppTitle().Text());
+            auto &&appt = appw.TitleBar();
+            appt.ExtendsContentIntoTitleBar(true);
+
+            appt.BackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
+            appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
+
+            this->AppTitleBar().Height(appt.Height());
+
+            {
+                // pre-set drag rect
+                const int NavBarHeight = 48, NavBarWidth = 1348;
+                appt.SetDragRectangles({
+                    {NavBarWidth, 0, std::max(0, static_cast<int>(appw.Size().Width) - NavBarWidth), NavBarHeight}
+                });
+
+                this->SizeChanged([appt](auto &, WindowSizeChangedEventArgs const &e){
+                    appt.SetDragRectangles({
+                        {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight},
+                    });
+                });
+            }
+        } else {
+            this->ExtendsContentIntoTitleBar(true);
+            this->SetTitleBar(this->AppTitleBar());
+        }
+    }
+
     void MainWindow::NavigationView_SelectionChanged(NavigationView const&, NavigationViewSelectionChangedEventArgs const& args)
     {
         if (const auto item = args.SelectedItem().as<NavigationViewItem>()) {
@@ -114,6 +131,11 @@ namespace winrt::UFCase::implementation
         } else {
             this->AppTitleBar().Margin({48,8,0,0});
         }
+    }
+
+    UFCase::ImageProvider MainWindow::ImageProv()
+    {
+        return m_imgprov;
     }
 
     winrt::IAsyncAction MainWindow::NavigateTo(winrt::hstring page_name)

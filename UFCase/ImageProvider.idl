@@ -1,0 +1,23 @@
+namespace UFCase
+{
+
+    [default_interface]
+    runtimeclass ImageItem
+    {
+        ImageItem();
+        ImageItem(String type, String ver, String bootdrv, Microsoft.UI.Xaml.Media.ImageSource icon);
+
+        String Type;
+        String Version;
+        String Bootdrive;
+        Microsoft.UI.Xaml.Media.ImageSource Icon;
+    }
+
+    [bindable]
+    [default_interface]
+    runtimeclass ImageProvider 
+    {
+        ImageProvider();
+        Windows.Foundation.Collections.IObservableVector<ImageItem> Images{ get; };
+    }
+}
