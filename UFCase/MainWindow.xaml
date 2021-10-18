@@ -33,20 +33,20 @@
         
         <NavigationView x:Name="NavView"
                         IsTitleBarAutoPaddingEnabled="False"
-                        IsBackEnabled="{x:Bind ContentFrame.CanGoBack}"
-                        SelectionChanged="NavigationView_SelectionChanged"
+                        IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+                        BackRequested="NavView_BackRequested"
+                        ItemInvoked="NavView_ItemInvoked"
+                        Loaded="NavView_Loaded"
                         DisplayModeChanged="NavView_DisplayModeChanged"
-                        SelectedItem="{x:Bind HomeItem}"
                         Canvas.ZIndex="0">
             
             <NavigationView.PaneHeader>
-                <ToggleSwitch x:Name="TipToggle" Margin="10,0,0,0" OnContent="ShowTT" OffContent="HideTT">
-                </ToggleSwitch>
+                <ToggleSwitch x:Name="TipToggle" Margin="10,0,0,0" OnContent="ShowTT" OffContent="HideTT" />
             </NavigationView.PaneHeader>
             
             <NavigationView.PaneCustomContent>
                 <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
-                          ItemsSource="{x:Bind ImageProv.Images}">
+                          SelectedIndex="{x:Bind ImageProv.SelectedIndex, Mode=TwoWay}" ItemsSource="{x:Bind ImageProv.Images}">
                     <ComboBox.Resources>
                         <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
                                      Title="Switch Windows Image"
@@ -75,7 +75,7 @@
             </NavigationView.PaneCustomContent>
             
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="HomeItem" Content="SysInfo" Icon="Admin" />
+                <NavigationViewItem Content="SysInfo" Icon="Admin" />
                 <NavigationViewItem Content="Features" Icon="AllApps" />
                 <NavigationViewItem Content="Optionals" Icon="Add" />
                 <NavigationViewItem Content="Packages">

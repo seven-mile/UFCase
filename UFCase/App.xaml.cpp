@@ -63,15 +63,6 @@ namespace winrt::UFCase::implementation
             co_await WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
         }
 
-        if (static_cast<CbsSessionManager::StackSource>(g_appConfig.GetNamedObject(L"stack").GetNamedNumber(L"source"))
-            == CbsSessionManager::StackSource::Online) {
-            THROW_IF_FAILED(CbsSessionManager::instance().BindStack(CbsSessionManager::StackSource::Online));        
-        } else {
-            THROW_IF_FAILED(CbsSessionManager::instance().BindStack(CbsSessionManager::StackSource::Offline,
-                g_appConfig.GetNamedObject(L"stack").GetNamedString(L"argBootdrive").c_str()));
-        }
-
-
         window = make<MainWindow>();
         window.Activate();
         co_return;

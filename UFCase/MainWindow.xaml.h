@@ -18,6 +18,8 @@
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
 #include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
 
+#include <stack>
+
 namespace winrt
 {
     using namespace Microsoft::UI::Windowing;
@@ -35,20 +37,24 @@ namespace winrt::UFCase::implementation
 
         // Internal Functions
         winrt::AppWindow GetAppWindowForCurrentWindow();
-        winrt::IAsyncAction NavigateTo(winrt::hstring page_name);
+        winrt::IAsyncAction NavigateTo(NavigationViewItemBase item);
         void HandleHrError(winrt::hresult_error err);
 
         void UpdateTitleByConfig();
         void ConfigWindowTitlebar();
 
         // Control Events
-        void NavigationView_SelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args);
+        void NavView_Loaded(IInspectable const& sender, RoutedEventArgs const& e);
+        void NavView_ItemInvoked(NavigationView const& sender, NavigationViewItemInvokedEventArgs const& args);
         void NavView_DisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& args);
+        void NavView_BackRequested(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewBackRequestedEventArgs const& args);
 
         UFCase::ImageProvider ImageProv();
 
     private:
         UFCase::ImageProvider m_imgprov;
+
+        std::stack<NavigationViewItemBase> m_stackNavItem;
     };
 }
 

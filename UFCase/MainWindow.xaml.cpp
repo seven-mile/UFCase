@@ -35,8 +35,8 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
+        // other ui config
         this->UpdateTitleByConfig();
-
         this->ConfigWindowTitlebar();
     }
 
@@ -117,10 +117,18 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void MainWindow::NavigationView_SelectionChanged(NavigationView const&, NavigationViewSelectionChangedEventArgs const& args)
+    void MainWindow::NavView_Loaded(IInspectable const&, RoutedEventArgs const&)
     {
-        if (const auto item = args.SelectedItem().as<NavigationViewItem>()) {
-            this->NavigateTo(unbox_value<hstring>(item.Content()));
+        // navigate to the home page
+        this->NavView().SelectedItem(this->NavView().MenuItems().GetAt(0));
+        this->NavigateTo(this->NavView().SelectedItem().as<NavigationViewItemBase>());
+    }
+
+    void MainWindow::NavView_ItemInvoked(NavigationView const&, NavigationViewItemInvokedEventArgs const& args)
+    {
+        if (const auto itemCont = args.InvokedItemContainer().as<NavigationViewItem>()) {
+            if (itemCont.IsSelected()) return;
+            this->NavigateTo(itemCont);
         }
     }
 
@@ -133,13 +141,32 @@ namespace winrt::UFCase::implementation
         }
     }
 
+    void MainWindow::NavView_BackRequested(NavigationView const&, NavigationViewBackRequestedEventArgs const&)
+    {
+        auto IsFrameLastToolPage = [](Frame frame) {
+            if (frame.BackStack().Size() <= 0) return false;
+            auto lastPageType = frame.BackStack().GetAt(frame.BackStack().Size() - 1).SourcePageType();
+            return lastPageType.Name == xaml_typename<ProgressPage>().Name
+                //|| lastPageType.Name == xaml_typename<>(ErrorPage).Name
+                ;
+        };
+
+        while (this->ContentFrame().CanGoBack() && IsFrameLastToolPage(this->ContentFrame()))
+            this->ContentFrame().BackStack().RemoveAtEnd();
+        this->ContentFrame().GoBack();
+        this->m_stackNavItem.pop();
+        this->NavView().SelectedItem(this->m_stackNavItem.top());
+    }
+
     UFCase::ImageProvider MainWindow::ImageProv()
     {
         return m_imgprov;
     }
 
-    winrt::IAsyncAction MainWindow::NavigateTo(winrt::hstring page_name)
+    winrt::IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item)
     {
+        this->m_stackNavItem.push(item);
+        winrt::hstring page_name = unbox_value<hstring>(item.Content());
     try {
         winrt::apartment_context ui_thread;
         auto cancel_token = co_await winrt::get_cancellation_token();
@@ -200,6 +227,3 @@ namespace winrt::UFCase::implementation
     }
 
 }
-
-
-
