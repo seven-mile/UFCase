@@ -26,9 +26,9 @@
 #include <winrt/Microsoft.UI.Dispatching.h>
 
 namespace winrt {
-	using namespace Windows::Foundation;
-	using namespace Windows::Foundation::Collections;
-	using namespace Microsoft::UI::Xaml;
-	using namespace Microsoft::UI::Xaml::Controls;
-	using namespace Microsoft::UI::Xaml::Controls::Primitives;
+    using namespace Windows::Foundation;
+    using namespace Windows::Foundation::Collections;
+    using namespace Microsoft::UI::Xaml;
+    using namespace Microsoft::UI::Xaml::Controls;
+    using namespace Microsoft::UI::Xaml::Controls::Primitives;
 }

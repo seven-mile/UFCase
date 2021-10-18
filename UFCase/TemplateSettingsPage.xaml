@@ -45,7 +45,6 @@
                                     Text="Other setting description: goodbye the cruel world" />
                     </StackPanel>
                 </StackPanel>
-                    
                 <FontIcon HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" />
             </Grid>
         </Border>

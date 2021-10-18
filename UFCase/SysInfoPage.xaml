@@ -25,6 +25,7 @@
                 <Style x:Key="InfoBarChart" TargetType="ProgressBar">
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="IsIndeterminate" Value="False" />
+                    <Setter Property="Margin" Value="5,0,5,0" />
                 </Style>
             </StackPanel.Resources>
             
@@ -36,26 +37,20 @@
                 <Expander.Header>
                     <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
                         <FontIcon VerticalAlignment="Center" Margin="10"
-                                    FontFamily="Segoe Fluent Icons" FontSize="20" Glyph="&#xE977;" />
-                        <TextBlock Text="Hardware Specifications"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE977;" />
+                        <TextBlock Text="Hardware Specifications" Margin="0,0,0,5"
                                    Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                     </StackPanel>
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          RowDefinitions="Auto, Auto, Auto, Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="10*" />
                         </Grid.ColumnDefinitions>
-                
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
@@ -88,25 +83,20 @@
                 <Expander.Header>
                     <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
                         <FontIcon VerticalAlignment="Center" Margin="10"
-                                    FontFamily="Segoe Fluent Icons" FontSize="20" Glyph="&#xE9F5;" />
-                        <TextBlock Text="Image Specifications"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9F5;" />
+                        <TextBlock Text="Image Specifications" Margin="0,0,0,5"
                                    Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                     </StackPanel>
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          RowDefinitions="Auto, Auto, Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="10*" />
                         </Grid.ColumnDefinitions>
-                
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="OS Name" />
@@ -135,8 +125,8 @@
                     <Grid>
                         <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
                             <FontIcon VerticalAlignment="Center" Margin="10"
-                                      FontFamily="Segoe Fluent Icons" FontSize="20" Glyph="&#xE9D9;" />
-                            <TextBlock Text="Realtime Diagnostics"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9D9;" />
+                            <TextBlock Text="Realtime Diagnostics" Margin="0,0,0,5"
                                        Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                         </StackPanel>
                         
@@ -147,18 +137,13 @@
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid>
+                    <Grid RowDefinitions="Auto, Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="10*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
                         
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />

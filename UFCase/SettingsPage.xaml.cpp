@@ -29,8 +29,6 @@ namespace winrt::UFCase::implementation
         }
 
         this->SubPageFrame().Navigate(xaml_typename<TemplateSettingsPage>());
-        //this->SettingsPath().Append(L"Root");
-        //this->SettingsPath().Append(L"Templates");
     }
 
     IObservableVector<hstring> SettingsPage::SettingsPath()

@@ -11,13 +11,15 @@ namespace UFCase
         String Version;
         String Bootdrive;
         Microsoft.UI.Xaml.Media.ImageSource Icon;
+
     }
 
     [bindable]
     [default_interface]
-    runtimeclass ImageProvider 
+    runtimeclass ImageProvider : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         ImageProvider();
         Windows.Foundation.Collections.IObservableVector<ImageItem> Images{ get; };
+        Int32 SelectedIndex;
     }
 }
