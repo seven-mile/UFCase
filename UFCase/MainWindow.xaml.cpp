@@ -117,11 +117,12 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void MainWindow::NavView_Loaded(IInspectable const&, RoutedEventArgs const&)
+    void MainWindow::NavView_Loaded(IInspectable const &senderRaw, RoutedEventArgs const&)
     {
         // navigate to the home page
-        this->NavView().SelectedItem(this->NavView().MenuItems().GetAt(0));
-        this->NavigateTo(this->NavView().SelectedItem().as<NavigationViewItemBase>());
+        auto sender = senderRaw.as<NavigationView>();
+        sender.SelectedItem(sender.MenuItems().GetAt(0));
+        this->NavigateTo(sender.SelectedItem().as<NavigationViewItemBase>());
     }
 
     void MainWindow::NavView_ItemInvoked(NavigationView const&, NavigationViewItemInvokedEventArgs const& args)
@@ -141,7 +142,7 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void MainWindow::NavView_BackRequested(NavigationView const&, NavigationViewBackRequestedEventArgs const&)
+    void MainWindow::NavView_BackRequested(NavigationView const &sender, NavigationViewBackRequestedEventArgs const&)
     {
         auto IsFrameLastToolPage = [](Frame frame) {
             if (frame.BackStack().Size() <= 0) return false;
@@ -155,7 +156,7 @@ namespace winrt::UFCase::implementation
             this->ContentFrame().BackStack().RemoveAtEnd();
         this->ContentFrame().GoBack();
         this->m_stackNavItem.pop();
-        this->NavView().SelectedItem(this->m_stackNavItem.top());
+        sender.SelectedItem(this->m_stackNavItem.top());
     }
 
     UFCase::ImageProvider MainWindow::ImageProv()
