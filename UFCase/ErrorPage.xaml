@@ -9,7 +9,7 @@
     
     <StackPanel Orientation="Horizontal" Margin="70,150,70,150">
         <Border Width="Auto">
-            <FontIcon VerticalAlignment="Top" FontFamily="Segoe Fluent Icons" FontSize="{x:Bind TitleBlock.FontSize}" Glyph="&#xEB90;" Margin="17" >
+            <FontIcon VerticalAlignment="Top" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="{x:Bind TitleBlock.FontSize}" Glyph="&#xEB90;" Margin="17" >
                 <FontIcon.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="#ff0033" Offset="0" />
