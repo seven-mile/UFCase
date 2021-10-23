@@ -9,7 +9,7 @@
   <Identity
     Name="b9e5b7d3-879b-46f7-adc5-40da29a6955b"
     Publisher="CN=7mile"
-    Version="0.4.8.0" />
+    Version="0.4.10.0" />
 
   <Properties>
     <DisplayName>UFCase (Package)</DisplayName>
@@ -43,7 +43,7 @@
   </Applications>
 
   <Capabilities>
-	<rescap:Capability Name="runFullTrust" />
+    <rescap:Capability Name="runFullTrust" />
     <rescap:Capability Name="allowElevation" />
   </Capabilities>
 </Package>
