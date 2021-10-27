@@ -1,0 +1,58 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UFCase">
+    
+    <!-- Icons for converter -->
+    <SymbolIconSource x:Key="FeatureEnabledItemIcon" Symbol="Accept" />
+    <SymbolIconSource x:Key="FeatureDisabledItemIcon" Symbol="Clear" />
+
+    <!-- Menus for converter -->
+    <MenuFlyout x:Key="FeatureEnabledItemMenu">
+        <MenuFlyout.Items>
+            <MenuFlyoutItem Text="Stage">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8D0;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Remove" IsEnabled="False">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Open in explorer">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Open in registry" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutSubItem Text="Go back">
+                <MenuFlyoutSubItem.Items>
+                    <RadioMenuFlyoutItem Text="10.0.22000.282" IsChecked="True" />
+                    <RadioMenuFlyoutItem Text="10.0.22000.190" />
+                    <RadioMenuFlyoutItem Text="10.0.22000.1" />
+                </MenuFlyoutSubItem.Items>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Add source" Icon="Add" />
+        </MenuFlyout.Items>
+    </MenuFlyout>
+    <MenuFlyout x:Key="FeatureDisabledItemMenu">
+        <MenuFlyout.Items>
+            <MenuFlyoutItem Text="I'm disabled now" Icon="Accept" />
+            <MenuFlyoutItem Text="Item2" Icon="Target" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutSubItem Text="Select">
+                <MenuFlyoutSubItem.Items>
+                    <RadioMenuFlyoutItem Text="z" Icon="Home" />
+                    <RadioMenuFlyoutItem Text="p" Icon="Home" />
+                    <RadioMenuFlyoutItem Text="l" Icon="Home" />
+                </MenuFlyoutSubItem.Items>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Item3" Icon="Home" />
+        </MenuFlyout.Items>
+    </MenuFlyout>
+</ResourceDictionary>

@@ -161,8 +161,14 @@
     <Page Include="ErrorPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FeaturePageResources.xaml">
+      <DeploymentContent>true</DeploymentContent>
+    </Page>
     <Page Include="FeaturesPage.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GlobalStyleResources.xaml">
+      <DeploymentContent>true</DeploymentContent>
     </Page>
     <Page Include="MainWindow.xaml" />
     <Page Include="ProgressPage.xaml">
@@ -173,6 +179,9 @@
     </Page>
     <Page Include="SettingsPage.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsStyleResources.xaml">
+      <DeploymentContent>true</DeploymentContent>
     </Page>
     <Page Include="SysInfoPage.xaml">
       <SubType>Designer</SubType>

@@ -23,6 +23,15 @@
     <Page Include="RootSettingsPage.xaml">
       <Filter>components\settings\subpages</Filter>
     </Page>
+    <Page Include="FeaturePageResources.xaml">
+      <Filter>components\features</Filter>
+    </Page>
+    <Page Include="SettingsStyleResources.xaml">
+      <Filter>components\settings</Filter>
+    </Page>
+    <Page Include="GlobalStyleResources.xaml">
+      <Filter>resources</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -104,6 +113,9 @@
     </Filter>
     <Filter Include="components\settings\subpages">
       <UniqueIdentifier>{828c1d4e-e4ff-4598-92ec-d485598fefd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{2129dccb-97dc-494d-aba6-3c56e4e34a00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
