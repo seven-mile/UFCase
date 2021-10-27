@@ -4,6 +4,8 @@
 #include "FeatureTreeElement.g.cpp"
 #endif
 
+#include <winrt/Windows.Storage.Streams.h>
+
 namespace winrt::UFCase::implementation
 {
     FeatureTreeElement::FeatureTreeElement(hstring name, hstring desc, bool enabled, child_t children)
@@ -38,8 +40,25 @@ namespace winrt::UFCase::implementation
     {
         m_is_enabled = value;
     }
-    Windows::Foundation::Collections::IObservableVector<UFCase::FeatureTreeElement> FeatureTreeElement::Children()
+    FeatureTreeElement::child_t FeatureTreeElement::Children()
     {
         return m_children;
+    }
+
+    IconSource FeatureTreeElement::Icon()
+    {
+        return m_icon;
+    }
+    void FeatureTreeElement::Icon(IconSource const &value)
+    {
+        m_icon = value;
+    }
+    Primitives::FlyoutBase FeatureTreeElement::ContextMenu()
+    {
+        return m_menu;
+    }
+    void FeatureTreeElement::ContextMenu(Primitives::FlyoutBase const &value)
+    {
+        m_menu = value;
     }
 }

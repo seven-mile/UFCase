@@ -161,9 +161,6 @@
     <Page Include="ErrorPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="FeaturePageResources.xaml">
-      <DeploymentContent>true</DeploymentContent>
-    </Page>
     <Page Include="FeaturesPage.xaml">
       <SubType>Designer</SubType>
     </Page>

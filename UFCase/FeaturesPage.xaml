@@ -8,26 +8,77 @@
     mc:Ignorable="d"
     NavigationCacheMode="Disabled">
     
-    <Grid>
+    <Grid Margin="50,20,50,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="700" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Border Margin="50,70,50,20" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
-            <TreeView SelectionMode="Single" CanReorderItems="False" AllowDrop="False" CanDragItems="False"
-                      ItemsSource="{x:Bind FeatureDataSource}" BorderBrush="Aqua" BorderThickness="3">
+        
+        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
+            <AppBarButton Label="AAA" Icon="Accept" />
+            <AppBarButton Label="BBB" Icon="Clear" />
+            <AppBarSeparator />
+            <AppBarButton Label="Settings" Icon="Target" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="BBB" Icon="Clear" />
+                <AppBarSeparator />
+                <AppBarButton Label="Settings" Icon="Target" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        
+        <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,0,0">
+                <TextBlock Text="Row1" />
+                <TextBlock Text="Row2" />
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
+            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False"
+                      AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind FeatureDataSource}">
+                <TreeView.Resources>
+                    <XamlUICommand x:Name="FeatureInstallCommand" Label="Install" ExecuteRequested="FeatureInstallCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                    <XamlUICommand x:Name="FeatureStageCommand" Label="Stage" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8D0;" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                    <XamlUICommand x:Name="FeatureRemoveCommand" Label="Remove" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                    <XamlUICommand x:Name="FeatureOpenExplorerCommand" Label="Open in explorer" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                    <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureStageCommand_ExecuteRequested" />
+                    <XamlUICommand x:Name="FeatureAddSourceCommand" Label="Add source" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <SymbolIconSource Symbol="Add" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                </TreeView.Resources>
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureTreeElement">
-                        <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}">
+                        <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
+                                      ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{x:Bind IsEnabled}" IsEnabled="True" Content="{x:Bind Name}" />
-                                <!--<TextBlock VerticalAlignment="Center" Text="{x:Bind Name}" />-->
+                                <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />
+                                <TextBlock Margin="10,8,0,8" VerticalAlignment="Center" Text="{x:Bind Name}" />
                             </StackPanel>
                         </TreeViewItem>
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            
         </Border>
     </Grid>
 </Page>

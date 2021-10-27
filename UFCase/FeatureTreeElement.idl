@@ -10,5 +10,8 @@ namespace UFCase
         String Description{ get; set; };
         Boolean IsEnabled{ get; set; };
         Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> Children{ get; };
+
+        Microsoft.UI.Xaml.Controls.IconSource Icon{ get; set; };
+        Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextMenu{ get; set; };
     }
 }

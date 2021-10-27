@@ -23,9 +23,6 @@
     <Page Include="RootSettingsPage.xaml">
       <Filter>components\settings\subpages</Filter>
     </Page>
-    <Page Include="FeaturePageResources.xaml">
-      <Filter>components\features</Filter>
-    </Page>
     <Page Include="SettingsStyleResources.xaml">
       <Filter>components\settings</Filter>
     </Page>

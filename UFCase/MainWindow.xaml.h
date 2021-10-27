@@ -47,7 +47,7 @@ namespace winrt::UFCase::implementation
         void NavView_Loaded(IInspectable const& sender, RoutedEventArgs const& e);
         void NavView_ItemInvoked(NavigationView const& sender, NavigationViewItemInvokedEventArgs const& args);
         void NavView_DisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& args);
-        void NavView_BackRequested(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewBackRequestedEventArgs const& args);
+        void NavView_BackRequested(NavigationView const& sender, NavigationViewBackRequestedEventArgs const& args);
 
         UFCase::ImageProvider ImageProv();
 

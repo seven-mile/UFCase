@@ -6,7 +6,7 @@ namespace winrt::UFCase::implementation
 {
     struct FeatureTreeElement : FeatureTreeElementT<FeatureTreeElement>
     {
-        using child_t = Windows::Foundation::Collections::IObservableVector<UFCase::FeatureTreeElement>;
+        using child_t = IObservableVector<UFCase::FeatureTreeElement>;
         FeatureTreeElement(hstring name, hstring desc, bool enabled, child_t children);
 
         hstring Name();
@@ -20,11 +20,19 @@ namespace winrt::UFCase::implementation
 
         child_t Children();
 
+        IconSource Icon();
+        void Icon(IconSource const &value);
+
+        Primitives::FlyoutBase ContextMenu();
+        void ContextMenu(Primitives::FlyoutBase const &value);
+
     private:
         hstring m_name;
         hstring m_desc;
         bool m_is_enabled;
         child_t m_children;
+        IconSource m_icon {nullptr};
+        Primitives::FlyoutBase m_menu {nullptr};
     };
 }
 
