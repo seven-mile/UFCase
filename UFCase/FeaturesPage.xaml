@@ -73,7 +73,10 @@
                                       ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}">
                             <StackPanel Orientation="Horizontal">
                                 <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />
-                                <TextBlock Margin="10,8,0,8" VerticalAlignment="Center" Text="{x:Bind Name}" />
+                                <TextBlock Margin="10,8,0,8" VerticalAlignment="Center">
+                                    <Run Text="{x:Bind Name}" />
+                                    <Run Text="{x:Bind ModificationMark, Mode=OneWay}" />
+                                </TextBlock>
                             </StackPanel>
                         </TreeViewItem>
                     </DataTemplate>

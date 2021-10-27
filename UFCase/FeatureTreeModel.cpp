@@ -46,7 +46,7 @@ FeatureTreeModel::ConstructUpdateTree()
 
     report_prog(10);
 
-    auto joinUpdates = [&](winrt::com_ptr<IEnumCbsUpdate> pUpds) -> winrt::IAsyncActionWithProgress<uint32_t> {
+    auto joinUpdates = [=](winrt::com_ptr<IEnumCbsUpdate> pUpds) -> winrt::IAsyncActionWithProgress<uint32_t> {
 
         auto report_prog = co_await winrt::get_progress_token();
 
@@ -83,18 +83,19 @@ FeatureTreeModel::ConstructUpdateTree()
 
             _CbsInstallState stCur, stInt, stReq;
             winrt::check_hresult(pUpd->GetInstallState(&stCur, &stInt, &stReq));
-            const bool isEnabled = stReq == CbsInstallStateInstallRequested;
+            const FeatureState eState = stReq == CbsInstallStateInstallRequested ?
+                                        FeatureState::Enabled : FeatureState::Disabled;
 
             const bool hasParent = hr != CBS_E_ARRAY_ELEMENT_MISSING;
             if (hasParent) {
                 if (SUCCEEDED(hr))
-                    AddDependency(szParentName.get(), szName.get(), szDesc.get(), isEnabled, szRawName.get());
+                    AddDependency(szParentName.get(), szName.get(), szDesc.get(), eState, szRawName.get());
                 else {
                     winrt::check_hresult(hr);
                 }
             }
             else {
-                AddDependency(GetRoot(), szName.get(), szDesc.get(), isEnabled, szRawName.get());
+                AddDependency(GetRoot(), szName.get(), szDesc.get(), eState, szRawName.get());
             }
             idx++;
         }
@@ -136,7 +137,7 @@ void FeatureTreeModel::AddDependency(
             const winrt::hstring& szParentUpdate,
             const winrt::hstring& szSonName,
             const winrt::hstring& szSonDesc,
-            bool isSonEnabled,
+            FeatureState eSonState,
             const winrt::hstring& szSonUpdate)
 {
     if (m_mapFa.HasKey(szSonUpdate)) return;
@@ -146,14 +147,15 @@ void FeatureTreeModel::AddDependency(
         auto sonNode = m_mapEle.Lookup(szSonUpdate);
         sonNode.Name(szSonName);
         sonNode.Description(szSonDesc);
-        sonNode.IsEnabled(isSonEnabled);
+        sonNode.State(eSonState);
+        sonNode.Identity(szSonUpdate);
     } else {
-        auto newSonNode = ele_t(szSonName, szSonDesc, isSonEnabled, multi_threaded_observable_vector<ele_t>());
+        auto newSonNode = ele_t(szSonName, szSonDesc, szSonUpdate, eSonState, multi_threaded_observable_vector<ele_t>());
         m_mapEle.Insert(szSonUpdate, newSonNode);
     }
 
     if (!m_mapEle.HasKey(szParentUpdate)) {
-        auto newParentNode = ele_t(L"", L"", false, multi_threaded_observable_vector<ele_t>());
+        auto newParentNode = ele_t(L"", L"", L"", FeatureState::Invalid, multi_threaded_observable_vector<ele_t>());
         m_mapEle.Insert(szParentUpdate, newParentNode);
     }
     
@@ -183,7 +185,7 @@ void FeatureTreeModel::ClearTree()
     m_mapEle.Clear();
     m_mapFa.Clear();
     cntUpdates = 1u;
-    m_mapEle.Insert(GetRoot(), ele_t(GetRoot(), L"", false, multi_threaded_observable_vector<ele_t>()));
+    m_mapEle.Insert(GetRoot(), ele_t(GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>()));
 }
 
 winrt::com_ptr<ICbsPackage> FeatureTreeModel::CbsHelper::FindFoundationPkg(winrt::com_ptr<ICbsSession> pSess)

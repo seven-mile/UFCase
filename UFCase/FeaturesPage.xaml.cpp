@@ -36,39 +36,26 @@ namespace winrt::UFCase::implementation
     void FeaturesPage::FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
     {
         auto ele = args.Parameter().as<FeatureTreeElement>();
-        auto cd = ContentDialog();
-        
-        cd.Title(box_value(L"Install Command Fired"));
-        cd.Content(box_value(ele.Description() + L"\nthis element is clicked!"));
-        cd.IsPrimaryButtonEnabled(true);
-        cd.PrimaryButtonText(L"Ok");
-        cd.IsSecondaryButtonEnabled(false);
-        cd.DefaultButton(ContentDialogButton::Primary);
-        cd.XamlRoot(this->XamlRoot());
-
-        cd.ShowAsync();
+        ele.State(FeatureState::Enabled);
     }
     void FeaturesPage::FeatureStageCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
     {
         auto ele = args.Parameter().as<FeatureTreeElement>();
-        auto cd = ContentDialog();
-        
-        cd.Title(box_value(L"Stage Command Fired"));
-        cd.Content(box_value(ele.Description() + L"\nthis element is clicked!"));
-        cd.IsPrimaryButtonEnabled(true);
-        cd.PrimaryButtonText(L"Ok");
-        cd.IsSecondaryButtonEnabled(false);
-        cd.DefaultButton(ContentDialogButton::Primary);
-        cd.XamlRoot(this->XamlRoot());
-
-        cd.ShowAsync();
+        ele.State(FeatureState::Disabled);
     }
 
     void FeaturesPage::ConfigFeatureTreeElementUIElements(FeatureTreeElement ele)
     {
         // for icon
         SymbolIconSource icon_src;
-        icon_src.Symbol(ele.IsEnabled() ? Symbol::Accept : Symbol::Clear);
+        if (ele.State() == FeatureState::Enabled)
+            icon_src.Symbol(Symbol::Accept);
+        else if (ele.State() == FeatureState::Disabled)
+            icon_src.Symbol(Symbol::Permissions);
+        else if (ele.State() == FeatureState::Unavailable)
+            icon_src.Symbol(Symbol::Clear);
+        else if (ele.State() == FeatureState::PartiallyEnabled)
+            icon_src.Symbol(Symbol::More);
         ele.Icon(icon_src);
 
         // for context menu
@@ -76,7 +63,8 @@ namespace winrt::UFCase::implementation
         MenuFlyoutSeparator sp1, sp2;
         ele.ContextMenu(res);
 
-        if (ele.IsEnabled()) {
+        // todo: deal with other enum state
+        if (ele.State() == FeatureState::Enabled) {
             MenuFlyoutItem stageItem, removeItem;
             stageItem.Command(this->FeatureStageCommand());
             removeItem.Command(this->FeatureRemoveCommand());

@@ -25,7 +25,7 @@ namespace winrt::UFCase
             const winrt::hstring& szParentUpdate,
             const winrt::hstring& szSonName,
             const winrt::hstring& szSonDesc,
-            bool isSonEnabled,
+            FeatureState eSonState,
             const winrt::hstring& szSonUpdate);
         winrt::hstring GetFather(const winrt::hstring& szUpdateName) const;
         winrt::hstring GetRoot() const;

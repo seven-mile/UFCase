@@ -1,16 +1,29 @@
 namespace UFCase
 {
+    enum FeatureState
+    {
+        Invalid,
+        Unavailable,
+        Disabled,
+        PartiallyEnabled,
+        Enabled,
+    };
+
     [bindable]
     [default_interface]
-    runtimeclass FeatureTreeElement
+    runtimeclass FeatureTreeElement : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        FeatureTreeElement(String name, String desc, Boolean enabled, Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children);
+        FeatureTreeElement(String name, String desc, String identity, FeatureState state, Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children);
         
+        // CBS Component Data
         String Name{ get; set; };
         String Description{ get; set; };
-        Boolean IsEnabled{ get; set; };
+        String Identity{ get; set; };
+        FeatureState State{ get; set; };
+
         Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> Children{ get; };
 
+        String ModificationMark{ get; set; };
         Microsoft.UI.Xaml.Controls.IconSource Icon{ get; set; };
         Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextMenu{ get; set; };
     }
