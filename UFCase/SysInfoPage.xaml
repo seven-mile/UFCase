@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
-        <StackPanel Margin="70,20,70,40" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <StackPanel Style="{StaticResource AnimatedStackStyle}" Margin="70,20,70,40" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             
             <StackPanel.Resources>
                 <Style x:Key="LabelBlock" TargetType="TextBlock">

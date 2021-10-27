@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Margin="10,20,10,40" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <StackPanel Style="{StaticResource AnimatedStackStyle}" Margin="10,20,10,40" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <TextBlock Style="{StaticResource SettingGroupHeader}" Text="Group4" />
         <Button x:Name="Group4Row1" Style="{StaticResource SettingsMicaCardCommandLink}" Margin="0,10,0,10" Click="Group4Row1_Click">
             <Grid>
