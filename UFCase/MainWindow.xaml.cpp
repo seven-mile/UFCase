@@ -20,17 +20,6 @@
 
 namespace winrt::UFCase::implementation
 {
-    // helpers
-    template<typename T>
-    inline auto GetAppRes(winrt::hstring const &key) {
-        return winrt::unbox_value<T>(Application::Current().Resources().TryLookup(winrt::box_value(key)));
-    }
-
-    template<typename T>
-    inline auto GetAppRes(winrt::hstring const &key, T const &default_value) noexcept {
-        return winrt::unbox_value_or<T>(Application::Current().Resources().TryLookup(winrt::box_value(key)), default_value);
-    }
-
     MainWindow::MainWindow()
     {
         InitializeComponent();
