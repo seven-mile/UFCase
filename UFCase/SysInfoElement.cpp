@@ -14,7 +14,7 @@
 
 #include <format>
 
-#include "AppConfig.hpp"
+#include "AppConfig.h"
 
 namespace winrt {
     using namespace Windows::System::Diagnostics;

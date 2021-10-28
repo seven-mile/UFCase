@@ -5,14 +5,12 @@
 
 #include "CbsSessionManager.h"
 
-#include "AppConfig.hpp"
+#include "AppConfig.h"
 
-#include <winrt/Windows.Storage.h>
+#include <ShlObj_core.h>
 
-using namespace winrt;
 namespace winrt {
     using namespace Windows::Foundation;
-    using namespace Windows::Storage;
     using namespace Microsoft::UI::Xaml;
     using namespace Microsoft::UI::Xaml::Controls;
     using namespace Microsoft::UI::Xaml::Navigation;
@@ -45,27 +43,37 @@ namespace winrt::UFCase::implementation
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="e">Details about the launch request and process.</param>
-    IAsyncAction App::OnLaunched(LaunchActivatedEventArgs const&)
+    void App::OnLaunched(LaunchActivatedEventArgs const&)
     {
-        // todo: use a setting manager to initialize session mgr.
-        // defaultly servicing online image.
+        std::filesystem::path pathAppData;
+        {
+            PWSTR path_tmp;
+            auto get_folder_path_ret = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &path_tmp);
 
-        auto pathRoaming = AppDataPaths::GetDefault().RoamingAppData();
+            if (get_folder_path_ret != S_OK) {
+                CoTaskMemFree(path_tmp);
+                throw_hresult(HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND));
+            }
+            pathAppData = path_tmp;
+            CoTaskMemFree(path_tmp);
+        }
+
+        pathAppData /= L".UFCase";
+
         constexpr wchar_t cfg_filename[] = L"Config.json";
 
-        if (auto cfg_path = std::filesystem::path(pathRoaming.c_str()) / cfg_filename;
+        if (auto cfg_path = pathAppData / cfg_filename;
                 std::filesystem::exists(cfg_path)) {
-            co_await ReadAppConfigFromFile(g_appConfigPath = cfg_path.c_str());
+            ReadAppConfigFromFile(g_appConfigPath = cfg_path.c_str());
         } else {
-            co_await ApplicationData::Current().RoamingFolder().CreateFileAsync(cfg_filename);
-
-            co_await ReadAppConfigFromFile(L"ms-appx:///Configs/DefaultAppConfig.json");
-            co_await WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
+            LoadDefaultAppConfig();
+            if (!std::filesystem::exists(pathAppData))
+                winrt::check_bool(std::filesystem::create_directories(pathAppData));
+            WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
         }
 
         window = make<MainWindow>();
         window.Activate();
-        co_return;
     }
 
 }

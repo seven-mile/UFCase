@@ -5,7 +5,7 @@
 
 #include <filesystem>
 
-#include "AppConfig.hpp"
+#include "AppConfig.h"
 
 namespace winrt::UFCase {
 

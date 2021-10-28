@@ -7,7 +7,7 @@
 #include "ImageItem.g.cpp"
 #endif
 
-#include "AppConfig.hpp"
+#include "AppConfig.h"
 #include "CbsSessionManager.h"
 
 #include <filesystem>

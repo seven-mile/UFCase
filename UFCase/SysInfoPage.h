@@ -16,7 +16,7 @@ namespace winrt::UFCase::implementation
 
         UFCase::SysInfoStaticElement StaticInfo();
         UFCase::SysInfoRealtimeElement RealtimeInfo();
-        IAsyncAction ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const& e);
+        void ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const& e);
 
     private:
         UFCase::SysInfoStaticElement m_static;

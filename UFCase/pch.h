@@ -32,3 +32,6 @@ namespace winrt {
     using namespace Microsoft::UI::Xaml::Controls;
     using namespace Microsoft::UI::Xaml::Controls::Primitives;
 }
+
+// My own common headers
+#include "AppConfig.h"

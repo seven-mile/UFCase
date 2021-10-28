@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-#include "AppConfig.hpp"
+#include "AppConfig.h"
 
 #include "SysInfoPage.h"
 #if __has_include("SysInfoPage.g.cpp")
@@ -26,7 +26,7 @@ namespace winrt::UFCase::implementation
         return m_realtime;
     }
 
-    IAsyncAction SysInfoPage::ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const&)
+    void SysInfoPage::ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const&)
     {
         auto swch = sender.as<winrt::ToggleSwitch>();
         if (swch.IsOn())
@@ -34,8 +34,7 @@ namespace winrt::UFCase::implementation
         else this->RealtimeInfo().Timer().Stop();
 
         g_appConfig.GetNamedObject(L"sysInfo").SetNamedValue(L"autoRefresh", JsonValue::CreateBooleanValue(swch.IsOn()));
-        co_await WriteAppConfigToFile();
-        co_return;
+        WriteAppConfigToFile();
     }
 
 }

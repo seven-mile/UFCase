@@ -59,6 +59,9 @@
     <ClCompile Include="CbsApiProxy.c">
       <Filter>libraries\cbsapi</Filter>
     </ClCompile>
+    <ClCompile Include="AppConfig.cpp">
+      <Filter>libraries\appconfig</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -76,7 +79,7 @@
     <ClInclude Include="MallocUtil.h">
       <Filter>libraries\util</Filter>
     </ClInclude>
-    <ClInclude Include="AppConfig.hpp">
+    <ClInclude Include="AppConfig.h">
       <Filter>libraries\appconfig</Filter>
     </ClInclude>
   </ItemGroup>
