@@ -8,7 +8,7 @@ namespace winrt::UFCase::implementation
     {
         App();
 
-        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
+        IAsyncAction OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
 
     private:
         winrt::Microsoft::UI::Xaml::Window window{ nullptr };

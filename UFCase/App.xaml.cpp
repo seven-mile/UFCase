@@ -43,7 +43,7 @@ namespace winrt::UFCase::implementation
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="e">Details about the launch request and process.</param>
-    void App::OnLaunched(LaunchActivatedEventArgs const&)
+    IAsyncAction App::OnLaunched(LaunchActivatedEventArgs const&)
     {
         std::filesystem::path pathAppData;
         {
@@ -74,6 +74,8 @@ namespace winrt::UFCase::implementation
 
         window = make<MainWindow>();
         window.Activate();
+
+        co_return;
     }
 
 }

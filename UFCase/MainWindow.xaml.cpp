@@ -74,41 +74,39 @@ namespace winrt::UFCase::implementation
 
     void MainWindow::ConfigWindowTitlebar()
     {
-        if (auto appw = GetAppWindowForCurrentWindow()) {
-            appw.Title(this->AppTitle().Text());
-            if (auto&& appt = appw.TitleBar()) {
-                appt.ExtendsContentIntoTitleBar(true);
+        try {
+            auto appw = GetAppWindowForCurrentWindow();
+            auto&& appt = appw.TitleBar();
 
-                appt.BackgroundColor(winrt::Colors::Transparent());
-                appt.ButtonBackgroundColor(winrt::Colors::Transparent());
-                appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
-                appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
-                appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
+            appt.ExtendsContentIntoTitleBar(true);
 
-                this->AppTitleBar().Height(appt.Height());
+            appt.BackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
+            appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
+            appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
 
-                {
-                    // pre-set drag rect
-                    const int NavBarHeight = 48, NavBarWidth = 1348;
+            this->AppTitleBar().Height(appt.Height());
+
+            {
+                // pre-set drag rect
+                const int NavBarHeight = 48, NavBarWidth = IsDebuggerPresent() ? 1348 : 48;
+                appt.SetDragRectangles({
+                    { NavBarWidth, 0, std::max(0, static_cast<int>(appw.Size().Width) - NavBarWidth), NavBarHeight },
+                });
+
+                this->SizeChanged([appt, NavBarWidth](auto&, WindowSizeChangedEventArgs const& e) {
                     appt.SetDragRectangles({
-                        {NavBarWidth, 0, std::max(0, static_cast<int>(appw.Size().Width) - NavBarWidth), NavBarHeight}
-                        });
-
-                    this->SizeChanged([appt](auto&, WindowSizeChangedEventArgs const& e) {
-                        appt.SetDragRectangles({
-                            {NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight},
-                            });
-                        });
-                }
+                        { NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight}, 
+                    });
+                });
             }
-            else {
-                this->ExtendsContentIntoTitleBar(true);
-                this->SetTitleBar(this->AppTitleBar());
-            }
-        } else {
+        } catch (winrt::hresult_error const&) {
+            // fallback for win10
             this->ExtendsContentIntoTitleBar(true);
             this->SetTitleBar(this->AppTitleBar());
         }
+
     }
 
     void MainWindow::NavView_Loaded(IInspectable const &senderRaw, RoutedEventArgs const&)

@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include <winrt/Windows.Storage.h>
+
 namespace winrt::UFCase {
     using Windows::Data::Json::JsonObject;
 
@@ -20,8 +22,7 @@ namespace winrt::UFCase {
         g_appConfig = Windows::Data::Json::JsonObject::Parse(LR"(
 {
   "stack": {
-    "source": 0,
-    "argBootdrive": "D:\\MyCache\\Eb"
+    "source": 0
   },
   "sysInfo": {
     "autoRefresh": true

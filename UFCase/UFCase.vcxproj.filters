@@ -117,6 +117,9 @@
     <Filter Include="resources">
       <UniqueIdentifier>{2129dccb-97dc-494d-aba6-3c56e4e34a00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources\Assets">
+      <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
@@ -137,5 +140,19 @@
     <CustomBuild Include="CbsApi.idl">
       <Filter>libraries\cbsapi</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Windows7.png">
+      <Filter>resources\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Windows8.png">
+      <Filter>resources\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Windows10.png">
+      <Filter>resources\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Windows11.png">
+      <Filter>resources\Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>
