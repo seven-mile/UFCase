@@ -6,12 +6,14 @@ namespace UFCase
     {
         ImageItem();
         ImageItem(String type, String ver, String bootdrv, Microsoft.UI.Xaml.Media.ImageSource icon);
+        ImageItem(String type, String ver, String bootdrv, Guid wimGuid, Microsoft.UI.Xaml.Media.ImageSource icon);
 
         String Type;
         String Version;
         String Bootdrive;
+        Guid WimGuid;
+        
         Microsoft.UI.Xaml.Media.ImageSource Icon;
-
     }
 
     [bindable]

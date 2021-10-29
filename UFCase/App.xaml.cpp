@@ -9,6 +9,8 @@
 
 #include <ShlObj_core.h>
 
+#include "ImageProvider.g.h"
+
 namespace winrt {
     using namespace Windows::Foundation;
     using namespace Microsoft::UI::Xaml;
@@ -72,10 +74,17 @@ namespace winrt::UFCase::implementation
             WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
         }
 
+        this->ConfigAppModuleResources();
+
         window = make<MainWindow>();
         window.Activate();
 
         co_return;
+    }
+
+    void App::ConfigAppModuleResources()
+    {
+        this->Resources().Insert(box_value(L"ImageProviderInstance"), UFCase::ImageProvider());
     }
 
 }

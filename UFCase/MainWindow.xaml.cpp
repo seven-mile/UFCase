@@ -24,6 +24,9 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
+        // fetch the image provider from app module resources
+        m_imgprov = Application::Current().Resources().Lookup(box_value(L"ImageProviderInstance")).as<UFCase::ImageProvider>();
+
         // other ui config
         this->UpdateTitleByConfig();
         this->ConfigWindowTitlebar();

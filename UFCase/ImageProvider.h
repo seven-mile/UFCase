@@ -28,14 +28,13 @@ namespace winrt::UFCase::implementation
         int32_t m_selectedIdx;
 
         int32_t ConfigOnlineImage();
-        int32_t ConfigAppConfigImage();
         void ConfigWimImage();
         IObservableVector<UFCase::ImageItem> m_images = multi_threaded_observable_vector<UFCase::ImageItem>();
 
         winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
 
         // helpers
-        IAsyncAction CompleteImageItem(UFCase::ImageItem);
+        void CompleteImageItem(UFCase::ImageItem, int major, int minor, int build);
 
         const Media::Imaging::BitmapImage Win7Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows7.png"));
         const Media::Imaging::BitmapImage Win8Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows8.png"));
@@ -49,6 +48,8 @@ namespace winrt::UFCase::implementation
 
         ImageItem(hstring const &type, hstring const &ver, hstring const &bootdrv, Media::ImageSource const &icon);
 
+        ImageItem(hstring const &type, hstring const &ver, hstring const &bootdrv, guid const &wimGuid, Media::ImageSource const &icon);
+
         hstring Type();
         void Type(hstring const&);
         
@@ -58,10 +59,14 @@ namespace winrt::UFCase::implementation
         hstring Bootdrive();
         void Bootdrive(hstring const&);
 
+        guid WimGuid();
+        void WimGuid(guid const&);
+
         Media::ImageSource Icon();
         void Icon(Media::ImageSource const &);
     private:
         hstring m_type, m_ver, m_bootdrv;
+        guid m_wimGuid{};
         Media::ImageSource m_icon{nullptr};
     };
 }

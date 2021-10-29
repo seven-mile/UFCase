@@ -1,4 +1,5 @@
-import "SysInfoElement.idl";
+import "SysInfoStaticProvider.idl";
+import "SysInfoRealtimeProvider.idl";
 
 namespace UFCase
 {
@@ -7,7 +8,7 @@ namespace UFCase
     {
         SysInfoPage();
         
-        SysInfoStaticElement StaticInfo { get; };
-        SysInfoRealtimeElement RealtimeInfo { get; };
+        SysInfoStaticProvider StaticInfo { get; };
+        SysInfoRealtimeProvider RealtimeInfo { get; };
     }
 }

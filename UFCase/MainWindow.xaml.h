@@ -52,7 +52,7 @@ namespace winrt::UFCase::implementation
         UFCase::ImageProvider ImageProv();
 
     private:
-        UFCase::ImageProvider m_imgprov;
+        UFCase::ImageProvider m_imgprov{nullptr};
 
         std::stack<NavigationViewItemBase> m_stackNavItem;
     };

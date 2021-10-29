@@ -44,8 +44,13 @@
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                          RowDefinitions="Auto, Auto, Auto, Auto">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />
@@ -54,22 +59,22 @@
 
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
-                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Architecture" />
-                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Architecture" />
                         <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="CPU" />
             
                         <!-- Property Value -->
                         <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.FirmwareType}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.Architecture}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.FirmwareType()}" /></Paragraph>
                         </RichTextBlock>
                         <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.Manufacturer}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.Manufacturer()}" /></Paragraph>
+                        </RichTextBlock>
+                        <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
+                            <Paragraph><Run Text="{x:Bind StaticInfo.CPUArchitecture()}" /></Paragraph>
                         </RichTextBlock>
                         <RichTextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.CPUDisplayName}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.CPUDisplayName()}" /></Paragraph>
                         </RichTextBlock>
                     </Grid>
                 </Expander.Content>
@@ -90,8 +95,13 @@
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                          RowDefinitions="Auto, Auto, Auto">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />
@@ -101,17 +111,21 @@
                         <!-- Property Name -->
                         <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="OS Name" />
                         <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="OS Version" />
-                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="OS Architecture" />
+                        <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
             
                         <!-- Property Value -->
                         <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.OSDisplayName}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.OSDisplayName()}" /></Paragraph>
                         </RichTextBlock>
                         <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.OSVersion}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.OSVersion()}" /></Paragraph>
                         </RichTextBlock>
                         <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.IsWinPE}" /></Paragraph>
+                            <Paragraph><Run Text="{x:Bind StaticInfo.OSArchitecture()}" /></Paragraph>
+                        </RichTextBlock>
+                        <RichTextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}">
+                            <Paragraph><Run Text="{x:Bind StaticInfo.IsWinPE()}" /></Paragraph>
                         </RichTextBlock>
                     </Grid>
                 </Expander.Content>
@@ -137,7 +151,11 @@
                 </Expander.Header>
                 
                 <Expander.Content>
-                    <Grid RowDefinitions="Auto, Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="2*" />

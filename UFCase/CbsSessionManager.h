@@ -11,7 +11,6 @@ namespace winrt::UFCase {
 
     class CbsSessionManager
     {
-        inline static CbsSessionManager *pInst;
         std::filesystem::path m_pathCore;
 
         CbsSessionManager() = default;

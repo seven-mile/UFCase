@@ -13,15 +13,18 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
+        auto imgProv = Application::Current().Resources().Lookup(box_value(L"ImageProviderInstance")).as<UFCase::ImageProvider>();
+        m_static = UFCase::SysInfoStaticProvider(imgProv.Images().GetAt(imgProv.SelectedIndex()));
+
         this->AutoRefreshSwitch().IsOn(g_appConfig.GetNamedObject(L"sysInfo").GetNamedBoolean(L"autoRefresh"));
     }
 
-    UFCase::SysInfoStaticElement SysInfoPage::StaticInfo()
+    UFCase::SysInfoStaticProvider SysInfoPage::StaticInfo()
     {
         return m_static;
     }
 
-    UFCase::SysInfoRealtimeElement SysInfoPage::RealtimeInfo()
+    UFCase::SysInfoRealtimeProvider SysInfoPage::RealtimeInfo()
     {
         return m_realtime;
     }

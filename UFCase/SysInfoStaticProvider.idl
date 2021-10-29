@@ -1,0 +1,23 @@
+import "ImageProvider.idl";
+
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SysInfoStaticProvider
+    {
+        SysInfoStaticProvider(ImageItem img);
+        
+        // machine-specific online info
+        static String FirmwareType();
+        static String Manufacturer();
+        static String CPUArchitecture();
+        static String CPUDisplayName();
+
+        // image-specific OS info
+        String OSDisplayName();
+        String OSVersion();
+        String OSArchitecture();
+        Boolean IsWinPE();
+    }
+}

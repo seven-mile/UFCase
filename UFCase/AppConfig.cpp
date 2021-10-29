@@ -22,7 +22,8 @@ namespace winrt::UFCase {
         g_appConfig = Windows::Data::Json::JsonObject::Parse(LR"(
 {
   "stack": {
-    "source": 0
+    "source": 0,
+    "argBootdrive": ""
   },
   "sysInfo": {
     "autoRefresh": true

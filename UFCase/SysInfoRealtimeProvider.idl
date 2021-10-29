@@ -1,0 +1,19 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SysInfoRealtimeProvider : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        // only online image is supported
+        SysInfoRealtimeProvider();
+        
+        // info update clock
+        Microsoft.UI.Xaml.DispatcherTimer Timer { get; };
+
+        Double CPUUtilization { get; };
+        String CPUUtilizationComment { get; };
+
+        Double MemoryUsage { get; };
+        String MemoryUsageComment { get; };
+    }
+}

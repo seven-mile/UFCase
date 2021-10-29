@@ -11,6 +11,8 @@ namespace winrt::UFCase {
 
     CbsSessionManager& CbsSessionManager::instance()
     {
+        // thread_local ---> todo
+        static CbsSessionManager *pInst = nullptr;
         if (pInst) return *pInst;
         return *(pInst = new CbsSessionManager());
     }

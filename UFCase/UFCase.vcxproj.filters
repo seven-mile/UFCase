@@ -36,11 +36,14 @@
     <Midl Include="FeatureTreeElement.idl">
       <Filter>components\features</Filter>
     </Midl>
-    <Midl Include="SysInfoElement.idl">
-      <Filter>components\sysinfo</Filter>
-    </Midl>
     <Midl Include="ImageProvider.idl">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\imagingapi</Filter>
+    </Midl>
+    <Midl Include="SysInfoStaticProvider.idl">
+      <Filter>libraries\sysinfoapi</Filter>
+    </Midl>
+    <Midl Include="SysInfoRealtimeProvider.idl">
+      <Filter>libraries\sysinfoapi</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -54,10 +57,10 @@
       <Filter>components\features</Filter>
     </ClCompile>
     <ClCompile Include="CbsSessionManager.cpp">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\servicingapi</Filter>
     </ClCompile>
     <ClCompile Include="CbsApiProxy.c">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\servicingapi</Filter>
     </ClCompile>
     <ClCompile Include="AppConfig.cpp">
       <Filter>libraries\appconfig</Filter>
@@ -71,10 +74,10 @@
       <Filter>components\features</Filter>
     </ClInclude>
     <ClInclude Include="CbsSessionManager.h">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\servicingapi</Filter>
     </ClInclude>
     <ClInclude Include="SSShimApi.h">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\servicingapi</Filter>
     </ClInclude>
     <ClInclude Include="MallocUtil.h">
       <Filter>libraries\util</Filter>
@@ -92,9 +95,6 @@
     </Filter>
     <Filter Include="libraries">
       <UniqueIdentifier>{38eb061c-6e1f-4c2b-a5fe-781325d28ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libraries\cbsapi">
-      <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
     <Filter Include="components\features">
       <UniqueIdentifier>{bb8db857-6887-4c65-964d-88daafa36fdb}</UniqueIdentifier>
@@ -120,6 +120,15 @@
     <Filter Include="resources\Assets">
       <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libraries\servicingapi">
+      <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\sysinfoapi">
+      <UniqueIdentifier>{f4470710-06d1-456c-9c45-915b3306bf1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\imagingapi">
+      <UniqueIdentifier>{4058fc11-5a60-4305-a6e7-cfa9aafc6c00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
@@ -138,7 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CbsApi.idl">
-      <Filter>libraries\cbsapi</Filter>
+      <Filter>libraries\servicingapi</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

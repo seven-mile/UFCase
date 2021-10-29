@@ -145,12 +145,16 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SSShimApi.h" />
-    <ClInclude Include="SysInfoElement.h">
-      <DependentUpon>SysInfoElement.idl</DependentUpon>
+    <ClInclude Include="SysInfoStaticProvider.h">
+      <DependentUpon>SysInfoStaticProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SysInfoPage.h">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SysInfoRealtimeProvider.h">
+      <DependentUpon>SysInfoRealtimeProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="TemplateSettingsPage.xaml.h">
@@ -235,12 +239,16 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="SysInfoElement.cpp">
-      <DependentUpon>SysInfoElement.idl</DependentUpon>
+    <ClCompile Include="SysInfoStaticProvider.cpp">
+      <DependentUpon>SysInfoStaticProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="SysInfoPage.cpp">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SysInfoRealtimeProvider.cpp">
+      <DependentUpon>SysInfoRealtimeProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="TemplateSettingsPage.xaml.cpp">
@@ -317,12 +325,15 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="SysInfoElement.idl">
+    <Midl Include="SysInfoStaticProvider.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SysInfoPage.idl">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SysInfoRealtimeProvider.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="TemplateSettingsPage.idl">
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>

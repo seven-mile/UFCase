@@ -12,5 +12,7 @@ namespace winrt::UFCase::implementation
 
     private:
         winrt::Microsoft::UI::Xaml::Window window{ nullptr };
+
+        void ConfigAppModuleResources();
     };
 }

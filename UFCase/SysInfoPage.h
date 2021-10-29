@@ -1,12 +1,12 @@
 ﻿#pragma once
+#include "SysInfoPage.g.h"
 
-#include <winrt/Windows.UI.Composition.h>
+#include <winrt/Windows.Data.Json.h>
 
 namespace winrt {
     using namespace Windows::Data::Json;
 }
 
-#include "SysInfoPage.g.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -14,13 +14,13 @@ namespace winrt::UFCase::implementation
     {
         SysInfoPage();
 
-        UFCase::SysInfoStaticElement StaticInfo();
-        UFCase::SysInfoRealtimeElement RealtimeInfo();
+        UFCase::SysInfoStaticProvider StaticInfo();
+        UFCase::SysInfoRealtimeProvider RealtimeInfo();
         void ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const& e);
 
     private:
-        UFCase::SysInfoStaticElement m_static;
-        UFCase::SysInfoRealtimeElement m_realtime;
+        UFCase::SysInfoStaticProvider m_static{nullptr};
+        UFCase::SysInfoRealtimeProvider m_realtime;
     };
 }
 
