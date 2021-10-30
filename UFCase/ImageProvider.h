@@ -36,10 +36,10 @@ namespace winrt::UFCase::implementation
         // helpers
         void CompleteImageItem(UFCase::ImageItem, int major, int minor, int build);
 
-        const Media::Imaging::BitmapImage Win7Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows7.png"));
-        const Media::Imaging::BitmapImage Win8Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows8.png"));
-        const Media::Imaging::BitmapImage Win10Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows10.png"));
-        const Media::Imaging::BitmapImage Win11Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///Assets/Windows11.png"));
+        const Media::Imaging::BitmapImage Win7Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png"));
+        const Media::Imaging::BitmapImage Win8Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png"));
+        const Media::Imaging::BitmapImage Win10Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png"));
+        const Media::Imaging::BitmapImage Win11Icon = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
     };
 
     struct ImageItem : ImageItemT<ImageItem>

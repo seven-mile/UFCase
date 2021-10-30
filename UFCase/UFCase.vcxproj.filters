@@ -117,9 +117,6 @@
     <Filter Include="resources">
       <UniqueIdentifier>{2129dccb-97dc-494d-aba6-3c56e4e34a00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="resources\Assets">
-      <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="libraries\servicingapi">
       <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
@@ -128,6 +125,9 @@
     </Filter>
     <Filter Include="libraries\imagingapi">
       <UniqueIdentifier>{4058fc11-5a60-4305-a6e7-cfa9aafc6c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\EmbedAssets">
+      <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,17 +151,17 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Windows7.png">
-      <Filter>resources\Assets</Filter>
-    </Image>
-    <Image Include="Assets\Windows8.png">
-      <Filter>resources\Assets</Filter>
-    </Image>
-    <Image Include="Assets\Windows10.png">
-      <Filter>resources\Assets</Filter>
-    </Image>
-    <Image Include="Assets\Windows11.png">
-      <Filter>resources\Assets</Filter>
-    </Image>
+    <MyEmbeddedItems Include="EmbedAssets\Windows7.png">
+      <Filter>resources\EmbedAssets</Filter>
+    </MyEmbeddedItems>
+    <MyEmbeddedItems Include="EmbedAssets\Windows8.png">
+      <Filter>resources\EmbedAssets</Filter>
+    </MyEmbeddedItems>
+    <MyEmbeddedItems Include="EmbedAssets\Windows10.png">
+      <Filter>resources\EmbedAssets</Filter>
+    </MyEmbeddedItems>
+    <MyEmbeddedItems Include="EmbedAssets\Windows11.png">
+      <Filter>resources\EmbedAssets</Filter>
+    </MyEmbeddedItems>
   </ItemGroup>
 </Project>

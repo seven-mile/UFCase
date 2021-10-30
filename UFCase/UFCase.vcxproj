@@ -344,11 +344,28 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Windows10.png" />
-    <Image Include="Assets\Windows11.png" />
-    <Image Include="Assets\Windows7.png" />
-    <Image Include="Assets\Windows8.png" />
+    <MyEmbeddedItems Include="EmbedAssets\Windows10.png" />
+    <MyEmbeddedItems Include="EmbedAssets\Windows11.png" />
+    <MyEmbeddedItems Include="EmbedAssets\Windows7.png" />
+    <MyEmbeddedItems Include="EmbedAssets\Windows8.png" />
   </ItemGroup>
+  <Target Name="AddMyEmbeddedItems" BeforeTargets="_GenerateProjectPriFileCore" AfterTargets="_CalculateInputsForGenerateProjectPriFileCore">
+    <ItemGroup>
+      <MyXamlEmbededItems Include="@(_LayoutFile)" Condition="'%(Extension)' == '.xbf' or '%(Extension)' == '.xaml'" />
+      <_LayoutFile Remove="@(MyXamlEmbededItems)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MyEmbeddedItems)" DestinationFiles="@(MyEmbeddedItems->'$(IntermediateOutputPath)embed\EmbedAssets\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(MyXamlEmbededItems)" DestinationFiles="@(MyXamlEmbededItems->'$(IntermediateOutputPath)embed\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <ReadLinesFromFile File="$(_EmbedFileResfilePath)">
+      <Output TaskParameter="Lines" ItemName="ItemsFromFile" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <MyEmbeddedFileList Include="@(ItemsFromFile)" />
+      <MyEmbeddedFileList Include="@(MyEmbeddedItems)" />
+      <MyEmbeddedFileList Include="@(MyXamlEmbededItems->'%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(_EmbedFileResfilePath)" Lines="@(MyEmbeddedFileList)" Overwrite="true" Encoding="Unicode" />
+  </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.WindowsAppSDK.1.0.0-preview3\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.0.0-preview3\build\native\Microsoft.WindowsAppSDK.targets')" />
