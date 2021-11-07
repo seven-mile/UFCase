@@ -73,7 +73,7 @@ namespace winrt::UFCase {
         static StackSource GetCurrentSource() {
             return static_cast<StackSource>(g_appConfig.GetNamedObject(L"stack").GetNamedNumber(L"source"));
         }
-
+            
         static winrt::hstring GetCurrentBootdrive() {
             if (GetCurrentSource() == StackSource::Online) throw hresult_illegal_method_call{};
             return g_appConfig.GetNamedObject(L"stack").GetNamedString(L"argBootdrive");

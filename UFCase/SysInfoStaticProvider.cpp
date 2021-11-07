@@ -81,8 +81,7 @@ namespace winrt::UFCase::implementation
             } else if (lst == ERROR_FILE_NOT_FOUND) {
                 return false;
             } else {
-                // throw
-                winrt::check_win32(lst);
+                throw winrt::hresult_error{ HRESULT_FROM_WIN32(lst) };
             }
         }
     }
