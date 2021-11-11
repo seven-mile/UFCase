@@ -30,7 +30,7 @@
                     Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
-        
+
         <NavigationView x:Name="NavView"
                         IsTitleBarAutoPaddingEnabled="False"
                         IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
@@ -39,19 +39,14 @@
                         Loaded="NavView_Loaded"
                         DisplayModeChanged="NavView_DisplayModeChanged"
                         Canvas.ZIndex="0">
-            
-            <NavigationView.PaneHeader>
-                <ToggleSwitch x:Name="TipToggle" Margin="10,0,0,0" OnContent="ShowTT" OffContent="HideTT" />
-            </NavigationView.PaneHeader>
-            
+
             <NavigationView.PaneCustomContent>
                 <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
                           SelectedIndex="{x:Bind ImageProv.SelectedIndex, Mode=TwoWay}" ItemsSource="{x:Bind ImageProv.Images}">
                     <ComboBox.Resources>
                         <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
                                      Title="Switch Windows Image"
-                                     Subtitle="You can specify Online or Offline image here! All the contents will be reloaded after switching and the changes you made will be lost. Take care of it!"
-                                     IsOpen="{x:Bind TipToggle.IsOn, Mode=TwoWay}">
+                                     Subtitle="You can specify Online or Offline image here! All the contents will be reloaded after switching and the changes you made will be lost. Take care of it!">
                             <TeachingTip.IconSource>
                                 <SymbolIconSource Symbol="Switch" />
                             </TeachingTip.IconSource>

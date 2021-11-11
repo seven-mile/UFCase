@@ -46,17 +46,13 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::ConfigFeatureTreeElementUIElements(FeatureTreeElement ele)
     {
-        // for icon
-        SymbolIconSource icon_src;
-        if (ele.State() == FeatureState::Enabled)
-            icon_src.Symbol(Symbol::Accept);
-        else if (ele.State() == FeatureState::Disabled)
-            icon_src.Symbol(Symbol::Permissions);
-        else if (ele.State() == FeatureState::Unavailable)
-            icon_src.Symbol(Symbol::Clear);
-        else if (ele.State() == FeatureState::PartiallyEnabled)
-            icon_src.Symbol(Symbol::More);
-        ele.Icon(icon_src);
+        const static std::unordered_map<FeatureState, IconSource> map_icon_src {
+            {FeatureState::Enabled, this->Resources().Lookup(box_value(L"TreeElementEnabledIconSource")).as<IconSource>()},
+            {FeatureState::Disabled, this->Resources().Lookup(box_value(L"TreeElementDisabledIconSource")).as<IconSource>()},
+            {FeatureState::PartiallyEnabled, this->Resources().Lookup(box_value(L"TreeElementPartiallyIconSource")).as<IconSource>()},
+            {FeatureState::Unavailable, this->Resources().Lookup(box_value(L"TreeElementUnavailableIconSource")).as<IconSource>()},
+        };
+        ele.Icon(map_icon_src.find(ele.State())->second);
 
         // for context menu
         MenuFlyout res;

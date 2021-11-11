@@ -7,6 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     NavigationCacheMode="Disabled">
+
+    <Page.Resources>
+        <FontIconSource x:Key="TreeElementEnabledIconSource" Glyph="&#xf16c;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+        <FontIconSource x:Key="TreeElementDisabledIconSource" Glyph="&#xf16b;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+        <FontIconSource x:Key="TreeElementPartiallyIconSource" Glyph="&#xf16d;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+        <FontIconSource x:Key="TreeElementUnavailableIconSource" Glyph="&#xea39;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+    </Page.Resources>
     
     <Grid Margin="50,20,50,20">
         <Grid.RowDefinitions>

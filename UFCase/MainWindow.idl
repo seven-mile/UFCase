@@ -10,7 +10,6 @@ namespace UFCase
         // UI elements
         // Microsoft.UI.Xaml.Controls.NavigationView NavView;
         Microsoft.UI.Xaml.Controls.Frame ContentFrame;
-        Microsoft.UI.Xaml.Controls.ToggleSwitch TipToggle;
         Microsoft.UI.Xaml.Controls.ComboBox ImageComboBox;
 
         // Modules
