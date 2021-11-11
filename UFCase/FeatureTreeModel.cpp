@@ -2,7 +2,7 @@
 #include "FeatureTreeModel.h"
 
 #include "MallocUtil.h"
-#include "CbsSessionManager.h"
+#include "CbsProviderManager.h"
 
 #include <functional>
 
@@ -13,11 +13,13 @@ namespace winrt::UFCase
 
 inline const CLSID CLSID_CbsSession = { 0x752073A1,0x23F2,0x4396,{0x85,0xF0,0x8F,0xDB,0x87,0x9E,0xD0,0xED} };
 
-FeatureTreeModel::FeatureTreeModel()
+FeatureTreeModel::FeatureTreeModel(UFCase::ImageItem img)
 {
     ClearTree();
+
+    m_img = img;
     
-    pSess = CbsSessionManager::instance().ApplyNew();
+    pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
 
     LOG_IF_FAILED(pSess->Initialize(CbsSessionOptionNone, L"UFCase", nullptr, nullptr));
 }
@@ -29,9 +31,11 @@ FeatureTreeModel::~FeatureTreeModel()
 
     _CbsRequiredAction ra;
     pSess->Finalize(&ra); // I don't care
+
+    CbsProviderManager::Current().Return(L"FeatureTree", m_img.Bootdrive().c_str());
 }
 
-winrt::IAsyncOperationWithProgress<winrt::IObservableVector<FeatureTreeElement>, uint32_t>
+winrt::IAsyncOperationWithProgress<winrt::IObservableVector<FeatureTreeModel::ele_t>, uint32_t>
 FeatureTreeModel::ConstructUpdateTree()
 {
     auto report_prog = co_await winrt::get_progress_token();
@@ -39,7 +43,7 @@ FeatureTreeModel::ConstructUpdateTree()
 
     
     co_await winrt::resume_background();
-    auto res = single_threaded_observable_vector<FeatureTreeElement>();
+    auto res = single_threaded_observable_vector<ele_t>();
 
     auto pFound = CbsHelper::FindFoundationPkg(pSess);
     if (!pFound) winrt::check_win32(ERROR_NOT_FOUND);
@@ -150,12 +154,12 @@ void FeatureTreeModel::AddDependency(
         sonNode.State(eSonState);
         sonNode.Identity(szSonUpdate);
     } else {
-        auto newSonNode = ele_t(szSonName, szSonDesc, szSonUpdate, eSonState, multi_threaded_observable_vector<ele_t>());
+        auto newSonNode = ele_t(szSonName, szSonDesc, szSonUpdate, eSonState, multi_threaded_observable_vector<ele_t>(), m_img);
         m_mapEle.Insert(szSonUpdate, newSonNode);
     }
 
     if (!m_mapEle.HasKey(szParentUpdate)) {
-        auto newParentNode = ele_t(L"", L"", L"", FeatureState::Invalid, multi_threaded_observable_vector<ele_t>());
+        auto newParentNode = ele_t(L"", L"", L"", FeatureState::Invalid, multi_threaded_observable_vector<ele_t>(), m_img);
         m_mapEle.Insert(szParentUpdate, newParentNode);
     }
     
@@ -185,7 +189,7 @@ void FeatureTreeModel::ClearTree()
     m_mapEle.Clear();
     m_mapFa.Clear();
     cntUpdates = 1u;
-    m_mapEle.Insert(GetRoot(), ele_t(GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>()));
+    m_mapEle.Insert(GetRoot(), ele_t(GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>(), m_img));
 }
 
 winrt::com_ptr<ICbsPackage> FeatureTreeModel::CbsHelper::FindFoundationPkg(winrt::com_ptr<ICbsSession> pSess)

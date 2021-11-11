@@ -56,14 +56,14 @@
     <ClCompile Include="FeatureTreeModel.cpp">
       <Filter>components\features</Filter>
     </ClCompile>
-    <ClCompile Include="CbsSessionManager.cpp">
-      <Filter>libraries\servicingapi</Filter>
-    </ClCompile>
     <ClCompile Include="CbsApiProxy.c">
       <Filter>libraries\servicingapi</Filter>
     </ClCompile>
     <ClCompile Include="AppConfig.cpp">
       <Filter>libraries\appconfig</Filter>
+    </ClCompile>
+    <ClCompile Include="CbsProviderManager.cpp">
+      <Filter>libraries\servicingapi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +73,6 @@
     <ClInclude Include="FeatureTreeModel.h">
       <Filter>components\features</Filter>
     </ClInclude>
-    <ClInclude Include="CbsSessionManager.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
     <ClInclude Include="SSShimApi.h">
       <Filter>libraries\servicingapi</Filter>
     </ClInclude>
@@ -84,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="AppConfig.h">
       <Filter>libraries\appconfig</Filter>
+    </ClInclude>
+    <ClInclude Include="CbsProviderManager.h">
+      <Filter>libraries\servicingapi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

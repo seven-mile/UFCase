@@ -1,3 +1,5 @@
+import "ImageProvider.idl";
+
 namespace UFCase
 {
     enum FeatureState
@@ -13,7 +15,11 @@ namespace UFCase
     [default_interface]
     runtimeclass FeatureTreeElement : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        FeatureTreeElement(String name, String desc, String identity, FeatureState state, Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children);
+        FeatureTreeElement(
+            String name, String desc, String identity, FeatureState state,
+            Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children,
+            ImageItem img
+        );
         
         // CBS Component Data
         String Name{ get; set; };

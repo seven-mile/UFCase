@@ -6,17 +6,19 @@
 
 #include <winrt/Windows.Storage.Streams.h>
 
-#include "CbsSessionManager.h"
+#include "CbsProviderManager.h"
 
 namespace winrt::UFCase::implementation
 {
-    FeatureTreeElement::FeatureTreeElement(hstring name, hstring desc, hstring identity, FeatureState state, child_t children)
+    FeatureTreeElement::FeatureTreeElement(hstring name, hstring desc, hstring identity,
+        FeatureState state, child_t children, UFCase::ImageItem img)
     {
         m_name = name;
         m_desc = desc;
         m_identity = identity;
         m_state = state;
         m_children = children;
+        m_img = img;
     }
 
     winrt::event_token FeatureTreeElement::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
@@ -64,7 +66,7 @@ namespace winrt::UFCase::implementation
             return;
         }
 
-        auto pSess = CbsSessionManager::instance().ApplyNew();
+        auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
 
         // todo: use config
         winrt::check_hresult(pSess->Initialize(CbsSessionOptionNone, L"UFCase", nullptr, nullptr));

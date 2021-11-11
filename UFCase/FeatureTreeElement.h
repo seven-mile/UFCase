@@ -7,7 +7,7 @@ namespace winrt::UFCase::implementation
     struct FeatureTreeElement : FeatureTreeElementT<FeatureTreeElement>
     {
         using child_t = IObservableVector<UFCase::FeatureTreeElement>;
-        FeatureTreeElement(hstring name, hstring desc, hstring identity, FeatureState state, child_t children);
+        FeatureTreeElement(hstring name, hstring desc, hstring identity, FeatureState state, child_t children, UFCase::ImageItem img);
 
         // implement INotifyPropertyChanged
         winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
@@ -43,6 +43,8 @@ namespace winrt::UFCase::implementation
         child_t m_children;
         hstring m_mark = L"";
         IconSource m_icon {nullptr};
+
+        UFCase::ImageItem m_img;
         Primitives::FlyoutBase m_menu {nullptr};
     };
 }

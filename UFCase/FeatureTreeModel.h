@@ -19,6 +19,7 @@ namespace winrt::UFCase
         winrt::IMap<winrt::hstring, winrt::hstring> m_mapFa
             = multi_threaded_map<winrt::hstring, winrt::hstring>();
         
+        UFCase::ImageItem m_img;
         winrt::com_ptr<ICbsSession> pSess;
 
         void AddDependency(
@@ -39,14 +40,14 @@ namespace winrt::UFCase
         };
 
     public:
-        FeatureTreeModel();
+        FeatureTreeModel(UFCase::ImageItem img);
         ~FeatureTreeModel();
 
         // delete other for global identity
         FeatureTreeModel(const FeatureTreeModel&) = delete;
         FeatureTreeModel(FeatureTreeModel&&) = delete;
 
-        winrt::IAsyncOperationWithProgress<winrt::IObservableVector<FeatureTreeElement>, uint32_t> ConstructUpdateTree();
+        winrt::IAsyncOperationWithProgress<winrt::IObservableVector<ele_t>, uint32_t> ConstructUpdateTree();
     };
 
 

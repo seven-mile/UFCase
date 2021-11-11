@@ -10,7 +10,7 @@
 #include "SysInfoStaticProvider.g.h"
 
 #include "AppConfig.h"
-#include "CbsSessionManager.h"
+#include "CbsProviderManager.h"
 
 #include <wil/resource.h>
 
@@ -26,6 +26,23 @@ namespace winrt::UFCase::implementation
         auto onlineIndex = this->ConfigOnlineImage();
         this->SelectedIndex(onlineIndex);
         this->ConfigWimImage();
+
+        // for test
+        //{
+        //    UFCase::ImageItem res;
+        //    res.Type(L"Offline");
+        //    res.Bootdrive(L"E:\\");
+
+        //    auto prov = SysInfoStaticProvider(res);
+        //    int major, minor, build, revision;
+        //    if (swscanf_s(prov.OSVersion().c_str(), L"%d.%d.%d.%d", &major, &minor, &build, &revision) < 0)
+        //        throw_hresult(E_FAIL);
+
+        //    this->CompleteImageItem(res, major, minor, build);
+        //    res.Version(res.Version() + prov.OSArchitecture() + L" " + std::to_wstring(build));
+
+        //    m_images.Append(res);
+        //}
     }
 
     IObservableVector<UFCase::ImageItem> ImageProvider::Images()
@@ -44,20 +61,15 @@ namespace winrt::UFCase::implementation
             return;
 
         m_selectedIdx = value;
-        //CbsSessionManager::instance().ReleaseStack();
 
         auto img = m_images.GetAt(value);
         auto stackObj = g_appConfig.GetNamedObject(L"stack");
         using Windows::Data::Json::JsonValue;
+
         if (img.Type() == L"Online") {
-            THROW_IF_FAILED(CbsSessionManager::instance().BindStack(CbsSessionManager::StackSource::Online));
             stackObj.SetNamedValue(L"source", JsonValue::CreateNumberValue(0));
             stackObj.SetNamedValue(L"argBootdrive", JsonValue::CreateStringValue(L""));
         } else if (img.Type() == L"Offline") {
-            THROW_IF_FAILED(CbsSessionManager::instance().BindStack(
-                CbsSessionManager::StackSource::Offline,
-                img.Bootdrive().c_str()
-            ));
             stackObj.SetNamedValue(L"source", JsonValue::CreateNumberValue(1));
             stackObj.SetNamedValue(L"argBootdrive", JsonValue::CreateStringValue(img.Bootdrive()));
         } else throw hresult_invalid_argument{};
@@ -81,9 +93,10 @@ namespace winrt::UFCase::implementation
             UFCase::ImageItem res;
 
             // such as C:\Windows\System32
-            std::filesystem::path systemDir = Windows::Storage::SystemDataPaths::GetDefault().System().c_str();
+            //std::filesystem::path systemDir = Windows::Storage::SystemDataPaths::GetDefault().System().c_str();
             
-            res.Bootdrive(systemDir.parent_path().parent_path().c_str());
+            //res.Bootdrive(systemDir.parent_path().parent_path().c_str());
+            res.Bootdrive(CbsProviderManager::GetOnlineBootdrive().c_str());
             res.Type(L"Online");
 
             auto prov = SysInfoStaticProvider(res);
@@ -92,7 +105,7 @@ namespace winrt::UFCase::implementation
                 throw_hresult(E_FAIL);
 
             this->CompleteImageItem(res, major, minor, build);
-            res.Version(res.Version() + prov.OSArchitecture() + L" Build " + prov.OSVersion());
+            res.Version(res.Version() + prov.OSArchitecture() + L" " + std::to_wstring(build));
 
             m_images.Append(res);
             return m_images.Size()-1;
@@ -137,7 +150,7 @@ namespace winrt::UFCase::implementation
                 throw_hresult(E_FAIL);
 
             this->CompleteImageItem(res, major, minor, build);
-            res.Version(res.Version() + prov.OSArchitecture() + L" Build " + prov.OSVersion());
+            res.Version(res.Version() + prov.OSArchitecture() + L" " + std::to_wstring(build));
 
             m_images.Append(res);
         }

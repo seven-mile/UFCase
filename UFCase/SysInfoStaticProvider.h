@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include "CbsSessionManager.h"
+#include "CbsProviderManager.h"
 
 #include "SysInfoStaticProvider.g.h"
-#include "ImageItem.g.h"
 
 namespace winrt::UFCase::implementation
 {

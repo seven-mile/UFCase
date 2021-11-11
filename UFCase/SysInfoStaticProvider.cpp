@@ -67,7 +67,7 @@ namespace winrt::UFCase::implementation
         // option1: %WINDIR%\system32\winpeshl.exe
         // option2: HKLM\Microsoft\Windows NT\CurrentVersion\WinPE
         // option3: HKLM\SYSTEM\CurrentControlSet\Control\MiniNT
-        if (CbsSessionManager::instance().GetCurrentSource() == CbsSessionManager::StackSource::Offline) {
+        if (m_img.Type() == L"Offline") {
             // todo: use offline registry
             throw winrt::hresult_not_implemented{};
         } else {
@@ -89,29 +89,21 @@ namespace winrt::UFCase::implementation
     {
         if (!m_pSess) {
             // todo: use factory distribution
-            if (m_img.Type() == L"Online") {
-                try {
-                    CbsSessionManager::instance().BindStack(CbsSessionManager::StackSource::Online);
-                } catch (winrt::hresult_error const &) { }
-            } else if (m_img.Type() == L"Offline") {
-                try {
-                    CbsSessionManager::instance().BindStack(
-                        CbsSessionManager::StackSource::Offline,
-                        m_img.Bootdrive().c_str()
-                    );
-                } catch (winrt::hresult_error const &) { }
-            } else throw hresult_invalid_argument{};
+            
+            m_pSess = CbsProviderManager::Current().ApplyFromBootdrive(
+                L"SysInfoStaticProvider",
+                m_img.Bootdrive().c_str()
+            )->ApplySession();
 
-            // warning: unexpected behavior when switching between images
-            m_pSess = CbsSessionManager::instance().ApplyNew();
             // init corresponding session
-            if (CbsSessionManager::GetCurrentSource() == CbsSessionManager::StackSource::Online) {
+            if (m_img.Type() == L"Online") {
                 winrt::check_hresult(m_pSess->Initialize(CbsSessionOptionNone, L"UFCase::SysInfoProvider", nullptr, nullptr));
             } else {
+                // maybe only bootdrive is not enough, I'm not sure
                 winrt::check_hresult(m_pSess->Initialize(
                     CbsSessionOptionNone, L"UFCase::SysInfoProvider",
-                    CbsSessionManager::GetCurrentBootdrive().c_str(),
-                    CbsSessionManager::GetCurrentWindir().c_str()
+                    m_img.Bootdrive().c_str(),
+                    nullptr
                 ));
             }
         }

@@ -174,10 +174,11 @@ namespace winrt::UFCase::implementation
             co_return;
         }
         else if (page_name == L"Features") {
+            auto imgItem = this->ImageComboBox().SelectedItem().as<UFCase::ImageItem>();
             co_await winrt::resume_background();
 
             // dynamic allocation to extend lifetime
-            auto pModel = std::make_unique<FeatureTreeModel>();
+            auto pModel = std::make_unique<FeatureTreeModel>(imgItem);
             auto op = pModel->ConstructUpdateTree();
 
             cancel_token.callback([=](){ op.Cancel(); });

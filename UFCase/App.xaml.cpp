@@ -3,7 +3,7 @@
 #include "App.xaml.h"
 #include "MainWindow.xaml.h"
 
-#include "CbsSessionManager.h"
+#include "CbsProviderManager.h"
 
 #include "AppConfig.h"
 
