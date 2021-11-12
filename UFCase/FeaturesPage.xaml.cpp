@@ -4,8 +4,7 @@
 #include "FeaturesPage.g.cpp"
 #endif
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+#include <filesystem>
 
 namespace winrt::UFCase::implementation
 {
@@ -31,6 +30,37 @@ namespace winrt::UFCase::implementation
         } else {
             throw winrt::hresult_invalid_argument();
         }
+    }
+
+    void FeaturesPage::FeatureOpenOFDialogCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
+    {
+        ShellExecute(nullptr, L"open", L"OptionalFeatures.exe", L"", L"", SW_SHOW);
+    }
+
+    void FeaturesPage::FeatureAddSourceUICommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
+    {
+        ContentDialog addSrcDlg{};
+        addSrcDlg.Title(box_value(L"Add source"));
+        TextBox srcTextBox;
+        srcTextBox.PlaceholderText(L"input installing source dir");
+        addSrcDlg.Content(srcTextBox);
+        addSrcDlg.PrimaryButtonText(L"Add");
+        addSrcDlg.SecondaryButtonText(L"Cancel");
+        addSrcDlg.DefaultButton(ContentDialogButton::Primary);
+        addSrcDlg.XamlRoot(this->XamlRoot());
+
+        addSrcDlg.ShowAsync().Completed([this, srcTextBox](auto const&op, auto const&) {
+            if (op.GetResults() == ContentDialogResult::Primary) {
+                if (auto path = std::filesystem::path(srcTextBox.Text().c_str());
+                    std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
+                    OutputDebugString(std::format(L"added install source path: \"{}\"", path.c_str()).c_str());
+                } else {
+                    OutputDebugString(L"error: invalid path provided!");
+                }
+            } else {
+                return;
+            }
+        });
     }
 
     void FeaturesPage::FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
@@ -103,7 +133,7 @@ namespace winrt::UFCase::implementation
 
         res.Items().Append(sp2);
 
-        addSrcItem.Command(this->FeatureAddSourceCommand());
+        addSrcItem.Command(this->FeatureAddSourceUICommand());
         res.Items().Append(addSrcItem);
 
         // set param to data context

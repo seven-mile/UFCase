@@ -104,6 +104,11 @@ namespace winrt::UFCase::implementation
                             });
                     }
                 } else throw winrt::hresult_illegal_method_call{};
+                
+                // Config Window Min Size in future
+                //if (auto&& pres = appw.Presenter().as<OverlappedPresenter>()) {
+                //    pres.IsResizable(false);
+                //} else throw winrt::hresult_illegal_method_call{};
             } else throw winrt::hresult_illegal_method_call{};;
         } catch (winrt::hresult_error const&) {
             // fallback for win10: just do nothing!

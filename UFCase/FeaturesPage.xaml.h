@@ -22,7 +22,9 @@ namespace winrt::UFCase::implementation
 
         void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
         void FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
-        void FeatureStageCommand_ExecuteRequested(winrt::Microsoft::UI::Xaml::Input::XamlUICommand const& sender, winrt::Microsoft::UI::Xaml::Input::ExecuteRequestedEventArgs const& args);
+        void FeatureStageCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
+        void FeatureOpenOFDialogCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
+        void FeatureAddSourceUICommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
 
     private:
         source_t m_source;

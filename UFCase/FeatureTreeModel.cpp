@@ -87,7 +87,8 @@ FeatureTreeModel::ConstructUpdateTree()
 
             _CbsInstallState stCur, stInt, stReq;
             winrt::check_hresult(pUpd->GetInstallState(&stCur, &stInt, &stReq));
-            const FeatureState eState = stReq == CbsInstallStateInstallRequested ?
+
+            const FeatureState eState = stCur >= CbsInstallStateInstalled ? //stReq == CbsInstallStateInstallRequested ?
                                         FeatureState::Enabled : FeatureState::Disabled;
 
             const bool hasParent = hr != CBS_E_ARRAY_ELEMENT_MISSING;

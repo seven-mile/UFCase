@@ -26,14 +26,25 @@
         </Grid.ColumnDefinitions>
         
         <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
-            <AppBarButton Label="AAA" Icon="Accept" />
-            <AppBarButton Label="BBB" Icon="Clear" />
+            <CommandBar.Resources>
+                <XamlUICommand x:Name="FeatureOpenOFDialogCommand" Label="Open System Feature Dialog" ExecuteRequested="FeatureOpenOFDialogCommand_ExecuteRequested">
+                    <XamlUICommand.IconSource>
+                        <SymbolIconSource Symbol="Share" />
+                    </XamlUICommand.IconSource>
+                </XamlUICommand>
+                <XamlUICommand x:Name="FeatureAddSourceUICommand" Label="AddSource" ExecuteRequested="FeatureAddSourceUICommand_ExecuteRequested">
+                    <XamlUICommand.IconSource>
+                        <SymbolIconSource Symbol="Add" />
+                    </XamlUICommand.IconSource>
+                </XamlUICommand>
+            </CommandBar.Resources>
+            <AppBarButton Label="Submit" Icon="Accept" />
+            <AppBarButton Label="Refresh" Icon="Refresh" />
             <AppBarSeparator />
-            <AppBarButton Label="Settings" Icon="Target" />
+            <AppBarButton Label="Settings" Icon="Setting" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="BBB" Icon="Clear" />
-                <AppBarSeparator />
-                <AppBarButton Label="Settings" Icon="Target" />
+                <AppBarButton Command="{StaticResource FeatureOpenOFDialogCommand}" />
+                <AppBarButton Command="{StaticResource FeatureAddSourceUICommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         
@@ -68,11 +79,6 @@
                         </XamlUICommand.IconSource>
                     </XamlUICommand>
                     <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureStageCommand_ExecuteRequested" />
-                    <XamlUICommand x:Name="FeatureAddSourceCommand" Label="Add source" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <SymbolIconSource Symbol="Add" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
                 </TreeView.Resources>
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureTreeElement">

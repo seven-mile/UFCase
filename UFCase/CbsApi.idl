@@ -138,7 +138,8 @@ typedef enum {
 typedef enum {
   CbsSelectabilityInvalidValue = -1,
   CbsSelectabilityAllClass = 0,
-  CbsSelectabilitySonClass = 1,
+  // cannot be removed?
+  CbsSelectabilityFixedClass = 1,
   CbsSelectabilityRootClass = 2
 } _CbsSelectability;
 

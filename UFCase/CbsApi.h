@@ -359,7 +359,7 @@ enum __MIDL___MIDL_itf_CbsApi_0000_0000_0012
     {
         CbsSelectabilityInvalidValue	= -1,
         CbsSelectabilityAllClass	= 0,
-        CbsSelectabilitySonClass	= 1,
+        CbsSelectabilityFixedClass	= 1,
         CbsSelectabilityRootClass	= 2
     } 	_CbsSelectability;
 
