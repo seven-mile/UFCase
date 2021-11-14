@@ -113,6 +113,10 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddSourceContentDialog.xaml.h">
+      <DependentUpon>AddSourceContentDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="CbsProviderManager.h" />
     <ClInclude Include="ErrorPage.h">
@@ -172,6 +176,9 @@
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
+    <Page Include="AddSourceContentDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ErrorPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -202,6 +209,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddSourceContentDialog.xaml.cpp">
+      <DependentUpon>AddSourceContentDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="CbsApiProxy.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -265,6 +276,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Midl Include="AddSourceContentDialog.idl">
+      <DependentUpon>AddSourceContentDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="App.idl">
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>

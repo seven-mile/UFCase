@@ -29,6 +29,9 @@
     <Page Include="GlobalStyleResources.xaml">
       <Filter>resources</Filter>
     </Page>
+    <Page Include="AddSourceContentDialog.xaml">
+      <Filter>components\features</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />

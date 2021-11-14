@@ -75,8 +75,9 @@ namespace winrt::UFCase::implementation
         }
 
         this->ConfigAppModuleResources();
-
         window = make<MainWindow>();
+        this->Resources().Insert(box_value(L"MainWindowInstance"), window);
+
         window.Activate();
 
         co_return;

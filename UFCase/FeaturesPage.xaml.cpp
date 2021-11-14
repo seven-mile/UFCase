@@ -39,19 +39,12 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::FeatureAddSourceUICommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
     {
-        ContentDialog addSrcDlg{};
-        addSrcDlg.Title(box_value(L"Add source"));
-        TextBox srcTextBox;
-        srcTextBox.PlaceholderText(L"input installing source dir");
-        addSrcDlg.Content(srcTextBox);
-        addSrcDlg.PrimaryButtonText(L"Add");
-        addSrcDlg.SecondaryButtonText(L"Cancel");
-        addSrcDlg.DefaultButton(ContentDialogButton::Primary);
-        addSrcDlg.XamlRoot(this->XamlRoot());
+        AddSourceContentDialog addSrcDlg(Application::Current().Resources().Lookup(box_value(L"MainWindowInstance")).as<Window>());
 
-        addSrcDlg.ShowAsync().Completed([this, srcTextBox](auto const&op, auto const&) {
+        addSrcDlg.XamlRoot(this->XamlRoot());
+        addSrcDlg.ShowAsync().Completed([this, addSrcDlg](auto const&op, auto const&) {
             if (op.GetResults() == ContentDialogResult::Primary) {
-                if (auto path = std::filesystem::path(srcTextBox.Text().c_str());
+                if (auto path = std::filesystem::path(addSrcDlg.SourcePath().c_str());
                     std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
                     OutputDebugString(std::format(L"added install source path: \"{}\"", path.c_str()).c_str());
                 } else {

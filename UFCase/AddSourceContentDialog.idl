@@ -1,0 +1,10 @@
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass AddSourceContentDialog : Microsoft.UI.Xaml.Controls.ContentDialog
+    {
+        AddSourceContentDialog(Microsoft.UI.Xaml.Window parent);
+
+        String SourcePath{ get; };
+    }
+}
