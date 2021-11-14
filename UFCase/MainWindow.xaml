@@ -68,18 +68,18 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </NavigationView.PaneCustomContent>
-            
+
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="SysInfo" Icon="Admin" />
-                <NavigationViewItem Content="Features" Icon="AllApps" />
-                <NavigationViewItem Content="Optionals" Icon="Add" />
-                <NavigationViewItem Content="Packages">
+                <NavigationViewItem x:Name="SysInfoNavViewItem" Content="SysInfo" Icon="Admin" />
+                <NavigationViewItem x:Name="FeaturesNavViewItem" Content="Features" Icon="AllApps" />
+                <NavigationViewItem x:Name="OptionalsNavViewItem" Content="Optionals" Icon="Add" />
+                <NavigationViewItem x:Name="PackagesNavViewItem" Content="Packages">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            
+
             <Frame x:Name="ContentFrame" />
         </NavigationView>
     </Grid>

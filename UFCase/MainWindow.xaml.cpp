@@ -130,7 +130,7 @@ namespace winrt::UFCase::implementation
     {
         if (const auto itemCont = args.InvokedItemContainer().as<NavigationViewItem>()) {
             if (itemCont.IsSelected()) return;
-            this->NavigateTo(itemCont);
+            this->NavigateTo(itemCont, args.IsSettingsInvoked());
         }
     }
 
@@ -165,20 +165,25 @@ namespace winrt::UFCase::implementation
         return m_imgprov;
     }
 
-    winrt::IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item)
+    winrt::IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item, bool isSetting)
     {
         this->m_stackNavItem.push(item);
-        winrt::hstring page_name = unbox_value<hstring>(item.Content());
+        winrt::hstring page_name = item.Name();
     try {
         winrt::apartment_context ui_thread;
         auto cancel_token = co_await winrt::get_cancellation_token();
         auto frame = this->ContentFrame();
-        if (page_name == L"SysInfo") {
+        if (isSetting) {
+            frame.Navigate(xaml_typename<SettingsPage>());
+
+            co_return;
+        }
+        else if (page_name == L"SysInfoNavViewItem") {
             frame.Navigate(xaml_typename<SysInfoPage>());
 
             co_return;
         }
-        else if (page_name == L"Features") {
+        else if (page_name == L"FeaturesNavViewItem") {
             auto imgItem = this->ImageComboBox().SelectedItem().as<UFCase::ImageItem>();
             co_await winrt::resume_background();
 
@@ -210,16 +215,11 @@ namespace winrt::UFCase::implementation
 
             co_return;
         }
-        else if (page_name == L"Optionals") {
-            
+        else if (page_name == L"OptionalsNavViewItem") {
+            // fall through
         }
-        else if (page_name == L"Packages") {
-
-        }
-        else if (page_name == L"Settings") {
-            frame.Navigate(xaml_typename<SettingsPage>());
-
-            co_return;
+        else if (page_name == L"PackagesNavViewItem") {
+            // fall through
         }
     } catch (const winrt::hresult_error &e) {
         this->HandleHrError(e);

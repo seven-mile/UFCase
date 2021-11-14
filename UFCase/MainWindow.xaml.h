@@ -37,7 +37,7 @@ namespace winrt::UFCase::implementation
 
         // Internal Functions
         winrt::AppWindow GetAppWindowForCurrentWindow();
-        winrt::IAsyncAction NavigateTo(NavigationViewItemBase item);
+        winrt::IAsyncAction NavigateTo(NavigationViewItemBase item, bool isSetting = false);
         void HandleHrError(winrt::hresult_error err);
 
         void UpdateTitleByConfig();
