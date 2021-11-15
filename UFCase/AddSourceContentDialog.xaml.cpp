@@ -37,9 +37,11 @@ namespace winrt::UFCase::implementation
         fp.SuggestedStartLocation(PickerLocationId::ComputerFolder);
         fp.ViewMode(PickerViewMode::List);
         fp.PickSingleFolderAsync().Completed([txtBox = this->SourceTextBox()](auto const&op, auto const&) {
-            txtBox.DispatcherQueue().TryEnqueue([op, txtBox]() {
-                txtBox.Text(op.GetResults().Path());
-            });
+            if (Windows::Storage::StorageFolder stFolder = op.GetResults()) {
+                txtBox.DispatcherQueue().TryEnqueue([stFolder, txtBox]() {
+                    txtBox.Text(stFolder.Path());
+                });
+            }
         });
     }
 }
