@@ -48,6 +48,9 @@
     <Midl Include="SysInfoRealtimeProvider.idl">
       <Filter>libraries\sysinfoapi</Filter>
     </Midl>
+    <Midl Include="PackageViewModel.idl">
+      <Filter>components\packages</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -131,6 +134,9 @@
     </Filter>
     <Filter Include="resources\EmbedAssets">
       <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\packages">
+      <UniqueIdentifier>{5ded9c92-d9b2-47ad-a060-d20f20bd3e52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

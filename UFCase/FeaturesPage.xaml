@@ -21,8 +21,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="700" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
         
         <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
@@ -32,7 +32,7 @@
                         <SymbolIconSource Symbol="Share" />
                     </XamlUICommand.IconSource>
                 </XamlUICommand>
-                <XamlUICommand x:Name="FeatureAddSourceUICommand" Label="AddSource" ExecuteRequested="FeatureAddSourceUICommand_ExecuteRequested">
+                <XamlUICommand x:Name="FeatureAddSourceUICommand" Label="Add Source" ExecuteRequested="FeatureAddSourceUICommand_ExecuteRequested">
                     <XamlUICommand.IconSource>
                         <SymbolIconSource Symbol="Add" />
                     </XamlUICommand.IconSource>
@@ -47,15 +47,103 @@
                 <AppBarButton Command="{StaticResource FeatureAddSourceUICommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid x:Name="FeatureInfoPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,0,0">
+                    <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Name), Mode=OneWay}" />
+                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                            </TextBlock>
+                            <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,10">
+                            <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True"
+                                      IsEnabled="{x:Bind IsFeatureStateCheckBoxEnabled(FeatureTree.SelectedItem.(local:FeatureTreeElement.State)), Mode=OneWay}"
+                                      IsChecked="{x:Bind IsFeatureStateCheckBoxCheckd(FeatureTree.SelectedItem.(local:FeatureTreeElement.State)), Mode=OneWay}">
+                                <CheckBox.Content>
+                                    <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.State), Mode=OneWay}" />
+                                </CheckBox.Content>
+                            </CheckBox>
+
+                        </StackPanel>
+                    </Border>
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenFileButton_Click">
+                        <Button.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEC50;" Margin="5,0,15,0" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="Some package files may be available in your disk" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenRegButton_Click">
+                        <Button.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="22" Glyph="&#xECAA;" Margin="5,0,15,0" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="Inspect the component key in the registry" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenKBButton_Click">
+                        <Button.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE897;" Margin="5,0,15,0" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open Support Information" />
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="Open the Microsoft KnowledgeBase for this feature" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
         
-        <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,0,0">
-                <TextBlock Text="Row1" />
-                <TextBlock Text="Row2" />
-            </StackPanel>
-        </Grid>
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
-            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False"
+            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False" Loaded="FeatureTree_Loaded"
                       AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind FeatureDataSource}">
                 <TreeView.Resources>
                     <XamlUICommand x:Name="FeatureInstallCommand" Label="Install" ExecuteRequested="FeatureInstallCommand_ExecuteRequested">
@@ -80,10 +168,16 @@
                     </XamlUICommand>
                     <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureStageCommand_ExecuteRequested" />
                 </TreeView.Resources>
+                <TreeView.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <RepositionThemeTransition />
+                        <ContentThemeTransition />
+                    </TransitionCollection>
+                </TreeView.ItemContainerTransitions>
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureTreeElement">
                         <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
-                                      ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}">
+                                      ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}" DoubleTapped="FeatureTreeItem_DoubleTapped">
                             <StackPanel Orientation="Horizontal">
                                 <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />
                                 <TextBlock Margin="10,8,0,8" VerticalAlignment="Center">

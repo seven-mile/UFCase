@@ -1,4 +1,5 @@
 import "ImageProvider.idl";
+import "PackageViewModel.idl";
 
 namespace UFCase
 {
@@ -26,6 +27,8 @@ namespace UFCase
         String Description{ get; set; };
         String Identity{ get; set; };
         FeatureState State{ get; set; };
+
+        PackageViewModel Package{ get; };
 
         Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> Children{ get; };
 

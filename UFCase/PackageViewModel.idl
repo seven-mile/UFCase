@@ -1,0 +1,55 @@
+namespace UFCase
+{
+    enum PackageState
+    {
+        Unknown = -1,
+        Absent = 0,
+        Resolving = 1,
+        Resolved = 2,
+        Staging = 3,
+        Staged = 4,
+        UninstallRequested = 5,
+        InstallRequested = 6,
+        Installed = 7,
+        Permanent = 8,
+    };
+
+    enum PackageType
+    {
+        Unknown = -2,
+        Existing,
+        Cabinet,
+        Expanded,
+        Manifest,
+        XmlString,
+        ExpandedWithMum,
+    };
+
+    enum PackageReleaseType
+    {
+        FeaturePack,
+        StackUpdate,
+        // and so on...
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass PackageViewModel
+    {
+        PackageViewModel();
+
+        static PackageViewModel LoadFromIdentity(String identity);
+        
+        // must-fetch basic info
+        String Identity{ get; set; };
+        String DisplayName{ get; set; };
+        String Description{ get; set; };
+        PackageState State{ get; set; };
+        String ReleaseType{ get; set; };
+
+        // dynamic get
+        String GetFSPath();
+        String GetRegPath();
+        String GetSupportUrl();
+    }
+}

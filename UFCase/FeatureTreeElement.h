@@ -21,6 +21,8 @@ namespace winrt::UFCase::implementation
         void Identity(const hstring &value);
         FeatureState State();
 
+        UFCase::PackageViewModel Package();
+
         child_t Children();
 
         hstring ModificationMark();

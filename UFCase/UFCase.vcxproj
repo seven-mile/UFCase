@@ -137,6 +137,10 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="MallocUtil.h" />
+    <ClInclude Include="PackageViewModel.h">
+      <DependentUpon>PackageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -234,6 +238,10 @@
     <ClCompile Include="FeatureTreeModel.cpp" />
     <ClCompile Include="ImageProvider.cpp">
       <DependentUpon>ImageProvider.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PackageViewModel.cpp">
+      <DependentUpon>PackageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -335,6 +343,9 @@
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="PackageViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ProgressPage.idl">
       <DependentUpon>ProgressPage.xaml</DependentUpon>

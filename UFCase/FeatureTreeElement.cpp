@@ -7,6 +7,8 @@
 #include <winrt/Windows.Storage.Streams.h>
 
 #include "CbsProviderManager.h"
+#include "MallocUtil.h"
+#include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -59,9 +61,44 @@ namespace winrt::UFCase::implementation
     {
         return m_state;
     }
+    UFCase::PackageViewModel FeatureTreeElement::Package()
+    {
+        auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
+
+        // todo: use config
+        winrt::check_hresult(pSess->Initialize(CbsSessionOptionNone, L"UFCase::FeatureTree", nullptr, nullptr));
+
+        // find foundation package
+        winrt::com_ptr<ICbsPackage> pFound;
+        {
+            winrt::com_ptr<ICbsIdentity> pId;
+
+            winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
+
+            winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
+
+            winrt::com_ptr<ICbsPackage> pPkgTmp;
+            winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkgTmp.put()));
+
+            // unmarshalling
+            pFound = pPkgTmp.as<ICbsPackage>();
+        }
+
+        com_ptr<ICbsUpdate> pUpd;
+        winrt::check_hresult(pFound->GetUpdate(m_identity.c_str(), pUpd.put()));
+        com_ptr<ICbsPackage> pPkg;
+        winrt::check_hresult(pUpd->GetPackage(pPkg.put()));
+        unique_malloc_wstring idstr;
+        winrt::check_hresult(pPkg->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(idstr)));
+
+        _CbsRequiredAction ra;
+        winrt::check_hresult(pSess->Finalize(&ra));
+
+        return UFCase::PackageViewModel::LoadFromIdentity(idstr.get());
+    }
     void FeatureTreeElement::State(FeatureState const &value)
     {
-        if (m_state == FeatureState::Invalid) {
+        if (m_state == FeatureState::Invalid || value == FeatureState::PartiallyEnabled) {
             m_state = value;
             return;
         }

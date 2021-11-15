@@ -4,7 +4,11 @@
 #include "FeaturesPage.g.cpp"
 #endif
 
+#include <winrt/Windows.ApplicationModel.DataTransfer.h>
+#include <winrt/Windows.System.h>
+
 #include <filesystem>
+#include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -56,6 +60,20 @@ namespace winrt::UFCase::implementation
         });
     }
 
+    bool FeaturesPage::IsFeatureStateCheckBoxEnabled(FeatureState const& st)
+    {
+        return st != FeatureState::Unavailable && st != FeatureState::Invalid;
+    }
+
+    Windows::Foundation::IReference<bool> FeaturesPage::IsFeatureStateCheckBoxCheckd(FeatureState const& st)
+    {
+        switch (st) {
+        case FeatureState::Enabled: return true;
+        case FeatureState::PartiallyEnabled: return nullptr;
+        default: return false;
+        }
+    }
+
     void FeaturesPage::FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
     {
         auto ele = args.Parameter().as<FeatureTreeElement>();
@@ -75,6 +93,17 @@ namespace winrt::UFCase::implementation
             {FeatureState::PartiallyEnabled, this->Resources().Lookup(box_value(L"TreeElementPartiallyIconSource")).as<IconSource>()},
             {FeatureState::Unavailable, this->Resources().Lookup(box_value(L"TreeElementUnavailableIconSource")).as<IconSource>()},
         };
+
+        // set indetermined state
+        if (ele.State() == FeatureState::Enabled) {
+            uint32_t cntEnabled = 0;
+            for (auto child : ele.Children()) {
+                cntEnabled += child.State() == FeatureState::Enabled;
+            }
+            if (cntEnabled < ele.Children().Size())
+                ele.State(FeatureState::PartiallyEnabled);
+        }
+
         ele.Icon(map_icon_src.find(ele.State())->second);
 
         // for context menu
@@ -82,8 +111,9 @@ namespace winrt::UFCase::implementation
         MenuFlyoutSeparator sp1, sp2;
         ele.ContextMenu(res);
 
+
         // todo: deal with other enum state
-        if (ele.State() == FeatureState::Enabled) {
+        if (ele.State() == FeatureState::Enabled || ele.State() == FeatureState::PartiallyEnabled) {
             MenuFlyoutItem stageItem, removeItem;
             stageItem.Command(this->FeatureStageCommand());
             removeItem.Command(this->FeatureRemoveCommand());
@@ -137,4 +167,110 @@ namespace winrt::UFCase::implementation
         for (auto child : ele.Children())
             this->ConfigFeatureTreeElementUIElements(child);
     }
+
+    void FeaturesPage::OpenFileButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
+        auto target = vm.Package().GetFSPath();
+        if (target == L"" || !std::filesystem::exists(target.c_str())) {
+            ContentDialog cd;
+            cd.XamlRoot(this->XamlRoot());
+            cd.Title(box_value(L"Cannot open file"));
+            cd.Content(box_value(L"This package have no valid file path."));
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.ShowAsync();
+
+            return;
+        }
+        ShellExecute(nullptr, L"open", L"explorer", std::format(L"/select, {}", target.c_str()).c_str(), nullptr, SW_SHOW);
+    }
+
+    void FeaturesPage::OpenRegButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
+        auto target = vm.Package().GetRegPath();
+
+        OutputDebugString(std::format(L"{}\n", target.c_str()).c_str());
+
+        try {
+            wil::unique_hkey hkeyTmp;
+            check_win32(RegOpenKey(HKEY_LOCAL_MACHINE, target.c_str(), wil::out_param(hkeyTmp)));
+        } catch (winrt::hresult_error const&) {
+            ContentDialog cd;
+            cd.XamlRoot(this->XamlRoot());
+            cd.Title(box_value(L"Cannot open file"));
+            cd.Content(box_value(L"This package have no valid file path."));
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.ShowAsync();
+
+            return;
+        }
+
+        target = L"HKLM\\" + target;
+
+        // write to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit
+        //wil::unique_hkey hkeyLastKey;
+        //check_nt(RegOpenKey(HKEY_CURRENT_USER,
+        //    L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
+        //    wil::out_param(hkeyLastKey)));
+        //check_nt(RegSetValue(hkeyLastKey.get(), L"LastKey", REG_SZ,
+        //    target.c_str(), sizeof(target.front()) * (1ull + target.size())));
+        
+        Windows::ApplicationModel::DataTransfer::DataPackage regText;
+        regText.SetText(target);
+        Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(regText);
+
+        {
+            ContentDialog cd;
+            cd.XamlRoot(this->XamlRoot());
+            cd.Title(box_value(L"Registry path copied!"));
+            cd.Content(box_value(L"You can paste it in the address bar and jump to it.\nUFCase cannot locate it automatically for you."));
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.ShowAsync().Completed([](auto&, auto&) {
+                ShellExecute(nullptr, L"open", L"regedit", nullptr, nullptr, SW_SHOW);
+            });
+        }
+
+
+    }
+
+    void FeaturesPage::OpenKBButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
+        auto url = vm.Package().GetSupportUrl();
+        try {
+            Windows::System::Launcher::LaunchUriAsync(Uri(url));
+        } catch (hresult_error const& e) {
+            ContentDialog cd;
+            cd.XamlRoot(this->XamlRoot());
+            cd.Title(box_value(L"Cannot open support info"));
+            cd.Content(box_value(L"This package have no valid support url."));
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.ShowAsync();
+        }
+    }
+
+    void FeaturesPage::FeatureTree_Loaded(IInspectable const&, RoutedEventArgs const&)
+    {
+        if (auto src = this->FeatureTree().ItemsSource().as<source_t>(); src.Size()) {
+            auto z = src.GetAt(0);
+            this->FeatureTree().SelectedItem(z);
+            auto ele = this->FeatureTree().ContainerFromItem(z);
+            ele.as<TreeViewItem>().IsSelected(true);
+        } else {
+            this->FeatureInfoPanel().Visibility(Visibility::Collapsed);
+        }
+    }
+    void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&)
+    {
+        auto item = sender.as<TreeViewItem>();
+        item.IsExpanded(!item.IsExpanded());
+    }
 }
+
+
+
