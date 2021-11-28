@@ -105,6 +105,8 @@ namespace winrt::UFCase {
 				THROW_IF_FAILED(CoCreateInstance(CLSID_CbsSession, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pRes.put_void()));
 				return pRes;
 			} else {
+				// m_pSessThreadMap: just quick fix for marshalling context problem
+				// todo: refactor CbsProvider hierarchy completely
 				auto& pSessCachedRef = m_pSessThreadMap[std::this_thread::get_id()];
 				if (pSessCachedRef) return pSessCachedRef;
 				THROW_IF_FAILED(CoCreateInstance(CLSID_CbsSession, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pSessCachedRef.put_void()));
