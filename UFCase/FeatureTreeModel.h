@@ -14,6 +14,8 @@ namespace winrt::UFCase
 
         using ele_t = FeatureTreeElement;
 
+        const wchar_t *m_sessionClient = L"FeatureTree";
+
         winrt::IMap<winrt::hstring, ele_t> m_mapEle
             = multi_threaded_map<winrt::hstring, ele_t>();
         winrt::IMap<winrt::hstring, winrt::hstring> m_mapFa

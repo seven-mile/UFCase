@@ -19,7 +19,7 @@ FeatureTreeModel::FeatureTreeModel(UFCase::ImageItem img)
 
     m_img = img;
     
-    pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
+    pSess = CbsProviderManager::Current().ApplyFromBootdrive(m_sessionClient, m_img.Bootdrive().c_str())->ApplySession();
 
     LOG_IF_FAILED(pSess->Initialize(CbsSessionOptionNone, L"UFCase", nullptr, nullptr));
 }
@@ -32,7 +32,7 @@ FeatureTreeModel::~FeatureTreeModel()
     _CbsRequiredAction ra;
     pSess->Finalize(&ra); // I don't care
 
-    CbsProviderManager::Current().Return(L"FeatureTree", m_img.Bootdrive().c_str());
+    CbsProviderManager::Current().Return(m_sessionClient, m_img.Bootdrive().c_str());
 }
 
 winrt::IAsyncOperationWithProgress<winrt::IObservableVector<FeatureTreeModel::ele_t>, uint32_t>
@@ -155,12 +155,12 @@ void FeatureTreeModel::AddDependency(
         sonNode.State(eSonState);
         sonNode.Identity(szSonUpdate);
     } else {
-        auto newSonNode = ele_t(szSonName, szSonDesc, szSonUpdate, eSonState, multi_threaded_observable_vector<ele_t>(), m_img);
+        auto newSonNode = ele_t(m_sessionClient, szSonName, szSonDesc, szSonUpdate, eSonState, multi_threaded_observable_vector<ele_t>(), m_img);
         m_mapEle.Insert(szSonUpdate, newSonNode);
     }
 
     if (!m_mapEle.HasKey(szParentUpdate)) {
-        auto newParentNode = ele_t(L"", L"", L"", FeatureState::Invalid, multi_threaded_observable_vector<ele_t>(), m_img);
+        auto newParentNode = ele_t(m_sessionClient, L"", L"", L"", FeatureState::Invalid, multi_threaded_observable_vector<ele_t>(), m_img);
         m_mapEle.Insert(szParentUpdate, newParentNode);
     }
     
@@ -190,7 +190,7 @@ void FeatureTreeModel::ClearTree()
     m_mapEle.Clear();
     m_mapFa.Clear();
     cntUpdates = 1u;
-    m_mapEle.Insert(GetRoot(), ele_t(GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>(), m_img));
+    m_mapEle.Insert(GetRoot(), ele_t(m_sessionClient, GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>(), m_img));
 }
 
 winrt::com_ptr<ICbsPackage> FeatureTreeModel::CbsHelper::FindFoundationPkg(winrt::com_ptr<ICbsSession> pSess)

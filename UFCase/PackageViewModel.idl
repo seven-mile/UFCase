@@ -36,9 +36,9 @@ namespace UFCase
     [default_interface]
     runtimeclass PackageViewModel
     {
-        PackageViewModel();
+        PackageViewModel(String sessionClient);
 
-        static PackageViewModel LoadFromIdentity(String identity);
+        static PackageViewModel LoadFromIdentity(String sessionClient, String identity);
         
         // must-fetch basic info
         String Identity{ get; set; };

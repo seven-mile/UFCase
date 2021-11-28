@@ -17,6 +17,7 @@ namespace UFCase
     runtimeclass FeatureTreeElement : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         FeatureTreeElement(
+            String sessionClient,
             String name, String desc, String identity, FeatureState state,
             Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> children,
             ImageItem img

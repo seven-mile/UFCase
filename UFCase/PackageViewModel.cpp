@@ -10,15 +10,14 @@
 
 namespace winrt::UFCase::implementation
 {
-	UFCase::PackageViewModel PackageViewModel::LoadFromIdentity(hstring const &id)
+	UFCase::PackageViewModel PackageViewModel::LoadFromIdentity(hstring const &sessionClient, hstring const &id)
 	{
-		UFCase::PackageViewModel res;
+		UFCase::PackageViewModel res{ sessionClient };
 
 		res.Identity(id);
 
-		auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"PackageViewModel",
+		auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(sessionClient,
 			CbsProviderManager::GetOnlineBootdrive())->ApplySession();
-		check_hresult(pSess->Initialize(CbsSessionOptionNone, L"UFCase::PackageViewModel", nullptr, nullptr));
 
 		com_ptr<ICbsIdentity> pId;
 		check_hresult(pSess->CreateCbsIdentity(pId.put()));
@@ -60,11 +59,29 @@ namespace winrt::UFCase::implementation
 				res.State(PackageState::Permanent);
 			else res.State(PackageState::Unknown);
 		}
-
-		_CbsRequiredAction ra{};
-		check_hresult(pSess->Finalize(&ra));
 		
 		return res;
+	}
+	com_ptr<ICbsSession> PackageViewModel::GetSession()
+	{
+		return CbsProviderManager::Current().ApplyFromBootdrive(m_sessionClient,
+			CbsProviderManager::GetOnlineBootdrive())->ApplySession();
+	}
+	com_ptr<ICbsPackage> PackageViewModel::GetPackage()
+	{
+		if (!m_pPkg) {
+			com_ptr<ICbsIdentity> pId;
+			auto pSess = this->GetSession();
+			check_hresult(pSess->CreateCbsIdentity(pId.put()));
+			check_hresult(pId->LoadFromStringId(id.c_str()));
+
+			check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, m_pPkg.put()));
+			m_pPkg = m_pPkg.as<ICbsPackage>();
+		}
+		return m_pPkg;
+	}
+	PackageViewModel::PackageViewModel(hstring sessionClient) : m_sessionClient(sessionClient)
+	{
 	}
 	hstring PackageViewModel::Identity()
 	{

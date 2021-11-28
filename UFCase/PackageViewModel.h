@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CbsApi.h"
 #include "PackageViewModel.g.h"
 
 namespace winrt::UFCase::implementation
@@ -12,11 +13,18 @@ namespace winrt::UFCase::implementation
         PackageState state = PackageState::Unknown;
         hstring reltype;
 
+        hstring m_sessionClient;
+
+        com_ptr<ICbsPackage> m_pPkg;
+
+        com_ptr<ICbsSession> GetSession();
+        com_ptr<ICbsPackage> GetPackage();
+
         // public in IDL:
 
-        PackageViewModel() = default;
+        PackageViewModel(hstring sessionClient);
         
-        static UFCase::PackageViewModel LoadFromIdentity(hstring const &id);
+        static UFCase::PackageViewModel LoadFromIdentity(hstring const &sessionClient, hstring const &id);
 
         hstring Identity();
         void Identity(hstring const& val);

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CbsApi.h"
 #include "FeatureTreeElement.g.h"
 
 namespace winrt::UFCase::implementation
@@ -7,7 +8,33 @@ namespace winrt::UFCase::implementation
     struct FeatureTreeElement : FeatureTreeElementT<FeatureTreeElement>
     {
         using child_t = IObservableVector<UFCase::FeatureTreeElement>;
-        FeatureTreeElement(hstring name, hstring desc, hstring identity, FeatureState state, child_t children, UFCase::ImageItem img);
+
+        winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
+
+        hstring m_name;
+        hstring m_desc;
+        hstring m_identity;
+        FeatureState m_state = FeatureState::Invalid;
+        child_t m_children;
+        hstring m_mark = L"";
+        IconSource m_icon {nullptr};
+
+        UFCase::ImageItem m_img;
+        Primitives::FlyoutBase m_menu {nullptr};
+
+        hstring m_sessionClient;
+
+        // cached
+        com_ptr<ICbsUpdate> m_pUpd;
+        com_ptr<ICbsPackage> m_pPkg, m_pFound;
+        UFCase::PackageViewModel m_PkgVM{nullptr};
+
+        com_ptr<ICbsSession> GetSession();
+        com_ptr<ICbsPackage> GetFoundationPkg();
+        com_ptr<ICbsUpdate> GetUpdate();
+        com_ptr<ICbsPackage> GetPackage();
+
+        FeatureTreeElement(hstring const &sessionClient, hstring const &name, hstring const &desc, hstring const &identity, FeatureState state, child_t children, UFCase::ImageItem img);
 
         // implement INotifyPropertyChanged
         winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
@@ -36,18 +63,6 @@ namespace winrt::UFCase::implementation
         void State(FeatureState const &value);
 
     private:
-        winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
-
-        hstring m_name;
-        hstring m_desc;
-        hstring m_identity;
-        FeatureState m_state = FeatureState::Invalid;
-        child_t m_children;
-        hstring m_mark = L"";
-        IconSource m_icon {nullptr};
-
-        UFCase::ImageItem m_img;
-        Primitives::FlyoutBase m_menu {nullptr};
     };
 }
 

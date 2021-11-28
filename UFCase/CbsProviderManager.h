@@ -9,8 +9,14 @@
 
 namespace winrt::UFCase {
 
+	enum class CbsProvidePolicy {
+		Singleton,
+		Multiton
+	};
+
 	class ICbsProvider {
 	public:
+		virtual CbsProvidePolicy GetProvidePolicy() const = 0;
 		virtual std::filesystem::path GetBootdrive() const = 0;
 		virtual winrt::com_ptr<ICbsSession> ApplySession() = 0;
 		virtual void Dispose() = 0;
@@ -27,7 +33,7 @@ namespace winrt::UFCase {
 		static CbsProviderManager& Current();
 		static std::filesystem::path GetOnlineBootdrive();
 
-		ICbsProvider* ApplyFromBootdrive(winrt::hstring const& client, std::filesystem::path const& bootdrive);
+		ICbsProvider* ApplyFromBootdrive(winrt::hstring const& client, std::filesystem::path const& bootdrive, CbsProvidePolicy policy = CbsProvidePolicy::Singleton);
 		const void Return(winrt::hstring const& client, std::filesystem::path const& bootdrive);
 	};
 

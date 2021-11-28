@@ -9,10 +9,12 @@ namespace winrt::UFCase {
 	struct CbsOfflineProvider : public ICbsProvider {
 		std::filesystem::path m_bootdrv;
 		winrt::guid m_guid;
-		HINSTANCE m_hHost;
+		HINSTANCE m_hHost{ nullptr };
 		winrt::com_ptr<IClassFactory> m_pFactory;
+		CbsProvidePolicy m_policy;
+		winrt::com_ptr<ICbsSession> pSessCached;
 
-		CbsOfflineProvider(std::filesystem::path bootdrv) : m_bootdrv(bootdrv) {
+		CbsOfflineProvider(std::filesystem::path bootdrv, CbsProvidePolicy policy) : m_bootdrv(bootdrv), m_policy(policy) {
 			m_guid = winrt::GuidHelper::CreateNewGuid();
 			WCHAR pathExe[MAX_PATH];
 			GetModuleFileNameW(NULL, pathExe, MAX_PATH);
@@ -31,7 +33,14 @@ namespace winrt::UFCase {
 		CbsOfflineProvider(CbsOfflineProvider&) = delete;
 
 		virtual ~CbsOfflineProvider() {
+			if (pSessCached) {
+				_CbsRequiredAction ra{};
+				pSessCached->Finalize(&ra);
+			}
+		}
 
+		virtual CbsProvidePolicy GetProvidePolicy() const override {
+			return m_policy;
 		}
 
 		virtual std::filesystem::path GetBootdrive() const override {
@@ -43,37 +52,64 @@ namespace winrt::UFCase {
 		}
 
 		virtual winrt::com_ptr<ICbsSession> ApplySession() override {
-			winrt::com_ptr<ICbsSession> pSess{};
-			pSess = winrt::create_instance<ICbsSession>(m_guid, CLSCTX_LOCAL_SERVER);
+			if (m_policy == CbsProvidePolicy::Multiton) {
+				winrt::com_ptr<ICbsSession> pRes{};
+				pRes = winrt::create_instance<ICbsSession>(m_guid, CLSCTX_LOCAL_SERVER);
+				return pRes;
+			} else {
+				if (pSessCached) return pSessCached;
+				return pSessCached = winrt::create_instance<ICbsSession>(m_guid, CLSCTX_LOCAL_SERVER);
+			}
 			//winrt::check_hresult(CoGetClassObject(m_guid, CLSCTX_LOCAL_SERVER, nullptr, __uuidof(IClassFactory), m_pFactory.put_void()));
 			//winrt::check_hresult(m_pFactory->CreateInstance(nullptr, __uuidof(ICbsSession), pSess.put_void()));
 			//winrt::check_hresult(CoCreateInstance(m_guid, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pSess.put_void()));
-			return pSess;
 		}
 		virtual void Dispose() override {
 			// kill cbs host proc
-			winrt::check_bool(TerminateProcess(m_hHost, S_OK));
+			if (m_hHost)
+				winrt::check_bool(TerminateProcess(m_hHost, S_OK));
 
 			delete this;
 		}
 	};
 
 	struct CbsOnlineProvider : public ICbsProvider {
-		CbsOnlineProvider() {
+		CbsProvidePolicy m_policy;
+		winrt::com_ptr<ICbsSession> pSessCached;
+		std::map<std::thread::id, winrt::com_ptr<ICbsSession>> m_pSessThreadMap;
+		
+		CbsOnlineProvider(CbsProvidePolicy policy) : m_policy(policy) {
 
 		}
 		CbsOnlineProvider(CbsOnlineProvider const&) = delete;
 		CbsOnlineProvider(CbsOnlineProvider&) = delete;
 
-		virtual ~CbsOnlineProvider() = default;
+		virtual ~CbsOnlineProvider() {
+			if (pSessCached) {
+				_CbsRequiredAction ra{};
+				pSessCached->Finalize(&ra);
+			}
+		}
+
+		virtual CbsProvidePolicy GetProvidePolicy() const override {
+			return m_policy;
+		}
+
 		virtual std::filesystem::path GetBootdrive() const override {
 			return CbsProviderManager::GetOnlineBootdrive();
 		}
 
 		virtual winrt::com_ptr<ICbsSession> ApplySession() override {
-			winrt::com_ptr<ICbsSession> pRes;
-			THROW_IF_FAILED(CoCreateInstance(CLSID_CbsSession, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pRes.put_void()));
-			return pRes;
+			if (m_policy == CbsProvidePolicy::Multiton) {
+				winrt::com_ptr<ICbsSession> pRes;
+				THROW_IF_FAILED(CoCreateInstance(CLSID_CbsSession, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pRes.put_void()));
+				return pRes;
+			} else {
+				auto& pSessCachedRef = m_pSessThreadMap[std::this_thread::get_id()];
+				if (pSessCachedRef) return pSessCachedRef;
+				THROW_IF_FAILED(CoCreateInstance(CLSID_CbsSession, nullptr, CLSCTX_SERVER, __uuidof(ICbsSession), pSessCachedRef.put_void()));
+				return pSessCachedRef;
+			}
 		}
 		virtual void Dispose() override {
 			// have nothing to do
@@ -108,18 +144,24 @@ namespace winrt::UFCase {
 		return pathBd;
 	}
 
-	ICbsProvider* CbsProviderManager::ApplyFromBootdrive(winrt::hstring const& client, std::filesystem::path const& bootdrive)
+	ICbsProvider* CbsProviderManager::ApplyFromBootdrive(winrt::hstring const& client, std::filesystem::path const& bootdrive, CbsProvidePolicy policy)
 	{
 		auto& users = m_mapUsers[bootdrive];
 		users.insert(client);
 		auto& prov = m_provStore[bootdrive];
 
-		if (prov) return prov;
+		if (prov) {
+#ifdef _DEBUG
+			if (prov->GetProvidePolicy() != policy)
+				throw hresult_illegal_state_change{};
+#endif
+			return prov;
+		}
 		if (CbsProviderManager::GetOnlineBootdrive() == bootdrive) {
-			return prov = new CbsOnlineProvider{};
+			return prov = new CbsOnlineProvider{ policy };
 		}
 		else {
-			return prov = new CbsOfflineProvider{ bootdrive };
+			return prov = new CbsOfflineProvider{ bootdrive, policy };
 		}
 	}
 

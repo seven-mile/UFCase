@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "CbsApi.h"
 #include "FeatureTreeElement.h"
 #if __has_include("FeatureTreeElement.g.cpp")
 #include "FeatureTreeElement.g.cpp"
@@ -12,9 +13,49 @@
 
 namespace winrt::UFCase::implementation
 {
-    FeatureTreeElement::FeatureTreeElement(hstring name, hstring desc, hstring identity,
+    com_ptr<ICbsSession> FeatureTreeElement::GetSession()
+    {
+        return CbsProviderManager::Current().ApplyFromBootdrive(m_sessionClient, m_img.Bootdrive().c_str())->ApplySession();
+    }
+    com_ptr<ICbsPackage> FeatureTreeElement::GetFoundationPkg()
+    {
+        if (!m_pFound) {
+            // find foundation package
+            auto pSess = this->GetSession();
+            {
+                winrt::com_ptr<ICbsIdentity> pId;
+
+                winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
+
+                winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
+
+                winrt::com_ptr<ICbsPackage> pPkgTmp;
+                winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkgTmp.put()));
+
+                // unmarshalling
+                m_pFound = pPkgTmp.as<ICbsPackage>();
+            }
+        }
+        return m_pFound;
+    }
+    com_ptr<ICbsUpdate> FeatureTreeElement::GetUpdate()
+    {
+        if (!m_pUpd) {
+            check_hresult(this->GetFoundationPkg()->GetUpdate(m_identity.c_str(), m_pUpd.put()));
+        }
+        return m_pUpd;
+    }
+    com_ptr<ICbsPackage> FeatureTreeElement::GetPackage()
+    {
+        if (!m_pPkg)
+            this->GetUpdate()->GetPackage(m_pPkg.put());
+        return m_pPkg;
+    }
+
+    FeatureTreeElement::FeatureTreeElement(hstring const& sessionClient, hstring const& name, hstring const& desc, hstring const& identity,
         FeatureState state, child_t children, UFCase::ImageItem img)
     {
+        m_sessionClient = sessionClient;
         m_name = name;
         m_desc = desc;
         m_identity = identity;
@@ -63,38 +104,13 @@ namespace winrt::UFCase::implementation
     }
     UFCase::PackageViewModel FeatureTreeElement::Package()
     {
-        auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
+        if (!m_PkgVM) {
+            unique_malloc_wstring idstr;
+            winrt::check_hresult(this->GetPackage()->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(idstr)));
 
-        // todo: use config
-        winrt::check_hresult(pSess->Initialize(CbsSessionOptionNone, L"UFCase::FeatureTree", nullptr, nullptr));
-
-        // find foundation package
-        winrt::com_ptr<ICbsPackage> pFound;
-        {
-            winrt::com_ptr<ICbsIdentity> pId;
-
-            winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
-
-            winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
-
-            winrt::com_ptr<ICbsPackage> pPkgTmp;
-            winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkgTmp.put()));
-
-            // unmarshalling
-            pFound = pPkgTmp.as<ICbsPackage>();
+            m_PkgVM = UFCase::PackageViewModel::LoadFromIdentity(m_sessionClient, idstr.get());
         }
-
-        com_ptr<ICbsUpdate> pUpd;
-        winrt::check_hresult(pFound->GetUpdate(m_identity.c_str(), pUpd.put()));
-        com_ptr<ICbsPackage> pPkg;
-        winrt::check_hresult(pUpd->GetPackage(pPkg.put()));
-        unique_malloc_wstring idstr;
-        winrt::check_hresult(pPkg->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(idstr)));
-
-        _CbsRequiredAction ra;
-        winrt::check_hresult(pSess->Finalize(&ra));
-
-        return UFCase::PackageViewModel::LoadFromIdentity(idstr.get());
+        return m_PkgVM;
     }
     void FeatureTreeElement::State(FeatureState const &value)
     {
@@ -103,39 +119,12 @@ namespace winrt::UFCase::implementation
             return;
         }
 
-        auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(L"FeatureTree", m_img.Bootdrive().c_str())->ApplySession();
-
-        // todo: use config
-        winrt::check_hresult(pSess->Initialize(CbsSessionOptionNone, L"UFCase", nullptr, nullptr));
-
-        // find foundation package
-        winrt::com_ptr<ICbsPackage> pFound;
-        {
-            winrt::com_ptr<ICbsIdentity> pId;
-        
-            winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
-
-            winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
-
-            winrt::com_ptr<ICbsPackage> pPkgTmp;
-            winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkgTmp.put()));
-    
-            // unmarshalling
-            pFound = pPkgTmp.as<ICbsPackage>();
-        }
-
-        // open this update and initiate modification
-        com_ptr<ICbsUpdate> pUpd;
-        winrt::check_hresult(pFound->GetUpdate(m_identity.c_str(), pUpd.put()));
+        auto pUpd = this->GetUpdate();
         OutputDebugString(std::format(L"pUpd = {}\n", reinterpret_cast<void*>(pUpd.get())).c_str());
         //if (value == )
         //pUpd->SetInstallState(0, );
 
         m_state = value;
-
-        // finalize the session
-        _CbsRequiredAction ra;
-        winrt::check_hresult(pSess->Finalize(&ra));
 
         this->ModificationMark(L"*");
         m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"State"});
