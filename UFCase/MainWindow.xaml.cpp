@@ -220,6 +220,9 @@ namespace winrt::UFCase::implementation
         }
         else if (page_name == L"PackagesNavViewItem") {
             // fall through
+            frame.Navigate(xaml_typename<PackagesPage>());
+
+            co_return;
         }
     } catch (const winrt::hresult_error &e) {
         this->HandleHrError(e);

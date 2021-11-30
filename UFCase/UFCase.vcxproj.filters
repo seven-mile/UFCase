@@ -32,6 +32,9 @@
     <Page Include="AddSourceContentDialog.xaml">
       <Filter>components\features</Filter>
     </Page>
+    <Page Include="PackagesPage.xaml">
+      <Filter>components\packages</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -49,6 +52,9 @@
       <Filter>libraries\sysinfoapi</Filter>
     </Midl>
     <Midl Include="PackageViewModel.idl">
+      <Filter>components\packages</Filter>
+    </Midl>
+    <Midl Include="PackagesProvider.idl">
       <Filter>components\packages</Filter>
     </Midl>
   </ItemGroup>

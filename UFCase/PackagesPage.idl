@@ -1,0 +1,12 @@
+import "PackagesProvider.idl";
+
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass PackagesPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        PackagesPage();
+
+        PackagesProvider PackageDataSource{ get; };
+    }
+}

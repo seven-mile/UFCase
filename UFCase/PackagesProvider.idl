@@ -1,0 +1,13 @@
+import "PackageViewModel.idl";
+
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass PackagesProvider 
+    {
+        PackagesProvider();
+        
+        Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
+    }
+}

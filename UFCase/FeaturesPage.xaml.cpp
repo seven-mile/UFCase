@@ -243,7 +243,7 @@ namespace winrt::UFCase::implementation
         auto url = vm.Package().GetSupportUrl();
         try {
             Windows::System::Launcher::LaunchUriAsync(Uri(url));
-        } catch (hresult_error const& e) {
+        } catch (hresult_error const&) {
             ContentDialog cd;
             cd.XamlRoot(this->XamlRoot());
             cd.Title(box_value(L"Cannot open support info"));
