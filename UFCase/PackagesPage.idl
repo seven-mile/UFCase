@@ -3,7 +3,7 @@ import "PackagesProvider.idl";
 namespace UFCase
 {
     [default_interface]
-    runtimeclass PackagesPage : Microsoft.UI.Xaml.Controls.Page
+    runtimeclass PackagesPage : Microsoft.UI.Xaml.Controls.Page, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         PackagesPage();
 

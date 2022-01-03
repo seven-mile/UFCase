@@ -219,8 +219,7 @@ namespace winrt::UFCase::implementation
             // fall through
         }
         else if (page_name == L"PackagesNavViewItem") {
-            // fall through
-            frame.Navigate(xaml_typename<PackagesPage>());
+            frame.Navigate(xaml_typename<PackagesPage>(), m_imgprov.Images().GetAt(m_imgprov.SelectedIndex()));
 
             co_return;
         }

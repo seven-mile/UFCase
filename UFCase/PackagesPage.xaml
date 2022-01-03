@@ -58,10 +58,20 @@
         </SplitView.Pane>
         <ListView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   SelectionMode="Single"
-                  ItemsSource="{x:Bind PackageDataSource.Packages}">
+                  ItemsSource="{x:Bind PackageDataSource.Packages,Mode=OneWay}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <ContentThemeTransition />
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:PackageViewModel">
-                    <Grid>
+                    <Grid HorizontalAlignment="Stretch">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32" />
                             <RowDefinition Height="24" />
@@ -73,11 +83,16 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind DisplayName}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind Identity}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center">
-                                <Run Text="{x:Bind State}" />
-                                <Run Text="{x:Bind ReleaseType}" />
-                                <Run Text="{x:Bind Description}" />
-                        </TextBlock>
+                        <!--SecondaryTextFontSize-->
+                        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+                            <Border Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                            </Border>
+                            <Border Background="SkyBlue" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                        </StackPanel>
                         <AppBarButton Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                                       Label="More Actions" Icon="More" IsCompact="True" VerticalAlignment="Center"
                                       Flyout="{StaticResource PackageItemActionsMenu}" />

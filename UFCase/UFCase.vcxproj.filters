@@ -159,6 +159,7 @@
     <None Include="packages.config">
       <Filter>framework</Filter>
     </None>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CbsApi.idl">

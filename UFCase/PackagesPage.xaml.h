@@ -5,6 +5,10 @@
 namespace winrt {
     inline hstring to_hstring(UFCase::PackageState const& state) {
         switch (state) {
+        case UFCase::PackageState::PartiallyInstalled: return L"PartiallyInstalled";
+        case UFCase::PackageState::Cancel: return L"Cancel";
+        case UFCase::PackageState::Superseded: return L"Superseded";
+        case UFCase::PackageState::Default: return L"Default";
         case UFCase::PackageState::Absent: return L"Absent";
         case UFCase::PackageState::Resolving: return L"Resolving";
         case UFCase::PackageState::Resolved: return L"Resolved";
@@ -24,9 +28,15 @@ namespace winrt::UFCase::implementation
 {
     struct PackagesPage : PackagesPageT<PackagesPage>
     {
+        winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
+
         PackagesPage();
 
-        void OnNavigatedTo(const Navigation::NavigationEventArgs& e);
+        // implement INotifyPropertyChanged
+        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
+        void PropertyChanged(winrt::event_token const& token);
+
+        IAsyncAction OnNavigatedTo(const Navigation::NavigationEventArgs& e);
 
         UFCase::PackagesProvider m_pkgProv{nullptr};
         UFCase::PackagesProvider PackageDataSource();

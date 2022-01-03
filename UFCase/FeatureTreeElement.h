@@ -61,8 +61,6 @@ namespace winrt::UFCase::implementation
 
         // Effective Method : Operation with current Cbs Session
         void State(FeatureState const &value);
-
-    private:
     };
 }
 

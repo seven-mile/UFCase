@@ -1,13 +1,18 @@
 import "PackageViewModel.idl";
+import "ImageProvider.idl";
 
 namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass PackagesProvider 
+    runtimeclass PackagesProvider : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         PackagesProvider();
+
+        static Windows.Foundation.IAsyncOperation<PackagesProvider>
+        LoadFromImage(ImageItem img);
         
-        Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
+        Windows.Foundation.Collections.IObservableVector<PackageViewModel>
+        Packages{ get; };
     }
 }

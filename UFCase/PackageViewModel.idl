@@ -2,6 +2,10 @@ namespace UFCase
 {
     enum PackageState
     {
+        PartiallyInstalled = -5,
+        Cancel = -4,
+        Superseded = -3,
+        Default = -2,
         Unknown = -1,
         Absent = 0,
         Resolving = 1,
