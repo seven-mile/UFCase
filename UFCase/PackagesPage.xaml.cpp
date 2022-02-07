@@ -28,6 +28,9 @@ namespace winrt::UFCase::implementation
     {
         this->m_pkgProv = co_await UFCase::PackagesProvider::LoadFromImage(e.Parameter().as<UFCase::ImageItem>());
         this->m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"PackageDataSource"});
+
+        if (this->m_pkgProv.Packages().Size())
+            this->PkgList().SelectedIndex(0);
     }
     UFCase::PackagesProvider PackagesPage::PackageDataSource()
     {

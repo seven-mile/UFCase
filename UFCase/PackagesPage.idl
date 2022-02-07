@@ -8,5 +8,6 @@ namespace UFCase
         PackagesPage();
 
         PackagesProvider PackageDataSource{ get; };
+        Microsoft.UI.Xaml.Controls.ListView PkgList{ get; };
     }
 }

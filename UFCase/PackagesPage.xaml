@@ -22,42 +22,52 @@
     </Page.Resources>
 
     <SplitView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-               DisplayMode="Inline"
-               OpenPaneLength="300" IsPaneOpen="True">
+               DisplayMode="Inline" PanePlacement="Right"
+               OpenPaneLength="500" IsPaneOpen="True">
         <SplitView.Pane>
-            <StackPanel Orientation="Vertical">
-                <RichTextBlock>
-                    <Paragraph>RichTextBlock provides a rich text display container that supports
-                        <Run FontStyle="Italic" FontWeight="Bold">formatted text</Run> ,
-                        <Hyperlink NavigateUri="https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Documents.Hyperlink">hyperlinks</Hyperlink> , inline images, and other rich content.
-                    </Paragraph>
-                    <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
-                </RichTextBlock>
-                <RichTextBlock>
-                    <Paragraph>RichTextBlock provides a rich text display container that supports
-                        <Run FontStyle="Italic" FontWeight="Bold">formatted text</Run> ,
-                        <Hyperlink NavigateUri="https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Documents.Hyperlink">hyperlinks</Hyperlink> , inline images, and other rich content.
-                    </Paragraph>
-                    <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
-                </RichTextBlock>
-                <RichTextBlock>
-                    <Paragraph>RichTextBlock provides a rich text display container that supports
-                        <Run FontStyle="Italic" FontWeight="Bold">formatted text</Run> ,
-                        <Hyperlink NavigateUri="https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Documents.Hyperlink">hyperlinks</Hyperlink> , inline images, and other rich content.
-                    </Paragraph>
-                    <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
-                </RichTextBlock>
-                <RichTextBlock>
-                    <Paragraph>RichTextBlock provides a rich text display container that supports
-                        <Run FontStyle="Italic" FontWeight="Bold">formatted text</Run> ,
-                        <Hyperlink NavigateUri="https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Documents.Hyperlink">hyperlinks</Hyperlink> , inline images, and other rich content.
-                    </Paragraph>
-                    <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
-                </RichTextBlock>
-            </StackPanel>
+            <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid x:Name="FeatureInfoPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,20,0">
+                        <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                                <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DisplayName), Mode=OneWay}" />
+                                <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                </TextBlock>
+                                <TextBlock Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                            </StackPanel>
+                        </Border>
+                        <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEC50;" Margin="5,0,15,0" />
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
+                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="Some package files may be available in your disk" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </SplitView.Pane>
-        <ListView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  SelectionMode="Single"
+        <ListView x:Name="PkgList"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  SelectionMode="Single" IsItemClickEnabled="False"
                   ItemsSource="{x:Bind PackageDataSource.Packages,Mode=OneWay}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
