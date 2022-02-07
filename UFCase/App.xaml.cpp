@@ -66,12 +66,11 @@ namespace winrt::UFCase::implementation
 
         if (auto cfg_path = pathAppData / cfg_filename;
                 std::filesystem::exists(cfg_path)) {
-            ReadAppConfigFromFile(g_appConfigPath = cfg_path.c_str());
+            AppConfig::ReadAppConfigFromFile(cfg_path.c_str());
         } else {
-            LoadDefaultAppConfig();
             if (!std::filesystem::exists(pathAppData))
                 winrt::check_bool(std::filesystem::create_directories(pathAppData));
-            WriteAppConfigToFile(g_appConfigPath = cfg_path.c_str());
+            AppConfig::WriteAppConfigToFile(cfg_path.c_str());
         }
 
         this->ConfigAppModuleResources();

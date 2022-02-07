@@ -1,41 +1,37 @@
 #include "pch.h"
+#include "AppConfig.h"
 
 #include <fstream>
 
 #include <winrt/Windows.Storage.h>
 
 namespace winrt::UFCase {
-    using Windows::Data::Json::JsonObject;
+    using namespace Windows::Data::Json;
 
-    JsonObject g_appConfig = JsonObject();
-    hstring g_appConfigPath;
-
-    void ReadAppConfigFromFile(hstring const &path) {
-        std::ifstream fs{path.c_str()};
+    void AppConfig::ReadAppConfigFromFile() {
+        std::ifstream fs{AppConfig::Current().appConfigPath.c_str()};
         std::istreambuf_iterator<char> beg(fs), end; 
         std::wstring buffer(beg, end);
-        g_appConfig = Windows::Data::Json::JsonObject::Parse(buffer);
+        AppConfig::Current().appConfig = Windows::Data::Json::JsonObject::Parse(buffer);
         fs.close();
     }
 
-    void LoadDefaultAppConfig() {
-        g_appConfig = Windows::Data::Json::JsonObject::Parse(LR"(
-{
-  "stack": {
-    "source": 0,
-    "argBootdrive": ""
-  },
-  "sysInfo": {
-    "autoRefresh": true
-  }
-}
-        )");
-    }
-
-    void WriteAppConfigToFile(hstring const &path) {
-        std::wfstream fs{path.c_str(), std::ios::ate | std::ios::out};
-        auto resStr = g_appConfig.ToString();
+    void AppConfig::WriteAppConfigToFile() {
+        auto resStr = AppConfig::Current().appConfig.ToString();
+        // {} etc... empty config
+        if (resStr.size() < 3) return;
+        std::wfstream fs{AppConfig::Current().appConfigPath.c_str(), std::ios::ate | std::ios::out};
         fs.write(resStr.c_str(), resStr.size());
         fs.close();
+    }
+
+    void AppConfig::ReadAppConfigFromFile(hstring const& path) {
+        AppConfig::Current().appConfigPath = path;
+        AppConfig::ReadAppConfigFromFile();
+    }
+
+    void AppConfig::WriteAppConfigToFile(hstring const& path) {
+        AppConfig::Current().appConfigPath = path;
+        AppConfig::WriteAppConfigToFile();
     }
 }

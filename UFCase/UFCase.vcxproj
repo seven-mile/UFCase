@@ -411,19 +411,19 @@
     <MyEmbeddedItems Include="EmbedAssets\Windows8.png" />
   </ItemGroup>
   <Target Name="AddMyEmbeddedItems" BeforeTargets="_GenerateProjectPriFileCore" AfterTargets="_CalculateInputsForGenerateProjectPriFileCore">
-    <ItemGroup>
+    <!--<ItemGroup>
       <MyXamlEmbededItems Include="@(_LayoutFile)" Condition="'%(Extension)' == '.xbf' or '%(Extension)' == '.xaml'" />
       <_LayoutFile Remove="@(MyXamlEmbededItems)" />
-    </ItemGroup>
+    </ItemGroup>-->
     <Copy SourceFiles="@(MyEmbeddedItems)" DestinationFiles="@(MyEmbeddedItems->'$(IntermediateOutputPath)embed\EmbedAssets\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(MyXamlEmbededItems)" DestinationFiles="@(MyXamlEmbededItems->'$(IntermediateOutputPath)embed\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <!--<Copy SourceFiles="@(MyXamlEmbededItems)" DestinationFiles="@(MyXamlEmbededItems->'$(IntermediateOutputPath)embed\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />-->
     <ReadLinesFromFile File="$(_EmbedFileResfilePath)">
       <Output TaskParameter="Lines" ItemName="ItemsFromFile" />
     </ReadLinesFromFile>
     <ItemGroup>
       <MyEmbeddedFileList Include="@(ItemsFromFile)" />
       <MyEmbeddedFileList Include="@(MyEmbeddedItems)" />
-      <MyEmbeddedFileList Include="@(MyXamlEmbededItems->'%(Filename)%(Extension)')" />
+      <!--<MyEmbeddedFileList Include="@(MyXamlEmbededItems->'%(Filename)%(Extension)')" />-->
     </ItemGroup>
     <WriteLinesToFile File="$(_EmbedFileResfilePath)" Lines="@(MyEmbeddedFileList)" Overwrite="true" Encoding="Unicode" />
   </Target>

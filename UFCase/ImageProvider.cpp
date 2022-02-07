@@ -63,15 +63,13 @@ namespace winrt::UFCase::implementation
         m_selectedIdx = value;
 
         auto img = m_images.GetAt(value);
-        auto stackObj = g_appConfig.GetNamedObject(L"stack");
-        using Windows::Data::Json::JsonValue;
 
         if (img.Type() == L"Online") {
-            stackObj.SetNamedValue(L"source", JsonValue::CreateNumberValue(0));
-            stackObj.SetNamedValue(L"argBootdrive", JsonValue::CreateStringValue(L""));
+            AppConfig::SetStackSource(0);
+            AppConfig::SetStackArgBootdrive(L"");
         } else if (img.Type() == L"Offline") {
-            stackObj.SetNamedValue(L"source", JsonValue::CreateNumberValue(1));
-            stackObj.SetNamedValue(L"argBootdrive", JsonValue::CreateStringValue(img.Bootdrive()));
+            AppConfig::SetStackSource(1);
+            AppConfig::SetStackArgBootdrive(img.Bootdrive());
         } else throw hresult_invalid_argument{};
 
         this->m_propertyChanged(*this, winrt::Data::PropertyChangedEventArgs{L"SelectedIndex"});

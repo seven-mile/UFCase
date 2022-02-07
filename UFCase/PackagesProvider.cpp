@@ -49,7 +49,7 @@ namespace winrt::UFCase::implementation
         LOG_IF_FAILED(pz->pSess->Initialize(CbsSessionOptionNone, L"UFCase", nullptr, nullptr));
 
         com_ptr<IEnumCbsIdentity> pIds;
-        auto hr = pz->pSess->EnumeratePackages(0x1b0, pIds.put());
+        pz->pSess->EnumeratePackages(0x1b0, pIds.put());
         for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(pIds)) {
             unique_malloc_wstring wsId;
             id->GetStringId(wil::out_param(wsId));

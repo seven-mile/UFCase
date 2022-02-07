@@ -16,7 +16,7 @@ namespace winrt::UFCase::implementation
         auto imgProv = Application::Current().Resources().Lookup(box_value(L"ImageProviderInstance")).as<UFCase::ImageProvider>();
         m_static = UFCase::SysInfoStaticProvider(imgProv.Images().GetAt(imgProv.SelectedIndex()));
 
-        this->AutoRefreshSwitch().IsOn(g_appConfig.GetNamedObject(L"sysInfo").GetNamedBoolean(L"autoRefresh"));
+        this->AutoRefreshSwitch().IsOn(AppConfig::GetSysinfoAutoRefresh());
     }
 
     UFCase::SysInfoStaticProvider SysInfoPage::StaticInfo()
@@ -36,8 +36,8 @@ namespace winrt::UFCase::implementation
             this->RealtimeInfo().Timer().Start();
         else this->RealtimeInfo().Timer().Stop();
 
-        g_appConfig.GetNamedObject(L"sysInfo").SetNamedValue(L"autoRefresh", JsonValue::CreateBooleanValue(swch.IsOn()));
-        WriteAppConfigToFile();
+        AppConfig::SetSysinfoAutoRefresh(swch.IsOn());
+        AppConfig::WriteAppConfigToFile();
     }
 
 }

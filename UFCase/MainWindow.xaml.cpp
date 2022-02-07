@@ -67,11 +67,10 @@ namespace winrt::UFCase::implementation
 
     void MainWindow::UpdateTitleByConfig()
     {
-        auto stack_source = g_appConfig.GetNamedObject(L"stack");
-        if (static_cast<int>(stack_source.GetNamedNumber(L"source")) == 0) {
+        if (AppConfig::GetStackSource() == 0) {
             this->AppTitle().Text(L"UFCase [Online Image] [Non-Admin]");
         } else {
-            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", stack_source.GetNamedString(L"argBootdrive")).c_str());
+            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", AppConfig::GetStackArgBootdrive()).c_str());
         }
     }
 
