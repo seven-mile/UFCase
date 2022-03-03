@@ -27,7 +27,7 @@ namespace winrt::UFCase::implementation
         if (auto val = e.Parameter().try_as<source_t>()) {
             // configure icon & menu flyout from xaml
             for (auto ele : val) {
-                this->ConfigFeatureTreeElementUIElements(ele);
+                this->ConfigFeatureViewModelUIElements(ele);
             }
 
             m_source = val;
@@ -60,32 +60,18 @@ namespace winrt::UFCase::implementation
         });
     }
 
-    bool FeaturesPage::IsFeatureStateCheckBoxEnabled(FeatureState const& st)
-    {
-        return st != FeatureState::Unavailable && st != FeatureState::Invalid;
-    }
-
-    Windows::Foundation::IReference<bool> FeaturesPage::IsFeatureStateCheckBoxCheckd(FeatureState const& st)
-    {
-        switch (st) {
-        case FeatureState::Enabled: return true;
-        case FeatureState::PartiallyEnabled: return nullptr;
-        default: return false;
-        }
-    }
-
     void FeaturesPage::FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
     {
-        auto ele = args.Parameter().as<FeatureTreeElement>();
-        ele.State(FeatureState::Enabled);
+        auto ele = args.Parameter().as<FeatureViewModel>();
+        //ele.State(FeatureState::Enabled);
     }
     void FeaturesPage::FeatureStageCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
     {
-        auto ele = args.Parameter().as<FeatureTreeElement>();
-        ele.State(FeatureState::Disabled);
+        auto ele = args.Parameter().as<FeatureViewModel>();
+        //ele.State(FeatureState::Disabled);
     }
 
-    void FeaturesPage::ConfigFeatureTreeElementUIElements(FeatureTreeElement ele)
+    void FeaturesPage::ConfigFeatureViewModelUIElements(FeatureViewModel ele)
     {
         const static std::unordered_map<FeatureState, IconSource> map_icon_src {
             {FeatureState::Enabled, this->Resources().Lookup(box_value(L"TreeElementEnabledIconSource")).as<IconSource>()},
@@ -95,14 +81,14 @@ namespace winrt::UFCase::implementation
         };
 
         // set indetermined state
-        if (ele.State() == FeatureState::Enabled) {
-            uint32_t cntEnabled = 0;
-            for (auto child : ele.Children()) {
-                cntEnabled += child.State() == FeatureState::Enabled;
-            }
-            if (cntEnabled < ele.Children().Size())
-                ele.State(FeatureState::PartiallyEnabled);
-        }
+        //if (ele.State() == FeatureState::Enabled) {
+        //    uint32_t cntEnabled = 0;
+        //    for (auto child : ele.Children()) {
+        //        cntEnabled += child.State() == FeatureState::Enabled;
+        //    }
+        //    if (cntEnabled < ele.Children().Size())
+        //        ele.State(FeatureState::PartiallyEnabled);
+        //}
 
         ele.Icon(map_icon_src.find(ele.State())->second);
 
@@ -165,13 +151,13 @@ namespace winrt::UFCase::implementation
                 cmdItem.CommandParameter(ele);
         
         for (auto child : ele.Children())
-            this->ConfigFeatureTreeElementUIElements(child);
+            this->ConfigFeatureViewModelUIElements(child);
     }
 
     void FeaturesPage::OpenFileButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
-        auto target = vm.Package().GetFSPath();
+        auto vm = this->FeatureTree().SelectedItem().as<FeatureViewModel>();
+        auto target = vm.Package().InstallLocation();
         if (target == L"" || !std::filesystem::exists(target.c_str())) {
             ContentDialog cd;
             cd.XamlRoot(this->XamlRoot());
@@ -188,59 +174,59 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::OpenRegButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
-        auto target = vm.Package().GetRegPath();
+        //auto vm = this->FeatureTree().SelectedItem().as<FeatureViewModel>();
+        //auto target = vm.Package().Identity(); // todo: concat
 
-        OutputDebugString(std::format(L"{}\n", target.c_str()).c_str());
+        //OutputDebugString(std::format(L"{}\n", target.c_str()).c_str());
 
-        try {
-            wil::unique_hkey hkeyTmp;
-            check_win32(RegOpenKey(HKEY_LOCAL_MACHINE, target.c_str(), wil::out_param(hkeyTmp)));
-        } catch (winrt::hresult_error const&) {
-            ContentDialog cd;
-            cd.XamlRoot(this->XamlRoot());
-            cd.Title(box_value(L"Cannot open file"));
-            cd.Content(box_value(L"This package have no valid file path."));
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            cd.ShowAsync();
+        //try {
+        //    wil::unique_hkey hkeyTmp;
+        //    check_win32(RegOpenKey(HKEY_LOCAL_MACHINE, target.c_str(), wil::out_param(hkeyTmp)));
+        //} catch (winrt::hresult_error const&) {
+        //    ContentDialog cd;
+        //    cd.XamlRoot(this->XamlRoot());
+        //    cd.Title(box_value(L"Cannot open file"));
+        //    cd.Content(box_value(L"This package have no valid file path."));
+        //    cd.PrimaryButtonText(L"OK");
+        //    cd.DefaultButton(ContentDialogButton::Primary);
+        //    cd.ShowAsync();
 
-            return;
-        }
+        //    return;
+        //}
 
-        target = L"HKLM\\" + target;
+        //target = L"HKLM\\" + target;
 
-        // write to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit
-        //wil::unique_hkey hkeyLastKey;
-        //check_nt(RegOpenKey(HKEY_CURRENT_USER,
-        //    L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
-        //    wil::out_param(hkeyLastKey)));
-        //check_nt(RegSetValue(hkeyLastKey.get(), L"LastKey", REG_SZ,
-        //    target.c_str(), sizeof(target.front()) * (1ull + target.size())));
-        
-        Windows::ApplicationModel::DataTransfer::DataPackage regText;
-        regText.SetText(target);
-        Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(regText);
+        //// write to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit
+        ////wil::unique_hkey hkeyLastKey;
+        ////check_nt(RegOpenKey(HKEY_CURRENT_USER,
+        ////    L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
+        ////    wil::out_param(hkeyLastKey)));
+        ////check_nt(RegSetValue(hkeyLastKey.get(), L"LastKey", REG_SZ,
+        ////    target.c_str(), sizeof(target.front()) * (1ull + target.size())));
+        //
+        //Windows::ApplicationModel::DataTransfer::DataPackage regText;
+        //regText.SetText(target);
+        //Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(regText);
 
-        {
-            ContentDialog cd;
-            cd.XamlRoot(this->XamlRoot());
-            cd.Title(box_value(L"Registry path copied!"));
-            cd.Content(box_value(L"You can paste it in the address bar and jump to it.\nUFCase cannot locate it automatically for you."));
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            cd.ShowAsync().Completed([](auto&, auto&) {
-                ShellExecute(nullptr, L"open", L"regedit", nullptr, nullptr, SW_SHOW);
-            });
-        }
+        //{
+        //    ContentDialog cd;
+        //    cd.XamlRoot(this->XamlRoot());
+        //    cd.Title(box_value(L"Registry path copied!"));
+        //    cd.Content(box_value(L"You can paste it in the address bar and jump to it.\nUFCase cannot locate it automatically for you."));
+        //    cd.PrimaryButtonText(L"OK");
+        //    cd.DefaultButton(ContentDialogButton::Primary);
+        //    cd.ShowAsync().Completed([](auto&, auto&) {
+        //        ShellExecute(nullptr, L"open", L"regedit", nullptr, nullptr, SW_SHOW);
+        //    });
+        //}
 
 
     }
 
     void FeaturesPage::OpenKBButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        auto vm = this->FeatureTree().SelectedItem().as<FeatureTreeElement>();
-        auto url = vm.Package().GetSupportUrl();
+        auto vm = this->FeatureTree().SelectedItem().as<FeatureViewModel>();
+        auto url = vm.Package().SupportInformation();
         try {
             Windows::System::Launcher::LaunchUriAsync(Uri(url));
         } catch (hresult_error const&) {

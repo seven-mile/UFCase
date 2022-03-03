@@ -8,69 +8,68 @@
 
 namespace winrt::UFCase {
 
-    FeatureModel* FeatureModel::Create(com_ptr<ICbsUpdate> update, uint64_t parent)
+    FeatureModel* FeatureModel::Create(com_ptr<ICbsUpdate> update, PackageModel *package)
     {
-        return new FeatureModel{ update, PackageModel::GetInstance(parent)};
+        return new FeatureModel{ update, package };
     }
 
-    FeatureModel* FeatureModel::Create(com_ptr<ICbsUpdate> update, PackageModel &parent)
+    hstring FeatureModel::Name() const
     {
-        return new FeatureModel{ update, parent };
+        unique_malloc_wstring ws;
+        update->GetProperty(CbsUpdatePropertyName, wil::out_param(ws));
+        return ws.get();
     }
 
-    hstring FeatureModel::Name()
+    _CbsInstallState FeatureModel::State() const
     {
-        return hstring();
+        _CbsInstallState state_current{}, state_intended{}, state_request{};
+        check_hresult(update->GetInstallState(&state_current, &state_intended, &state_request));
+        return state_current;
     }
 
-    _CbsInstallState FeatureModel::State()
-    {
-        return _CbsInstallState();
-    }
-
-    hstring FeatureModel::DisplayName()
+    hstring FeatureModel::DisplayName() const
     {
         unique_malloc_wstring ws;
         update->GetProperty(CbsUpdatePropertyDisplayName, wil::out_param(ws));
         return ws.get();
     }
 
-    hstring FeatureModel::Description()
+    hstring FeatureModel::Description() const
     {
         unique_malloc_wstring ws;
         update->GetProperty(CbsUpdatePropertyDescription, wil::out_param(ws));
         return ws.get();
     }
 
-    hstring FeatureModel::DisplayFile()
+    hstring FeatureModel::DisplayFile() const
     {
         unique_malloc_wstring ws;
         update->GetProperty(CbsUpdatePropertyDisplayFile, wil::out_param(ws));
         return ws.get();
     }
 
-    hstring FeatureModel::Restart()
+    hstring FeatureModel::Restart() const
     {
         unique_malloc_wstring ws;
         update->GetProperty(CbsUpdatePropertyRestart, wil::out_param(ws));
         return ws.get();
     }
 
-    hstring FeatureModel::PsfName()
+    hstring FeatureModel::PsfName() const
     {
         unique_malloc_wstring ws;
         update->GetProperty(CbsUpdatePropertyPsfName, wil::out_param(ws));
         return ws.get();
     }
 
-    hstring FeatureModel::DownloadSize()
+    hstring FeatureModel::DownloadSize() const
     {
         unique_malloc_wstring ws_download_size;
         update->GetProperty(CbsUpdatePropertyDownloadSize, wil::out_param(ws_download_size));
         return ws_download_size.get();
     }
 
-    hstring FeatureModel::SetMembership()
+    hstring FeatureModel::SetMembership() const
     {
         unique_malloc_wstring ws_declared_set;
         _CbsCardinality cardinality;
@@ -78,9 +77,9 @@ namespace winrt::UFCase {
         return ws_declared_set.get();
     }
 
-    PackageModel *FeatureModel::RawParentPackage()
+    PackageModel *FeatureModel::RawParentPackage() const
     {
-        return &parent;
+        return &package;
     }
 
     void FeatureModel::Enable()
@@ -93,7 +92,7 @@ namespace winrt::UFCase {
         check_hresult(update->SetInstallState(0, CbsInstallStateUninstallRequested));
     }
 
-    std::vector<FeatureModel*> FeatureModel::GetParentFeatureCollection()
+    std::vector<FeatureModel*> FeatureModel::GetParentFeatureCollection() const
     {
         constexpr HRESULT CBS_E_ARRAY_MISSING_INDEX = 0x800F0809;
         std::vector<FeatureModel*> res{};
@@ -103,7 +102,7 @@ namespace winrt::UFCase {
             if (hr == CBS_E_ARRAY_MISSING_INDEX) break;
             check_hresult(hr);
 
-            res.push_back(parent.OpenFeature(ws_parent_name.get()));
+            res.push_back(package.OpenFeature(ws_parent_name.get()));
         }
         return res;
     }

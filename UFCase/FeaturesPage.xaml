@@ -57,19 +57,19 @@
                     <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Name), Mode=OneWay}" />
-                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Name), Mode=OneWay}" />
+                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
                             </TextBlock>
-                            <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
                         </StackPanel>
                     </Border>
                     <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,10">
                             <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True"
-                                      IsEnabled="{x:Bind IsFeatureStateCheckBoxEnabled(FeatureTree.SelectedItem.(local:FeatureTreeElement.State)), Mode=OneWay}"
-                                      IsChecked="{x:Bind IsFeatureStateCheckBoxCheckd(FeatureTree.SelectedItem.(local:FeatureTreeElement.State)), Mode=OneWay}">
+                                      IsEnabled="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsEnabled), Mode=OneWay}"
+                                      IsChecked="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsChecked), Mode=OneWay}">
                                 <CheckBox.Content>
-                                    <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureTreeElement.State), Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.StateText), Mode=OneWay}" />
                                 </CheckBox.Content>
                             </CheckBox>
 
@@ -175,7 +175,7 @@
                     </TransitionCollection>
                 </TreeView.ItemContainerTransitions>
                 <TreeView.ItemTemplate>
-                    <DataTemplate x:DataType="local:FeatureTreeElement">
+                    <DataTemplate x:DataType="local:FeatureViewModel">
                         <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
                                       ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}" DoubleTapped="FeatureTreeItem_DoubleTapped">
                             <StackPanel Orientation="Horizontal">

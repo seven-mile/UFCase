@@ -119,30 +119,32 @@
     </ClInclude>
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="CbsProviderManager.h" />
+    <ClInclude Include="CbsUtil.h" />
     <ClInclude Include="ErrorPage.h">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FeatureModel.h" />
     <ClInclude Include="FeaturesPage.xaml.h">
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FeatureTreeElement.h">
-      <DependentUpon>FeatureTreeElement.idl</DependentUpon>
+    <ClInclude Include="FeatureViewModel.h">
+      <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FeatureTreeModel.h" />
+    <ClInclude Include="FeatureTreeHelper.h" />
+    <ClInclude Include="ImageModel.h" />
     <ClInclude Include="ImageProvider.h">
       <DependentUpon>ImageProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="MallocUtil.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="PackageModel.h" />
     <ClInclude Include="PackagesPage.xaml.h">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
-    <ClInclude Include="PackagesProvider.h">
-      <DependentUpon>PackagesProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="PackageViewModel.h">
@@ -164,6 +166,7 @@
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SessionModel.h" />
     <ClInclude Include="SettingsPage.xaml.h">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -238,25 +241,24 @@
       <DependentUpon>ErrorPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FeatureModel.cpp" />
     <ClCompile Include="FeaturesPage.xaml.cpp">
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FeatureTreeElement.cpp">
-      <DependentUpon>FeatureTreeElement.idl</DependentUpon>
+    <ClCompile Include="FeatureViewModel.cpp">
+      <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FeatureTreeModel.cpp" />
+    <ClCompile Include="FeatureTreeHelper.cpp" />
+    <ClCompile Include="ImageModel.cpp" />
     <ClCompile Include="ImageProvider.cpp">
       <DependentUpon>ImageProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="PackageModel.cpp" />
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
-    <ClCompile Include="PackagesProvider.cpp">
-      <DependentUpon>PackagesProvider.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackageViewModel.cpp">
@@ -281,6 +283,7 @@
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="SessionModel.cpp" />
     <ClCompile Include="SettingsPage.xaml.cpp">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -353,7 +356,7 @@
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="FeatureTreeElement.idl">
+    <Midl Include="FeatureViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ImageProvider.idl">
@@ -366,9 +369,6 @@
     <Midl Include="PackagesPage.idl">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Midl>
-    <Midl Include="PackagesProvider.idl">
-      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PackageViewModel.idl">
       <SubType>Designer</SubType>

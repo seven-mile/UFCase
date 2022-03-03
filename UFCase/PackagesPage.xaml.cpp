@@ -27,16 +27,16 @@ namespace winrt::UFCase::implementation
         m_propertyChanged.remove(token);
     }
 
-    IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
+    void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        this->m_pkgProv = co_await UFCase::PackagesProvider::LoadFromImage(e.Parameter().as<UFCase::ImageItem>());
+        this->m_pkgProv = e.Parameter().as<IObservableVector<UFCase::PackageViewModel>>();
         this->m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"PackageDataSource"});
 
-        if (this->m_pkgProv.Packages().Size())
+        if (this->m_pkgProv.Size())
             this->PkgList().SelectedIndex(0);
     }
 
-    UFCase::PackagesProvider PackagesPage::PackageDataSource()
+    IObservableVector<UFCase::PackageViewModel> PackagesPage::PackageDataSource()
     {
         return this->m_pkgProv;
     }

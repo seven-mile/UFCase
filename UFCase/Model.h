@@ -9,10 +9,10 @@ class Model
 protected:
     Model() {
         static_assert(std::derived_from<Derived, Model>, "not derived from Model class");
-        handle = ModelManager<Derived>::Insert(this);
+        handle = ModelManager<Derived>::Insert((Derived*)(this));
     }
 public:
-    uint64_t GetHandle() {
+    uint64_t GetHandle() const {
         assert(handle);
         return handle;
     }

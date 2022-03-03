@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "PackageModel.h"
+#include "SessionModel.h"
+#include "FeatureModel.h"
+
 #include "CbsProviderManager.h"
 #include "MallocUtil.h"
 #include "CbsUtil.h"
@@ -9,28 +12,9 @@
 
 namespace winrt::UFCase {
 
-    PackageModel::PackageModel(hstring const&sessionClient, hstring const& id)
+    PackageModel* PackageModel::Create(SessionModel* session, com_ptr<ICbsPackage> package)
     {
-        auto pSess = CbsProviderManager::Current().ApplyFromBootdrive(sessionClient,
-            CbsProviderManager::GetOnlineBootdrive())->ApplySession();
-
-        com_ptr<ICbsIdentity> pId;
-        check_hresult(pSess->CreateCbsIdentity(pId.put()));
-
-        check_hresult(pId->LoadFromStringId(id.c_str()));
-        check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, package.put()));
-
-        package = package.as<ICbsPackage>();
-    }
-
-    PackageModel* winrt::UFCase::PackageModel::Create(hstring const&sessionClient, hstring const& identity)
-    {
-        return new PackageModel{ sessionClient, identity };
-    }
-
-    PackageModel* PackageModel::Create(com_ptr<ICbsPackage> package)
-    {
-        return new PackageModel{ package };
+        return new PackageModel{ session, package };
     }
 
     hstring PackageModel::Identity()
@@ -178,20 +162,26 @@ namespace winrt::UFCase {
         check_hresult(package->InitiateChanges(0, CbsInstallStateStaged, nullptr));
     }
 
-    FeatureModel* PackageModel::OpenFeature(hstring const& UpdateName)
+    FeatureModel* PackageModel::OpenFeature(hstring const& name)
     {
+        if (auto it = updates.find(name); it != updates.end())
+            return &FeatureModel::GetInstance(it->second);
         com_ptr<ICbsUpdate> update;
-        check_hresult(package->GetUpdate(UpdateName.c_str(), update.put()));
+        check_hresult(package->GetUpdate(name.c_str(), update.put()));
 
-        return FeatureModel::Create(update, *this);
+        auto &&res = FeatureModel::Create(update, this);
+        updates[name] = res->GetHandle();
+        return res;
     }
 
-    std::vector<FeatureModel*> PackageModel::GetPackageFeatureCollection()
+    std::vector<FeatureModel*> PackageModel::GetPackageFeatureCollection(_CbsApplicability appl, _CbsSelectability sele)
     {
         com_ptr<IEnumCbsUpdate> updates;
+        check_hresult(package->EnumerateUpdates(appl, sele, updates.put()));
+
         std::vector<FeatureModel*> handles;
         for (auto&& update : GetIEnumComPtrVector<ICbsUpdate>(updates)) {
-            handles.push_back(FeatureModel::Create(update, *this));
+            handles.push_back(FeatureModel::Create(update, this));
         }
         return handles;
     }

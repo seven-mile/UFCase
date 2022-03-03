@@ -8,11 +8,13 @@
 #include "SettingsPage.g.h"
 
 #include "FeaturesPage.g.h"
-#include "FeatureTreeElement.g.h"
-#include "FeatureTreeModel.h"
+#include "FeatureViewModel.g.h"
+#include "FeatureTreeHelper.h"
+
 
 #include "ErrorPage.g.h"
 
+#include "ImageModel.h"
 #include "AppConfig.h"
 
 // To learn more about WinUI, the WinUI project structure,
@@ -186,14 +188,12 @@ namespace winrt::UFCase::implementation
             auto imgItem = this->ImageComboBox().SelectedItem().as<UFCase::ImageItem>();
             co_await winrt::resume_background();
 
-            // dynamic allocation to extend lifetime
-            auto pModel = std::make_unique<FeatureTreeModel>(imgItem);
-            auto op = pModel->ConstructUpdateTree();
+            auto image_model = ImageModel::Create(imgItem.Bootdrive().c_str());
+            auto op = ConstructUpdateTree(*image_model);
 
             cancel_token.callback([=](){ op.Cancel(); });
 
-            // move model pointer and reserve thread context to extend lifetime
-            op.Completed([pModel = std::move(pModel), ptr = this->get_strong(), frame]
+            op.Completed([ptr = this->get_strong(), frame]
                     (const decltype(op) &info, const winrt::AsyncStatus &status) -> winrt::IAsyncAction {
                 if (status != winrt::AsyncStatus::Completed) {
                     ptr->HandleHrError(winrt::hresult_error(
@@ -218,7 +218,14 @@ namespace winrt::UFCase::implementation
             // fall through
         }
         else if (page_name == L"PackagesNavViewItem") {
-            frame.Navigate(xaml_typename<PackagesPage>(), m_imgprov.Images().GetAt(m_imgprov.SelectedIndex()));
+            auto bootdrive = m_imgprov.Images().GetAt(m_imgprov.SelectedIndex()).Bootdrive();
+            auto session = ImageModel::Create(bootdrive.c_str())->OpenSession();
+            auto res = single_threaded_observable_vector<UFCase::PackageViewModel>();
+
+            for (auto&& pkg : session->Packages())
+                res.Append(UFCase::PackageViewModel(pkg->GetHandle()));
+
+            frame.Navigate(xaml_typename<PackagesPage>(), res);
 
             co_return;
         }

@@ -1,5 +1,22 @@
 namespace UFCase
 {
+    enum PackageState
+    {
+        PartiallyInstalled = -5,
+        Cancel = -4,
+        Superseded = -3,
+        Default = -2,
+        Unknown = -1,
+        Absent = 0,
+        Resolving = 1,
+        Resolved = 2,
+        Staging = 3,
+        Staged = 4,
+        UninstallRequested = 5,
+        InstallRequested = 6,
+        Installed = 7,
+        Permanent = 8,
+    };
 
     [bindable]
     [default_interface]

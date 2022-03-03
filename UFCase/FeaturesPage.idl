@@ -1,4 +1,4 @@
-import "FeatureTreeElement.idl";
+import "FeatureViewModel.idl";
 
 namespace UFCase
 {
@@ -7,11 +7,7 @@ namespace UFCase
     {
         FeaturesPage();
 
-        Windows.Foundation.Collections.IObservableVector<FeatureTreeElement> FeatureDataSource{ get; };
+        Windows.Foundation.Collections.IObservableVector<FeatureViewModel> FeatureDataSource{ get; };
         Microsoft.UI.Xaml.Controls.TreeView FeatureTree;
-
-        // binding helper functions
-        Boolean IsFeatureStateCheckBoxEnabled(FeatureState state);
-        Windows.Foundation.IReference<Boolean> IsFeatureStateCheckBoxCheckd(FeatureState state);
     }
 }

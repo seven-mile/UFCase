@@ -36,10 +36,10 @@ namespace winrt::UFCase::implementation
         winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
         void PropertyChanged(winrt::event_token const& token);
 
-        IAsyncAction OnNavigatedTo(const Navigation::NavigationEventArgs& e);
+        void OnNavigatedTo(const Navigation::NavigationEventArgs& e);
 
-        UFCase::PackagesProvider m_pkgProv{nullptr};
-        UFCase::PackagesProvider PackageDataSource();
+        IObservableVector<UFCase::PackageViewModel> m_pkgProv{nullptr};
+        IObservableVector<UFCase::PackageViewModel> PackageDataSource();
     };
 }
 

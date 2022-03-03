@@ -36,7 +36,7 @@
                             <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DisplayName), Mode=OneWay}" />
+                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Name), Mode=OneWay}" />
                                     <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
                                     </TextBlock>
                                     <TextBlock Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
@@ -70,7 +70,7 @@
             <ListView x:Name="PkgList"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       SelectionMode="Single" IsItemClickEnabled="False"
-                      ItemsSource="{x:Bind PackageDataSource.Packages,Mode=OneWay}">
+                      ItemsSource="{x:Bind PackageDataSource, Mode=OneWay}">
                 <ListView.Resources>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -93,7 +93,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind DisplayName}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind Name}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind Identity}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
                             <!--SecondaryTextFontSize-->
                             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">

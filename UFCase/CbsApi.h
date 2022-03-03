@@ -480,6 +480,7 @@ enum __MIDL___MIDL_itf_CbsApi_0000_0000_0019
 typedef /* [public] */ 
 enum __MIDL___MIDL_itf_CbsApi_0000_0000_0020
     {
+        CbsDeferChange	= ( 1 << 14 ) ,
         CbsTreatPackageAsPSFX	= ( 1 << 15 ) 
     } 	_CbsPackageChangeOption;
 

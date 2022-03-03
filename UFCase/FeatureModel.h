@@ -4,29 +4,31 @@
 
 namespace winrt::UFCase {
 
+    class PackageModel;
+
     class FeatureModel : public Model<FeatureModel>
     {
         com_ptr<ICbsUpdate> update;
-        struct PackageModel &parent;
-        FeatureModel(com_ptr<ICbsUpdate> update, PackageModel &parent)
-            : update(update), parent(parent) {  }
-    public:
-        static FeatureModel* Create(com_ptr<ICbsUpdate> update, uint64_t parent);
-        static FeatureModel* Create(com_ptr<ICbsUpdate> update, PackageModel &parent);
+        PackageModel &package;
 
-        hstring Name();
-        _CbsInstallState State();
-        hstring DisplayName();
-        hstring Description();
-        hstring DisplayFile();
-        hstring Restart();
-        hstring PsfName();
-        hstring DownloadSize();
-        hstring SetMembership();
-        PackageModel *RawParentPackage();
+        FeatureModel(com_ptr<ICbsUpdate> update, PackageModel *package)
+            : update(update), package(*package) {  }
+    public:
+        static FeatureModel* Create(com_ptr<ICbsUpdate> update, PackageModel *parent);
+
+        hstring Name() const;
+        _CbsInstallState State() const;
+        hstring DisplayName() const;
+        hstring Description() const;
+        hstring DisplayFile() const;
+        hstring Restart() const;
+        hstring PsfName() const;
+        hstring DownloadSize() const;
+        hstring SetMembership() const;
+        PackageModel *RawParentPackage() const;
         void Enable();
         void Disable();
-        std::vector<FeatureModel*> GetParentFeatureCollection();
+        std::vector<FeatureModel*> GetParentFeatureCollection() const;
     };
 
 }

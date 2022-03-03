@@ -1,61 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Page Include="MainWindow.xaml" />
-    <Page Include="FeaturesPage.xaml">
-      <Filter>components\features</Filter>
-    </Page>
     <Page Include="ProgressPage.xaml">
       <Filter>libraries\util</Filter>
     </Page>
     <Page Include="ErrorPage.xaml">
       <Filter>libraries\util</Filter>
     </Page>
-    <Page Include="SysInfoPage.xaml">
-      <Filter>components\sysinfo</Filter>
-    </Page>
     <Page Include="SettingsPage.xaml">
-      <Filter>components\settings</Filter>
+      <Filter>views\pages\settings</Filter>
     </Page>
     <Page Include="TemplateSettingsPage.xaml">
-      <Filter>components\settings\subpages</Filter>
+      <Filter>views\pages\settings\subpages</Filter>
     </Page>
     <Page Include="RootSettingsPage.xaml">
-      <Filter>components\settings\subpages</Filter>
+      <Filter>views\pages\settings\subpages</Filter>
     </Page>
     <Page Include="SettingsStyleResources.xaml">
-      <Filter>components\settings</Filter>
+      <Filter>views\pages\settings</Filter>
     </Page>
     <Page Include="GlobalStyleResources.xaml">
       <Filter>resources</Filter>
     </Page>
     <Page Include="AddSourceContentDialog.xaml">
-      <Filter>components\features</Filter>
+      <Filter>views\dialogs</Filter>
+    </Page>
+    <Page Include="FeaturesPage.xaml">
+      <Filter>views\pages</Filter>
     </Page>
     <Page Include="PackagesPage.xaml">
-      <Filter>components\packages</Filter>
+      <Filter>views\pages</Filter>
+    </Page>
+    <Page Include="SysInfoPage.xaml">
+      <Filter>views\pages</Filter>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Filter>views\windows</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
     <Midl Include="MainWindow.idl" />
-    <Midl Include="FeatureTreeElement.idl">
-      <Filter>components\features</Filter>
-    </Midl>
-    <Midl Include="ImageProvider.idl">
-      <Filter>libraries\imagingapi</Filter>
-    </Midl>
-    <Midl Include="SysInfoStaticProvider.idl">
-      <Filter>libraries\sysinfoapi</Filter>
-    </Midl>
-    <Midl Include="SysInfoRealtimeProvider.idl">
-      <Filter>libraries\sysinfoapi</Filter>
+    <Midl Include="FeatureViewModel.idl">
+      <Filter>view_models</Filter>
     </Midl>
     <Midl Include="PackageViewModel.idl">
-      <Filter>components\packages</Filter>
+      <Filter>view_models</Filter>
     </Midl>
-    <Midl Include="PackagesProvider.idl">
-      <Filter>components\packages</Filter>
+    <Midl Include="ImageProvider.idl">
+      <Filter>view_models</Filter>
+    </Midl>
+    <Midl Include="SysInfoRealtimeProvider.idl">
+      <Filter>view_models</Filter>
+    </Midl>
+    <Midl Include="SysInfoStaticProvider.idl">
+      <Filter>view_models</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +63,6 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>framework</Filter>
-    </ClCompile>
-    <ClCompile Include="FeatureTreeModel.cpp">
-      <Filter>components\features</Filter>
     </ClCompile>
     <ClCompile Include="CbsApiProxy.c">
       <Filter>libraries\servicingapi</Filter>
@@ -77,13 +73,25 @@
     <ClCompile Include="CbsProviderManager.cpp">
       <Filter>libraries\servicingapi</Filter>
     </ClCompile>
+    <ClCompile Include="FeatureModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureTreeHelper.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="PackageModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
-    </ClInclude>
-    <ClInclude Include="FeatureTreeModel.h">
-      <Filter>components\features</Filter>
     </ClInclude>
     <ClInclude Include="SSShimApi.h">
       <Filter>libraries\servicingapi</Filter>
@@ -97,34 +105,43 @@
     <ClInclude Include="CbsProviderManager.h">
       <Filter>libraries\servicingapi</Filter>
     </ClInclude>
+    <ClInclude Include="CbsUtil.h">
+      <Filter>libraries\util</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureTreeHelper.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="PackageModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">
       <UniqueIdentifier>{1a452f4c-a1ba-4975-8387-e818e1bc333e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components">
-      <UniqueIdentifier>{d9378ea3-18fa-4d1d-a8a6-c4b2f8b841a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="libraries">
       <UniqueIdentifier>{38eb061c-6e1f-4c2b-a5fe-781325d28ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="components\features">
-      <UniqueIdentifier>{bb8db857-6887-4c65-964d-88daafa36fdb}</UniqueIdentifier>
     </Filter>
     <Filter Include="libraries\util">
       <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\sysinfo">
-      <UniqueIdentifier>{7d12d582-ea58-40b4-a581-896ddff473bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="libraries\appconfig">
       <UniqueIdentifier>{55eaf09c-4e3b-41b5-9ead-cec9990028e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="components\settings">
-      <UniqueIdentifier>{41ce4714-fa1c-404c-9307-c554dbc55c6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="components\settings\subpages">
-      <UniqueIdentifier>{828c1d4e-e4ff-4598-92ec-d485598fefd6}</UniqueIdentifier>
     </Filter>
     <Filter Include="resources">
       <UniqueIdentifier>{2129dccb-97dc-494d-aba6-3c56e4e34a00}</UniqueIdentifier>
@@ -132,17 +149,32 @@
     <Filter Include="libraries\servicingapi">
       <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="libraries\sysinfoapi">
-      <UniqueIdentifier>{f4470710-06d1-456c-9c45-915b3306bf1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libraries\imagingapi">
-      <UniqueIdentifier>{4058fc11-5a60-4305-a6e7-cfa9aafc6c00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="resources\EmbedAssets">
       <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\packages">
-      <UniqueIdentifier>{5ded9c92-d9b2-47ad-a060-d20f20bd3e52}</UniqueIdentifier>
+    <Filter Include="views">
+      <UniqueIdentifier>{50a551d6-b67b-490d-bc0f-42c4822c9620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\pages">
+      <UniqueIdentifier>{4e1eafb4-0b71-4700-86d7-d09003e7dc97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\dialogs">
+      <UniqueIdentifier>{67abbc2f-87fc-47e7-824e-795e44286480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\pages\settings">
+      <UniqueIdentifier>{41ce4714-fa1c-404c-9307-c554dbc55c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\pages\settings\subpages">
+      <UniqueIdentifier>{828c1d4e-e4ff-4598-92ec-d485598fefd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view_models">
+      <UniqueIdentifier>{79255794-163a-4f35-afa9-100be1883a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\windows">
+      <UniqueIdentifier>{b9a4aaf4-5a6e-4d9d-b9af-8f72bd0a2bd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="models">
+      <UniqueIdentifier>{898e0e38-1d75-4a62-8c90-4fe36eeab76b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

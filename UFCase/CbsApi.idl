@@ -248,6 +248,7 @@ typedef enum {
 } tagCbsPackageEncryptionEnum;
 
 typedef enum {
+  CbsDeferChange = 1 << 14,
   CbsTreatPackageAsPSFX = 1 << 15
 } _CbsPackageChangeOption;
 

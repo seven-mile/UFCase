@@ -1,0 +1,39 @@
+import "ImageProvider.idl";
+import "PackageViewModel.idl";
+
+namespace UFCase
+{
+    enum FeatureState
+    {
+        Invalid,
+        Unavailable,
+        Disabled,
+        PartiallyEnabled,
+        Enabled,
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass FeatureViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        FeatureViewModel(UInt64 hModel);
+        
+        String Name{ get; };
+        String Description{ get; };
+        String Identity{ get; };
+        FeatureState State{ get; };
+        String StateText{ get; };
+
+
+        PackageViewModel Package{ get; };
+
+        Windows.Foundation.Collections.IObservableVector<FeatureViewModel> Children{ get; };
+
+        Boolean IsEnabled{ get; };
+        Windows.Foundation.IReference<Boolean> IsChecked{ get; };
+
+        String ModificationMark{ get; set; };
+        Microsoft.UI.Xaml.Controls.IconSource Icon{ get; set; };
+        Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextMenu{ get; set; };
+    }
+}

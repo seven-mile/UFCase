@@ -1,4 +1,4 @@
-import "PackagesProvider.idl";
+import "PackageViewModel.idl";
 
 namespace UFCase
 {
@@ -7,7 +7,7 @@ namespace UFCase
     {
         PackagesPage();
 
-        PackagesProvider PackageDataSource{ get; };
+        Windows.Foundation.Collections.IObservableVector<PackageViewModel> PackageDataSource{ get; };
         Microsoft.UI.Xaml.Controls.ListView PkgList{ get; };
     }
 }
