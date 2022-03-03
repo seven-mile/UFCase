@@ -34,13 +34,6 @@ namespace winrt::UFCase
         winrt::hstring GetRoot() const;
         void ClearTree();
 
-        class CbsHelper {
-        public:
-            template <class T, class IEnumT>
-            static std::vector<winrt::com_ptr<T>> GetIEnumComPtrVector(winrt::com_ptr<IEnumT> pEnum);
-            static winrt::com_ptr<ICbsPackage> FindFoundationPkg(winrt::com_ptr<ICbsSession> pSess);
-        };
-
     public:
         FeatureTreeModel(UFCase::ImageItem img);
         ~FeatureTreeModel();
@@ -51,21 +44,6 @@ namespace winrt::UFCase
 
         winrt::IAsyncOperationWithProgress<winrt::IObservableVector<ele_t>, uint32_t> ConstructUpdateTree();
     };
-
-
-    template<class T, class IEnumT>
-    inline std::vector<winrt::com_ptr<T>> FeatureTreeModel::CbsHelper::GetIEnumComPtrVector(winrt::com_ptr<IEnumT> pEnum)
-    {
-        std::vector<winrt::com_ptr<T>> v{};
-        ULONG k;
-        do {
-            winrt::com_ptr<T> ptr;
-            pEnum->Next(1lu, ptr.put(), &k);
-            if (ptr) v.push_back(ptr);
-        } while (k);
-
-        return v;
-    }
 
 }
 

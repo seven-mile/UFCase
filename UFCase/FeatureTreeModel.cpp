@@ -3,6 +3,8 @@
 
 #include "MallocUtil.h"
 #include "CbsProviderManager.h"
+#include "CbsUtil.h"
+
 
 #include <functional>
 
@@ -45,7 +47,7 @@ FeatureTreeModel::ConstructUpdateTree()
     co_await winrt::resume_background();
     auto res = single_threaded_observable_vector<ele_t>();
 
-    auto pFound = CbsHelper::FindFoundationPkg(pSess);
+    auto pFound = FindFoundationPkg(pSess);
     if (!pFound) winrt::check_win32(ERROR_NOT_FOUND);
 
     report_prog(10);
@@ -54,7 +56,7 @@ FeatureTreeModel::ConstructUpdateTree()
 
         auto report_prog = co_await winrt::get_progress_token();
 
-        auto&& vecUpds = CbsHelper::GetIEnumComPtrVector<ICbsUpdate>(pUpds);
+        auto&& vecUpds = GetIEnumComPtrVector<ICbsUpdate>(pUpds);
 
         const uint32_t ENUM_UPDATE_PROG = 30; // 30%
         report_prog(ENUM_UPDATE_PROG);
@@ -191,20 +193,6 @@ void FeatureTreeModel::ClearTree()
     m_mapFa.Clear();
     cntUpdates = 1u;
     m_mapEle.Insert(GetRoot(), ele_t(m_sessionClient, GetRoot(), L"", L"", FeatureState::Unavailable, multi_threaded_observable_vector<ele_t>(), m_img));
-}
-
-winrt::com_ptr<ICbsPackage> FeatureTreeModel::CbsHelper::FindFoundationPkg(winrt::com_ptr<ICbsSession> pSess)
-{
-    winrt::com_ptr<ICbsIdentity> pId;
-    winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
-
-    winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
-
-    winrt::com_ptr<ICbsPackage> pPkg;
-    winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkg.put()));
-    
-    // unmarshalling
-    return pPkg.as<ICbsPackage>();
 }
 
 }

@@ -26,11 +26,10 @@ namespace winrt::UFCase::implementation
 
         // cached
         com_ptr<ICbsUpdate> m_pUpd;
-        com_ptr<ICbsPackage> m_pPkg, m_pFound;
+        com_ptr<ICbsPackage> m_pPkg;
         UFCase::PackageViewModel m_PkgVM{nullptr};
 
         com_ptr<ICbsSession> GetSession();
-        com_ptr<ICbsPackage> GetFoundationPkg();
         com_ptr<ICbsUpdate> GetUpdate();
         com_ptr<ICbsPackage> GetPackage();
 

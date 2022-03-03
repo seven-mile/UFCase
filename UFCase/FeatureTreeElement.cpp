@@ -9,6 +9,7 @@
 
 #include "CbsProviderManager.h"
 #include "MallocUtil.h"
+#include "CbsUtil.h"
 #include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
@@ -17,31 +18,10 @@ namespace winrt::UFCase::implementation
     {
         return CbsProviderManager::Current().ApplyFromBootdrive(m_sessionClient, m_img.Bootdrive().c_str())->ApplySession();
     }
-    com_ptr<ICbsPackage> FeatureTreeElement::GetFoundationPkg()
-    {
-        if (!m_pFound) {
-            // find foundation package
-            auto pSess = this->GetSession();
-            {
-                winrt::com_ptr<ICbsIdentity> pId;
-
-                winrt::check_hresult(pSess->CreateCbsIdentity(pId.put()));
-
-                winrt::check_hresult(pId->LoadFromStringId(L"@Foundation"));
-
-                winrt::com_ptr<ICbsPackage> pPkgTmp;
-                winrt::check_hresult(pSess->OpenPackage(0, pId.get(), nullptr, pPkgTmp.put()));
-
-                // unmarshalling
-                m_pFound = pPkgTmp.as<ICbsPackage>();
-            }
-        }
-        return m_pFound;
-    }
     com_ptr<ICbsUpdate> FeatureTreeElement::GetUpdate()
     {
         if (!m_pUpd) {
-            check_hresult(this->GetFoundationPkg()->GetUpdate(m_identity.c_str(), m_pUpd.put()));
+            check_hresult(FindFoundationPkg(GetSession())->GetUpdate(m_identity.c_str(), m_pUpd.put()));
         }
         return m_pUpd;
     }

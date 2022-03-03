@@ -1,59 +1,32 @@
 namespace UFCase
 {
-    enum PackageState
-    {
-        PartiallyInstalled = -5,
-        Cancel = -4,
-        Superseded = -3,
-        Default = -2,
-        Unknown = -1,
-        Absent = 0,
-        Resolving = 1,
-        Resolved = 2,
-        Staging = 3,
-        Staged = 4,
-        UninstallRequested = 5,
-        InstallRequested = 6,
-        Installed = 7,
-        Permanent = 8,
-    };
-
-    enum PackageType
-    {
-        Unknown = -2,
-        Existing,
-        Cabinet,
-        Expanded,
-        Manifest,
-        XmlString,
-        ExpandedWithMum,
-    };
-
-    enum PackageReleaseType
-    {
-        FeaturePack,
-        StackUpdate,
-        // and so on...
-    };
 
     [bindable]
     [default_interface]
     runtimeclass PackageViewModel
     {
-        PackageViewModel(String sessionClient);
+        PackageViewModel(UInt64 hModel);
 
-        static PackageViewModel LoadFromIdentity(String sessionClient, String identity);
-        
-        // must-fetch basic info
-        String Identity{ get; set; };
-        String DisplayName{ get; set; };
-        String Description{ get; set; };
-        PackageState State{ get; set; };
-        String ReleaseType{ get; set; };
+        UInt64 Handle{ get; };
 
-        // dynamic get
-        String GetFSPath();
-        String GetRegPath();
-        String GetSupportUrl();
+        String Identity { get; };
+        String ReleaseType { get; };
+        String State { get; };
+        String Name { get; };
+        String Description { get; };
+        String RestartRequired { get; };
+        String ProductName { get; };
+        String ProductVersion { get; };
+        String Company { get; };
+        String Copyright { get; };
+        String SupportInformation { get; };
+        String CreationTime { get; };
+        String LastUpdateTime { get; };
+        String InstallTime { get; };
+        String InstallPackageName { get; };
+        String InstallLocation { get; };
+        String InstallClient { get; };
+        String InstallUserName { get; };
+        Boolean IsApplicable { get; };
     }
 }
