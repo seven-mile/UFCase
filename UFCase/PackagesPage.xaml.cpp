@@ -16,14 +16,17 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
     }
+
     winrt::event_token PackagesPage::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
     {
         return m_propertyChanged.add(value);
     }
+
     void PackagesPage::PropertyChanged(winrt::event_token const& token)
     {
         m_propertyChanged.remove(token);
     }
+
     IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         this->m_pkgProv = co_await UFCase::PackagesProvider::LoadFromImage(e.Parameter().as<UFCase::ImageItem>());
@@ -32,8 +35,10 @@ namespace winrt::UFCase::implementation
         if (this->m_pkgProv.Packages().Size())
             this->PkgList().SelectedIndex(0);
     }
+
     UFCase::PackagesProvider PackagesPage::PackageDataSource()
     {
         return this->m_pkgProv;
     }
+
 }
