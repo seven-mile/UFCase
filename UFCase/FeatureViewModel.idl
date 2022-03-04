@@ -24,6 +24,11 @@ namespace UFCase
         FeatureState State{ get; };
         String StateText{ get; };
 
+        String DisplayFile{ get; };
+        String Restart{ get; };
+        String PsfName{ get; };
+        String DownloadSize{ get; };
+        String SetMembership{ get; };
 
         PackageViewModel Package{ get; };
 
@@ -33,7 +38,10 @@ namespace UFCase
         Windows.Foundation.IReference<Boolean> IsChecked{ get; };
 
         String ModificationMark{ get; set; };
-        Microsoft.UI.Xaml.Controls.IconSource Icon{ get; set; };
-        Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextMenu{ get; set; };
+        Microsoft.UI.Xaml.Controls.IconSource Icon{ get; };
+
+        void Enable();
+        void Disable();
+
     }
 }

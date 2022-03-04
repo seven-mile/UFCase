@@ -94,15 +94,26 @@ namespace winrt::UFCase {
 
     std::vector<FeatureModel*> FeatureModel::GetParentFeatureCollection() const
     {
-        constexpr HRESULT CBS_E_ARRAY_MISSING_INDEX = 0x800F0809;
+        constexpr HRESULT CBS_E_ARRAY_MISSING_INDEX = 0x800F0809,
+                          CBS_E_UNKNOWN_UPDATE = 0x800F080C;
         std::vector<FeatureModel*> res{};
         for (uint32_t idx = 0; ; idx++) {
             unique_malloc_wstring ws_parent_name, ws_parent_set;
             auto hr = update->GetParentUpdate(idx, wil::out_param(ws_parent_name), wil::out_param(ws_parent_set));
             if (hr == CBS_E_ARRAY_MISSING_INDEX) break;
             check_hresult(hr);
+            try {
+                res.push_back(package.OpenFeature(ws_parent_name.get()));
+            } catch (hresult_error const& hr) {
+                if (hr.code() == CBS_E_UNKNOWN_UPDATE) {
+                    // unknown update, ignore it
+                    continue;
+                } else {
+                    // rethrow
+                    throw hr;
+                }
+            }
 
-            res.push_back(package.OpenFeature(ws_parent_name.get()));
         }
         return res;
     }

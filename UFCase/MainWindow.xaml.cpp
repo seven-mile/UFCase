@@ -186,7 +186,7 @@ namespace winrt::UFCase::implementation
         }
         else if (page_name == L"FeaturesNavViewItem") {
             auto imgItem = this->ImageComboBox().SelectedItem().as<UFCase::ImageItem>();
-            co_await winrt::resume_background();
+            //co_await winrt::resume_background();
 
             auto image_model = ImageModel::Create(imgItem.Bootdrive().c_str());
             auto op = ConstructUpdateTree(*image_model);
@@ -208,7 +208,7 @@ namespace winrt::UFCase::implementation
                 co_return;
             });
 
-            co_await ui_thread;
+            //co_await ui_thread;
 
             frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
 

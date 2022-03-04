@@ -1,4 +1,5 @@
 ﻿<Page
+    x:Name="FeaturesPage"
     x:Class="UFCase.FeaturesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,13 +9,6 @@
     mc:Ignorable="d"
     NavigationCacheMode="Disabled">
 
-    <Page.Resources>
-        <FontIconSource x:Key="TreeElementEnabledIconSource" Glyph="&#xf16c;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
-        <FontIconSource x:Key="TreeElementDisabledIconSource" Glyph="&#xf16b;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
-        <FontIconSource x:Key="TreeElementPartiallyIconSource" Glyph="&#xf16d;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
-        <FontIconSource x:Key="TreeElementUnavailableIconSource" Glyph="&#xea39;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
-    </Page.Resources>
-    
     <Grid Margin="50,20,50,20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -38,6 +32,12 @@
                     </XamlUICommand.IconSource>
                 </XamlUICommand>
             </CommandBar.Resources>
+
+            <AppBarButton Command="{x:Bind FeatureEnableCommand}" Visibility="{x:Bind ConvertUInt32ToVisibility(FeatureTree.SelectedItems.Size)}" />
+            <AppBarButton Command="{x:Bind FeatureDisableCommand}" />
+            <AppBarSeparator />
+            <AppBarButton Command="{x:Bind FeatureGobackCommand}" />
+            <AppBarSeparator />
             <AppBarButton Label="Submit" Icon="Accept" />
             <AppBarButton Label="Refresh" Icon="Refresh" />
             <AppBarSeparator />
@@ -146,27 +146,27 @@
             <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False" Loaded="FeatureTree_Loaded"
                       AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind FeatureDataSource}">
                 <TreeView.Resources>
-                    <XamlUICommand x:Name="FeatureInstallCommand" Label="Install" ExecuteRequested="FeatureInstallCommand_ExecuteRequested">
+                    <XamlUICommand x:Name="FeatureEnableCommand" Label="Enable" ExecuteRequested="FeatureEnableCommand_ExecuteRequested">
                         <XamlUICommand.IconSource>
                             <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
                         </XamlUICommand.IconSource>
                     </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureStageCommand" Label="Stage" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8D0;" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureRemoveCommand" Label="Remove" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                    <XamlUICommand x:Name="FeatureDisableCommand" Label="Disable" ExecuteRequested="FeatureDisableCommand_ExecuteRequested">
                         <XamlUICommand.IconSource>
                             <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
                         </XamlUICommand.IconSource>
                     </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureOpenExplorerCommand" Label="Open in explorer" ExecuteRequested="FeatureStageCommand_ExecuteRequested">
+                    <XamlUICommand x:Name="FeatureGobackCommand" Label="Go back" ExecuteRequested="FeatureOpenOFDialogCommand_ExecuteRequested">
+                        <XamlUICommand.IconSource>
+                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72B;" />
+                        </XamlUICommand.IconSource>
+                    </XamlUICommand>
+                    <XamlUICommand x:Name="FeatureOpenExplorerCommand" Label="Open in explorer" ExecuteRequested="FeatureDisableCommand_ExecuteRequested">
                         <XamlUICommand.IconSource>
                             <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
                         </XamlUICommand.IconSource>
                     </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureStageCommand_ExecuteRequested" />
+                    <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureDisableCommand_ExecuteRequested" />
                 </TreeView.Resources>
                 <TreeView.ItemContainerTransitions>
                     <TransitionCollection>
@@ -174,10 +174,48 @@
                         <ContentThemeTransition />
                     </TransitionCollection>
                 </TreeView.ItemContainerTransitions>
+                <TreeView.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyout.Items>
+                            <MenuFlyoutItem Command="{x:Bind FeatureEnableCommand}"
+                                            Text="{x:Bind FeatureEnableCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind FeatureEnableCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind FeatureDisableCommand}"
+                                            Text="{x:Bind FeatureDisableCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind FeatureDisableCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem Command="{x:Bind FeatureGobackCommand}"
+                                            Text="{x:Bind FeatureGobackCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind FeatureGobackCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind FeatureOpenExplorerCommand}"
+                                            Text="{x:Bind FeatureOpenExplorerCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind FeatureOpenExplorerCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind FeatureOpenRegistryCommand}"
+                                            Text="{x:Bind FeatureOpenRegistryCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind FeatureOpenRegistryCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout.Items>
+                    </MenuFlyout>
+                </TreeView.ContextFlyout>
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureViewModel">
                         <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
-                                      ContextFlyout="{x:Bind ContextMenu, Mode=OneWay}" DoubleTapped="FeatureTreeItem_DoubleTapped">
+                                      DoubleTapped="FeatureTreeItem_DoubleTapped">
+                            
                             <StackPanel Orientation="Horizontal">
                                 <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />
                                 <TextBlock Margin="10,8,0,8" VerticalAlignment="Center">

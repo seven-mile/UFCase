@@ -29,7 +29,7 @@ namespace winrt::UFCase
         //co_await resume_background();
         auto res = single_threaded_observable_vector<FeatureViewModel>();
 
-        auto found = *session.FoundationPackage();
+        auto &found = *session.FoundationPackage();
 
         report_prog(10);
 
@@ -48,19 +48,26 @@ namespace winrt::UFCase
                 report_prog(ENUM_UPDATE_PROG + uint32_t(std::floor(1.0 * idx / all * (100 - ENUM_UPDATE_PROG))));
 
                 auto &&parents = update->GetParentFeatureCollection();
-                child_ids[parents.size() ? update->GetHandle() : 0].push_back(parents[0]->GetHandle());
+                child_ids[parents.size() ? parents[0]->GetHandle() : 0].push_back(update->GetHandle());
                 idx++;
             }
             co_return;
         };
 
-        auto op1 = joinUpdates(found.GetPackageFeatureCollection());
-             //op2 = joinUpdates(found.GetPackageFeatureCollection())
+        auto op1 = joinUpdates(found.GetPackageFeatureCollection(CbsApplicabilityApplicable , CbsSelectabilityRootClass)),
+             op2 = joinUpdates(found.GetPackageFeatureCollection(CbsApplicabilityNeedsParent, CbsSelectabilityAllClass));
+        uint32_t prog1 = 0, prog2 = 0;
         op1.Progress([&](const auto&, const uint32_t& pr) {
-            report_prog(30 + 0.6*pr);
+            prog1 = pr;
+            report_prog(30 + 3 * ((prog1 + prog2) / 2) / 5);
+        });
+        op2.Progress([&](const auto&, const uint32_t& pr) {
+            prog2 = pr;
+            report_prog(30 + 3 * ((prog1 + prog2) / 2) / 5);
         });
 
-        co_await(op1);
+        co_await op1;
+        co_await op2;
 
         std::function<void(IObservableVector<FeatureViewModel>, uint64_t)> dfs;
         dfs = [&](IObservableVector<FeatureViewModel> child, uint64_t cur) {
@@ -68,6 +75,7 @@ namespace winrt::UFCase
             for (auto child_id : child_ids[cur]) {
                 FeatureViewModel vm{ child_id };
                 dfs(vm.Children(), child_id);
+                child.Append(vm);
             }
         };
 

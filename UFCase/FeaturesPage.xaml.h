@@ -13,15 +13,13 @@ namespace winrt::UFCase::implementation
         using source_t = IObservableVector<UFCase::FeatureViewModel>;
         source_t m_source;
 
-        void ConfigFeatureViewModelUIElements(FeatureViewModel ele);
-
         FeaturesPage();
 
         source_t FeatureDataSource();
 
         void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
-        void FeatureInstallCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
-        void FeatureStageCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
+        void FeatureEnableCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
+        void FeatureDisableCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
         void FeatureOpenOFDialogCommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
         void FeatureAddSourceUICommand_ExecuteRequested(Input::XamlUICommand const& sender, Input::ExecuteRequestedEventArgs const& args);
 
@@ -31,6 +29,9 @@ namespace winrt::UFCase::implementation
         
         void FeatureTree_Loaded(IInspectable const&, RoutedEventArgs const&);
         void FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const& e);
+
+        using vis_t = Microsoft::UI::Xaml::Visibility;
+        vis_t ConvertUInt32ToVisibility(uint32_t value) { return value ? vis_t::Visible : vis_t::Collapsed; }
     };
 }
 

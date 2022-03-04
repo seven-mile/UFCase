@@ -13,8 +13,10 @@ namespace winrt::UFCase {
 
         FeatureModel(com_ptr<ICbsUpdate> update, PackageModel *package)
             : update(update), package(*package) {  }
-    public:
+
+        friend class PackageModel;
         static FeatureModel* Create(com_ptr<ICbsUpdate> update, PackageModel *parent);
+    public:
 
         hstring Name() const;
         _CbsInstallState State() const;

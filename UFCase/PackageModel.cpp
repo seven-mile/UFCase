@@ -176,12 +176,18 @@ namespace winrt::UFCase {
 
     std::vector<FeatureModel*> PackageModel::GetPackageFeatureCollection(_CbsApplicability appl, _CbsSelectability sele)
     {
-        com_ptr<IEnumCbsUpdate> updates;
-        check_hresult(package->EnumerateUpdates(appl, sele, updates.put()));
+        com_ptr<IEnumCbsUpdate> cbs_updates;
+        check_hresult(package->EnumerateUpdates(appl, sele, cbs_updates.put()));
 
         std::vector<FeatureModel*> handles;
-        for (auto&& update : GetIEnumComPtrVector<ICbsUpdate>(updates)) {
-            handles.push_back(FeatureModel::Create(update, this));
+        for (auto&& update : GetIEnumComPtrVector<ICbsUpdate>(cbs_updates)) {
+            unique_malloc_wstring ws_name;
+            check_hresult(update->GetProperty(CbsUpdatePropertyName, wil::out_param(ws_name)));
+            try {
+                handles.push_back(this->OpenFeature(ws_name.get()));
+            } catch (hresult_error const& hr) {
+                continue;
+            }
         }
         return handles;
     }

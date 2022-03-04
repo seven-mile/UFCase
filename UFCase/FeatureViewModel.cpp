@@ -38,16 +38,21 @@ namespace winrt::UFCase::implementation
     }
     hstring FeatureViewModel::Identity()
     {
-        return m_model.RawParentPackage()->Identity();
+        return m_model.Name();
     }
     FeatureState FeatureViewModel::State()
     {
-        switch (m_model.State()) {
+        auto state = m_model.State();
+        switch (state) {
         case CbsInstallStateInstallRequested:
+        case CbsInstallStateInstalled:
+        //case CbsInstallStatePermanent:
             if (this->IsChecked().Value())
                 return FeatureState::Enabled;
             else return FeatureState::PartiallyEnabled;
         case CbsInstallStateUninstallRequested:
+        case CbsInstallStateStaged:
+        //case CbsInstallStateResolved:
             return FeatureState::Disabled;
         case CbsInstallStateAbsent:
             return FeatureState::Unavailable;
@@ -65,10 +70,37 @@ namespace winrt::UFCase::implementation
             default: return L"Invalid";
         }
     }
+
+    hstring FeatureViewModel::DisplayFile()
+    {
+        return m_model.DisplayFile();
+    }
+
+    hstring FeatureViewModel::Restart()
+    {
+        return m_model.Restart();
+    }
+
+    hstring FeatureViewModel::PsfName()
+    {
+        return m_model.PsfName();
+    }
+
+    hstring FeatureViewModel::DownloadSize()
+    {
+        return m_model.DownloadSize();
+    }
+
+    hstring FeatureViewModel::SetMembership()
+    {
+        return m_model.SetMembership();
+    }
+
     UFCase::PackageViewModel FeatureViewModel::Package()
     {
         return UFCase::PackageViewModel(m_model.RawParentPackage()->GetHandle());
     }
+
     FeatureViewModel::child_t FeatureViewModel::Children()
     {
         return m_children;
@@ -76,7 +108,8 @@ namespace winrt::UFCase::implementation
 
     bool FeatureViewModel::IsEnabled()
     {
-        return m_model.State() >= CbsInstallStateUninstallRequested;
+        return this->State() != FeatureState::Unavailable
+            && this->State() != FeatureState::Invalid;
     }
 
     IReference<bool> FeatureViewModel::IsChecked()
@@ -103,20 +136,31 @@ namespace winrt::UFCase::implementation
 
     IconSource FeatureViewModel::Icon()
     {
-        return m_icon;
+        FontIconSource src{};
+        src.FontFamily(Media::FontFamily{ L"Segoe Fluent Icons" });
+
+        switch (this->State()) {
+        case FeatureState::Enabled:
+            src.Glyph(L"\uf16c"); break;
+        case FeatureState::Disabled:
+            src.Glyph(L"\uf16b"); break;
+        case FeatureState::PartiallyEnabled:
+            src.Glyph(L"\uf16d"); break;
+        case FeatureState::Unavailable:
+            src.Glyph(L"\uea39"); break;
+
+        default:
+            throw_hresult(HRESULT_FROM_WIN32(ERROR_INVALID_STATE));
+        }
+        return src;
     }
-    void FeatureViewModel::Icon(IconSource const &value)
+
+    void FeatureViewModel::Enable()
     {
-        m_icon = value;
-        m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"Icon"});
+        m_model.Enable();
     }
-    Primitives::FlyoutBase FeatureViewModel::ContextMenu()
+    void FeatureViewModel::Disable()
     {
-        return m_menu;
-    }
-    void FeatureViewModel::ContextMenu(Primitives::FlyoutBase const &value)
-    {
-        m_menu = value;
-        m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"ContextMenu"});
+        m_model.Disable();
     }
 }

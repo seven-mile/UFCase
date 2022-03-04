@@ -70,14 +70,50 @@ namespace winrt::UFCase {
 
     PackageModel* SessionModel::OpenPackage(hstring const& identity)
     {
-        if (auto it = packages.find(identity); it != packages.end())
-            return &PackageModel::GetInstance(it->second);
-        com_ptr<ICbsIdentity> id;
-        check_hresult(session->CreateCbsIdentity(id.put()));
-        check_hresult(id->LoadFromStringId(identity.c_str()));
-        auto &&res = this->OpenPackageWithoutHash(id);
-        packages[identity] = res->GetHandle();
-        return res;
+        //if (auto it = packages.find(identity); it != packages.end())
+        //    return &PackageModel::GetInstance(it->second);
+
+        //com_ptr<ICbsIdentity> id;
+        //check_hresult(session->CreateCbsIdentity(id.put()));
+        //check_hresult(id->LoadFromStringId(identity.c_str()));
+        //auto &&res = this->OpenPackageWithoutHash(id);
+        //packages[identity] = res->GetHandle();
+        //return res;
+
+        com_ptr<IEnumCbsIdentity> ids;
+
+        if (identity == L"@Foundation") {
+            check_hresult(session->EnumeratePackages(0x130, ids.put()));
+            for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
+                unique_malloc_wstring ws_id;
+                check_hresult(id->GetStringId(wil::out_param(ws_id)));
+                if (std::wstring_view str{ ws_id.get() };
+                    str.starts_with(L"Microsoft-Windows-Foundation-Package~")) {
+                    return this->OpenPackage(id);
+                }
+            }
+        } else if (identity == L"@Product") {
+            check_hresult(session->EnumeratePackages(0x130, ids.put()));
+            for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
+                unique_malloc_wstring ws_id;
+                check_hresult(id->GetStringId(wil::out_param(ws_id)));
+                if (std::wstring_view str{ ws_id.get() };
+                    str.starts_with(L"Microsoft-Windows-")
+                    && str.find(L"Edition~") != std::wstring_view::npos) {
+                    return this->OpenPackage(id);
+                }
+            }
+        } else {
+            check_hresult(session->EnumeratePackages(0x1b0, ids.put()));
+            for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
+                unique_malloc_wstring ws_id;
+                if (auto hr = check_hresult(id->GetStringId(wil::out_param(ws_id))); identity == ws_id.get()) {
+                    return this->OpenPackage(id);
+                }
+            }
+        }
+
+        return nullptr;
     }
 
     PackageModel* SessionModel::FoundationPackage()

@@ -18,20 +18,23 @@ namespace winrt::UFCase::implementation
         FeatureModel m_model;
 
         using child_t = IObservableVector<UFCase::FeatureViewModel>;
-        child_t m_children;
+        child_t m_children = single_threaded_observable_vector<UFCase::FeatureViewModel>();
 
         hstring m_mark = L"";
-        IconSource m_icon {nullptr};
-        Primitives::FlyoutBase m_menu {nullptr};
 
         FeatureViewModel(uint64_t hModel);
-
 
         hstring Name();
         hstring Description();
         hstring Identity();
         FeatureState State();
         hstring StateText();
+
+        hstring DisplayFile();
+        hstring Restart();
+        hstring PsfName();
+        hstring DownloadSize();
+        hstring SetMembership();
 
         UFCase::PackageViewModel Package();
 
@@ -43,9 +46,9 @@ namespace winrt::UFCase::implementation
         hstring ModificationMark();
         void ModificationMark(const hstring &value);
         IconSource Icon();
-        void Icon(IconSource const &value);
-        Primitives::FlyoutBase ContextMenu();
-        void ContextMenu(Primitives::FlyoutBase const &value);
+
+        void Enable();
+        void Disable();
     };
 }
 
