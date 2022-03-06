@@ -30,11 +30,15 @@ namespace winrt::UFCase::implementation
 
     hstring FeatureViewModel::Name()
     {
-        return m_model.DisplayName();
+        auto &&res = m_model.DisplayName();
+        if (res.empty()) return m_model.Name();
+        return res;
     }
     hstring FeatureViewModel::Description()
     {
-        return m_model.Description();
+        auto &&res = m_model.Description();
+        if (res.empty()) return L"No description.";
+        return res;
     }
     hstring FeatureViewModel::Identity()
     {

@@ -65,12 +65,16 @@ namespace winrt::UFCase::implementation
 
     hstring PackageViewModel::Name()
     {
-        return m_model.Name();
+        auto &&res = m_model.Name();
+        if (res.empty()) return m_model.Identity();
+        return res;
     }
 
     hstring PackageViewModel::Description()
     {
-        return m_model.Description();
+        auto &&res = m_model.Description();
+        if (res.empty()) return L"No description.";
+        return res;
     }
 
     hstring PackageViewModel::RestartRequired()
