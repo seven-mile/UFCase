@@ -134,9 +134,15 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FeatureTreeHelper.h" />
+    <ClInclude Include="HardwareInfoModel.h" />
     <ClInclude Include="ImageModel.h" />
-    <ClInclude Include="ImageProvider.h">
-      <DependentUpon>ImageProvider.idl</DependentUpon>
+    <ClInclude Include="ImageSelectorHelper.h" />
+    <ClInclude Include="ImageSelectorViewModel.h">
+      <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ImageViewModel.h">
+      <DependentUpon>ImageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="MallocUtil.h" />
@@ -151,6 +157,7 @@
       <DependentUpon>PackageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="PathUtil.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -172,8 +179,8 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SSShimApi.h" />
-    <ClInclude Include="SysInfoStaticProvider.h">
-      <DependentUpon>SysInfoStaticProvider.idl</DependentUpon>
+    <ClInclude Include="SysInfoStaticViewModel.h">
+      <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SysInfoPage.h">
@@ -251,9 +258,15 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FeatureTreeHelper.cpp" />
+    <ClCompile Include="HardwareInfoModel.cpp" />
     <ClCompile Include="ImageModel.cpp" />
-    <ClCompile Include="ImageProvider.cpp">
-      <DependentUpon>ImageProvider.idl</DependentUpon>
+    <ClCompile Include="ImageSelectorHelper.cpp" />
+    <ClCompile Include="ImageSelectorViewModel.cpp">
+      <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ImageViewModel.cpp">
+      <DependentUpon>ImageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackageModel.cpp" />
@@ -288,8 +301,8 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="SysInfoStaticProvider.cpp">
-      <DependentUpon>SysInfoStaticProvider.idl</DependentUpon>
+    <ClCompile Include="SysInfoStaticViewModel.cpp">
+      <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="SysInfoPage.cpp">
@@ -359,7 +372,10 @@
     <Midl Include="FeatureViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
-    <Midl Include="ImageProvider.idl">
+    <Midl Include="ImageSelectorViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ImageViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="MainWindow.idl">
@@ -385,7 +401,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="SysInfoStaticProvider.idl">
+    <Midl Include="SysInfoStaticViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SysInfoPage.idl">

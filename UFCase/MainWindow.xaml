@@ -13,6 +13,7 @@
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
             <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
+            <local:ImageSelectorViewModel x:Key="ImageSelectorViewModel" />
         </Grid.Resources>
         
         <Border x:Name="AppTitleBar"
@@ -36,13 +37,13 @@
                         IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
                         BackRequested="NavView_BackRequested"
                         ItemInvoked="NavView_ItemInvoked"
-                        Loaded="NavView_Loaded"
                         DisplayModeChanged="NavView_DisplayModeChanged"
                         Canvas.ZIndex="0">
 
             <NavigationView.PaneCustomContent>
                 <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
-                          SelectedIndex="{x:Bind ImageProv.SelectedIndex, Mode=TwoWay}" ItemsSource="{x:Bind ImageProv.Images}">
+                          DataContext="{StaticResource ImageSelectorViewModel}"
+                          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" ItemsSource="{Binding Images}">
                     <ComboBox.Resources>
                         <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
                                      Title="Switch Windows Image"
@@ -53,7 +54,7 @@
                         </TeachingTip>
                     </ComboBox.Resources>
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="local:ImageItem">
+                        <DataTemplate x:DataType="local:ImageViewModel">
                             <StackPanel Orientation="Horizontal" Height="Auto" HorizontalAlignment="Stretch">
                                 <ImageIcon Source="{x:Bind Icon}" VerticalAlignment="Stretch" Width="35" Margin="0,7,7,7" />
                                 <StackPanel Orientation="Vertical">

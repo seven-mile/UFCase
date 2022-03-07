@@ -1,4 +1,3 @@
-import "ImageProvider.idl";
 import "PackageViewModel.idl";
 
 namespace UFCase

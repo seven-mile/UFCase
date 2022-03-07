@@ -1,12 +1,10 @@
-import "ImageProvider.idl";
-
 namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass SysInfoStaticProvider
+    runtimeclass SysInfoStaticViewModel
     {
-        SysInfoStaticProvider(ImageItem img);
+        SysInfoStaticViewModel(UInt64 hImgModel);
         
         // machine-specific online info
         static String FirmwareType();
@@ -15,9 +13,8 @@ namespace UFCase
         static String CPUDisplayName();
 
         // image-specific OS info
-        String OSDisplayName();
-        String OSVersion();
-        String OSArchitecture();
-        Boolean IsWinPE();
+        String OSVersion{ get; };
+        String OSArchitecture{ get; };
+        String IsWinPE{ get; };
     }
 }

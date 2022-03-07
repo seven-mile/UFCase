@@ -4,11 +4,12 @@
 #include "MainWindow.g.cpp"
 #endif
 
-#include "SysInfoPage.g.h"
-#include "SettingsPage.g.h"
+//#include "SysInfoPage.g.h"
+//#include "SettingsPage.g.h"
+//
+//#include "FeaturesPage.g.h"
+//#include "FeatureViewModel.g.h"
 
-#include "FeaturesPage.g.h"
-#include "FeatureViewModel.g.h"
 #include "FeatureTreeHelper.h"
 
 
@@ -17,8 +18,6 @@
 #include "ImageModel.h"
 #include "AppConfig.h"
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace winrt::UFCase::implementation
 {
@@ -26,12 +25,13 @@ namespace winrt::UFCase::implementation
     {
         InitializeComponent();
 
-        // fetch the image provider from app module resources
-        m_imgprov = Application::Current().Resources().Lookup(box_value(L"ImageProviderInstance")).as<UFCase::ImageProvider>();
-
         // other ui config
         this->UpdateTitleByConfig();
         this->ConfigWindowTitlebar();
+
+        // navigate to the home page
+        this->NavView().SelectedItem(this->NavView().MenuItems().GetAt(0));
+        this->NavigateTo(this->NavView().SelectedItem().as<NavigationViewItemBase>());
     }
 
     winrt::AppWindow MainWindow::GetAppWindowForCurrentWindow()
@@ -93,7 +93,7 @@ namespace winrt::UFCase::implementation
 
                     {
                         // pre-set drag rect
-                        const int NavBarHeight = 48, NavBarWidth = IsDebuggerPresent() ? 1348 : 48;
+                        const int NavBarHeight = 48, NavBarWidth = IsDebuggerPresent() ? 948 : 48;
                         appt.SetDragRectangles({
                             { NavBarWidth, 0, std::max(0, static_cast<int>(appw.Size().Width) - NavBarWidth), NavBarHeight },
                             });
@@ -117,14 +117,6 @@ namespace winrt::UFCase::implementation
             //this->SetTitleBar(this->AppTitleBar());
         }
 
-    }
-
-    void MainWindow::NavView_Loaded(IInspectable const &senderRaw, RoutedEventArgs const&)
-    {
-        // navigate to the home page
-        auto sender = senderRaw.as<NavigationView>();
-        sender.SelectedItem(sender.MenuItems().GetAt(0));
-        this->NavigateTo(sender.SelectedItem().as<NavigationViewItemBase>());
     }
 
     void MainWindow::NavView_ItemInvoked(NavigationView const&, NavigationViewItemInvokedEventArgs const& args)
@@ -161,11 +153,6 @@ namespace winrt::UFCase::implementation
         sender.SelectedItem(this->m_stackNavItem.top());
     }
 
-    UFCase::ImageProvider MainWindow::ImageProv()
-    {
-        return m_imgprov;
-    }
-
     winrt::IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item, bool isSetting)
     {
         this->m_stackNavItem.push(item);
@@ -185,11 +172,7 @@ namespace winrt::UFCase::implementation
             co_return;
         }
         else if (page_name == L"FeaturesNavViewItem") {
-            auto imgItem = this->ImageComboBox().SelectedItem().as<UFCase::ImageItem>();
-            //co_await winrt::resume_background();
-
-            auto image_model = ImageModel::Create(imgItem.Bootdrive().c_str());
-            auto op = ConstructUpdateTree(*image_model);
+            auto op = ConstructUpdateTree(*ImageModel::Current());
 
             cancel_token.callback([=](){ op.Cancel(); });
 
@@ -218,8 +201,7 @@ namespace winrt::UFCase::implementation
             // fall through
         }
         else if (page_name == L"PackagesNavViewItem") {
-            auto bootdrive = m_imgprov.Images().GetAt(m_imgprov.SelectedIndex()).Bootdrive();
-            auto session = ImageModel::Create(bootdrive.c_str())->OpenSession();
+            auto session = ImageModel::Current()->OpenSession();
             auto res = single_threaded_observable_vector<UFCase::PackageViewModel>();
 
             for (auto&& pkg : session->Packages())

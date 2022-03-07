@@ -185,7 +185,7 @@ namespace winrt::UFCase {
             check_hresult(update->GetProperty(CbsUpdatePropertyName, wil::out_param(ws_name)));
             try {
                 handles.push_back(this->OpenFeature(ws_name.get()));
-            } catch (hresult_error const& hr) {
+            } catch (hresult_error const&) {
                 continue;
             }
         }

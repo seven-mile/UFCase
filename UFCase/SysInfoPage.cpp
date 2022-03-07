@@ -7,19 +7,19 @@
 #include "SysInfoPage.g.cpp"
 #endif
 
+#include "ImageModel.h"
+
 namespace winrt::UFCase::implementation
 {
     SysInfoPage::SysInfoPage()
     {
         InitializeComponent();
-
-        auto imgProv = Application::Current().Resources().Lookup(box_value(L"ImageProviderInstance")).as<UFCase::ImageProvider>();
-        m_static = UFCase::SysInfoStaticProvider(imgProv.Images().GetAt(imgProv.SelectedIndex()));
+        m_static = UFCase::SysInfoStaticViewModel(ImageModel::Current()->GetHandle());
 
         this->AutoRefreshSwitch().IsOn(AppConfig::GetSysinfoAutoRefresh());
     }
 
-    UFCase::SysInfoStaticProvider SysInfoPage::StaticInfo()
+    UFCase::SysInfoStaticViewModel SysInfoPage::StaticInfo()
     {
         return m_static;
     }
@@ -31,7 +31,7 @@ namespace winrt::UFCase::implementation
 
     void SysInfoPage::ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const&)
     {
-        auto swch = sender.as<winrt::ToggleSwitch>();
+        auto swch = sender.as<ToggleSwitch>();
         if (swch.IsOn())
             this->RealtimeInfo().Timer().Start();
         else this->RealtimeInfo().Timer().Stop();

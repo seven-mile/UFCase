@@ -1,10 +1,6 @@
 ﻿#pragma once
 #include "MainWindow.g.h"
 
-#include "ImageItem.g.h"
-#include "ImageProvider.g.h"
-
-
 // For access to WindowId
 #include <winrt/Microsoft.UI.h>
 // For access to hwnd interop methods
@@ -44,15 +40,11 @@ namespace winrt::UFCase::implementation
         void ConfigWindowTitlebar();
 
         // Control Events
-        void NavView_Loaded(IInspectable const& sender, RoutedEventArgs const& e);
         void NavView_ItemInvoked(NavigationView const& sender, NavigationViewItemInvokedEventArgs const& args);
         void NavView_DisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& args);
         void NavView_BackRequested(NavigationView const& sender, NavigationViewBackRequestedEventArgs const& args);
 
-        UFCase::ImageProvider ImageProv();
-
     private:
-        UFCase::ImageProvider m_imgprov{nullptr};
 
         std::stack<NavigationViewItemBase> m_stackNavItem;
     };

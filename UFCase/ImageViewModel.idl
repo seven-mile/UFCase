@@ -1,0 +1,17 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass ImageViewModel 
+    {
+        ImageViewModel(UInt64 hModel);
+
+        String Type{ get; };
+        String Version{ get; };
+        String Bootdrive{ get; };
+
+        Microsoft.UI.Xaml.Media.ImageSource Icon{ get; };
+
+        void Select();
+    }
+}

@@ -6,10 +6,8 @@
 #include "CbsProviderManager.h"
 
 #include "AppConfig.h"
-
-#include <ShlObj_core.h>
-
-#include "ImageProvider.g.h"
+#include "ImageSelectorHelper.h"
+#include "PathUtil.h"
 
 namespace winrt {
     using namespace Windows::Foundation;
@@ -47,18 +45,7 @@ namespace winrt::UFCase::implementation
     /// <param name="e">Details about the launch request and process.</param>
     IAsyncAction App::OnLaunched(LaunchActivatedEventArgs const&)
     {
-        std::filesystem::path pathAppData;
-        {
-            PWSTR path_tmp;
-            auto get_folder_path_ret = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &path_tmp);
-
-            if (get_folder_path_ret != S_OK) {
-                CoTaskMemFree(path_tmp);
-                throw_hresult(HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND));
-            }
-            pathAppData = path_tmp;
-            CoTaskMemFree(path_tmp);
-        }
+        std::filesystem::path pathAppData = GetOnlineRoamingAppDataDir();
 
         pathAppData /= L".UFCase";
 
@@ -73,18 +60,14 @@ namespace winrt::UFCase::implementation
             AppConfig::WriteAppConfigToFile(cfg_path.c_str());
         }
 
-        this->ConfigAppModuleResources();
+        co_await SearchImages();
+
         window = make<MainWindow>();
         this->Resources().Insert(box_value(L"MainWindowInstance"), window);
 
         window.Activate();
 
         co_return;
-    }
-
-    void App::ConfigAppModuleResources()
-    {
-        this->Resources().Insert(box_value(L"ImageProviderInstance"), UFCase::ImageProvider());
     }
 
 }

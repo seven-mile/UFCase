@@ -47,13 +47,16 @@
     <Midl Include="PackageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
-    <Midl Include="ImageProvider.idl">
+    <Midl Include="ImageSelectorViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
     <Midl Include="SysInfoRealtimeProvider.idl">
       <Filter>view_models</Filter>
     </Midl>
-    <Midl Include="SysInfoStaticProvider.idl">
+    <Midl Include="SysInfoStaticViewModel.idl">
+      <Filter>view_models</Filter>
+    </Midl>
+    <Midl Include="ImageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
   </ItemGroup>
@@ -86,6 +89,12 @@
       <Filter>models</Filter>
     </ClCompile>
     <ClCompile Include="SessionModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="HardwareInfoModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSelectorHelper.cpp">
       <Filter>models</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,6 +137,15 @@
     </ClInclude>
     <ClInclude Include="SessionModel.h">
       <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="HardwareInfoModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSelectorHelper.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="PathUtil.h">
+      <Filter>libraries\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

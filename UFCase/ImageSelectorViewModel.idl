@@ -1,0 +1,13 @@
+import "ImageViewModel.idl";
+
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass ImageSelectorViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ImageSelectorViewModel();
+        Windows.Foundation.Collections.IObservableVector<ImageViewModel> Images{ get; };
+        Int32 SelectedIndex;
+    }
+}

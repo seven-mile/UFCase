@@ -12,10 +12,19 @@ namespace winrt::UFCase {
 
     SessionModel::SessionModel(ImageModel* image, _CbsSessionOption option) : image(*image), option(option) {
         session = CbsProviderManager::Current()
-            .ApplyFromBootdrive(L"xxx", image->Bootdrive().c_str())
+            .ApplyFromBootdrive(L"UFCase",
+                // cannot use image session for now
+                // just apply online session
+                // image->Bootdrive().c_str()
+                CbsProviderManager::GetOnlineBootdrive())
             ->ApplySession();
 
-        check_hresult(session->Initialize(option, L"UFCase", image->Bootdrive().c_str(), image->WinDir().c_str()));
+        if (image->Type() == ImageType::Online) {
+            check_hresult(session->Initialize(option, L"UFCase", nullptr, nullptr));
+        } else {
+            check_hresult(session->Initialize(option, L"UFCase", image->Bootdrive().c_str(), image->WinDir().c_str()));
+        }
+
     }
 
     SessionModel* SessionModel::Create(ImageModel* image, _CbsSessionOption option)
@@ -44,11 +53,11 @@ namespace winrt::UFCase {
         check_hresult(session->Finalize(&action));
     }
 
-    std::vector<PackageModel*> SessionModel::Packages(DWORD option)
+    std::vector<PackageModel*> SessionModel::Packages(DWORD flag)
     {
         com_ptr<IEnumCbsIdentity> ids;
 
-        check_hresult(session->EnumeratePackages(option, ids.put()));
+        check_hresult(session->EnumeratePackages(flag, ids.put()));
         std::vector<PackageModel*> res;
         for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
             res.push_back(this->OpenPackage(id));
@@ -83,7 +92,7 @@ namespace winrt::UFCase {
         com_ptr<IEnumCbsIdentity> ids;
 
         if (identity == L"@Foundation") {
-            check_hresult(session->EnumeratePackages(0x130, ids.put()));
+            check_hresult(session->EnumeratePackages(0x1b0, ids.put()));
             for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
                 unique_malloc_wstring ws_id;
                 check_hresult(id->GetStringId(wil::out_param(ws_id)));
@@ -93,7 +102,7 @@ namespace winrt::UFCase {
                 }
             }
         } else if (identity == L"@Product") {
-            check_hresult(session->EnumeratePackages(0x130, ids.put()));
+            check_hresult(session->EnumeratePackages(0x1b0, ids.put()));
             for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
                 unique_malloc_wstring ws_id;
                 check_hresult(id->GetStringId(wil::out_param(ws_id)));
