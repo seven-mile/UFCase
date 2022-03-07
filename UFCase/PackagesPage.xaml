@@ -117,7 +117,7 @@
         
         <PivotItem Header="New">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Margin="5" AllowDrop="True">
+                  Margin="50" AllowDrop="True">
 
                 <Rectangle StrokeDashCap="Flat" StrokeDashOffset="1.5" 
                            StrokeDashArray="1" StrokeThickness="3"
