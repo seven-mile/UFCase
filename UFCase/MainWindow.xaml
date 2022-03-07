@@ -13,7 +13,7 @@
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
             <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
-            <local:ImageSelectorViewModel x:Key="ImageSelectorViewModel" />
+            <local:ImageSelectorViewModel x:Key="ImageSelectorViewModel" x:Name="ImageSelectorVM" />
         </Grid.Resources>
         
         <Border x:Name="AppTitleBar"
@@ -42,8 +42,8 @@
 
             <NavigationView.PaneCustomContent>
                 <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
-                          DataContext="{StaticResource ImageSelectorViewModel}"
-                          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" ItemsSource="{Binding Images}">
+                          SelectedIndex="{x:Bind ImageSelectorVM.SelectedIndex, Mode=TwoWay}"
+                          ItemsSource="{x:Bind ImageSelectorVM.Images}">
                     <ComboBox.Resources>
                         <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
                                      Title="Switch Windows Image"
@@ -58,7 +58,10 @@
                             <StackPanel Orientation="Horizontal" Height="Auto" HorizontalAlignment="Stretch">
                                 <ImageIcon Source="{x:Bind Icon}" VerticalAlignment="Stretch" Width="35" Margin="0,7,7,7" />
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{x:Bind Version}" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                                        <Run Text="{x:Bind Version}" />
+                                        <Run Text="{x:Bind Edition}" />
+                                    </TextBlock>
                                     <TextBlock Style="{StaticResource BodyTextBlockStyle}">
                                         <Run Text="{x:Bind Type}" />
                                         <Run Text="{x:Bind Bootdrive}" />

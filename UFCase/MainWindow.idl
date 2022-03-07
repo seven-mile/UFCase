@@ -1,3 +1,5 @@
+import "ImageSelectorViewModel.idl";
+
 namespace UFCase
 {
     [default_interface]
@@ -7,6 +9,7 @@ namespace UFCase
         
         // UI elements
         // Microsoft.UI.Xaml.Controls.NavigationView NavView;
+        ImageSelectorViewModel ImageSelectorVM;
         Microsoft.UI.Xaml.Controls.Frame ContentFrame;
         Microsoft.UI.Xaml.Controls.ComboBox ImageComboBox;
     }

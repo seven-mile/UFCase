@@ -78,7 +78,9 @@ namespace winrt::UFCase {
     {
         FOUR_PART_VERSION ver;
         short* ptr = reinterpret_cast<short*>(&ver);
-        for (auto&& rng : basic_sess->ProductPackage()->Identity()
+        constexpr int offset_ver = 4;
+        for (auto&& rng : *std::next((basic_sess->ProductPackage()->Identity()
+            | std::ranges::views::split('~')).begin(), offset_ver)
             | std::ranges::views::split('.')) {
             std::wstring_view str{ rng.begin(), rng.end() };
             *ptr++ = static_cast<short>(std::wcstol(str.data(), nullptr, 10));
@@ -90,9 +92,9 @@ namespace winrt::UFCase {
     {
         std::wstring name = basic_sess->ProductPackage()->ProductName().c_str();
         assert(name.ends_with(L"Edition"));
-        const auto idx = name.find_last_of(L'-');
+        const auto idx = name.find_last_of(L'-') + 1;
         constexpr int suffix_len = 7;
-        return name.substr(idx + 1, name.size() - idx - suffix_len).c_str();
+        return name.substr(idx, name.size() - idx - suffix_len).c_str();
     }
 
     hstring ImageModel::Architecture()

@@ -8,6 +8,7 @@ namespace UFCase
 
         String Type{ get; };
         String Version{ get; };
+        String Edition{ get; };
         String Bootdrive{ get; };
 
         Microsoft.UI.Xaml.Media.ImageSource Icon{ get; };
