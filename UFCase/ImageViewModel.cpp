@@ -58,22 +58,27 @@ namespace winrt::UFCase::implementation
 
     Media::ImageSource ImageViewModel::Icon()
     {
+        static auto Icon7 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png")),
+            Icon8 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png")),
+            Icon10 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png")),
+            Icon11 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
+
         auto&& ver = m_model.Version();
         if (ver.major == 6) {
             // includes vista
             if (ver.minor <= 1) {
-                return Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png"));
+                return Icon7;
             } else {
-                return Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png"));
+                return Icon8;
             }
         } else if (ver.major == 10) {
             // win11 pre-release is less than 22000
             if (ver.build <= 21900) {
-                return Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png"));
+                return Icon10;
             }
         }
         // major >= 11
-        return Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
+        return Icon11;
     }
 
     void ImageViewModel::Select()
