@@ -4,8 +4,7 @@
 #include "PackagesPage.g.cpp"
 #endif
 
-using namespace winrt;
-using namespace Microsoft::UI::Xaml;
+#include <winrt/Microsoft.UI.Xaml.Input.h>
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -41,4 +40,13 @@ namespace winrt::UFCase::implementation
         return this->m_pkgProv;
     }
 
+    void PackagesPage::ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e)
+    {
+        auto item = sender.as<ListViewItem>();
+        auto list = this->PkgList();
+        list.SelectedItem(list.ItemFromContainer(item));
+        item.IsSelected(true);
+
+        e.Handled(false);
+    }
 }

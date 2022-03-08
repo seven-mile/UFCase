@@ -214,7 +214,7 @@
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureViewModel">
                         <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
-                                      DoubleTapped="FeatureTreeItem_DoubleTapped">
+                                      DoubleTapped="FeatureTreeItem_DoubleTapped" RightTapped="FeatureTreeItem_RightTapped">
                             
                             <StackPanel Orientation="Horizontal">
                                 <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />

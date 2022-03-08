@@ -40,6 +40,7 @@ namespace winrt::UFCase::implementation
 
         IObservableVector<UFCase::PackageViewModel> m_pkgProv{nullptr};
         IObservableVector<UFCase::PackageViewModel> PackageDataSource();
+        void ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e);
     };
 }
 

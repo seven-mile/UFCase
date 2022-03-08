@@ -86,52 +86,6 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::OpenRegButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        //auto vm = this->FeatureTree().SelectedItem().as<FeatureViewModel>();
-        //auto target = vm.Package().Identity(); // todo: concat
-
-        //OutputDebugString(std::format(L"{}\n", target.c_str()).c_str());
-
-        //try {
-        //    wil::unique_hkey hkeyTmp;
-        //    check_win32(RegOpenKey(HKEY_LOCAL_MACHINE, target.c_str(), wil::out_param(hkeyTmp)));
-        //} catch (winrt::hresult_error const&) {
-        //    ContentDialog cd;
-        //    cd.XamlRoot(this->XamlRoot());
-        //    cd.Title(box_value(L"Cannot open file"));
-        //    cd.Content(box_value(L"This package have no valid file path."));
-        //    cd.PrimaryButtonText(L"OK");
-        //    cd.DefaultButton(ContentDialogButton::Primary);
-        //    cd.ShowAsync();
-
-        //    return;
-        //}
-
-        //target = L"HKLM\\" + target;
-
-        //// write to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit
-        ////wil::unique_hkey hkeyLastKey;
-        ////check_nt(RegOpenKey(HKEY_CURRENT_USER,
-        ////    L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
-        ////    wil::out_param(hkeyLastKey)));
-        ////check_nt(RegSetValue(hkeyLastKey.get(), L"LastKey", REG_SZ,
-        ////    target.c_str(), sizeof(target.front()) * (1ull + target.size())));
-        //
-        //Windows::ApplicationModel::DataTransfer::DataPackage regText;
-        //regText.SetText(target);
-        //Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(regText);
-
-        //{
-        //    ContentDialog cd;
-        //    cd.XamlRoot(this->XamlRoot());
-        //    cd.Title(box_value(L"Registry path copied!"));
-        //    cd.Content(box_value(L"You can paste it in the address bar and jump to it.\nUFCase cannot locate it automatically for you."));
-        //    cd.PrimaryButtonText(L"OK");
-        //    cd.DefaultButton(ContentDialogButton::Primary);
-        //    cd.ShowAsync().Completed([](auto&, auto&) {
-        //        ShellExecute(nullptr, L"open", L"regedit", nullptr, nullptr, SW_SHOW);
-        //    });
-        //}
-
 
     }
 
@@ -163,12 +117,21 @@ namespace winrt::UFCase::implementation
             this->FeatureInfoPanel().Visibility(Visibility::Collapsed);
         }
     }
-    void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&)
+
+    void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&e)
     {
         auto item = sender.as<TreeViewItem>();
         item.IsExpanded(!item.IsExpanded());
+
+        e.Handled(true);
+    }
+
+    void FeaturesPage::FeatureTreeItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const &e)
+    {
+        auto item = sender.as<TreeViewItem>();
+        auto&& tree = this->FeatureTree();
+        tree.SelectedItem(tree.ItemFromContainer(item));
+        item.IsSelected(true);
+        e.Handled(false);
     }
 }
-
-
-

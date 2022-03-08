@@ -29,6 +29,7 @@ namespace winrt::UFCase::implementation
         
         void FeatureTree_Loaded(IInspectable const&, RoutedEventArgs const&);
         void FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const& e);
+        void FeatureTreeItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e);
 
         using vis_t = Microsoft::UI::Xaml::Visibility;
         vis_t ConvertUInt32ToVisibility(uint32_t value) { return value ? vis_t::Visible : vis_t::Collapsed; }

@@ -83,32 +83,34 @@
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:PackageViewModel">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="32" />
-                                <RowDefinition Height="24" />
-                                <RowDefinition Height="24" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="80" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind Name}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind Identity}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                            <!--SecondaryTextFontSize-->
-                            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
-                                <Border Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
-                                    <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                                </Border>
-                                <Border Background="SkyBlue" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
-                                    <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                                </Border>
-                                <TextBlock Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                            </StackPanel>
-                            <AppBarButton Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                            <ListViewItem RightTapped="ListViewItem_RightTapped" >
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="24" />
+                                        <RowDefinition Height="24" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="80" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind Name}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind Identity}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                    <!--SecondaryTextFontSize-->
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+                                        <Border Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                            <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                        </Border>
+                                        <Border Background="SkyBlue" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                            <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                        </Border>
+                                        <TextBlock Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <AppBarButton Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                                           Label="More Actions" Icon="More" IsCompact="True" VerticalAlignment="Center"
                                           Flyout="{StaticResource PackageItemActionsMenu}" />
-                        </Grid>
+                                </Grid>
+                            </ListViewItem>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
