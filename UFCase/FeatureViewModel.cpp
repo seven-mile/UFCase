@@ -51,8 +51,10 @@ namespace winrt::UFCase::implementation
         case CbsInstallStateInstallRequested:
         case CbsInstallStateInstalled:
         //case CbsInstallStatePermanent:
-            if (this->IsChecked().Value())
+            if (std::optional<bool> opt = this->IsChecked(); opt.has_value()) {
+                assert(*opt);
                 return FeatureState::Enabled;
+            }
             else return FeatureState::PartiallyEnabled;
         case CbsInstallStateUninstallRequested:
         case CbsInstallStateStaged:
@@ -118,13 +120,13 @@ namespace winrt::UFCase::implementation
 
     IReference<bool> FeatureViewModel::IsChecked()
     {
-        if (m_model.State() >= CbsInstallStateInstallRequested) return true;
         uint32_t cnt = 0;
         for (auto child : m_children) {
             std::optional<bool> t = child.IsChecked();
             cnt += t.has_value() && *t;
         }
-        if (cnt < m_children.Size()) return nullptr;
+        if (cnt < m_children.Size()) return std::optional<bool>(std::nullopt);
+        if (m_model.State() >= CbsInstallStateInstallRequested) return true;
         return false;
     }
 
