@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "CbsProviderManager.h"
-
 #include "SysInfoStaticViewModel.g.h"
 
 #include "ImageModel.h"

@@ -1,24 +1,24 @@
 #pragma once
 #include "Model.h"
+#include "GitObject.h"
 #include "CbsApi.h"
-
-#include <set>
 
 namespace winrt::UFCase {
 
     class ImageModel;
     class PackageModel;
 
-    class SessionModel : public Model<SessionModel>
+    class SessionModel : public Model<SessionModel>,
+                         public GitObject<ICbsSession>
     {
         friend class ImageModel;
 
         ImageModel &image;
         _CbsSessionOption option;
-        com_ptr<ICbsSession> session;
+        DWORD session_cookie;
         std::unordered_map<hstring, uint64_t> packages;
 
-        SessionModel(ImageModel* image, _CbsSessionOption option);
+        SessionModel(ImageModel* image, com_ptr<ICbsSession> session);
         static SessionModel* Create(ImageModel* image, _CbsSessionOption option = CbsSessionOptionNone);
 
         PackageModel* OpenPackageWithoutHash(com_ptr<ICbsIdentity> identity);

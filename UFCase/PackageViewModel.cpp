@@ -4,7 +4,6 @@
 #include "PackageViewModel.g.cpp"
 #endif
 
-#include "CbsProviderManager.h"
 #include "MallocUtil.h"
 #include "CbsUtil.h"
 #include <wil/resource.h>

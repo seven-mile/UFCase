@@ -9,7 +9,6 @@
 
 #include <winrt/Windows.Storage.Streams.h>
 
-#include "CbsProviderManager.h"
 #include "MallocUtil.h"
 #include "CbsUtil.h"
 #include <wil/resource.h>

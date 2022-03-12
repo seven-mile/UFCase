@@ -2,45 +2,48 @@
 #include "Model.h"
 
 #include "CbsApi.h"
+#include "GitObject.h"
 
 namespace winrt::UFCase {
 
     class FeatureModel;
     class SessionModel;
 
-    class PackageModel : public Model<PackageModel>
+    class PackageModel : public Model<PackageModel>,
+                         public GitObject<ICbsPackage>
     {
         friend class SessionModel;
         SessionModel &session;
-        com_ptr<ICbsPackage> package;
         std::unordered_map<hstring, uint64_t> updates;
 
-        PackageModel(SessionModel *session, com_ptr<ICbsPackage> package) : session(*session), package(package) { }
+        PackageModel(SessionModel *session, com_ptr<ICbsPackage> package) : session(*session), GitObject(package) { }
         static PackageModel* Create(SessionModel* session, com_ptr<ICbsPackage> package);
     public:
+
+        SessionModel* Session() const;
     
-        hstring Identity();
-        hstring ReleaseType();
-        _CbsInstallState State();
-        hstring Name();
-        hstring Description();
-        hstring RestartRequired();
-        hstring ProductName();
-        hstring ProductVersion();
-        hstring Company();
-        hstring Copyright();
-        hstring SupportInformation();
-        hstring CreationTime();
-        hstring LastUpdateTime();
-        hstring InstallTime();
-        hstring InstallPackageName();
-        hstring InstallLocation();
-        hstring InstallClient();
-        hstring InstallUserName();
-        bool IsApplicable();
-        void Install();
-        void Remove();
-        void Stage();
+        hstring Identity() const;
+        hstring ReleaseType() const;
+        _CbsInstallState State() const;
+        hstring Name() const;
+        hstring Description() const;
+        hstring RestartRequired() const;
+        hstring ProductName() const;
+        hstring ProductVersion() const;
+        hstring Company() const;
+        hstring Copyright() const;
+        hstring SupportInformation() const;
+        hstring CreationTime() const;
+        hstring LastUpdateTime() const;
+        hstring InstallTime() const;
+        hstring InstallPackageName() const;
+        hstring InstallLocation() const;
+        hstring InstallClient() const;
+        hstring InstallUserName() const;
+        bool IsApplicable() const;
+        void Install() const;
+        void Remove() const;
+        void Stage() const;
         FeatureModel* OpenFeature(hstring const &name);
         std::vector<FeatureModel*> GetPackageFeatureCollection(
             _CbsApplicability appl = CbsApplicabilityNotApplicable,

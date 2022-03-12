@@ -3,8 +3,6 @@
 #include "App.xaml.h"
 #include "MainWindow.xaml.h"
 
-#include "CbsProviderManager.h"
-
 #include "AppConfig.h"
 #include "ImageSelectorHelper.h"
 #include "PathUtil.h"

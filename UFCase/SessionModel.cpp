@@ -5,37 +5,33 @@
 
 #include "MallocUtil.h"
 #include "CbsUtil.h"
-#include "CbsProviderManager.h"
 #include <wil/resource.h>
+
+extern "C" CLSID CLSID_CbsSession;
 
 namespace winrt::UFCase {
 
-    SessionModel::SessionModel(ImageModel* image, _CbsSessionOption option) : image(*image), option(option) {
-        session = CbsProviderManager::Current()
-            .ApplyFromBootdrive(L"UFCase",
-                // cannot use image session for now
-                // just apply online session
-                // image->Bootdrive().c_str()
-                CbsProviderManager::GetOnlineBootdrive())
-            ->ApplySession();
+    std::unordered_multimap<ImageModel*, com_ptr<ICbsSession>> image_work_session;
+
+    SessionModel::SessionModel(ImageModel* image, com_ptr<ICbsSession> session)
+        : image(*image), GitObject(session) { }
+
+    SessionModel* SessionModel::Create(ImageModel* image, _CbsSessionOption option)
+    {
+        auto session = create_instance<ICbsSession>(CLSID_CbsSession, CLSCTX_LOCAL_SERVER);
 
         if (image->Type() == ImageType::Online) {
             check_hresult(session->Initialize(option, L"UFCase", nullptr, nullptr));
         } else {
             check_hresult(session->Initialize(option, L"UFCase", image->Bootdrive().c_str(), image->WinDir().c_str()));
         }
-
-    }
-
-    SessionModel* SessionModel::Create(ImageModel* image, _CbsSessionOption option)
-    {
-        return new SessionModel{ image, option };
+        return new SessionModel{ image, session };
     }
 
     PackageModel* SessionModel::OpenPackageWithoutHash(com_ptr<ICbsIdentity> identity)
     {
         com_ptr<ICbsPackage> package;
-        check_hresult(session->OpenPackage(0, identity.get(), nullptr, package.put()));
+        check_hresult(GetInterface()->OpenPackage(0, identity.get(), nullptr, package.put()));
         package = package.as<ICbsPackage>();
         return PackageModel::Create(this, package);
     }
@@ -50,14 +46,14 @@ namespace winrt::UFCase {
     void SessionModel::SaveChanges()
     {
         _CbsRequiredAction action{};
-        check_hresult(session->Finalize(&action));
+        check_hresult(GetInterface()->Finalize(&action));
     }
 
     std::vector<PackageModel*> SessionModel::Packages(DWORD flag)
     {
         com_ptr<IEnumCbsIdentity> ids;
 
-        check_hresult(session->EnumeratePackages(flag, ids.put()));
+        check_hresult(GetInterface()->EnumeratePackages(flag, ids.put()));
         std::vector<PackageModel*> res;
         for (auto&& id : GetIEnumComPtrVector<ICbsIdentity>(ids)) {
             res.push_back(this->OpenPackage(id));
@@ -83,7 +79,7 @@ namespace winrt::UFCase {
             return &PackageModel::GetInstance(it->second);
 
         com_ptr<ICbsIdentity> id;
-        check_hresult(session->CreateCbsIdentity(id.put()));
+        check_hresult(GetInterface()->CreateCbsIdentity(id.put()));
         check_hresult(id->LoadFromStringId(identity.c_str()));
         auto &&res = this->OpenPackageWithoutHash(id);
         packages[identity] = res->GetHandle();

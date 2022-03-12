@@ -3,7 +3,6 @@
 #include "SessionModel.h"
 #include "FeatureModel.h"
 
-#include "CbsProviderManager.h"
 #include "MallocUtil.h"
 #include "CbsUtil.h"
 #include <wil/resource.h>
@@ -17,149 +16,154 @@ namespace winrt::UFCase {
         return new PackageModel{ session, package };
     }
 
-    hstring PackageModel::Identity()
+    SessionModel* PackageModel::Session() const
+    {
+        return &this->session;
+    }
+
+    hstring PackageModel::Identity() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyIdentityString, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::ReleaseType()
+    hstring PackageModel::ReleaseType() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyReleaseType, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyReleaseType, wil::out_param(ws)));
         return ws.get();
     }
 
-    _CbsInstallState PackageModel::State()
+    _CbsInstallState PackageModel::State() const
     {
         return _CbsInstallState();
     }
 
-    hstring PackageModel::Name()
+    hstring PackageModel::Name() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyDisplayName, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyDisplayName, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::Description()
+    hstring PackageModel::Description() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyDescription, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyDescription, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::RestartRequired()
+    hstring PackageModel::RestartRequired() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyRestart, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyRestart, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::ProductName()
+    hstring PackageModel::ProductName() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyProductName, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyProductName, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::ProductVersion()
+    hstring PackageModel::ProductVersion() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyProductVersion, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyProductVersion, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::Company()
+    hstring PackageModel::Company() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyCompany, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyCompany, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::Copyright()
+    hstring PackageModel::Copyright() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyCopyright, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyCopyright, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::SupportInformation()
+    hstring PackageModel::SupportInformation() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertySupportInformation, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertySupportInformation, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::CreationTime()
+    hstring PackageModel::CreationTime() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyCreationTimeStamp, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyCreationTimeStamp, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::LastUpdateTime()
+    hstring PackageModel::LastUpdateTime() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyLastUpdateTimeStamp, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyLastUpdateTimeStamp, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::InstallTime()
+    hstring PackageModel::InstallTime() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyInstallTimeStamp, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyInstallTimeStamp, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::InstallPackageName()
+    hstring PackageModel::InstallPackageName() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyInstallPackageName, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyInstallPackageName, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::InstallLocation()
+    hstring PackageModel::InstallLocation() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyInstallLocation, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyInstallLocation, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::InstallClient()
+    hstring PackageModel::InstallClient() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyInstallClient, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyInstallClient, wil::out_param(ws)));
         return ws.get();
     }
 
-    hstring PackageModel::InstallUserName()
+    hstring PackageModel::InstallUserName() const
     {
         unique_malloc_wstring ws;
-        check_hresult(package->GetProperty(CbsPackagePropertyInstallUserName, wil::out_param(ws)));
+        check_hresult(GetInterface()->GetProperty(CbsPackagePropertyInstallUserName, wil::out_param(ws)));
         return ws.get();
     }
 
-    bool PackageModel::IsApplicable()
+    bool PackageModel::IsApplicable() const
     {
         _CbsInstallState state_applicable{}, state_current{};
-        return SUCCEEDED(package->EvaluateApplicability(0, &state_applicable, &state_current));
+        return SUCCEEDED(GetInterface()->EvaluateApplicability(0, &state_applicable, &state_current));
     }
 
-    void PackageModel::Install()
+    void PackageModel::Install() const
     {
-        check_hresult(package->InitiateChanges(0, CbsInstallStateInstalled, nullptr));
+        check_hresult(GetInterface()->InitiateChanges(0, CbsInstallStateInstalled, nullptr));
     }
 
-    void PackageModel::Remove()
+    void PackageModel::Remove() const
     {
-        check_hresult(package->InitiateChanges(0, CbsInstallStateAbsent, nullptr));
+        check_hresult(GetInterface()->InitiateChanges(0, CbsInstallStateAbsent, nullptr));
     }
 
-    void PackageModel::Stage()
+    void PackageModel::Stage() const
     {
-        check_hresult(package->InitiateChanges(0, CbsInstallStateStaged, nullptr));
+        check_hresult(GetInterface()->InitiateChanges(0, CbsInstallStateStaged, nullptr));
     }
 
     FeatureModel* PackageModel::OpenFeature(hstring const& name)
@@ -167,7 +171,7 @@ namespace winrt::UFCase {
         if (auto it = updates.find(name); it != updates.end())
             return &FeatureModel::GetInstance(it->second);
         com_ptr<ICbsUpdate> update;
-        check_hresult(package->GetUpdate(name.c_str(), update.put()));
+        check_hresult(GetInterface()->GetUpdate(name.c_str(), update.put()));
 
         auto &&res = FeatureModel::Create(update, this);
         updates[name] = res->GetHandle();
@@ -177,7 +181,7 @@ namespace winrt::UFCase {
     std::vector<FeatureModel*> PackageModel::GetPackageFeatureCollection(_CbsApplicability appl, _CbsSelectability sele)
     {
         com_ptr<IEnumCbsUpdate> cbs_updates;
-        check_hresult(package->EnumerateUpdates(appl, sele, cbs_updates.put()));
+        check_hresult(GetInterface()->EnumerateUpdates(appl, sele, cbs_updates.put()));
 
         std::vector<FeatureModel*> handles;
         for (auto&& update : GetIEnumComPtrVector<ICbsUpdate>(cbs_updates)) {

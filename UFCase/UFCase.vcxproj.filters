@@ -73,9 +73,6 @@
     <ClCompile Include="AppConfig.cpp">
       <Filter>libraries\appconfig</Filter>
     </ClCompile>
-    <ClCompile Include="CbsProviderManager.cpp">
-      <Filter>libraries\servicingapi</Filter>
-    </ClCompile>
     <ClCompile Include="FeatureModel.cpp">
       <Filter>models</Filter>
     </ClCompile>
@@ -111,9 +108,6 @@
     <ClInclude Include="AppConfig.h">
       <Filter>libraries\appconfig</Filter>
     </ClInclude>
-    <ClInclude Include="CbsProviderManager.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
     <ClInclude Include="CbsUtil.h">
       <Filter>libraries\util</Filter>
     </ClInclude>
@@ -145,6 +139,12 @@
       <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="PathUtil.h">
+      <Filter>libraries\util</Filter>
+    </ClInclude>
+    <ClInclude Include="GitObject.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="GitUtil.h">
       <Filter>libraries\util</Filter>
     </ClInclude>
   </ItemGroup>

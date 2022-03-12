@@ -1,18 +1,19 @@
 #pragma once
 #include "Model.h"
 #include "CbsApi.h"
+#include "GitObject.h"
 
 namespace winrt::UFCase {
 
     class PackageModel;
 
-    class FeatureModel : public Model<FeatureModel>
+    class FeatureModel : public Model<FeatureModel>,
+                         public GitObject<ICbsUpdate>
     {
-        com_ptr<ICbsUpdate> update;
         PackageModel &package;
 
         FeatureModel(com_ptr<ICbsUpdate> update, PackageModel *package)
-            : update(update), package(*package) {  }
+            : GitObject(update), package(*package) {  }
 
         friend class PackageModel;
         static FeatureModel* Create(com_ptr<ICbsUpdate> update, PackageModel *parent);

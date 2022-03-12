@@ -3,7 +3,6 @@
 #include "FeatureModel.h"
 
 #include "MallocUtil.h"
-#include "CbsProviderManager.h"
 #include "CbsUtil.h"
 
 #include <functional>
@@ -18,19 +17,15 @@ namespace winrt::UFCase
     IAsyncOperationWithProgress<IObservableVector<FeatureViewModel>, uint32_t>
         ConstructUpdateTree(ImageModel &image)
     {
+        // switch thread context
+        co_await resume_background();
+
         child_ids.clear();
 
         auto& session = *image.OpenSession();
-
-        auto report_prog = co_await get_progress_token();
-        apartment_context exception_context;
-
-
-        //co_await resume_background();
-        auto res = single_threaded_observable_vector<FeatureViewModel>();
-
         auto &found = *session.FoundationPackage();
 
+        auto report_prog = co_await get_progress_token();
         report_prog(10);
 
         auto joinUpdates = [=](const std::vector<FeatureModel*> &updates) -> IAsyncActionWithProgress<uint32_t> {
@@ -79,6 +74,7 @@ namespace winrt::UFCase
             }
         };
 
+        auto res = single_threaded_observable_vector<FeatureViewModel>();
         dfs(res, 0);
         report_prog(100);
 
