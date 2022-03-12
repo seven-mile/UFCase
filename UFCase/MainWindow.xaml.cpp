@@ -4,19 +4,13 @@
 #include "MainWindow.g.cpp"
 #endif
 
-//#include "SysInfoPage.g.h"
-//#include "SettingsPage.g.h"
-//
-//#include "FeaturesPage.g.h"
-//#include "FeatureViewModel.g.h"
-
 #include "FeatureTreeHelper.h"
-
-
-#include "ErrorPage.g.h"
+#include "PackageListHelper.h"
 
 #include "ImageModel.h"
 #include "AppConfig.h"
+
+#include <ShlObj_core.h>
 
 
 namespace winrt::UFCase::implementation
@@ -34,28 +28,28 @@ namespace winrt::UFCase::implementation
         this->NavigateTo(this->NavView().SelectedItem().as<NavigationViewItemBase>());
     }
 
-    winrt::AppWindow MainWindow::GetAppWindowForCurrentWindow()
+    AppWindow MainWindow::GetAppWindowForCurrentWindow()
     {
-        winrt::AppWindow appWindow = nullptr;
+        AppWindow appWindow = nullptr;
 
         {
             // Get the HWND for the XAML Window
             HWND hWnd;
             Window window = this->try_as<Window>();
-            winrt::check_hresult(window.as<IWindowNative>()->get_WindowHandle(&hWnd));
+            check_hresult(window.as<IWindowNative>()->get_WindowHandle(&hWnd));
 
             // Get the WindowId for the HWND
             
             if (auto windowId = GetWindowIdFromWindow(hWnd); windowId.Value)
             {
                 // Get the AppWindow for the WindowId
-                appWindow = winrt::AppWindow::GetFromWindowId(windowId);
+                appWindow = AppWindow::GetFromWindowId(windowId);
             }
         }
         return appWindow;
     }
 
-    void MainWindow::HandleHrError(winrt::hresult_error err)
+    void MainWindow::HandleHrError(hresult_error err)
     {
         auto frame = this->ContentFrame();
         frame.DispatcherQueue().TryEnqueue([frame, err](){
@@ -69,10 +63,11 @@ namespace winrt::UFCase::implementation
 
     void MainWindow::UpdateTitleByConfig()
     {
+        auto admin_tip = ::IsUserAnAdmin() ? L"" : L"Non-";
         if (AppConfig::GetStackSource() == 0) {
-            this->AppTitle().Text(L"UFCase [Online Image] [Non-Admin]");
+            this->AppTitle().Text(std::format(L"UFCase [Online Image] [{}Admin]", admin_tip));
         } else {
-            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [Non-Admin]", AppConfig::GetStackArgBootdrive()).c_str());
+            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [{}Admin]", AppConfig::GetStackArgBootdrive(), admin_tip));
         }
     }
 
@@ -83,11 +78,11 @@ namespace winrt::UFCase::implementation
                 if (auto&& appt = appw.TitleBar()) {
                     appt.ExtendsContentIntoTitleBar(true);
 
-                    appt.BackgroundColor(winrt::Colors::Transparent());
-                    appt.ButtonBackgroundColor(winrt::Colors::Transparent());
-                    appt.ButtonInactiveBackgroundColor(winrt::Colors::Transparent());
-                    appt.ButtonHoverBackgroundColor(winrt::ColorHelper::FromArgb(48, 150, 150, 150));
-                    appt.ButtonPressedBackgroundColor(winrt::ColorHelper::FromArgb(96, 150, 150, 150));
+                    appt.BackgroundColor(Colors::Transparent());
+                    appt.ButtonBackgroundColor(Colors::Transparent());
+                    appt.ButtonInactiveBackgroundColor(Colors::Transparent());
+                    appt.ButtonHoverBackgroundColor(ColorHelper::FromArgb(48, 150, 150, 150));
+                    appt.ButtonPressedBackgroundColor(ColorHelper::FromArgb(96, 150, 150, 150));
 
                     this->AppTitleBar().Height(appt.Height());
 
@@ -104,14 +99,14 @@ namespace winrt::UFCase::implementation
                                 });
                             });
                     }
-                } else throw winrt::hresult_illegal_method_call{};
+                } else throw hresult_illegal_method_call{};
                 
                 // Config Window Min Size in future
                 //if (auto&& pres = appw.Presenter().as<OverlappedPresenter>()) {
                 //    pres.IsResizable(false);
-                //} else throw winrt::hresult_illegal_method_call{};
-            } else throw winrt::hresult_illegal_method_call{};;
-        } catch (winrt::hresult_error const&) {
+                //} else throw hresult_illegal_method_call{};
+            } else throw hresult_illegal_method_call{};;
+        } catch (hresult_error const&) {
             // fallback for win10: just do nothing!
             //this->ExtendsContentIntoTitleBar(true);
             //this->SetTitleBar(this->AppTitleBar());
@@ -153,13 +148,12 @@ namespace winrt::UFCase::implementation
         sender.SelectedItem(this->m_stackNavItem.top());
     }
 
-    winrt::IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item, bool isSetting)
+    IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item, bool isSetting)
     {
         this->m_stackNavItem.push(item);
-        winrt::hstring page_name = item.Name();
+        hstring page_name = item.Name();
     try {
-        winrt::apartment_context ui_thread;
-        auto cancel_token = co_await winrt::get_cancellation_token();
+        auto cancel_token = co_await get_cancellation_token();
         auto frame = this->ContentFrame();
         if (isSetting) {
             frame.Navigate(xaml_typename<SettingsPage>());
@@ -173,14 +167,13 @@ namespace winrt::UFCase::implementation
         }
         else if (page_name == L"FeaturesNavViewItem") {
             auto op = ConstructUpdateTree(*ImageModel::Current());
-
             cancel_token.callback([=](){ op.Cancel(); });
 
             op.Completed([ptr = this->get_strong(), frame]
-                    (const decltype(op) &info, const winrt::AsyncStatus &status) -> winrt::IAsyncAction {
-                if (status != winrt::AsyncStatus::Completed) {
-                    ptr->HandleHrError(winrt::hresult_error(
-                            status == winrt::AsyncStatus::Canceled ?
+                    (const decltype(op) &info, const AsyncStatus &status) -> IAsyncAction {
+                if (status != AsyncStatus::Completed) {
+                    ptr->HandleHrError(hresult_error(
+                            status == AsyncStatus::Canceled ?
                             HRESULT_FROM_WIN32(ERROR_CANCELLED)
                             : info.ErrorCode().value));
                 } else {
@@ -191,32 +184,40 @@ namespace winrt::UFCase::implementation
                 co_return;
             });
 
-            //co_await ui_thread;
-
             frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
-
             co_return;
         }
         else if (page_name == L"OptionalsNavViewItem") {
             // fall through
         }
         else if (page_name == L"PackagesNavViewItem") {
-            auto session = ImageModel::Current()->OpenSession();
-            auto res = single_threaded_observable_vector<UFCase::PackageViewModel>();
+            auto op = ConstructPackageList(*ImageModel::Current());
+            cancel_token.callback([=]() { op.Cancel(); });
 
-            for (auto&& pkg : session->Packages())
-                res.Append(UFCase::PackageViewModel(pkg->GetHandle()));
+            op.Completed([ptr = this->get_strong(), frame]
+            (const decltype(op)& info, const AsyncStatus& status)->IAsyncAction {
+                if (status != AsyncStatus::Completed) {
+                    ptr->HandleHrError(hresult_error(
+                        status == AsyncStatus::Canceled ?
+                        HRESULT_FROM_WIN32(ERROR_CANCELLED)
+                        : info.ErrorCode().value));
+                } else {
+                    frame.DispatcherQueue().TryEnqueue([frame, info]() {
+                        frame.Navigate(xaml_typename<PackagesPage>(), box_value(info.GetResults()));
+                    });
+                }
+                co_return;
+            });
 
-            frame.Navigate(xaml_typename<PackagesPage>(), res);
-
+            frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
             co_return;
         }
-    } catch (const winrt::hresult_error &e) {
+    } catch (const hresult_error &e) {
         this->HandleHrError(e);
         co_return;
     }
 
-        this->HandleHrError(winrt::hresult_not_implemented());
+        this->HandleHrError(hresult_not_implemented());
     }
 
 }
