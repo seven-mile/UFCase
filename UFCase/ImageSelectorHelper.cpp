@@ -5,7 +5,6 @@
 #include "ImageViewModel.g.h"
 
 #include "PathUtil.h"
-
 #include <wil/resource.h>
 
 #include <unordered_set>
@@ -77,7 +76,7 @@ namespace winrt::UFCase {
 
     IAsyncActionWithProgress<uint32_t> SearchOfflineImages(list_t result)
     {
-        auto report_prog = co_await get_progress_token();
+        auto report_prog = co_await winrt::get_progress_token();
         constexpr int MAX_PROG = 45;
 
         // admin needed

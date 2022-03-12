@@ -149,6 +149,7 @@
     <ClInclude Include="MallocUtil.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="PackageListHelper.h" />
     <ClInclude Include="PackageModel.h" />
     <ClInclude Include="PackagesPage.xaml.h">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
@@ -269,6 +270,7 @@
       <DependentUpon>ImageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="PackageListHelper.cpp" />
     <ClCompile Include="PackageModel.cpp" />
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>

@@ -17,11 +17,6 @@ namespace winrt::UFCase::implementation
         return m_model.GetHandle();
     }
 
-    hstring PackageViewModel::Identity()
-    {
-        return m_model.Identity();
-    }
-
     hstring PackageViewModel::ReleaseType()
     {
         return m_model.ReleaseType();
@@ -62,11 +57,39 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    hstring PackageViewModel::Name()
+    hstring PackageViewModel::ListName()
     {
         auto &&res = m_model.Name();
         if (res.empty()) return m_model.Identity();
         return res;
+    }
+
+    hstring PackageViewModel::ListIdentity()
+    {
+        auto&& res = m_model.Name();
+        // avoid repetition of display
+        if (res.empty()) return L"";
+        return m_model.Identity();
+    }
+
+    Visibility PackageViewModel::ListIdentityVisibility()
+    {
+        auto&& res = m_model.Name();
+        // avoid repetition of display
+        if (res.empty()) return Visibility::Collapsed;
+        return Visibility::Visible;
+    }
+
+    hstring PackageViewModel::DetailName()
+    {
+        auto&& res = m_model.Name();
+        if (res.empty()) return L"(Unnamed)";
+        return res;
+    }
+
+    hstring PackageViewModel::DetailIdentity()
+    {
+        return m_model.Identity();
     }
 
     hstring PackageViewModel::Description()

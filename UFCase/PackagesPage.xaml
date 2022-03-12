@@ -36,8 +36,8 @@
                             <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Name), Mode=OneWay}" />
-                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
+                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
                                     </TextBlock>
                                     <TextBlock Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
                                 </StackPanel>
@@ -87,21 +87,23 @@
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="32" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="24" />
-                                        <RowDefinition Height="24" />
+                                        <RowDefinition Height="8" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="80" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind Name}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind Identity}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind ListName}" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind ListIdentity}" Visibility="{x:Bind ListIdentityVisibility}"
+                                               Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
                                     <!--SecondaryTextFontSize-->
                                     <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
                                         <Border Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
                                             <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
                                         </Border>
-                                        <Border Background="SkyBlue" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                        <Border Background="DarkOrchid" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
                                             <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
                                         </Border>
                                         <TextBlock Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />

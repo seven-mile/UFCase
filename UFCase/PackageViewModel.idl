@@ -26,10 +26,15 @@ namespace UFCase
 
         UInt64 Handle{ get; };
 
-        String Identity { get; };
+        String ListName { get; };
+        String ListIdentity { get; };
+        Microsoft.UI.Xaml.Visibility ListIdentityVisibility { get; };
+
+        String DetailName{ get; };
+        String DetailIdentity{ get; };
+
         String ReleaseType { get; };
         String State { get; };
-        String Name { get; };
         String Description { get; };
         String RestartRequired { get; };
         String ProductName { get; };

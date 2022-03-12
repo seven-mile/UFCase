@@ -15,10 +15,13 @@ namespace winrt::UFCase::implementation
 
         uint64_t Handle();
 
-        hstring Identity();
+        hstring ListName();
+        hstring ListIdentity();
+        Visibility ListIdentityVisibility();
+        hstring DetailName();
+        hstring DetailIdentity();
         hstring ReleaseType();
         hstring State();
-        hstring Name();
         hstring Description();
         hstring RestartRequired();
         hstring ProductName();

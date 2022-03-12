@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Page Include="ProgressPage.xaml">
-      <Filter>libraries\util</Filter>
-    </Page>
-    <Page Include="ErrorPage.xaml">
-      <Filter>libraries\util</Filter>
-    </Page>
     <Page Include="SettingsPage.xaml">
       <Filter>views\pages\settings</Filter>
     </Page>
@@ -36,6 +30,12 @@
     </Page>
     <Page Include="MainWindow.xaml">
       <Filter>views\windows</Filter>
+    </Page>
+    <Page Include="ErrorPage.xaml">
+      <Filter>views\pages\utils</Filter>
+    </Page>
+    <Page Include="ProgressPage.xaml">
+      <Filter>views\pages\utils</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +94,9 @@
     <ClCompile Include="ImageSelectorHelper.cpp">
       <Filter>models</Filter>
     </ClCompile>
+    <ClCompile Include="PackageListHelper.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -103,13 +106,13 @@
       <Filter>libraries\servicingapi</Filter>
     </ClInclude>
     <ClInclude Include="MallocUtil.h">
-      <Filter>libraries\util</Filter>
+      <Filter>libraries\utils</Filter>
     </ClInclude>
     <ClInclude Include="AppConfig.h">
       <Filter>libraries\appconfig</Filter>
     </ClInclude>
     <ClInclude Include="CbsUtil.h">
-      <Filter>libraries\util</Filter>
+      <Filter>libraries\utils</Filter>
     </ClInclude>
     <ClInclude Include="FeatureModel.h">
       <Filter>models</Filter>
@@ -139,13 +142,16 @@
       <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="PathUtil.h">
-      <Filter>libraries\util</Filter>
+      <Filter>libraries\utils</Filter>
     </ClInclude>
     <ClInclude Include="GitObject.h">
       <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="GitUtil.h">
-      <Filter>libraries\util</Filter>
+      <Filter>libraries\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PackageListHelper.h">
+      <Filter>models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +160,6 @@
     </Filter>
     <Filter Include="libraries">
       <UniqueIdentifier>{38eb061c-6e1f-4c2b-a5fe-781325d28ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libraries\util">
-      <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>
     </Filter>
     <Filter Include="libraries\appconfig">
       <UniqueIdentifier>{55eaf09c-4e3b-41b5-9ead-cec9990028e7}</UniqueIdentifier>
@@ -193,6 +196,12 @@
     </Filter>
     <Filter Include="models">
       <UniqueIdentifier>{898e0e38-1d75-4a62-8c90-4fe36eeab76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\pages\utils">
+      <UniqueIdentifier>{3d391cce-9eb2-4b5e-863d-c9a650eaf1be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\utils">
+      <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

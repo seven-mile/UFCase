@@ -30,6 +30,8 @@ namespace winrt::UFCase::implementation
             op_action.Progress(handler);
         } else if (auto op_feature = e.Parameter().try_as<IAsyncOperationWithProgress<IObservableVector<FeatureViewModel>, uint32_t>>()) {
             op_feature.Progress(handler);
+        } else if (auto op_package = e.Parameter().try_as<IAsyncOperationWithProgress<IObservableVector<PackageViewModel>, uint32_t>>()) {
+            op_package.Progress(handler);
         } else {
             throw winrt::hresult_invalid_argument();
         }
