@@ -29,11 +29,12 @@ namespace winrt::UFCase {
 
     ImageModel* ImageModel::Create(std::filesystem::path const& bootdrive)
     {
-        static std::unordered_map<std::wstring, uint64_t> images;
-        if (auto it = images.find(bootdrive); it != images.end())
+        static std::map<std::wstring, uint64_t> images;
+        auto canonical_path = std::filesystem::canonical(bootdrive);
+        if (auto it = images.find(canonical_path); it != images.end())
             return &ImageModel::GetInstance(it->second);
-        auto res = new ImageModel{ bootdrive };
-        images[bootdrive] = res->GetHandle();
+        auto res = new ImageModel{ canonical_path };
+        images[canonical_path] = res->GetHandle();
         return res;
     }
 
@@ -120,7 +121,8 @@ namespace winrt::UFCase {
                 throw winrt::hresult_error{ HRESULT_FROM_WIN32(lst) };
             }
         } else {
-            throw hresult_not_implemented{};
+            // todo: use offline reg
+            return false;
         }
     }
 }
