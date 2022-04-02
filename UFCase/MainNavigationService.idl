@@ -1,0 +1,17 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass MainNavigationService 
+    {
+        MainNavigationService();
+
+        String CurrentPage{ get; };
+        Object CurrentViewModel{ get; };
+
+        Windows.Foundation.IAsyncAction Initialize();
+        Windows.Foundation.IAsyncAction NavigateTo(String pageName);
+        Windows.Foundation.IAsyncAction Refresh();
+        void GoBack();
+    }
+}

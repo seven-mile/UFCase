@@ -7,13 +7,11 @@ namespace winrt::UFCase::implementation
 {
     struct AddSourceContentDialog : AddSourceContentDialogT<AddSourceContentDialog>
     {
-        AddSourceContentDialog(Window parent);
+        AddSourceContentDialog();
 
         hstring SourcePath();
 
         void BrowserButton_Click(IInspectable const& sender, RoutedEventArgs const& args);
-
-        Window parent{ nullptr };
     };
 }
 

@@ -11,6 +11,6 @@ namespace winrt::UFCase::implementation
         IAsyncAction OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
 
     private:
-        winrt::Microsoft::UI::Xaml::Window window{ nullptr };
+        UFCase::MainWindow window{ nullptr };
     };
 }

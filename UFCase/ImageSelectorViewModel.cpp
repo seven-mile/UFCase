@@ -6,6 +6,7 @@
 
 #include "AppConfig.h"
 #include "ImageSelectorHelper.h"
+#include "GlobalUtil.h"
 
 #include <filesystem>
 
@@ -35,6 +36,10 @@ namespace winrt::UFCase::implementation
         m_selectedIdx = value;
 
         m_images.GetAt(value).Select();
+
+        GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([]() -> IAsyncAction {
+            co_await GlobalRes::MainNavServ().Initialize();
+        });
 
         this->m_propertyChanged(*this, winrt::Data::PropertyChangedEventArgs{L"SelectedIndex"});
     }

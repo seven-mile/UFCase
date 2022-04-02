@@ -144,6 +144,7 @@
     <ClInclude Include="FeatureTreeHelper.h" />
     <ClInclude Include="GitObject.h" />
     <ClInclude Include="GitUtil.h" />
+    <ClInclude Include="GlobalUtil.h" />
     <ClInclude Include="HardwareInfoModel.h" />
     <ClInclude Include="ImageModel.h" />
     <ClInclude Include="ImageSelectorHelper.h" />
@@ -153,6 +154,10 @@
     </ClInclude>
     <ClInclude Include="ImageViewModel.h">
       <DependentUpon>ImageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="MainNavigationService.h">
+      <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="MallocUtil.h" />
@@ -268,6 +273,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FeatureTreeHelper.cpp" />
+    <ClCompile Include="GlobalUtil.cpp" />
     <ClCompile Include="HardwareInfoModel.cpp" />
     <ClCompile Include="ImageModel.cpp" />
     <ClCompile Include="ImageSelectorHelper.cpp" />
@@ -277,6 +283,10 @@
     </ClCompile>
     <ClCompile Include="ImageViewModel.cpp">
       <DependentUpon>ImageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="MainNavigationService.cpp">
+      <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackageListHelper.cpp" />
@@ -392,6 +402,9 @@
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="MainNavigationService.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PackagesPage.idl">
       <DependentUpon>PackagesPage.xaml</DependentUpon>

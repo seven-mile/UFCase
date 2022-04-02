@@ -74,10 +74,10 @@
             </NavigationView.PaneCustomContent>
 
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="SysInfoNavViewItem" Content="SysInfo" Icon="Admin" />
-                <NavigationViewItem x:Name="FeaturesNavViewItem" Content="Features" Icon="AllApps" />
-                <NavigationViewItem x:Name="OptionalsNavViewItem" Content="Optionals" Icon="Add" />
-                <NavigationViewItem x:Name="PackagesNavViewItem" Content="Packages">
+                <NavigationViewItem Tag="SysInfo" Content="SysInfo" Icon="Admin" />
+                <NavigationViewItem Tag="Features" Content="Features" Icon="AllApps" />
+                <NavigationViewItem Tag="Optionals" Content="Optionals" Icon="Add" />
+                <NavigationViewItem Tag="Packages" Content="Packages">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
                     </NavigationViewItem.Icon>

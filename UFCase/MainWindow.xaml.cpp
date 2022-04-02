@@ -4,11 +4,7 @@
 #include "MainWindow.g.cpp"
 #endif
 
-#include "FeatureTreeHelper.h"
-#include "PackageListHelper.h"
-
-#include "ImageModel.h"
-#include "AppConfig.h"
+#include "GlobalUtil.h"
 
 #include <ShlObj_core.h>
 
@@ -17,15 +13,13 @@ namespace winrt::UFCase::implementation
 {
     MainWindow::MainWindow()
     {
+        GlobalRes::MainWnd(*this);
+
         InitializeComponent();
 
         // other ui config
         this->UpdateTitleByConfig();
         this->ConfigWindowTitlebar();
-
-        // navigate to the home page
-        this->NavView().SelectedItem(this->NavView().MenuItems().GetAt(0));
-        this->NavigateTo(this->NavView().SelectedItem().as<NavigationViewItemBase>());
     }
 
     AppWindow MainWindow::GetAppWindowForCurrentWindow()
@@ -47,18 +41,6 @@ namespace winrt::UFCase::implementation
             }
         }
         return appWindow;
-    }
-
-    void MainWindow::HandleHrError(hresult_error err)
-    {
-        auto frame = this->ContentFrame();
-        frame.DispatcherQueue().TryEnqueue([frame, err](){
-            UFCase::HrError hr_err{};
-            hr_err.Code(err.code());
-            hr_err.Message(err.message());
-
-            frame.Navigate(xaml_typename<ErrorPage>(), box_value(hr_err));
-        });
     }
 
     void MainWindow::UpdateTitleByConfig()
@@ -118,7 +100,8 @@ namespace winrt::UFCase::implementation
     {
         if (const auto itemCont = args.InvokedItemContainer().as<NavigationViewItem>()) {
             if (itemCont.IsSelected()) return;
-            this->NavigateTo(itemCont, args.IsSettingsInvoked());
+            GlobalRes::MainNavServ().NavigateTo(
+                args.IsSettingsInvoked() ? L"Settings" : unbox_value<hstring>(itemCont.Tag()));
         }
     }
 
@@ -131,93 +114,8 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void MainWindow::NavView_BackRequested(NavigationView const &sender, NavigationViewBackRequestedEventArgs const&)
+    void MainWindow::NavView_BackRequested(NavigationView const &, NavigationViewBackRequestedEventArgs const&)
     {
-        auto IsFrameLastToolPage = [](Frame frame) {
-            if (frame.BackStack().Size() <= 0) return false;
-            auto lastPageType = frame.BackStack().GetAt(frame.BackStack().Size() - 1).SourcePageType();
-            return lastPageType.Name == xaml_typename<ProgressPage>().Name
-                //|| lastPageType.Name == xaml_typename<>(ErrorPage).Name
-                ;
-        };
-
-        while (this->ContentFrame().CanGoBack() && IsFrameLastToolPage(this->ContentFrame()))
-            this->ContentFrame().BackStack().RemoveAtEnd();
-        this->ContentFrame().GoBack();
-        this->m_stackNavItem.pop();
-        sender.SelectedItem(this->m_stackNavItem.top());
+        GlobalRes::MainNavServ().GoBack();
     }
-
-    IAsyncAction MainWindow::NavigateTo(NavigationViewItemBase item, bool isSetting)
-    {
-        this->m_stackNavItem.push(item);
-        hstring page_name = item.Name();
-    try {
-        auto cancel_token = co_await get_cancellation_token();
-        auto frame = this->ContentFrame();
-        if (isSetting) {
-            frame.Navigate(xaml_typename<SettingsPage>());
-
-            co_return;
-        }
-        else if (page_name == L"SysInfoNavViewItem") {
-            frame.Navigate(xaml_typename<SysInfoPage>());
-
-            co_return;
-        }
-        else if (page_name == L"FeaturesNavViewItem") {
-            auto op = ConstructUpdateTree(*ImageModel::Current());
-            cancel_token.callback([=](){ op.Cancel(); });
-
-            op.Completed([ptr = this->get_strong(), frame]
-                    (const decltype(op) &info, const AsyncStatus &status) -> IAsyncAction {
-                if (status != AsyncStatus::Completed) {
-                    ptr->HandleHrError(hresult_error(
-                            status == AsyncStatus::Canceled ?
-                            HRESULT_FROM_WIN32(ERROR_CANCELLED)
-                            : info.ErrorCode().value));
-                } else {
-                    frame.DispatcherQueue().TryEnqueue([frame, info](){
-                        frame.Navigate(xaml_typename<FeaturesPage>(), box_value(info.GetResults()));
-                    });
-                }
-                co_return;
-            });
-
-            frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
-            co_return;
-        }
-        else if (page_name == L"OptionalsNavViewItem") {
-            // fall through
-        }
-        else if (page_name == L"PackagesNavViewItem") {
-            auto op = ConstructPackageList(*ImageModel::Current());
-            cancel_token.callback([=]() { op.Cancel(); });
-
-            op.Completed([ptr = this->get_strong(), frame]
-            (const decltype(op)& info, const AsyncStatus& status)->IAsyncAction {
-                if (status != AsyncStatus::Completed) {
-                    ptr->HandleHrError(hresult_error(
-                        status == AsyncStatus::Canceled ?
-                        HRESULT_FROM_WIN32(ERROR_CANCELLED)
-                        : info.ErrorCode().value));
-                } else {
-                    frame.DispatcherQueue().TryEnqueue([frame, info]() {
-                        frame.Navigate(xaml_typename<PackagesPage>(), box_value(info.GetResults()));
-                    });
-                }
-                co_return;
-            });
-
-            frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
-            co_return;
-        }
-    } catch (const hresult_error &e) {
-        this->HandleHrError(e);
-        co_return;
-    }
-
-        this->HandleHrError(hresult_not_implemented());
-    }
-
 }

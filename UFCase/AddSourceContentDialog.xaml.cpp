@@ -9,13 +9,15 @@
 #include <microsoft.ui.xaml.window.h>
 #include <shobjidl_core.h>
 
+#include "GlobalUtil.h"
+
 namespace winrt {
     using namespace Windows::Storage::Pickers;
 }
 
 namespace winrt::UFCase::implementation
 {
-    AddSourceContentDialog::AddSourceContentDialog(Window parent) : parent(parent)
+    AddSourceContentDialog::AddSourceContentDialog()
     {
         InitializeComponent();
     }
@@ -27,10 +29,10 @@ namespace winrt::UFCase::implementation
 
     void AddSourceContentDialog::BrowserButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        FolderPicker fp;
+        FolderPicker fp{};
         
-        HWND hWndParent;
-        check_hresult(parent.as<IWindowNative>()->get_WindowHandle(&hWndParent));
+        HWND hWndParent{};
+        check_hresult(GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(&hWndParent));
         fp.as<IInitializeWithWindow>()->Initialize(hWndParent);
 
         fp.CommitButtonText(L"Add source");

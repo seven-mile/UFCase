@@ -59,6 +59,9 @@
     <Midl Include="ImageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
+    <Midl Include="MainNavigationService.idl">
+      <Filter>views\windows</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -96,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="PackageListHelper.cpp">
       <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalUtil.cpp">
+      <Filter>libraries\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="PackageListHelper.h">
       <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalUtil.h">
+      <Filter>libraries\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

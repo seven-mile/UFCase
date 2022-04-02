@@ -1,11 +1,12 @@
 ﻿#include "pch.h"
 
 #include "App.xaml.h"
-#include "MainWindow.xaml.h"
 
 #include "AppConfig.h"
 #include "ImageSelectorHelper.h"
 #include "PathUtil.h"
+#include "GlobalUtil.h"
+
 
 namespace winrt::UFCase::implementation
 {
@@ -58,8 +59,9 @@ namespace winrt::UFCase::implementation
 
         co_await SearchImages();
 
-        window = make<MainWindow>();
-        this->Resources().Insert(box_value(L"MainWindowInstance"), window);
+        GlobalRes::MainNavServ(UFCase::MainNavigationService());
+
+        window = UFCase::MainWindow();
 
         window.Activate();
 

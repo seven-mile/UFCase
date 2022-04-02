@@ -23,8 +23,8 @@ namespace winrt::UFCase::implementation
         void PropertyChanged(winrt::event_token const& token);
 
     private:
-        static const int32_t Invalid_Index = -1;
-        int32_t m_selectedIdx;
+        static constexpr int32_t Invalid_Index = -1;
+        int32_t m_selectedIdx = Invalid_Index;
 
         IObservableVector<UFCase::ImageViewModel> m_images;
 

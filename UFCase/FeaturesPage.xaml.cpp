@@ -38,7 +38,7 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::FeatureAddSourceUICommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
     {
-        AddSourceContentDialog addSrcDlg(Application::Current().Resources().Lookup(box_value(L"MainWindowInstance")).as<Window>());
+        AddSourceContentDialog addSrcDlg{};
         
         addSrcDlg.XamlRoot(this->XamlRoot());
         addSrcDlg.ShowAsync().Completed([this, addSrcDlg](auto const&op, auto const&) {
