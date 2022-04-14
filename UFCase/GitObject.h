@@ -6,7 +6,7 @@ namespace winrt::UFCase {
 
     template<typename COMInterface>
     class GitObject {
-        DWORD cookie;
+        DWORD cookie{NULL};
 
     protected:
         GitObject(com_ptr<COMInterface> origin) {
