@@ -38,7 +38,7 @@
             <AppBarSeparator />
             <AppBarButton Command="{x:Bind FeatureGobackCommand}" />
             <AppBarSeparator />
-            <AppBarButton Label="Submit" Icon="Accept" />
+            <AppBarButton Label="Submit" Icon="Accept" Click="AppBarSubmitButton_Click" />
             <AppBarButton Label="Refresh" Icon="Refresh" />
             <AppBarSeparator />
             <AppBarButton Label="Settings" Icon="Setting" />
@@ -65,7 +65,7 @@
                     </Border>
                     <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,10">
-                            <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True"
+                            <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True" IsHitTestVisible="False"
                                       IsEnabled="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsEnabled), Mode=OneWay}"
                                       IsChecked="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsChecked), Mode=OneWay}">
                                 <CheckBox.Content>
@@ -143,8 +143,8 @@
         </ScrollViewer>
         
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
-            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False" Loaded="FeatureTree_Loaded"
-                      AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind FeatureDataSource}">
+            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False"
+                      AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}">
                 <TreeView.Resources>
                     <XamlUICommand x:Name="FeatureEnableCommand" Label="Enable" ExecuteRequested="FeatureEnableCommand_ExecuteRequested">
                         <XamlUICommand.IconSource>
@@ -178,12 +178,14 @@
                     <MenuFlyout>
                         <MenuFlyout.Items>
                             <MenuFlyoutItem Command="{x:Bind FeatureEnableCommand}"
+                                            CommandParameter="{x:Bind FeatureTree.SelectedItem}"
                                             Text="{x:Bind FeatureEnableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind FeatureEnableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutItem Command="{x:Bind FeatureDisableCommand}"
+                                            CommandParameter="{x:Bind FeatureTree.SelectedItem}"
                                             Text="{x:Bind FeatureDisableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind FeatureDisableCommand.IconSource}" />

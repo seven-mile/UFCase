@@ -18,7 +18,7 @@ namespace winrt::UFCase::implementation
         FeatureModel m_model;
 
         using child_t = IObservableVector<UFCase::FeatureViewModel>;
-        child_t m_children = single_threaded_observable_vector<UFCase::FeatureViewModel>();
+        child_t m_children = multi_threaded_observable_vector<UFCase::FeatureViewModel>();
 
         hstring m_mark = L"";
 

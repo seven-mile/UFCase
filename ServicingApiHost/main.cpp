@@ -3,6 +3,8 @@
 
 #include "OfflineHelper.h"
 #include "SSShimHelper.h"
+#include "CbsApi.h"
+#include "CbsApi_i.c"
 
 #include <sddl.h>
 #pragma comment(lib, "Advapi32.lib")
@@ -117,6 +119,8 @@ int WINAPI wWinMain(
         wil::verify_BOOL(HeapFree(GetProcessHeap(), 0, pSD));
     }
 
+    wil::verify_hresult(::CoInitialize(NULL));
+
     std::wstring cmd = lpCmdLine;
     const int GUID_LEN = 38;
     std::filesystem::path pathBootdrv{cmd.substr(GUID_LEN + 1)}, pathCore;
@@ -133,12 +137,20 @@ int WINAPI wWinMain(
 
     // register
     DWORD dwReg{};
-    wil::verify_hresult(CoRegisterClassObject(CLSID_HOST, pFac.get(), CLSCTX_LOCAL_SERVER, REGCLS_SINGLEUSE, &dwReg));
+    wil::verify_hresult(CoRegisterClassObject(CLSID_HOST, pFac.get(), CLSCTX_LOCAL_SERVER, REGCLS_MULTI_SEPARATE, &dwReg));
+    {
+      wil::com_ptr<ICbsSession> sess;
+      wil::verify_hresult(CoCreateInstance(CLSID_HOST, NULL, CLSCTX_LOCAL_SERVER, IID_ICbsSession, sess.put_void()));
+      wil::verify_bool(!!sess.try_query<ICbsSession10>());
+    }
     
     // block
     while (true) {
         Sleep(100);
     }
+
+    wil::verify_hresult(::CoRevokeClassObject(dwReg));
+    ::CoUninitialize();
 
     return 0;
 }

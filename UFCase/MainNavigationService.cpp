@@ -60,25 +60,10 @@ namespace winrt::UFCase::implementation
 
             co_return;
         } else if (page_name == L"Features") {
-            auto op = ConstructUpdateTree(*ImageModel::Current());
-            cancel_token.callback([=]() { op.Cancel(); });
+            FeaturesPageViewModel vm{ ImageViewModel{ImageModel::Current()->GetHandle()} };
 
-            op.Completed([ptr = this->get_strong(), frame]
-            (const decltype(op)& info, const AsyncStatus& status)->IAsyncAction {
-                if (status != AsyncStatus::Completed) {
-                    ptr->HandleHrError(hresult_error(
-                        status == AsyncStatus::Canceled ?
-                        HRESULT_FROM_WIN32(ERROR_CANCELLED)
-                        : info.ErrorCode().value));
-                } else {
-                    frame.DispatcherQueue().TryEnqueue([frame, info]() {
-                        frame.Navigate(xaml_typename<FeaturesPage>(), box_value(info.GetResults()));
-                    });
-                }
-                co_return;
-            });
+            frame.Navigate(xaml_typename<FeaturesPage>(), box_value(vm));
 
-            frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
             co_return;
         } else if (page_name == L"Optionals") {
             // fall through

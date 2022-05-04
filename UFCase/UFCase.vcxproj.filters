@@ -62,6 +62,9 @@
     <Midl Include="MainNavigationService.idl">
       <Filter>views\windows</Filter>
     </Midl>
+    <Midl Include="FeaturesPageViewModel.idl">
+      <Filter>view_models</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">

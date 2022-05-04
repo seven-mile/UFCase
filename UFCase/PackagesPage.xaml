@@ -10,12 +10,27 @@
     <Page.Resources>
         <MenuFlyout x:Key="PackageItemActionsMenu">
             <MenuFlyout.Items>
-                <MenuFlyoutItem Text="ABCAA" Icon="Cancel" />
-                <MenuFlyoutItem Text="ABCAA" Icon="Cancel" />
-                <MenuFlyoutItem Text="ABCAA" Icon="Cancel" />
+                <MenuFlyoutItem Text="Install">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC7A;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Stage">
+                    <!--<MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe74d;" />
+                    </MenuFlyoutItem.Icon>-->
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Remove">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="ABCAA" Icon="Cancel" />
-                <MenuFlyoutItem Text="ABCAA" Icon="Cancel" />
+                <MenuFlyoutItem Text="Apply Changes">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE930;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
                 <MenuFlyoutItem Text="More..." Icon="More" />
             </MenuFlyout.Items>
         </MenuFlyout>

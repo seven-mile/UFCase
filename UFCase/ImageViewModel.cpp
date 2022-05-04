@@ -4,6 +4,8 @@
 #include "ImageViewModel.g.cpp"
 #endif
 
+#include "SessionModel.h"
+
 #include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
 
 namespace winrt::UFCase::implementation
@@ -86,5 +88,10 @@ namespace winrt::UFCase::implementation
         // ...
         ::OutputDebugString(std::format(L"Select image {} {}", this->Version(), this->Edition()).c_str());
         ImageModel::Current(&m_model);
+    }
+
+    uint64_t ImageViewModel::OpenSession()
+    {
+        return m_model.OpenSession()->GetHandle();
     }
 }

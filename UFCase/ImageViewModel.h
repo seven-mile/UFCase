@@ -18,6 +18,8 @@ namespace winrt::UFCase::implementation
 
         void Select();
 
+        uint64_t OpenSession();
+
     private:
         ImageModel& m_model;
     };

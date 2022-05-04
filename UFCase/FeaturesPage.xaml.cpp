@@ -17,18 +17,30 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    FeaturesPage::source_t FeaturesPage::FeatureDataSource()
+    IAsyncAction FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs& e)
     {
-        return m_source;
-    }
+        if (auto val = e.Parameter().try_as<FeaturesPageViewModel>()) {
+            m_view_model = val;
+            co_await m_view_model.PullData();
 
-    void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs& e)
-    {
-        if (auto val = e.Parameter().try_as<source_t>()) {
-            m_source = val;
+            // should be executed after FeatureTree loads feature items
+            //FeatureTree().DispatcherQueue().TryEnqueue([ptr = this->get_strong()]() {
+            //    if (auto src = ptr->FeatureTree().ItemsSource().try_as<IObservableVector<FeatureViewModel>>();
+            //        src && src.Size()) {
+            //        auto z = src.GetAt(0);
+            //        ptr->FeatureTree().SelectedItem(z);
+            //        auto ele = ptr->FeatureTree().ContainerFromItem(z);
+            //        ele.as<TreeViewItem>().IsSelected(true);
+            //    } else {
+            //        ptr->FeatureInfoPanel().Visibility(Visibility::Collapsed);
+            //    }
+            //});
+
+
         } else {
             throw winrt::hresult_invalid_argument();
         }
+        co_return;
     }
 
     void FeaturesPage::FeatureOpenOFDialogCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
@@ -45,6 +57,7 @@ namespace winrt::UFCase::implementation
             if (op.GetResults() == ContentDialogResult::Primary) {
                 if (auto path = std::filesystem::path(addSrcDlg.SourcePath().c_str());
                     std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
+                    
                     OutputDebugString(std::format(L"added install source path: \"{}\"", path.c_str()).c_str());
                 } else {
                     OutputDebugString(L"error: invalid path provided!");
@@ -55,21 +68,23 @@ namespace winrt::UFCase::implementation
         });
     }
 
-    void FeaturesPage::FeatureEnableCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
+    void FeaturesPage::FeatureEnableCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
     {
-        auto ele = args.Parameter().as<FeatureViewModel>();
-        //ele.State(FeatureState::Enabled);
+        auto ele = this->FeatureTree().SelectedItem().as<UFCase::FeatureViewModel>();
+        if (ele.IsEnabled()) return;
+        ele.Enable();
     }
-    void FeaturesPage::FeatureDisableCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const& args)
+    void FeaturesPage::FeatureDisableCommand_ExecuteRequested(Input::XamlUICommand const&, Input::ExecuteRequestedEventArgs const&)
     {
-        auto ele = args.Parameter().as<FeatureViewModel>();
-        //ele.State(FeatureState::Disabled);
+        auto ele = this->FeatureTree().SelectedItem().as<UFCase::FeatureViewModel>();
+        if (!ele.IsEnabled()) return;
+        ele.Disable();
     }
 
     void FeaturesPage::OpenFileButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        auto vm = this->FeatureTree().SelectedItem().as<FeatureViewModel>();
-        auto target = vm.Package().InstallLocation();
+        auto ele = this->FeatureTree().SelectedItem().as<UFCase::FeatureViewModel>();
+        auto target = ele.Package().InstallLocation();
         if (target == L"" || !std::filesystem::exists(target.c_str())) {
             ContentDialog cd;
             cd.XamlRoot(this->XamlRoot());
@@ -106,18 +121,6 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void FeaturesPage::FeatureTree_Loaded(IInspectable const&, RoutedEventArgs const&)
-    {
-        if (auto src = this->FeatureTree().ItemsSource().as<source_t>(); src.Size()) {
-            auto z = src.GetAt(0);
-            this->FeatureTree().SelectedItem(z);
-            auto ele = this->FeatureTree().ContainerFromItem(z);
-            ele.as<TreeViewItem>().IsSelected(true);
-        } else {
-            this->FeatureInfoPanel().Visibility(Visibility::Collapsed);
-        }
-    }
-
     void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&e)
     {
         auto item = sender.as<TreeViewItem>();
@@ -134,4 +137,10 @@ namespace winrt::UFCase::implementation
         item.IsSelected(true);
         e.Handled(false);
     }
+
+    void FeaturesPage::AppBarSubmitButton_Click(IInspectable const&, RoutedEventArgs const&) {
+        OutputDebugString(L"well done, submit");
+    }
 }
+
+

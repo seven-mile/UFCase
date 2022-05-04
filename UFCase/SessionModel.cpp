@@ -45,8 +45,14 @@ namespace winrt::UFCase {
 
     void SessionModel::SaveChanges()
     {
-        _CbsRequiredAction action{};
-        check_hresult(GetInterface()->Finalize(&action));
+        // use bg thread to save changes
+        [=, this]() -> IAsyncAction {
+            _CbsRequiredAction action{};
+            co_await resume_background();
+            check_hresult(GetInterface()->Finalize(&action));
+
+            co_return;
+        }();
     }
 
     std::vector<PackageModel*> SessionModel::Packages(DWORD flag)
