@@ -139,7 +139,7 @@ namespace winrt::UFCase::implementation
     }
 
     void FeaturesPage::AppBarSubmitButton_Click(IInspectable const&, RoutedEventArgs const&) {
-        OutputDebugString(L"well done, submit");
+        OutputDebugString(L"well done, submit\n");
     }
 }
 
