@@ -41,107 +41,110 @@
             <SplitView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                    DisplayMode="Inline" PanePlacement="Right"
                    OpenPaneLength="500" IsPaneOpen="True">
-            <SplitView.Pane>
-                <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Grid x:Name="FeatureInfoPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,20,0">
-                            <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
-                                    <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
-                                    </TextBlock>
-                                    <TextBlock Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
-                                </StackPanel>
-                            </Border>
-                            <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10">
-                                <Button.Content>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="10" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEC50;" Margin="5,0,15,0" />
-                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
-                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                Text="Some package files may be available in your disk" />
+                <SplitView.PaneBackground>
+                    <SolidColorBrush Color="Transparent" />
+                </SplitView.PaneBackground>
+                <SplitView.Pane>
+                    <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid x:Name="FeatureInfoPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,20,0">
+                                <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
+                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                                        <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
+                                        <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                        </TextBlock>
+                                        <TextBlock Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                                    </StackPanel>
+                                </Border>
+                                <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10">
+                                    <Button.Content>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEC50;" Margin="5,0,15,0" />
+                                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
+                                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                    Text="Some package files may be available in your disk" />
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
 
-                                        <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </SplitView.Pane>
-            <ListView x:Name="PkgList"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      SelectionMode="Single" IsItemClickEnabled="False"
-                      ItemsSource="{x:Bind PackageDataSource, Mode=OneWay}">
-                <ListView.Resources>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.Resources>
-                <ListView.ItemContainerTransitions>
-                    <TransitionCollection>
-                        <ContentThemeTransition />
-                    </TransitionCollection>
-                </ListView.ItemContainerTransitions>
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:PackageViewModel">
-                            <ListViewItem RightTapped="ListViewItem_RightTapped" >
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="32" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="8" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="80" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind ListName}"  TextTrimming="CharacterEllipsis"
-                                               Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind ListIdentity}" 
-                                               Visibility="{x:Bind ListIdentityVisibility}"  TextTrimming="CharacterEllipsis"
-                                               Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
-                                    <!--SecondaryTextFontSize-->
-                                    <Grid Grid.Row="2" Grid.Column="0" >
+                                            <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </SplitView.Pane>
+                <ListView x:Name="PkgList"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          SelectionMode="Single" IsItemClickEnabled="False"
+                          ItemsSource="{x:Bind PackageDataSource, Mode=OneWay}">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <ContentThemeTransition />
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:PackageViewModel">
+                                <ListViewItem RightTapped="ListViewItem_RightTapped" >
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="32" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="24" />
+                                            <RowDefinition Height="8" />
+                                        </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="80" />
                                         </Grid.ColumnDefinitions>
-                                        <Border Grid.Column="0" Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
-                                            <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Bind ListName}"  TextTrimming="CharacterEllipsis"
+                                                   Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Bind ListIdentity}" 
+                                                   Visibility="{x:Bind ListIdentityVisibility}"  TextTrimming="CharacterEllipsis"
+                                                   Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center" />
+                                        <!--SecondaryTextFontSize-->
+                                        <Grid Grid.Row="2" Grid.Column="0" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Background="DarkOrange" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                                <TextBlock Text="{x:Bind State}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            </Border>
+                                            <Border Grid.Column="1" Background="DarkOrchid" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
+                                                <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock Grid.Column="2" Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="1">
+                                            <AppBarButton 
+                                                  Label="More" Icon="More" IsCompact="False" VerticalAlignment="Center"
+                                                  Flyout="{StaticResource PackageItemActionsMenu}" />
                                         </Border>
-                                        <Border Grid.Column="1" Background="DarkOrchid" CornerRadius="4,4,4,4" Margin="3,0,3,0" Padding="2,0,2,0">
-                                            <TextBlock Text="{x:Bind ReleaseType}" Foreground="White" Style="{StaticResource SecondaryTextBlockStyle}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                                        </Border>
-                                        <TextBlock Grid.Column="2" Text="{x:Bind Description}" Style="{StaticResource SecondaryTextBlockStyle}"
-                                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                                     </Grid>
-                                    <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="1">
-                                        <AppBarButton 
-                                              Label="More" Icon="More" IsCompact="False" VerticalAlignment="Center"
-                                              Flyout="{StaticResource PackageItemActionsMenu}" />
-                                    </Border>
-                                </Grid>
-                            </ListViewItem>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </SplitView>
+                                </ListViewItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SplitView>
         </PivotItem>
         
         <PivotItem Header="New">

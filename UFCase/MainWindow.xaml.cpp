@@ -141,8 +141,7 @@ namespace winrt::UFCase::implementation
         {
             // We ensure that there is a Windows.System.DispatcherQueue on the current thread.
             // Always check if one already exists before attempting to create a new one.
-            if (auto currentDQ = DispatcherQueue::GetForCurrentThread();
-                nullptr == currentDQ &&
+            if (nullptr == DispatcherQueue::GetForCurrentThread() &&
                 nullptr == m_dispatcherQueueController)
             {
                 m_dispatcherQueueController = CreateSystemDispatcherQueueController();
