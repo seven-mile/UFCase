@@ -1,4 +1,6 @@
 import "ImageSelectorViewModel.idl";
+import "MainProgressService.idl";
+import "MainNavigationService.idl";
 
 namespace UFCase
 {
@@ -12,5 +14,9 @@ namespace UFCase
         ImageSelectorViewModel ImageSelectorVM;
         Microsoft.UI.Xaml.Controls.Frame ContentFrame;
         Microsoft.UI.Xaml.Controls.ComboBox ImageComboBox;
+
+        // Services
+        MainNavigationService NavigationService;
+        MainProgressService ProgressService;
     }
 }

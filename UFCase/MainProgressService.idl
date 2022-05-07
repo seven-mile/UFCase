@@ -1,0 +1,13 @@
+namespace UFCase
+{
+
+    [default_interface]
+    runtimeclass MainProgressService : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        MainProgressService();
+        UInt32 CurrentProgress{ get; };
+        Microsoft.UI.Xaml.Visibility Visibility{ get; };
+        
+        void InsertTask(Windows.Foundation.IAsyncActionWithProgress<UInt32> provider, UInt32 weight);
+    }
+}

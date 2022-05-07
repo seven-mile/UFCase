@@ -4,6 +4,8 @@
 #include "PackagesPage.g.cpp"
 #endif
 
+#include "GlobalUtil.h"
+
 #include <winrt/Microsoft.UI.Xaml.Input.h>
 
 // To learn more about WinUI, the WinUI project structure,
@@ -19,7 +21,11 @@ namespace winrt::UFCase::implementation
     IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
-        co_await m_view_model.PullData();
+        auto action = m_view_model.PullData();
+
+        GlobalRes::MainProgServ().InsertTask(action, 100);
+
+        co_await action;
 
         co_return;
     }

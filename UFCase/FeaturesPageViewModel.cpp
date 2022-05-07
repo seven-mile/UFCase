@@ -42,6 +42,10 @@ namespace winrt::UFCase::implementation
             uint32_t idx = 0, all = static_cast<uint32_t>(updates.size());
 
             for (auto& update : updates) {
+                // for debug
+                //using namespace std::chrono_literals;
+                //co_await 50ms;
+
                 report_prog(ENUM_UPDATE_PROG + uint32_t(std::floor(1.0 * idx / all * (100 - ENUM_UPDATE_PROG))));
 
                 auto&& parents = update->GetParentFeatureCollection();

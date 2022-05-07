@@ -56,14 +56,17 @@
     <Midl Include="ImageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
-    <Midl Include="MainNavigationService.idl">
-      <Filter>views\windows</Filter>
-    </Midl>
     <Midl Include="FeaturesPageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
     <Midl Include="PackagesPageViewModel.idl">
       <Filter>view_models</Filter>
+    </Midl>
+    <Midl Include="MainNavigationService.idl">
+      <Filter>view_models\services</Filter>
+    </Midl>
+    <Midl Include="MainProgressService.idl">
+      <Filter>view_models\services</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +202,9 @@
     </Filter>
     <Filter Include="libraries\utils">
       <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view_models\services">
+      <UniqueIdentifier>{a0bbe6e2-eeb0-49da-95c7-fb521ab436dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

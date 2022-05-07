@@ -1,0 +1,87 @@
+﻿#pragma once
+
+#include "MainProgressService.g.h"
+
+#include "GlobalUtil.h"
+
+#include <unordered_map>
+#include <format>
+
+namespace winrt::UFCase::implementation
+{
+    struct MainProgressService : MainProgressServiceT<MainProgressService>
+    {
+        MainProgressService() {
+            GlobalRes::MainProgServ(*this);
+        }
+
+        uint32_t CurrentProgress() {
+            if (!_weight_sum) return 100;
+
+            return static_cast<uint32_t>(std::round(100.0 * _progress_product_sum / _weight_sum));
+        }
+
+        Visibility Visibility() {
+            if (!_weight_sum) {
+                return Visibility::Collapsed;
+            }
+            return Visibility::Visible;
+        }
+
+        void ReportStateChange() {
+            GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([this]() {
+                _property_changed(*this, Data::PropertyChangedEventArgs{ L"CurrentProgress" });
+                _property_changed(*this, Data::PropertyChangedEventArgs{ L"Visibility" });
+            });
+        }
+
+        void InsertTask(IAsyncActionWithProgress<uint32_t> provider, uint32_t weight) {
+            //_progress_list.insert(std::make_pair(provider, weight));
+            if (weight == 0) return;
+            _weight_sum += weight;
+            _progress_list[provider] = 0;
+
+            provider.Progress([this, weight](auto const &provider, uint32_t prog) {
+                auto& cur_prog = _progress_list[provider];
+                assert(prog >= cur_prog);
+                _progress_product_sum += (prog - cur_prog) * weight;
+                //OutputDebugString(std::format(L"==-= update prog: {} -> {} size = {}, [{} / {}]\n",
+                //    cur_prog, prog, _progress_list.size(), _progress_product_sum, _weight_sum).c_str());
+                cur_prog = prog;
+
+                ReportStateChange();
+            });
+
+            provider.Completed([this, weight](auto const& provider, auto const&) {
+                _progress_product_sum -= _progress_list[provider] * weight;
+                _weight_sum -= weight;
+                _progress_list.erase(provider);
+
+                //OutputDebugString(std::format(L"==-= completed: size = {}, [{} / {}]\n",
+                //    _progress_list.size(), _progress_product_sum, _weight_sum).c_str());
+
+                ReportStateChange();
+            });
+        }
+
+        std::unordered_map<IAsyncActionWithProgress<uint32_t>, uint32_t> _progress_list;
+        uint32_t _progress_product_sum = 0, _weight_sum = 0;
+
+        event<Data::PropertyChangedEventHandler> _property_changed{};
+
+        event_token PropertyChanged(Data::PropertyChangedEventHandler handler) {
+            return _property_changed.add(handler);
+        }
+
+        void PropertyChanged(event_token token) {
+            _property_changed.remove(token);
+        }
+    };
+}
+
+namespace winrt::UFCase::factory_implementation
+{
+    struct MainProgressService : MainProgressServiceT<MainProgressService, implementation::MainProgressService>
+    {
+    };
+}

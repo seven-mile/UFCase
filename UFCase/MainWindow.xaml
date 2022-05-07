@@ -13,24 +13,34 @@
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
             <Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"></SolidColorBrush>
+
+            <local:MainNavigationService x:Key="MainNavigationService" x:Name="NavigationService" />
+            <local:MainProgressService x:Key="MainProgressService" x:Name="ProgressService" />
+            
             <local:ImageSelectorViewModel x:Key="ImageSelectorViewModel" x:Name="ImageSelectorVM" />
         </Grid.Resources>
-        
-        <Border x:Name="AppTitleBar"
-                IsHitTestVisible="False"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                Height="40"
-                Canvas.ZIndex="1" 
-                Margin="48,8,0,0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="AppTitle"
-                    Text="UFCase"
-                    Margin="0,8,0,0"
+
+        <StackPanel Orientation="Vertical">
+            <Border x:Name="AppTitleBar"
+                    IsHitTestVisible="False"
                     VerticalAlignment="Top"
-                    Style="{StaticResource CaptionTextBlockStyle}" />
-            </StackPanel>
-        </Border>
+                    Background="Transparent"
+                    Height="40"
+                    Canvas.ZIndex="1" 
+                    Margin="48,8,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="AppTitle"
+                        Text="UFCase"
+                        Margin="0,8,0,0"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource CaptionTextBlockStyle}" />
+                </StackPanel>
+            </Border>
+
+            <ProgressBar Margin="0" Opacity="0.6"
+                Value="{x:Bind ProgressService.CurrentProgress, Mode=OneWay}"
+                Visibility="{x:Bind ProgressService.Visibility, Mode=OneWay}" />
+        </StackPanel>
 
         <NavigationView x:Name="NavView"
                         IsTitleBarAutoPaddingEnabled="False"

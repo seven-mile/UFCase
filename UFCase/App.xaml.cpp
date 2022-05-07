@@ -59,8 +59,6 @@ namespace winrt::UFCase::implementation
 
         co_await SearchImages();
 
-        GlobalRes::MainNavServ(UFCase::MainNavigationService());
-
         window = UFCase::MainWindow();
 
         window.Activate();

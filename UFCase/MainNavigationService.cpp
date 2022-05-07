@@ -18,6 +18,7 @@ namespace winrt::UFCase::implementation
 {
     MainNavigationService::MainNavigationService()
     {
+        GlobalRes::MainNavServ(*this);
         _stackNavItem.push(_unknownPageName);
     }
 

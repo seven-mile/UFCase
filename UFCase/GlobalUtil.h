@@ -9,5 +9,8 @@ namespace winrt::UFCase {
 
         void MainNavServ(MainNavigationService mainNavServ);
         MainNavigationService MainNavServ();
+
+        void MainProgServ(MainProgressService mainProgServ);
+        MainProgressService MainProgServ();
     }
 }

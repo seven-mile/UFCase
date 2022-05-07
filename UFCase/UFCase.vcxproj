@@ -163,6 +163,10 @@
       <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="MainProgressService.h">
+      <DependentUpon>MainProgressService.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="MallocUtil.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
@@ -291,6 +295,10 @@
       <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="MainProgressService.cpp">
+      <DependentUpon>MainProgressService.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="PackageModel.cpp" />
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
@@ -401,6 +409,9 @@
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ImageViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="MainProgressService.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="MainWindow.idl">

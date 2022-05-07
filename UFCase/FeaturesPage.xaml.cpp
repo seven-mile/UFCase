@@ -7,6 +7,8 @@
 #include <winrt/Windows.ApplicationModel.DataTransfer.h>
 #include <winrt/Windows.System.h>
 
+#include "GlobalUtil.h"
+
 #include <filesystem>
 #include <wil/resource.h>
 
@@ -21,7 +23,11 @@ namespace winrt::UFCase::implementation
     {
         if (auto val = e.Parameter().try_as<FeaturesPageViewModel>()) {
             m_view_model = val;
-            co_await m_view_model.PullData();
+            auto action = m_view_model.PullData();
+
+            GlobalRes::MainProgServ().InsertTask(action, 100);
+
+            co_await action;
 
             // should be executed after FeatureTree loads feature items
             //FeatureTree().DispatcherQueue().TryEnqueue([ptr = this->get_strong()]() {
