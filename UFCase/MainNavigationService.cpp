@@ -4,9 +4,6 @@
 #include "MainNavigationService.g.cpp"
 #endif
 
-#include "FeatureTreeHelper.h"
-#include "PackageListHelper.h"
-
 #include "ImageModel.h"
 #include "AppConfig.h"
 
@@ -68,25 +65,9 @@ namespace winrt::UFCase::implementation
         } else if (page_name == L"Optionals") {
             // fall through
         } else if (page_name == L"Packages") {
-            auto op = ConstructPackageList(*ImageModel::Current());
-            cancel_token.callback([=]() { op.Cancel(); });
+            PackagesPageViewModel vm{ ImageViewModel{ImageModel::Current()->GetHandle()} };
 
-            op.Completed([ptr = this->get_strong(), frame]
-            (const decltype(op)& info, const AsyncStatus& status)->IAsyncAction {
-                if (status != AsyncStatus::Completed) {
-                    ptr->HandleHrError(hresult_error(
-                        status == AsyncStatus::Canceled ?
-                        HRESULT_FROM_WIN32(ERROR_CANCELLED)
-                        : info.ErrorCode().value));
-                } else {
-                    frame.DispatcherQueue().TryEnqueue([frame, info]() {
-                        frame.Navigate(xaml_typename<PackagesPage>(), box_value(info.GetResults()));
-                    });
-                }
-                co_return;
-            });
-
-            frame.Navigate(xaml_typename<ProgressPage>(), box_value(op));
+            frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
             co_return;
         }
     } catch (const hresult_error& e) {
@@ -100,7 +81,7 @@ namespace winrt::UFCase::implementation
     constexpr auto IsFrameLastToolPage = [](Frame frame) {
         if (frame.BackStack().Size() <= 0) return 0;
         auto lastPageType = frame.BackStack().GetAt(frame.BackStack().Size() - 1).SourcePageType();
-        if (lastPageType.Name == xaml_typename<ProgressPage>().Name) return 1;
+        //if (lastPageType.Name == xaml_typename<ProgressPage>().Name) return 1;
         if (lastPageType.Name == xaml_typename<ErrorPage>().Name) return 2;
         return 0;
     };

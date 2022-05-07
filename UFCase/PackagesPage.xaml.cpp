@@ -16,34 +16,18 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    winrt::event_token PackagesPage::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
+    IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        return m_propertyChanged.add(value);
-    }
+        m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
+        co_await m_view_model.PullData();
 
-    void PackagesPage::PropertyChanged(winrt::event_token const& token)
-    {
-        m_propertyChanged.remove(token);
-    }
-
-    void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
-    {
-        this->m_pkgProv = e.Parameter().as<IObservableVector<UFCase::PackageViewModel>>();
-        this->m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"PackageDataSource"});
-
-        if (this->m_pkgProv.Size())
-            this->PkgList().SelectedIndex(0);
-    }
-
-    IObservableVector<UFCase::PackageViewModel> PackagesPage::PackageDataSource()
-    {
-        return this->m_pkgProv;
+        co_return;
     }
 
     void PackagesPage::ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e)
     {
         auto item = sender.as<ListViewItem>();
-        auto list = this->PkgList();
+        auto list = PkgList();
         list.SelectedItem(list.ItemFromContainer(item));
         item.IsSelected(true);
 

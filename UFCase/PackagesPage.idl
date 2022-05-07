@@ -1,13 +1,13 @@
-import "PackageViewModel.idl";
+import "PackagesPageViewModel.idl";
 
 namespace UFCase
 {
     [default_interface]
-    runtimeclass PackagesPage : Microsoft.UI.Xaml.Controls.Page, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    runtimeclass PackagesPage : Microsoft.UI.Xaml.Controls.Page
     {
         PackagesPage();
 
-        Windows.Foundation.Collections.IObservableVector<PackageViewModel> PackageDataSource{ get; };
+        PackagesPageViewModel ViewModel{ get; };
         Microsoft.UI.Xaml.Controls.ListView PkgList{ get; };
     }
 }

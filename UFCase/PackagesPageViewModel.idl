@@ -1,0 +1,17 @@
+import "ImageViewModel.idl";
+import "PackageViewModel.idl";
+
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass PackagesPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        PackagesPageViewModel(ImageViewModel image);
+
+        ImageViewModel Image{ get; };
+        Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
+
+        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
+    }
+}

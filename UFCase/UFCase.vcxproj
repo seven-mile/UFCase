@@ -145,7 +145,6 @@
       <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FeatureTreeHelper.h" />
     <ClInclude Include="GitObject.h" />
     <ClInclude Include="GitUtil.h" />
     <ClInclude Include="GlobalUtil.h" />
@@ -167,10 +166,13 @@
     <ClInclude Include="MallocUtil.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
-    <ClInclude Include="PackageListHelper.h" />
     <ClInclude Include="PackageModel.h" />
     <ClInclude Include="PackagesPage.xaml.h">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PackagesPageViewModel.h">
+      <DependentUpon>PackagesPageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="PackageViewModel.h">
@@ -184,10 +186,6 @@
     </ClInclude>
     <ClInclude Include="MainWindow.xaml.h">
       <DependentUpon>MainWindow.xaml</DependentUpon>
-    </ClInclude>
-    <ClInclude Include="ProgressPage.h">
-      <DependentUpon>ProgressPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="RootSettingsPage.xaml.h">
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
@@ -234,9 +232,6 @@
     <Page Include="PackagesPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ProgressPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="RootSettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -280,7 +275,6 @@
       <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FeatureTreeHelper.cpp" />
     <ClCompile Include="GlobalUtil.cpp" />
     <ClCompile Include="HardwareInfoModel.cpp" />
     <ClCompile Include="ImageModel.cpp" />
@@ -297,10 +291,13 @@
       <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="PackageListHelper.cpp" />
     <ClCompile Include="PackageModel.cpp" />
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PackagesPageViewModel.cpp">
+      <DependentUpon>PackagesPageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackageViewModel.cpp">
@@ -317,10 +314,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="ProgressPage.cpp">
-      <DependentUpon>ProgressPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
     <ClCompile Include="RootSettingsPage.xaml.cpp">
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -421,12 +414,11 @@
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="PackageViewModel.idl">
+    <Midl Include="PackagesPageViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
-    <Midl Include="ProgressPage.idl">
-      <DependentUpon>ProgressPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Midl Include="PackageViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="RootSettingsPage.idl">
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>

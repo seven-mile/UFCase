@@ -88,7 +88,7 @@
                 <ListView x:Name="PkgList"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           SelectionMode="Single" IsItemClickEnabled="False"
-                          ItemsSource="{x:Bind PackageDataSource, Mode=OneWay}">
+                          ItemsSource="{x:Bind ViewModel.Packages, Mode=OneWay}">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
