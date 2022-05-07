@@ -5,16 +5,16 @@ namespace UFCase
     runtimeclass HrError
     {
         HrError();
-        HrError(Int32 hr);
+        HrError(UInt32 hr);
 
-        Int32 Code;
+        UInt32 Code;
         String Message;
     }
 
     [default_interface]
-    runtimeclass ErrorPage : Microsoft.UI.Xaml.Controls.Page
+    runtimeclass ErrorDialog : Microsoft.UI.Xaml.Controls.ContentDialog
     {
-        ErrorPage();
+        ErrorDialog(HrError error);
         
         Microsoft.UI.Xaml.Controls.TextBlock TitleBlock;
         Microsoft.UI.Xaml.Controls.TextBlock MsgBlock;

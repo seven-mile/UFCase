@@ -31,8 +31,8 @@
     <Page Include="MainWindow.xaml">
       <Filter>views\windows</Filter>
     </Page>
-    <Page Include="ErrorPage.xaml">
-      <Filter>views\pages\utils</Filter>
+    <Page Include="ErrorDialog.xaml">
+      <Filter>views\dialogs</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -196,9 +196,6 @@
     </Filter>
     <Filter Include="models">
       <UniqueIdentifier>{898e0e38-1d75-4a62-8c90-4fe36eeab76b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="views\pages\utils">
-      <UniqueIdentifier>{3d391cce-9eb2-4b5e-863d-c9a650eaf1be}</UniqueIdentifier>
     </Filter>
     <Filter Include="libraries\utils">
       <UniqueIdentifier>{a094e06b-f6dc-4009-b182-58910abbe46e}</UniqueIdentifier>

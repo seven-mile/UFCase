@@ -25,6 +25,7 @@ namespace winrt::UFCase::implementation
         static constexpr auto _unknownPageName = L"(unknown)";
         IInspectable _currentPageVM {nullptr};
         std::stack<hstring> _stackNavItem{};
+        bool _isNavigating = false;
     };
 }
 

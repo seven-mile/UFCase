@@ -128,8 +128,8 @@
     </ClInclude>
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="CbsUtil.h" />
-    <ClInclude Include="ErrorPage.h">
-      <DependentUpon>ErrorPage.xaml</DependentUpon>
+    <ClInclude Include="ErrorDialog.h">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FeatureModel.h" />
@@ -219,7 +219,7 @@
     <Page Include="AddSourceContentDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ErrorPage.xaml">
+    <Page Include="ErrorDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FeaturesPage.xaml">
@@ -258,8 +258,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ErrorPage.cpp">
-      <DependentUpon>ErrorPage.xaml</DependentUpon>
+    <ClCompile Include="ErrorDialog.cpp">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FeatureModel.cpp" />
@@ -383,8 +383,8 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
     </CustomBuild>
-    <Midl Include="ErrorPage.idl">
-      <DependentUpon>ErrorPage.xaml</DependentUpon>
+    <Midl Include="ErrorDialog.idl">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FeaturesPageViewModel.idl">

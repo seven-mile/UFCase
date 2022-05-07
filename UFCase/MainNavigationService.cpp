@@ -7,9 +7,12 @@
 #include "ImageModel.h"
 #include "AppConfig.h"
 
+#include "ErrorDialog.g.h"
+
 #include "GlobalUtil.h"
 
 #include <winrt\Windows.UI.Xaml.Interop.h>
+#include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -43,6 +46,9 @@ namespace winrt::UFCase::implementation
 
     IAsyncAction MainNavigationService::NavigateTo(hstring const& page_name)
     {
+        _isNavigating = true;
+        auto $scope { wil::scope_exit([this]() { _isNavigating = false; }) };
+
         _stackNavItem.push(page_name);
         this->MatchNavViewSelectedItem();
     try {
@@ -78,24 +84,6 @@ namespace winrt::UFCase::implementation
     this->HandleHrError(hresult_not_implemented());
     }
 
-    constexpr auto IsFrameLastToolPage = [](Frame frame) {
-        if (frame.BackStack().Size() <= 0) return 0;
-        auto lastPageType = frame.BackStack().GetAt(frame.BackStack().Size() - 1).SourcePageType();
-        //if (lastPageType.Name == xaml_typename<ProgressPage>().Name) return 1;
-        if (lastPageType.Name == xaml_typename<ErrorPage>().Name) return 2;
-        return 0;
-    };
-
-    auto DebugFrameBackStack = [](IVector<Navigation::PageStackEntry> stack) {
-        OutputDebugString(std::format(L"{} size\n", stack.Size()).c_str());
-        
-        for (auto entry : stack) {
-            OutputDebugString(entry.SourcePageType().Name.c_str());
-            OutputDebugString(L" ");
-        }
-        OutputDebugString(L"\n");
-    };
-
     IAsyncAction MainNavigationService::Refresh()
     {
         if (_stackNavItem.empty() || _stackNavItem.top() == L"Settings")
@@ -114,15 +102,6 @@ namespace winrt::UFCase::implementation
     {
         //OutputDebugString(L"Before GoBack");
         //DebugFrameBackStack(this->ContentFrame().BackStack());
-        int res = 0;
-        while (this->ContentFrame().CanGoBack() && (res = IsFrameLastToolPage(this->ContentFrame()))) {
-            // error page
-            if (res == 2) _stackNavItem.pop();
-            this->ContentFrame().BackStack().RemoveAtEnd();
-        }
-
-        //OutputDebugString(L"After GoBack");
-        //DebugFrameBackStack(this->ContentFrame().BackStack());
 
         this->ContentFrame().GoBack();
         _stackNavItem.pop();
@@ -132,14 +111,22 @@ namespace winrt::UFCase::implementation
 
     void MainNavigationService::HandleHrError(hresult_error err)
     {
-        auto frame = this->ContentFrame();
-        
-        frame.DispatcherQueue().TryEnqueue([frame, err]() {
+        if (_isNavigating) {
+            // roll back NavView state
+            _stackNavItem.pop();
+            this->MatchNavViewSelectedItem();
+        }
+
+        GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([err]() -> IAsyncAction {
             UFCase::HrError hr_err{};
             hr_err.Code(err.code());
             hr_err.Message(err.message());
 
-            frame.Navigate(xaml_typename<ErrorPage>(), box_value(hr_err));
+            UFCase::ErrorDialog err_dialog{hr_err};
+            err_dialog.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
+
+            co_await err_dialog.ShowAsync();
+            co_return;
         });
     }
     Frame MainNavigationService::ContentFrame()
