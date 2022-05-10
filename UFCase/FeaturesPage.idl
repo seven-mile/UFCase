@@ -11,13 +11,5 @@ namespace UFCase
         FeaturesPageViewModel ViewModel{ get; };
         
         Microsoft.UI.Xaml.Controls.TreeView FeatureTree;
-
-        Microsoft.UI.Xaml.Visibility ConvertUInt32ToVisibility(UInt32 value);
-
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureEnableCommand;
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureDisableCommand;
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureGobackCommand;
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenExplorerCommand;
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenRegistryCommand;
     }
 }

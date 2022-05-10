@@ -68,6 +68,9 @@
     <Midl Include="MainProgressService.idl">
       <Filter>view_models\services</Filter>
     </Midl>
+    <Midl Include="RelayCommand.idl">
+      <Filter>libraries\mvvm</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -156,6 +159,15 @@
     <ClInclude Include="GlobalUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
+    <ClInclude Include="XamlUtil.h">
+      <Filter>libraries\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CCbsUIHandler.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncUtil.h">
+      <Filter>libraries\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">
@@ -205,6 +217,9 @@
     </Filter>
     <Filter Include="view_models\services">
       <UniqueIdentifier>{a0bbe6e2-eeb0-49da-95c7-fb521ab436dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\mvvm">
+      <UniqueIdentifier>{8f56b97e-b92d-48bd-9475-70b6710937e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

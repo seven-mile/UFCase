@@ -127,7 +127,9 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="AsyncUtil.h" />
     <ClInclude Include="CbsUtil.h" />
+    <ClInclude Include="CCbsUIHandler.h" />
     <ClInclude Include="ErrorDialog.h">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -191,6 +193,10 @@
     <ClInclude Include="MainWindow.xaml.h">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="RelayCommand.h">
+      <DependentUpon>RelayCommand.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="RootSettingsPage.xaml.h">
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -217,6 +223,7 @@
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="XamlUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -322,6 +329,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="RelayCommand.cpp">
+      <DependentUpon>RelayCommand.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="RootSettingsPage.xaml.cpp">
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -429,6 +440,9 @@
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PackageViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="RelayCommand.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="RootSettingsPage.idl">

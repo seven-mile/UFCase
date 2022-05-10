@@ -1196,7 +1196,7 @@ EXTERN_C const IID IID_ICbsUIHandler;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
-    MIDL_INTERFACE("A69C1E5A-5E02-4F6C-BC7D-2C47407FF617")
+    MIDL_INTERFACE("75207392-23F2-4396-85F0-8FDB879ED0ED")
     ICbsUIHandler : public IUnknown
     {
     public:

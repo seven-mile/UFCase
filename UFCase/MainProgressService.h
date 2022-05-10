@@ -4,6 +4,8 @@
 
 #include "GlobalUtil.h"
 
+#include <wil/resource.h>
+
 #include <unordered_map>
 #include <format>
 
@@ -35,11 +37,13 @@ namespace winrt::UFCase::implementation
             });
         }
 
-        void InsertTask(IAsyncActionWithProgress<uint32_t> provider, uint32_t weight) {
+        IAsyncAction InsertTask(IAsyncActionWithProgress<uint32_t> provider, uint32_t weight) {
             //_progress_list.insert(std::make_pair(provider, weight));
-            if (weight == 0) return;
+            if (weight == 0) co_return;
             _weight_sum += weight;
             _progress_list[provider] = 0;
+
+            HANDLE comp_event = CreateEvent(NULL, FALSE, FALSE, L"");
 
             provider.Progress([this, weight](auto const &provider, uint32_t prog) {
                 auto& cur_prog = _progress_list[provider];
@@ -52,7 +56,7 @@ namespace winrt::UFCase::implementation
                 ReportStateChange();
             });
 
-            provider.Completed([this, weight](auto const& provider, auto const&) {
+            provider.Completed([this, weight, comp_event](auto const& provider, auto const&) {
                 _progress_product_sum -= _progress_list[provider] * weight;
                 _weight_sum -= weight;
                 _progress_list.erase(provider);
@@ -61,7 +65,13 @@ namespace winrt::UFCase::implementation
                 //    _progress_list.size(), _progress_product_sum, _weight_sum).c_str());
 
                 ReportStateChange();
+                SetEvent(comp_event);
             });
+
+            co_await resume_on_signal(comp_event);
+            CloseHandle(comp_event);
+
+            co_return;
         }
 
         std::unordered_map<IAsyncActionWithProgress<uint32_t>, uint32_t> _progress_list;

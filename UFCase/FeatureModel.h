@@ -20,7 +20,8 @@ namespace winrt::UFCase {
     public:
 
         hstring Name() const;
-        _CbsInstallState State() const;
+        _CbsInstallState CurrentState() const;
+        _CbsInstallState RequestedState() const;
         hstring DisplayName() const;
         hstring Description() const;
         hstring DisplayFile() const;

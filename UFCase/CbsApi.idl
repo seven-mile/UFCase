@@ -349,7 +349,7 @@ interface ICbsUpdate : IUnknown
   HRESULT GetRealInstallState([out] CbsState* pCurrentState, [out] CbsState* pIntendedState, [out] UpdateSelection* pRequestState);
 };
 
-[uuid(A69C1E5A-5E02-4F6C-BC7D-2C47407FF617), object]
+[uuid(75207392-23F2-4396-85F0-8FDB879ED0ED), object]
 interface ICbsUIHandler : IUnknown
 {
   HRESULT Initiate([in] IEnumCbsUpdate* pUpdList, [in] int*);

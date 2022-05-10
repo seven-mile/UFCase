@@ -36,6 +36,7 @@ namespace winrt::UFCase {
         static void Current(ImageModel*);
 
         SessionModel* OpenSession(_CbsSessionOption option = CbsSessionOptionNone);
+        void CloseSession(uint64_t handle);
 
         std::filesystem::path Bootdrive();
         std::filesystem::path WinDir();

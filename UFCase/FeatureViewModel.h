@@ -49,6 +49,15 @@ namespace winrt::UFCase::implementation
 
         void Enable();
         void Disable();
+
+    private:
+        void NotifyCommonPropertyChanged() {
+            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"State"});
+            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"StateText"});
+            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"Icon"});
+            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"IsEnabled"});
+            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"IsChecked"});
+        }
     };
 }
 

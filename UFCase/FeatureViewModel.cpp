@@ -11,11 +11,27 @@
 
 #include "MallocUtil.h"
 #include "CbsUtil.h"
+#include "GlobalUtil.h"
+
 #include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
-    FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel)) { }
+    FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel)) {
+        m_children.VectorChanged([this](auto const&, IVectorChangedEventArgs args) {
+            switch (args.CollectionChange()) {
+            case CollectionChange::ItemInserted:
+                m_children.GetAt(args.Index()).PropertyChanged([this](auto const&, auto const&) {
+                    GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([this]() {
+                        NotifyCommonPropertyChanged();
+                    });
+                });
+                break;
+            default:
+                break;
+            }
+        });
+    }
 
     winrt::event_token FeatureViewModel::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
     {
@@ -45,7 +61,7 @@ namespace winrt::UFCase::implementation
     }
     FeatureState FeatureViewModel::State()
     {
-        auto state = m_model.State();
+        auto state = m_model.RequestedState();
         switch (state) {
         case CbsInstallStateInstallRequested:
         case CbsInstallStateInstalled:
@@ -125,7 +141,7 @@ namespace winrt::UFCase::implementation
             cnt += t.has_value() && *t;
         }
         if (cnt < m_children.Size()) return std::optional<bool>(std::nullopt);
-        if (m_model.State() >= CbsInstallStateInstallRequested) return true;
+        if (m_model.RequestedState() >= CbsInstallStateInstallRequested) return true;
         return false;
     }
 
@@ -142,7 +158,7 @@ namespace winrt::UFCase::implementation
     IconSource FeatureViewModel::Icon()
     {
         FontIconSource src{};
-        src.FontFamily(Media::FontFamily{ L"Segoe Fluent Icons" });
+        src.FontFamily(GlobalRes::SymbolThemeFontFamily());
 
         switch (this->State()) {
         case FeatureState::Enabled:
@@ -163,9 +179,13 @@ namespace winrt::UFCase::implementation
     void FeatureViewModel::Enable()
     {
         m_model.Enable();
+
+        NotifyCommonPropertyChanged();
     }
     void FeatureViewModel::Disable()
     {
         m_model.Disable();
+
+        NotifyCommonPropertyChanged();
     }
 }

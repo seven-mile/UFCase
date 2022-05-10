@@ -21,11 +21,18 @@ namespace winrt::UFCase {
         return ws.get();
     }
 
-    _CbsInstallState FeatureModel::State() const
+    _CbsInstallState FeatureModel::CurrentState() const
     {
         _CbsInstallState state_current{}, state_intended{}, state_request{};
         check_hresult(GetInterface()->GetInstallState(&state_current, &state_intended, &state_request));
         return state_current;
+    }
+
+    _CbsInstallState FeatureModel::RequestedState() const
+    {
+        _CbsInstallState state_current{}, state_intended{}, state_request{};
+        check_hresult(GetInterface()->GetInstallState(&state_current, &state_intended, &state_request));
+        return state_request;
     }
 
     hstring FeatureModel::DisplayName() const

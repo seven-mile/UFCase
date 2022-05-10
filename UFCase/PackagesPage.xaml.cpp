@@ -21,11 +21,8 @@ namespace winrt::UFCase::implementation
     IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
-        auto action = m_view_model.PullData();
 
-        GlobalRes::MainProgServ().InsertTask(action, 100);
-
-        co_await action;
+        co_await GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100);
 
         co_return;
     }

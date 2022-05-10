@@ -18,33 +18,18 @@
             <ColumnDefinition Width="6*" />
             <ColumnDefinition Width="7*" MinWidth="450" />
         </Grid.ColumnDefinitions>
-        
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
-            <CommandBar.Resources>
-                <XamlUICommand x:Name="FeatureOpenOFDialogCommand" Label="Open System Feature Dialog" ExecuteRequested="FeatureOpenOFDialogCommand_ExecuteRequested">
-                    <XamlUICommand.IconSource>
-                        <SymbolIconSource Symbol="Share" />
-                    </XamlUICommand.IconSource>
-                </XamlUICommand>
-                <XamlUICommand x:Name="FeatureAddSourceUICommand" Label="Add Source" ExecuteRequested="FeatureAddSourceUICommand_ExecuteRequested">
-                    <XamlUICommand.IconSource>
-                        <SymbolIconSource Symbol="Add" />
-                    </XamlUICommand.IconSource>
-                </XamlUICommand>
-            </CommandBar.Resources>
 
-            <AppBarButton Command="{x:Bind FeatureEnableCommand}" Visibility="{x:Bind ConvertUInt32ToVisibility(FeatureTree.SelectedItems.Size)}" />
-            <AppBarButton Command="{x:Bind FeatureDisableCommand}" />
+        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
+            <AppBarButton Command="{x:Bind ViewModel.FeatureEnableCommand}"/>
+            <AppBarButton Command="{x:Bind ViewModel.FeatureDisableCommand}" />
             <AppBarSeparator />
-            <AppBarButton Command="{x:Bind FeatureGobackCommand}" />
+            <AppBarButton Command="{x:Bind ViewModel.FeatureGoBackCommand}" />
             <AppBarSeparator />
-            <AppBarButton Label="Submit" Icon="Accept" Click="AppBarSubmitButton_Click" />
-            <AppBarButton Label="Refresh" Icon="Refresh" />
-            <AppBarSeparator />
-            <AppBarButton Label="Settings" Icon="Setting" />
+            <AppBarButton Command="{x:Bind ViewModel.CommitCommand}" />
+            <AppBarButton Command="{x:Bind ViewModel.RefreshCommand}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Command="{StaticResource FeatureOpenOFDialogCommand}" />
-                <AppBarButton Command="{StaticResource FeatureAddSourceUICommand}" />
+                <AppBarButton Command="{x:Bind ViewModel.FeatureSystemUICommand}" />
+                <AppBarButton Command="{x:Bind ViewModel.FeatureAddSourceUICommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
 
@@ -57,25 +42,25 @@
                     <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Name), Mode=OneWay}" />
-                                <Run Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Identity), Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                <Run Text="{x:Bind ViewModel.SelectedFeature.Name, Mode=OneWay}" />
+                                <Run Text="{x:Bind ViewModel.SelectedFeature.Identity, Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
                             </TextBlock>
-                            <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.Description), Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind ViewModel.SelectedFeature.Description, Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
                         </StackPanel>
                     </Border>
                     <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,10">
                             <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True" IsHitTestVisible="False"
-                                      IsEnabled="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsEnabled), Mode=OneWay}"
-                                      IsChecked="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.IsChecked), Mode=OneWay}">
+                                      IsEnabled="{x:Bind ViewModel.SelectedFeature.IsEnabled, Mode=OneWay}"
+                                      IsChecked="{x:Bind ViewModel.SelectedFeature.IsChecked, Mode=OneWay}">
                                 <CheckBox.Content>
-                                    <TextBlock Text="{x:Bind FeatureTree.SelectedItem.(local:FeatureViewModel.StateText), Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind ViewModel.SelectedFeature.StateText, Mode=OneWay}" />
                                 </CheckBox.Content>
                             </CheckBox>
 
                         </StackPanel>
                     </Border>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenFileButton_Click">
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -96,7 +81,7 @@
                             </Grid>
                         </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenRegButton_Click">
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Command="{x:Bind ViewModel.FeatureOpenRegistryCommand.Command}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -117,7 +102,7 @@
                             </Grid>
                         </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Click="OpenKBButton_Click">
+                    <Button Style="{StaticResource MicaCardCommandLink}" Margin="0,5,0,5" Padding="10,8,20,10" Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -144,30 +129,9 @@
         
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
             <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False"
-                      AllowDrop="False" CanDragItems="False" ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}">
-                <TreeView.Resources>
-                    <XamlUICommand x:Name="FeatureEnableCommand" Label="Enable" ExecuteRequested="FeatureEnableCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureDisableCommand" Label="Disable" ExecuteRequested="FeatureDisableCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureGobackCommand" Label="Go back" ExecuteRequested="FeatureOpenOFDialogCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72B;" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureOpenExplorerCommand" Label="Open in explorer" ExecuteRequested="FeatureDisableCommand_ExecuteRequested">
-                        <XamlUICommand.IconSource>
-                            <FontIconSource FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
-                        </XamlUICommand.IconSource>
-                    </XamlUICommand>
-                    <XamlUICommand x:Name="FeatureOpenRegistryCommand" Label="Open in registry" ExecuteRequested="FeatureDisableCommand_ExecuteRequested" />
-                </TreeView.Resources>
+                      AllowDrop="False" CanDragItems="False"
+                      ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedFeature, Mode=TwoWay}">
                 <TreeView.ItemContainerTransitions>
                     <TransitionCollection>
                         <RepositionThemeTransition />
@@ -177,37 +141,35 @@
                 <TreeView.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyout.Items>
-                            <MenuFlyoutItem Command="{x:Bind FeatureEnableCommand}"
-                                            CommandParameter="{x:Bind FeatureTree.SelectedItem}"
-                                            Text="{x:Bind FeatureEnableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureEnableCommand}"
+                                            Text="{x:Bind ViewModel.FeatureEnableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind FeatureEnableCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureEnableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind FeatureDisableCommand}"
-                                            CommandParameter="{x:Bind FeatureTree.SelectedItem}"
-                                            Text="{x:Bind FeatureDisableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureDisableCommand}"
+                                            Text="{x:Bind ViewModel.FeatureDisableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind FeatureDisableCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureDisableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Command="{x:Bind FeatureGobackCommand}"
-                                            Text="{x:Bind FeatureGobackCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGoBackCommand}"
+                                            Text="{x:Bind ViewModel.FeatureGoBackCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind FeatureGobackCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGoBackCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind FeatureOpenExplorerCommand}"
-                                            Text="{x:Bind FeatureOpenExplorerCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenExplorerCommand}"
+                                            Text="{x:Bind ViewModel.FeatureOpenExplorerCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind FeatureOpenExplorerCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenExplorerCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind FeatureOpenRegistryCommand}"
-                                            Text="{x:Bind FeatureOpenRegistryCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenRegistryCommand}"
+                                            Text="{x:Bind ViewModel.FeatureOpenRegistryCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind FeatureOpenRegistryCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenRegistryCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout.Items>

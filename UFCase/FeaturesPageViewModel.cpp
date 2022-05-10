@@ -24,13 +24,12 @@ namespace winrt::UFCase::implementation
 
         child_ids.clear();
 
-        auto& session = SessionModel::GetInstance(m_image.OpenSession());
-        auto& found = *session.FoundationPackage();
+        auto& found = *Session().FoundationPackage();
 
         auto report_prog = co_await get_progress_token();
         report_prog(10);
 
-        auto joinUpdates = [=](const std::vector<FeatureModel*>& updates) -> IAsyncActionWithProgress<uint32_t> {
+        auto joinUpdates = [](const std::vector<FeatureModel*>& updates) -> IAsyncActionWithProgress<uint32_t> {
 
             auto report_prog = co_await get_progress_token();
 

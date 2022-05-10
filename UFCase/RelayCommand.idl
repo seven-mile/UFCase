@@ -1,0 +1,8 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass RelayCommand : Microsoft.UI.Xaml.Input.ICommand
+    {
+    }
+}

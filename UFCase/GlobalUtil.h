@@ -12,5 +12,7 @@ namespace winrt::UFCase {
 
         void MainProgServ(MainProgressService mainProgServ);
         MainProgressService MainProgServ();
+
+        Media::FontFamily SymbolThemeFontFamily();
     }
 }

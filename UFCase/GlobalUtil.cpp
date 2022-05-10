@@ -40,4 +40,9 @@ namespace winrt::UFCase::GlobalRes {
         assert(refMainProg);
         return refMainProg;
     }
+
+    Media::FontFamily SymbolThemeFontFamily()
+    {
+        return Application::Current().Resources().Lookup(box_value(L"SymbolThemeFontFamily")).as<Media::FontFamily>();
+    }
 }

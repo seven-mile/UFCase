@@ -56,6 +56,16 @@ namespace winrt::UFCase {
         return res;
     }
 
+    void ImageModel::CloseSession(uint64_t hSess)
+    {
+        if (sessions.count(hSess)) {
+            ModelManager<SessionModel>::Erase(hSess);
+            sessions.erase(hSess);
+        } else {
+            assert(false && "the session to close does not exist");
+        }
+    }
+
     std::filesystem::path ImageModel::Bootdrive()
     {
         return bootdrive;

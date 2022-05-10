@@ -94,4 +94,9 @@ namespace winrt::UFCase::implementation
     {
         return m_model.OpenSession()->GetHandle();
     }
+
+    void ImageViewModel::CloseSession(uint64_t handle)
+    {
+        m_model.CloseSession(handle);
+    }
 }

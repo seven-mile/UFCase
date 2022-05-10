@@ -25,7 +25,8 @@ namespace winrt::UFCase {
     public:
         ~SessionModel();
 
-        void SaveChanges();
+        void AddSource(hstring const& source_dir);
+        IAsyncActionWithProgress<uint32_t> SaveChanges();
 
         // 0x1b0 0x130
         std::vector<PackageModel*> Packages(DWORD option = 0x1b0);

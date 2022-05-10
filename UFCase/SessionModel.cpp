@@ -3,9 +3,13 @@
 #include "PackageModel.h"
 #include "ImageModel.h"
 
+#include "CCbsUIHandler.h"
+
 #include "MallocUtil.h"
 #include "CbsUtil.h"
 #include <wil/resource.h>
+
+#include <ranges>
 
 extern "C" CLSID CLSID_CbsSession;
 
@@ -25,6 +29,10 @@ namespace winrt::UFCase {
         } else {
             check_hresult(session->Initialize(option, L"UFCase", image->Bootdrive().c_str(), image->WinDir().c_str()));
         }
+
+        THROW_IF_FAILED(CoSetProxyBlanket(session.get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_NONE, nullptr,
+            RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE));
+
         return new SessionModel{ image, session };
     }
 
@@ -38,21 +46,38 @@ namespace winrt::UFCase {
 
     SessionModel::~SessionModel()
     {
-        for (auto&& [_, val] : packages)
+        for (auto&& val : packages | std::ranges::views::values)
             ModelManager<PackageModel>::Erase(val);
         packages.clear();
     }
 
-    void SessionModel::SaveChanges()
+    void SessionModel::AddSource(hstring const& source_dir)
+    {
+        check_hresult(GetInterface().as<ICbsSession8>()->AddSource(0, source_dir.c_str()));
+    }
+
+    IAsyncActionWithProgress<uint32_t> SessionModel::SaveChanges()
     {
         // use bg thread to save changes
-        [=, this]() -> IAsyncAction {
-            _CbsRequiredAction action{};
-            co_await resume_background();
-            check_hresult(GetInterface()->Finalize(&action));
+        co_await resume_background();
 
-            co_return;
-        }();
+        auto report_progress = co_await get_progress_token();
+
+        if (auto sess = GetInterface().try_as<ICbsSession8>()) {
+
+            auto ui_handler = make<CCbsUIHandler>([&](uint32_t val) {
+                report_progress(val);
+            }, [](hresult hr) {
+                throw_hresult(hr);
+            });
+
+            check_hresult(sess->RegisterCbsUIHandler(ui_handler.get()));
+        }
+
+        _CbsRequiredAction action{};
+        check_hresult(GetInterface()->Finalize(&action));
+
+        co_return;
     }
 
     std::vector<PackageModel*> SessionModel::Packages(DWORD flag)

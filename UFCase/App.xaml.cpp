@@ -37,11 +37,6 @@ namespace winrt::UFCase::implementation
     /// <param name="e">Details about the launch request and process.</param>
     IAsyncAction App::OnLaunched(LaunchActivatedEventArgs const&)
     {
-        // Allow server to impersonate client, init default COM security
-        //LOG_IF_FAILED(CoInitializeSecurity(nullptr, -1, nullptr, nullptr,
-        //    RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr));
-
-
         std::filesystem::path pathAppData = GetOnlineRoamingAppDataDir();
 
         pathAppData /= L".UFCase";
