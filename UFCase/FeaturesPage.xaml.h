@@ -16,7 +16,7 @@ namespace winrt::UFCase::implementation
         UFCase::FeaturesPageViewModel m_view_model{ nullptr };
         UFCase::FeaturesPageViewModel ViewModel() { return m_view_model; }
 
-        IAsyncAction OnNavigatedTo(const Navigation::NavigationEventArgs &e);
+        void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
         
         void FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const& e);
         void FeatureTreeItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e);

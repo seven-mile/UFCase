@@ -7,6 +7,7 @@
 #include "AppConfig.h"
 #include "ImageSelectorHelper.h"
 #include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 #include <filesystem>
 
@@ -37,7 +38,7 @@ namespace winrt::UFCase::implementation
 
         m_images.GetAt(value).Select();
 
-        GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([]() -> IAsyncAction {
+        RunUITaskAsync([]() -> IAsyncAction {
             co_await GlobalRes::MainNavServ().Initialize();
         });
 

@@ -10,6 +10,7 @@
 #include "ErrorDialog.g.h"
 
 #include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 #include <winrt\Windows.UI.Xaml.Interop.h>
 #include <wil/resource.h>
@@ -118,7 +119,7 @@ namespace winrt::UFCase::implementation
             this->MatchNavViewSelectedItem();
         }
 
-        GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([err]() -> IAsyncAction {
+        RunUITaskAsync([err]() -> IAsyncAction {
             UFCase::HrError hr_err{};
             hr_err.Code(err.code());
             hr_err.Message(err.message());

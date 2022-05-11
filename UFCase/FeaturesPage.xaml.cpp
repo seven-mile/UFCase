@@ -16,7 +16,7 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    IAsyncAction FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs& e)
+    void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs& e)
     {
         if (auto val = e.Parameter().try_as<FeaturesPageViewModel>()) {
             m_view_model = val;
@@ -26,7 +26,7 @@ namespace winrt::UFCase::implementation
         } else {
             throw winrt::hresult_invalid_argument();
         }
-        co_return;
+        return;
     }
 
     void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&e)

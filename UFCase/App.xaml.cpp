@@ -6,7 +6,7 @@
 #include "ImageSelectorHelper.h"
 #include "PathUtil.h"
 #include "GlobalUtil.h"
-
+#include "AsyncUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -35,7 +35,7 @@ namespace winrt::UFCase::implementation
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="e">Details about the launch request and process.</param>
-    IAsyncAction App::OnLaunched(LaunchActivatedEventArgs const&)
+    void App::OnLaunched(LaunchActivatedEventArgs const&)
     {
         std::filesystem::path pathAppData = GetOnlineRoamingAppDataDir();
 
@@ -52,13 +52,13 @@ namespace winrt::UFCase::implementation
             AppConfig::WriteAppConfigToFile(cfg_path.c_str());
         }
 
-        co_await SearchImages();
+        no_await(SearchImages());
 
         window = UFCase::MainWindow();
 
         window.Activate();
 
-        co_return;
+        return;
     }
 
 }

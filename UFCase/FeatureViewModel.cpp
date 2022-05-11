@@ -12,6 +12,7 @@
 #include "MallocUtil.h"
 #include "CbsUtil.h"
 #include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 #include <wil/resource.h>
 
@@ -22,7 +23,7 @@ namespace winrt::UFCase::implementation
             switch (args.CollectionChange()) {
             case CollectionChange::ItemInserted:
                 m_children.GetAt(args.Index()).PropertyChanged([this](auto const&, auto const&) {
-                    GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([this]() {
+                    RunUITask([this]() {
                         NotifyCommonPropertyChanged();
                     });
                 });

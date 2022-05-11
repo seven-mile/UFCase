@@ -8,7 +8,7 @@ namespace winrt::UFCase::implementation
     {
         PackagesPage();
 
-        IAsyncAction OnNavigatedTo(const Navigation::NavigationEventArgs& e);
+        void OnNavigatedTo(const Navigation::NavigationEventArgs& e);
 
         UFCase::PackagesPageViewModel m_view_model{nullptr};
         UFCase::PackagesPageViewModel ViewModel() { return m_view_model; }

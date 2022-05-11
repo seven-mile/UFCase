@@ -3,6 +3,7 @@
 #include "MainProgressService.g.h"
 
 #include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 #include <wil/resource.h>
 
@@ -31,7 +32,7 @@ namespace winrt::UFCase::implementation
         }
 
         void ReportStateChange() {
-            GlobalRes::MainWnd().DispatcherQueue().TryEnqueue([this]() {
+            RunUITask([this]() {
                 _property_changed(*this, Data::PropertyChangedEventArgs{ L"CurrentProgress" });
                 _property_changed(*this, Data::PropertyChangedEventArgs{ L"Visibility" });
             });
@@ -43,7 +44,7 @@ namespace winrt::UFCase::implementation
             _weight_sum += weight;
             _progress_list[provider] = 0;
 
-            HANDLE comp_event = CreateEvent(NULL, FALSE, FALSE, L"");
+            HANDLE comp_event = CreateEvent(NULL, FALSE, FALSE, nullptr);
 
             provider.Progress([this, weight](auto const &provider, uint32_t prog) {
                 auto& cur_prog = _progress_list[provider];

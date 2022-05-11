@@ -5,6 +5,7 @@
 #endif
 
 #include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 #include <winrt/Microsoft.UI.Xaml.Input.h>
 
@@ -18,13 +19,13 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    IAsyncAction PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
+    void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
-        co_await GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100);
+        no_await(GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100));
 
-        co_return;
+        return;
     }
 
     void PackagesPage::ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e)

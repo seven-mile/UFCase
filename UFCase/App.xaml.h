@@ -8,7 +8,7 @@ namespace winrt::UFCase::implementation
     {
         App();
 
-        IAsyncAction OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
+        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
 
     private:
         UFCase::MainWindow window{ nullptr };
