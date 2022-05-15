@@ -21,8 +21,21 @@ namespace winrt::UFCase::implementation
         uint64_t OpenSession();
         void CloseSession(uint64_t handle);
 
+        event_token PropertyChanged(Data::PropertyChangedEventHandler const &handler) {
+            return m_property_changed.add(handler);
+        }
+
+        void PropertyChanged(event_token const& token) {
+            m_property_changed.remove(token);
+        }
+
     private:
         ImageModel& m_model;
+        hstring m_version, m_edition;
+        Media::ImageSource m_icon{nullptr};
+        bool m_icon_loading = false;
+
+        event<Data::PropertyChangedEventHandler> m_property_changed{};
     };
 }
 

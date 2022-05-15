@@ -3,7 +3,7 @@ namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass ImageViewModel 
+    runtimeclass ImageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         ImageViewModel(UInt64 hModel);
 

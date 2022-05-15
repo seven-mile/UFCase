@@ -28,7 +28,7 @@ namespace winrt::UFCase::implementation
 
         IObservableVector<UFCase::ImageViewModel> m_images;
 
-        winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
+        winrt::event<winrt::Data::PropertyChangedEventHandler> m_property_changed;
     };
 }
 

@@ -3,10 +3,7 @@
 #include "App.xaml.h"
 
 #include "AppConfig.h"
-#include "ImageSelectorHelper.h"
 #include "PathUtil.h"
-#include "GlobalUtil.h"
-#include "AsyncUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -51,8 +48,6 @@ namespace winrt::UFCase::implementation
                 winrt::check_bool(std::filesystem::create_directories(pathAppData));
             AppConfig::WriteAppConfigToFile(cfg_path.c_str());
         }
-
-        no_await(SearchImages());
 
         window = UFCase::MainWindow();
 

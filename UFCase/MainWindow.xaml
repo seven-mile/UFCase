@@ -53,7 +53,7 @@
             <NavigationView.PaneCustomContent>
                 <ComboBox x:Name="ImageComboBox" HorizontalAlignment="Stretch" Margin="10,5,10,5"
                           SelectedIndex="{x:Bind ImageSelectorVM.SelectedIndex, Mode=TwoWay}"
-                          ItemsSource="{x:Bind ImageSelectorVM.Images}">
+                          ItemsSource="{x:Bind ImageSelectorVM.Images, Mode=OneWay}">
                     <ComboBox.Resources>
                         <TeachingTip x:Key="DefaultTip" Target="{x:Bind ImageComboBox}"
                                      Title="Switch Windows Image"
@@ -66,15 +66,15 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="local:ImageViewModel">
                             <StackPanel Orientation="Horizontal" Height="Auto" HorizontalAlignment="Stretch">
-                                <ImageIcon Source="{x:Bind Icon}" VerticalAlignment="Stretch" Width="35" Margin="0,7,7,7" />
+                                <ImageIcon Source="{x:Bind Icon, Mode=OneWay}" VerticalAlignment="Stretch" Width="35" Margin="0,7,7,7" />
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                        <Run Text="{x:Bind Version}" />
-                                        <Run Text="{x:Bind Edition}" />
+                                        <Run Text="{x:Bind Version, Mode=OneWay}" />
+                                        <Run Text="{x:Bind Edition, Mode=OneWay}" />
                                     </TextBlock>
                                     <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-                                        <Run Text="{x:Bind Type}" />
-                                        <Run Text="{x:Bind Bootdrive}" />
+                                        <Run Text="{x:Bind Type, Mode=OneWay}" />
+                                        <Run Text="{x:Bind Bootdrive, Mode=OneWay}" />
                                     </TextBlock>
                                 </StackPanel>
                             </StackPanel>

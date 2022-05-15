@@ -14,5 +14,7 @@ namespace winrt::UFCase {
         MainProgressService MainProgServ();
 
         Media::FontFamily SymbolThemeFontFamily();
+
+        Microsoft::UI::Dispatching::DispatcherQueue WorkerQueue();
     }
 }

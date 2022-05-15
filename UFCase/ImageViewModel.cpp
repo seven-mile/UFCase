@@ -5,6 +5,7 @@
 #endif
 
 #include "SessionModel.h"
+#include "AsyncUtil.h"
 
 #include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
 
@@ -23,34 +24,56 @@ namespace winrt::UFCase::implementation
 
     hstring ImageViewModel::Version()
     {
-        auto&& ver = m_model.Version();
-        if (ver.major == 6) {
-            // includes vista
-            if (ver.minor <= 1) {
-                return L"Win 7";
-            } else {
-                if (ver.minor == 2)
-                    return L"Win 8";
-                else
-                    return L"Win 8.1";
-            }
-        } else if (ver.major == 10) {
-            // win11 pre-release is less than 22000
-            if (ver.build > 21900) {
-                return L"Win 11";
-            } else {
-                return L"Win 10";
-            }
-        } else if (ver.major == 11) {
-            return L"Win 11";
-        } else {
-            return L"Win Unk";
+        if (m_version.empty()) {
+            m_version = L"Loading";
+
+            DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
+                auto&& ver = this->m_model.Version();
+                if (ver.major == 6) {
+                    // includes vista
+                    if (ver.minor <= 1) {
+                        this->m_version = L"Win 7";
+                    } else {
+                        if (ver.minor == 2)
+                            this->m_version = L"Win 8";
+                        else
+                            this->m_version = L"Win 8.1";
+                    }
+                } else if (ver.major == 10) {
+                    // win11 pre-release is less than 22000
+                    if (ver.build > 21900) {
+                        this->m_version = L"Win 11";
+                    } else {
+                        this->m_version = L"Win 10";
+                    }
+                } else if (ver.major == 11) {
+                    this->m_version = L"Win 11";
+                } else {
+                    this->m_version = L"Win Unk";
+                }
+
+                RunUITask([this]() {
+                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Version" });
+                });
+            });
         }
+        return m_version;
+        
     }
 
     hstring ImageViewModel::Edition()
     {
-        return m_model.Edition();
+        if (m_edition.empty()) {
+            m_edition = L"Loading";
+
+            DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
+                this->m_edition = this->m_model.Edition();
+                RunUITask([this]() {
+                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Edition" });
+                });
+            });
+        }
+        return m_edition;
     }
 
     hstring ImageViewModel::Bootdrive()
@@ -65,22 +88,36 @@ namespace winrt::UFCase::implementation
             Icon10 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png")),
             Icon11 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
 
-        auto&& ver = m_model.Version();
-        if (ver.major == 6) {
-            // includes vista
-            if (ver.minor <= 1) {
-                return Icon7;
-            } else {
-                return Icon8;
-            }
-        } else if (ver.major == 10) {
-            // win11 pre-release is less than 22000
-            if (ver.build <= 21900) {
-                return Icon10;
+        if (!m_icon) {
+            if (!m_icon_loading) {
+                m_icon_loading = true;
+
+                DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
+                    if (!this->m_version.empty()) {
+                        auto&& ver = this->m_model.Version();
+                        if (ver.major == 6) {
+                            // includes vista
+                            if (ver.minor <= 1) {
+                                this->m_icon = Icon7;
+                            } else {
+                                this->m_icon = Icon8;
+                            }
+                        } else if (ver.major == 10) {
+                            // win11 pre-release is less than 22000
+                            if (ver.build <= 21900) {
+                                this->m_icon = Icon10;
+                            }
+                        }
+                    }
+                    // major >= 11
+                    this->m_icon = Icon11;
+                    RunUITask([this]() {
+                        this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Icon" });
+                    });
+                });
             }
         }
-        // major >= 11
-        return Icon11;
+        return m_icon;
     }
 
     void ImageViewModel::Select()

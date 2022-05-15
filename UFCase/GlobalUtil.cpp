@@ -45,4 +45,9 @@ namespace winrt::UFCase::GlobalRes {
     {
         return Application::Current().Resources().Lookup(box_value(L"SymbolThemeFontFamily")).as<Media::FontFamily>();
     }
+
+    Microsoft::UI::Dispatching::DispatcherQueue WorkerQueue() {
+        static auto worker = Microsoft::UI::Dispatching::DispatcherQueueController::CreateOnDedicatedThread();
+        return worker.DispatcherQueue();
+    }
 }
