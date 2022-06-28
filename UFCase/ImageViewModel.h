@@ -29,11 +29,13 @@ namespace winrt::UFCase::implementation
             m_property_changed.remove(token);
         }
 
+        bool Selectable() { return m_info_loading; }
+
     private:
         ImageModel& m_model;
         hstring m_version, m_edition;
         Media::ImageSource m_icon{nullptr};
-        bool m_icon_loading = false;
+        bool m_icon_loading = false, m_info_loading = false;
 
         event<Data::PropertyChangedEventHandler> m_property_changed{};
     };

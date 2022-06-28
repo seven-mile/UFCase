@@ -63,6 +63,12 @@
                             </TeachingTip.IconSource>
                         </TeachingTip>
                     </ComboBox.Resources>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem" BasedOn="{StaticResource DefaultComboBoxItemStyle}">
+                            <!-- Todo: Disable when loading -->
+                            <Setter Property="IsEnabled" Value="True" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="local:ImageViewModel">
                             <StackPanel Orientation="Horizontal" Height="Auto" HorizontalAlignment="Stretch">

@@ -12,6 +12,8 @@ namespace UFCase
         String Edition{ get; };
         String Bootdrive{ get; };
 
+        Boolean Selectable{ get; };
+
         Microsoft.UI.Xaml.Media.ImageSource Icon{ get; };
 
         void Select();

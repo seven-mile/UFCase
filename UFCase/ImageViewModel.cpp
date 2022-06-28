@@ -26,6 +26,7 @@ namespace winrt::UFCase::implementation
     {
         if (m_version.empty()) {
             m_version = L"Loading";
+            this->m_info_loading = true;
 
             DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
                 auto&& ver = this->m_model.Version();
@@ -52,8 +53,10 @@ namespace winrt::UFCase::implementation
                     this->m_version = L"Win Unk";
                 }
 
+                this->m_info_loading = false;
                 RunUITask([this]() {
                     this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Version" });
+                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Selectable" });
                 });
             });
         }
@@ -65,11 +68,14 @@ namespace winrt::UFCase::implementation
     {
         if (m_edition.empty()) {
             m_edition = L"Loading";
+            this->m_info_loading = true;
 
             DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
                 this->m_edition = this->m_model.Edition();
+                this->m_info_loading = false;
                 RunUITask([this]() {
                     this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Edition" });
+                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Selectable" });
                 });
             });
         }
