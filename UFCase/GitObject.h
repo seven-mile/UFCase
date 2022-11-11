@@ -18,7 +18,7 @@ namespace winrt::UFCase {
         }
 
         com_ptr<COMInterface> GetInterface() const {
-            static com_ptr<COMInterface> proxy;
+            com_ptr<COMInterface> proxy;
             check_hresult(GetGIT()->GetInterfaceFromGlobal(this->cookie, __uuidof(COMInterface), proxy.put_void()));
             return proxy;
         }
