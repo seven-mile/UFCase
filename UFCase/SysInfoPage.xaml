@@ -17,178 +17,178 @@
                     Margin="40,20,40,40" Height="Auto"
                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             
-            <StackPanel.Resources>
-                <Style x:Key="LabelBlock" TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                    <Setter Property="FontSize" Value="16" />
-                    <Setter Property="FontWeight" Value="SemiBold" />
-                </Style>
-                <Style x:Key="InfoBox" TargetType="RichTextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="TextWrapping" Value="Wrap" />
-                    <Setter Property="FontSize" Value="16" />
-                    <Setter Property="Margin" Value="0,1,0,1" />
-                </Style>
-                <Style x:Key="InfoBarChart" TargetType="ProgressBar">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="IsIndeterminate" Value="False" />
-                    <Setter Property="Margin" Value="5,0,5,0" />
-                </Style>
-                <Style x:Key="InfoExpander" TargetType="Expander">
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                    <Setter Property="VerticalAlignment" Value="Stretch" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="IsExpanded" Value="True" />
-                    <Setter Property="Margin" Value="0,10,0,10" />
-                    <Setter Property="Height" Value="Auto" />
-                </Style>
-            </StackPanel.Resources>
+                <StackPanel.Resources>
+                    <Style x:Key="LabelBlock" TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                    </Style>
+                    <Style x:Key="InfoBox" TargetType="RichTextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Margin" Value="0,1,0,1" />
+                    </Style>
+                    <Style x:Key="InfoBarChart" TargetType="ProgressBar">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="IsIndeterminate" Value="False" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                    <Style x:Key="InfoExpander" TargetType="Expander">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="IsExpanded" Value="True" />
+                        <Setter Property="Margin" Value="0,10,0,10" />
+                        <Setter Property="Height" Value="Auto" />
+                    </Style>
+                </StackPanel.Resources>
 
-            <Expander x:Name="StaticHardwareInfoPane" Style="{StaticResource InfoExpander}">
-                <Expander.Header>
-                    <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <FontIcon VerticalAlignment="Center" Margin="10"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE977;" />
-                        <TextBlock Text="Hardware Specifications" Margin="0,0,0,5"
-                                   Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Expander.Header>
-                
-                <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="140" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Property Name -->
-                        <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
-                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
-                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Architecture" />
-                        <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="CPU" />
-            
-                        <!-- Property Value -->
-                        <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.FirmwareType()}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.Manufacturer()}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.CPUArchitecture()}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.CPUDisplayName()}" /></Paragraph>
-                        </RichTextBlock>
-                    </Grid>
-                </Expander.Content>
-            </Expander>
-            
-            <Expander x:Name="StaticImageInfoPane" Style="{StaticResource InfoExpander}">
-                
-                <Expander.Header>
-                    <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <FontIcon VerticalAlignment="Center" Margin="10"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9F5;" />
-                        <TextBlock Text="Image Specifications" Margin="0,0,0,5"
-                                   Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Expander.Header>
-                
-                <Expander.Content>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="140" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Property Name -->
-                        <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="OS Version" />
-                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="OS Architecture" />
-                        <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
-            
-                        <!-- Property Value -->
-                        <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.OSVersion}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.OSArchitecture}" /></Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
-                            <Paragraph><Run Text="{x:Bind StaticInfo.IsWinPE}" /></Paragraph>
-                        </RichTextBlock>
-                    </Grid>
-                </Expander.Content>
-            </Expander>
-
-            <Expander x:Name="RealTimeInfoPane" Style="{StaticResource InfoExpander}">
-                <Expander.Header>
-                    <Grid>
+                <Expander x:Name="StaticHardwareInfoPane" Style="{StaticResource InfoExpander}">
+                    <Expander.Header>
                         <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
                             <FontIcon VerticalAlignment="Center" Margin="10"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9D9;" />
-                            <TextBlock Text="Realtime Diagnostics" Margin="0,0,0,5"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE977;" />
+                            <TextBlock Text="Hardware Specifications" Margin="0,0,0,5"
                                        Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                         </StackPanel>
+                    </Expander.Header>
+                
+                    <Expander.Content>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <ToggleSwitch x:Name="AutoRefreshSwitch" Toggled="ToggleSwitch_Toggled" OnContent="AutoRefresh" OffContent="Frozen" VerticalAlignment="Center" />
+                            <!-- Property Name -->
+                            <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="Firmware" />
+                            <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Manufacturer" />
+                            <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Architecture" />
+                            <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource LabelBlock}" Text="CPU" />
+            
+                            <!-- Property Value -->
+                            <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.FirmwareType()}" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.Manufacturer()}" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.CPUArchitecture()}" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.CPUDisplayName()}" /></Paragraph>
+                            </RichTextBlock>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
+            
+                <Expander x:Name="StaticImageInfoPane" Style="{StaticResource InfoExpander}">
+                
+                    <Expander.Header>
+                        <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <FontIcon VerticalAlignment="Center" Margin="10"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9F5;" />
+                            <TextBlock Text="Image Specifications" Margin="0,0,0,5"
+                                       Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
                         </StackPanel>
-                    </Grid>
-                </Expander.Header>
+                    </Expander.Header>
+                
+                    <Expander.Content>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                <Expander.Content>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="140" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <!-- Property Name -->
+                            <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="OS Version" />
+                            <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="OS Architecture" />
+                            <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource LabelBlock}" Text="Is WinPE?" />
+            
+                            <!-- Property Value -->
+                            <RichTextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.OSVersion}" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.OSArchitecture}" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource InfoBox}">
+                                <Paragraph><Run Text="{x:Bind StaticInfo.IsWinPE}" /></Paragraph>
+                            </RichTextBlock>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
 
-                        <!-- Property Name -->
-                        <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />
-                        <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Memory" />
+                <Expander x:Name="RealTimeInfoPane" Style="{StaticResource InfoExpander}">
+                    <Expander.Header>
+                        <Grid>
+                            <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Left">
+                                <FontIcon VerticalAlignment="Center" Margin="10"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="20" Glyph="&#xE9D9;" />
+                                <TextBlock Text="Realtime Diagnostics" Margin="0,0,0,5"
+                                           Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                            </StackPanel>
 
-                        <!-- Property BarChart -->
-                        <ProgressBar Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.CPUUtilization, Mode=OneWay}" />
-                        <ProgressBar Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.MemoryUsage, Mode=OneWay}" />
+                            <StackPanel Height="Auto" Width="Auto" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <ToggleSwitch x:Name="AutoRefreshSwitch" Toggled="ToggleSwitch_Toggled" OnContent="AutoRefresh" OffContent="Frozen" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
 
-                        <!-- Property Comment -->
-                        <RichTextBlock Grid.Column="3" Grid.Row="0" Style="{StaticResource InfoBox}">
-                            <Paragraph>
-                                <Run Text="{x:Bind RealtimeInfo.CPUUtilizationComment, Mode=OneWay}" />
-                            </Paragraph>
-                        </RichTextBlock>
-                        <RichTextBlock Grid.Column="3" Grid.Row="1" Style="{StaticResource InfoBox}">
-                            <Paragraph>
-                                <Run Text="{x:Bind RealtimeInfo.MemoryUsageComment, Mode=OneWay}" />
-                            </Paragraph>
-                        </RichTextBlock>
-                    </Grid>
-                </Expander.Content>
-            </Expander>
+                    <Expander.Content>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-        </StackPanel>
+                            <!-- Property Name -->
+                            <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource LabelBlock}" Text="CPU" />
+                            <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource LabelBlock}" Text="Memory" />
+
+                            <!-- Property BarChart -->
+                            <ProgressBar Grid.Column="2" Grid.Row="0" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.CPUUtilization, Mode=OneWay}" />
+                            <ProgressBar Grid.Column="2" Grid.Row="1" Style="{StaticResource InfoBarChart}" Value="{x:Bind RealtimeInfo.MemoryUsage, Mode=OneWay}" />
+
+                            <!-- Property Comment -->
+                            <RichTextBlock Grid.Column="3" Grid.Row="0" Style="{StaticResource InfoBox}">
+                                <Paragraph>
+                                    <Run Text="{x:Bind RealtimeInfo.CPUUtilizationComment, Mode=OneWay}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Grid.Column="3" Grid.Row="1" Style="{StaticResource InfoBox}">
+                                <Paragraph>
+                                    <Run Text="{x:Bind RealtimeInfo.MemoryUsageComment, Mode=OneWay}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
+
+            </StackPanel>
         </Grid>
     </ScrollViewer>
     
