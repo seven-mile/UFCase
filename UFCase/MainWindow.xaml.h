@@ -34,8 +34,6 @@ namespace winrt::UFCase::implementation
         MainWindow();
 
         // Internal Functions
-        winrt::AppWindow GetAppWindowForCurrentWindow();
-
         void UpdateTitleByConfig();
         void ConfigWindowTitlebar();
 
@@ -43,20 +41,7 @@ namespace winrt::UFCase::implementation
         void NavView_ItemInvoked(NavigationView const& sender, NavigationViewItemInvokedEventArgs const& args);
         void NavView_DisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& args);
         void NavView_BackRequested(NavigationView const& sender, NavigationViewBackRequestedEventArgs const& args);
-
-        // Mica helpers
-        void SetBackdrop();
-        winrt::DispatcherQueueController CreateSystemDispatcherQueueController();
-        void SetupSystemBackdropConfiguration();
-        winrt::SystemBackdropTheme ConvertToSystemBackdropTheme(winrt::ElementTheme const& theme);
-
     private:
-        winrt::SystemBackdropConfiguration m_configuration{ nullptr };
-        winrt::MicaController m_micaController{ nullptr };
-        winrt::Window::Activated_revoker m_activatedRevoker;
-        winrt::Window::Closed_revoker m_closedRevoker;
-        winrt::FrameworkElement::ActualThemeChanged_revoker m_themeChangedRevoker;
-        winrt::FrameworkElement m_rootElement{ nullptr };
         winrt::DispatcherQueueController m_dispatcherQueueController{ nullptr };
     };
 }
