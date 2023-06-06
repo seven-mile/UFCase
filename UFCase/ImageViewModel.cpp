@@ -89,10 +89,15 @@ namespace winrt::UFCase::implementation
 
     Media::ImageSource ImageViewModel::Icon()
     {
-        static auto Icon7 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png")),
-            Icon8 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png")),
-            Icon10 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png")),
-            Icon11 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
+        //static auto Icon7 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png")),
+        //    Icon8 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png")),
+        //    Icon10 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png")),
+        //    Icon11 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
+
+        static auto Icon7 = Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win7.svg")),
+            Icon8 = Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win8or10.svg")),
+            Icon10 = Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win8or10.svg")),
+            Icon11 = Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win11.svg"));
 
         if (!m_icon) {
             if (!m_icon_loading) {

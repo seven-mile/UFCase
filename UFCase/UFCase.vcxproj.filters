@@ -244,20 +244,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <MyEmbeddedItems Include="EmbedAssets\Windows7.png">
-      <Filter>resources\EmbedAssets</Filter>
-    </MyEmbeddedItems>
-    <MyEmbeddedItems Include="EmbedAssets\Windows8.png">
-      <Filter>resources\EmbedAssets</Filter>
-    </MyEmbeddedItems>
-    <MyEmbeddedItems Include="EmbedAssets\Windows10.png">
-      <Filter>resources\EmbedAssets</Filter>
-    </MyEmbeddedItems>
-    <MyEmbeddedItems Include="EmbedAssets\Windows11.png">
-      <Filter>resources\EmbedAssets</Filter>
-    </MyEmbeddedItems>
-  </ItemGroup>
-  <ItemGroup>
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>

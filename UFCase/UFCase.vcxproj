@@ -475,10 +475,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <MyEmbeddedItems Include="EmbedAssets\Windows10.png" />
-    <MyEmbeddedItems Include="EmbedAssets\Windows11.png" />
-    <MyEmbeddedItems Include="EmbedAssets\Windows7.png" />
-    <MyEmbeddedItems Include="EmbedAssets\Windows8.png" />
+    <MyEmbeddedItems Include="EmbedAssets\**\*" />
   </ItemGroup>
   <Target Name="AddMyEmbeddedItems" BeforeTargets="_GenerateProjectPriFileCore" AfterTargets="_CalculateInputsForGenerateProjectPriFileCore">
     <!--<ItemGroup>
