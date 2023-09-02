@@ -2,13 +2,13 @@
     x:Class="UFCase.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
-    xmlns:local="using:UFCase">
+    xmlns:local="using:UFCase"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
+                <!--  Other merged dictionaries here  -->
                 <ResourceDictionary Source="ms-appx:///GlobalStyleResources.xaml" />
                 <ResourceDictionary Source="ms-appx:///SettingsStyleResources.xaml" />
             </ResourceDictionary.MergedDictionaries>

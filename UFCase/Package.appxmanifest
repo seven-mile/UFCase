@@ -7,9 +7,9 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="b9e5b7d3-879b-46f7-adc5-40da29a6955b"
+    Name="SevenMile.UFCase"
     Publisher="CN=7mile"
-    Version="1.0.6.0" />
+    Version="1.0.7.0" />
 
   <Properties>
     <DisplayName>UFCase</DisplayName>

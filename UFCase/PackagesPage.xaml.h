@@ -14,8 +14,11 @@ namespace winrt::UFCase::implementation
         UFCase::PackagesPageViewModel ViewModel() { return m_view_model; }
 
         void ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e);
+        void
+        Button_Click(winrt::Windows::Foundation::IInspectable const &sender,
+                     winrt::Microsoft::UI::Xaml::RoutedEventArgs const &e);
     };
-}
+    }
 
 namespace winrt::UFCase::factory_implementation
 {
