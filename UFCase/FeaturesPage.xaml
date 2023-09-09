@@ -27,7 +27,6 @@
             <AppBarButton Command="{x:Bind ViewModel.FeatureEnableCommand}" />
             <AppBarButton Command="{x:Bind ViewModel.FeatureDisableCommand}" />
             <AppBarSeparator />
-            <AppBarButton Command="{x:Bind ViewModel.FeatureGoBackCommand}" />
             <AppBarButton Command="{x:Bind ViewModel.FeatureGetPackageCommand}" />
             <AppBarSeparator />
             <AppBarButton Command="{x:Bind ViewModel.CommitCommand}" />
@@ -228,11 +227,6 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGoBackCommand}" Text="{x:Bind ViewModel.FeatureGoBackCommand.Label}">
-                                <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGoBackCommand.IconSource}" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
                             <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGetPackageCommand}" Text="{x:Bind ViewModel.FeatureGetPackageCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGetPackageCommand.IconSource}" />

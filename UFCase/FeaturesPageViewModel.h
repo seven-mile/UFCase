@@ -69,10 +69,6 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommand(FeatureGoBack, L"Go Back", L"\xE72B") {
-            OutputDebugString(L"Go Back command\n");
-        }
-
         HandleCommandAsync(FeatureOpenExplorer, L"Open in explorer", L"\xE8DA") {
             auto target = m_selected.Package().InstallLocation();
             if (target == L"" || !std::filesystem::exists(target.c_str())) {

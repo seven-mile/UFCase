@@ -18,7 +18,6 @@ namespace UFCase
 
         Microsoft.UI.Xaml.Input.XamlUICommand FeatureEnableCommand{ get; };
         Microsoft.UI.Xaml.Input.XamlUICommand FeatureDisableCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureGoBackCommand{ get; };
         Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenExplorerCommand{ get; };
         Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenRegistryCommand{ get; };
         Microsoft.UI.Xaml.Input.XamlUICommand FeatureGetPackageCommand{ get; };
