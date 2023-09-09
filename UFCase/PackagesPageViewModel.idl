@@ -23,6 +23,10 @@ namespace UFCase
 
         PackagesPageNavigationContext NavContext{ get; };
 
+        Microsoft.UI.Xaml.Input.XamlUICommand PackageShowManifestCommand{ get; };
+        Microsoft.UI.Xaml.Input.XamlUICommand PackageShowInFileExplorerCommand{ get; };
+        Microsoft.UI.Xaml.Input.XamlUICommand PackageShowInRegistryCommand{ get; };
+
         Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
         Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData(Boolean is_navigation);
     }

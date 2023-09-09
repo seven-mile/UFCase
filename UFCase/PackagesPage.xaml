@@ -84,7 +84,37 @@
                                             TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Border>
-                                <Button Click="Button_Click" Style="{StaticResource MicaCardCommandLink}">
+                                <Button Command="{x:Bind ViewModel.PackageShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                                    <Button.Content>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                                <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.PackageShowManifestCommand.IconSource}" />
+                                                <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
+                                                    <TextBlock
+                                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                                        Text="Show manifest content for you." />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <FontIcon
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Right"
+                                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                Glyph="&#xe8a7;" />
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{x:Bind ViewModel.PackageShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -117,6 +147,40 @@
                                         </Grid>
                                     </Button.Content>
                                 </Button>
+                                <Button Command="{x:Bind ViewModel.PackageShowInRegistryCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                                    <Button.Content>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                                <FontIcon
+                                                    Margin="5,0,15,0"
+                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                    FontSize="22"
+                                                    Glyph="&#xECAA;" />
+                                                <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
+                                                    <TextBlock
+                                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                                        Text="Inspect the component key in the registry" />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <FontIcon
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Right"
+                                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                Glyph="&#xe8a7;" />
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>
@@ -128,7 +192,6 @@
                     IsItemClickEnabled="False"
                     ItemsSource="{x:Bind ViewModel.Packages, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPackage, Mode=TwoWay}"
-                    SelectionChanged="PkgList_SelectionChanged"
                     SelectionMode="Single">
                     <ListView.Resources>
                         <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">

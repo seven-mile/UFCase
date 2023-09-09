@@ -3,6 +3,15 @@
 #include "PackagesPageNavigationContext.g.h"
 #include "PackagesPageViewModel.g.h"
 
+#include <winrt/Windows.Storage.h>
+#include <winrt/Microsoft.UI.Xaml.Documents.h>
+
+#include "XamlUtil.h"
+
+#include "ImageModel.h"
+
+#include <fstream>
+
 namespace winrt::UFCase::implementation
 {
 
@@ -24,7 +33,10 @@ namespace winrt::UFCase::implementation
         UFCase::ImageViewModel Image() { return m_image; }
         IObservableVector<UFCase::PackageViewModel> Packages() { return m_packages; }
         UFCase::PackageViewModel SelectedPackage() { return m_selected; }
-        void SelectedPackage(UFCase::PackageViewModel value) { m_selected = value; }
+        void SelectedPackage(UFCase::PackageViewModel value) {
+            m_selected = value;
+            //m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });
+        }
 
         UFCase::PackagesPageNavigationContext NavContext() { return m_nav_ctx; }
 
@@ -36,6 +48,37 @@ namespace winrt::UFCase::implementation
         }
         void PropertyChanged(winrt::event_token const& token) {
             m_property_changed.remove(token);
+        }
+
+        HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1") {
+            auto manifest_root = ImageModel::Current()->Bootdrive() / L"Windows" / L"servicing" / L"Packages";
+            auto manifest_name = m_selected.DetailIdentity() + L".mum";
+            auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync((manifest_root / manifest_name.c_str()).c_str());
+            auto manifest = co_await Windows::Storage::FileIO::ReadTextAsync(file);
+            ContentDialog cd;
+            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
+            cd.Title(box_value(L"Manifest content"));
+            RichTextBlock txt;
+            Documents::Run run;
+            run.Text(manifest);
+            Documents::Paragraph para;
+            para.Inlines().Append(run);
+            txt.Blocks().Append(para);
+            ScrollViewer sv;
+            sv.Content(txt);
+            cd.Content(sv);
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.MaxHeight(600);
+            co_await cd.ShowAsync();
+        }
+
+        HandleCommandAsync(PackageShowInFileExplorer, L"Open in explorer", L"\xE8DA") {
+            co_return;
+        }
+
+        HandleCommandAsync(PackageShowInRegistry, L"Open in registry", L"") {
+            co_return;
         }
 
     private:
