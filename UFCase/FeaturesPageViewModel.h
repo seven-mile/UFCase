@@ -99,6 +99,12 @@ namespace winrt::UFCase::implementation
             co_await cd.ShowAsync();
         }
 
+        HandleCommand(FeatureGetPackage, L"Goto package", L"\xE950") {
+            UFCase::PackagesPageNavigationContext ctx;
+            ctx.SelectPkgId(m_selected.ContentPackage().DetailIdentity());
+            GlobalRes::MainNavServ().NavigateTo(L"Packages", ctx);
+        }
+
         HandleCommand(FeatureSystemUI, L"OptionalFeatures.exe", L"\xE72B") {
             ShellExecute(nullptr, L"open", L"OptionalFeatures.exe", L"", L"", SW_SHOW);
         }

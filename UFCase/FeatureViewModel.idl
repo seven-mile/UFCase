@@ -30,6 +30,7 @@ namespace UFCase
         String SetMembership{ get; };
 
         PackageViewModel Package{ get; };
+        PackageViewModel ContentPackage{ get; };
 
         Windows.Foundation.Collections.IObservableVector<FeatureViewModel> Children{ get; };
 

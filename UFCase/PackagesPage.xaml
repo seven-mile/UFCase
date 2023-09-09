@@ -127,6 +127,8 @@
                     VerticalAlignment="Stretch"
                     IsItemClickEnabled="False"
                     ItemsSource="{x:Bind ViewModel.Packages, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedPackage, Mode=TwoWay}"
+                    SelectionChanged="PkgList_SelectionChanged"
                     SelectionMode="Single">
                     <ListView.Resources>
                         <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">

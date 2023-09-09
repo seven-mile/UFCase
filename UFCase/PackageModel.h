@@ -13,6 +13,7 @@ namespace winrt::UFCase {
                          public GitObject<ICbsPackage>
     {
         friend class SessionModel;
+        friend class FeatureModel;
         SessionModel &session;
         std::unordered_map<hstring, uint64_t> updates;
 

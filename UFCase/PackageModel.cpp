@@ -37,7 +37,11 @@ namespace winrt::UFCase {
 
     _CbsInstallState PackageModel::State() const
     {
-        return _CbsInstallState();
+        // todo: why here is applicable state correct
+        // rather than current state?
+        _CbsInstallState stApp{}, stCur{};
+        check_hresult(GetInterface()->EvaluateApplicability(0, &stApp, &stCur));
+        return stApp;
     }
 
     hstring PackageModel::Name() const

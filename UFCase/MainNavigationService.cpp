@@ -46,7 +46,7 @@ namespace winrt::UFCase::implementation
         co_return;
     }
 
-    IAsyncAction MainNavigationService::NavigateTo(hstring const& page_name)
+    IAsyncAction MainNavigationService::NavigateTo(hstring const& page_name, IInspectable navContext)
     {
         _isNavigating = true;
         auto $scope { wil::scope_exit([this]() { _isNavigating = false; }) };
@@ -73,8 +73,9 @@ namespace winrt::UFCase::implementation
         } else if (page_name == L"Optionals") {
             // fall through
         } else if (page_name == L"Packages") {
-            PackagesPageViewModel vm{ ImageViewModel{ImageModel::Current()->GetHandle()} };
-
+            PackagesPageViewModel vm{
+                ImageViewModel{ImageModel::Current()->GetHandle()},
+                navContext.as<UFCase::PackagesPageNavigationContext>()};
             frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
             co_return;
         }

@@ -1,13 +1,13 @@
 ﻿<Page
-    x:Name="FeaturesPage"
     x:Class="UFCase.FeaturesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UFCase"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:UFCase"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    NavigationCacheMode="Disabled">
+    x:Name="FeaturesPage"
+    NavigationCacheMode="Disabled"
+    mc:Ignorable="d">
 
     <Grid Margin="50,20,50,20">
         <Grid.RowDefinitions>
@@ -19,11 +19,16 @@
             <ColumnDefinition Width="7*" MinWidth="450" />
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" DefaultLabelPosition="Right">
-            <AppBarButton Command="{x:Bind ViewModel.FeatureEnableCommand}"/>
+        <CommandBar
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Stretch"
+            DefaultLabelPosition="Right">
+            <AppBarButton Command="{x:Bind ViewModel.FeatureEnableCommand}" />
             <AppBarButton Command="{x:Bind ViewModel.FeatureDisableCommand}" />
             <AppBarSeparator />
             <AppBarButton Command="{x:Bind ViewModel.FeatureGoBackCommand}" />
+            <AppBarButton Command="{x:Bind ViewModel.FeatureGetPackageCommand}" />
             <AppBarSeparator />
             <AppBarButton Command="{x:Bind ViewModel.CommitCommand}" />
             <AppBarButton Command="{x:Bind ViewModel.RefreshCommand}" />
@@ -33,43 +38,60 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Grid x:Name="FeatureInfoPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ScrollViewer
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Grid
+                x:Name="FeatureInfoPanel"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" Padding="20,0,0,0">
-                    <Border Style="{StaticResource MicaCardBorder}" Margin="0,5,0,5">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,15">
+                <StackPanel
+                    Grid.Row="0"
+                    Padding="20,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    Orientation="Vertical">
+                    <Border Margin="0,5,0,5" Style="{StaticResource MicaCardBorder}">
+                        <StackPanel
+                            Padding="15,10,20,15"
+                            HorizontalAlignment="Stretch"
+                            Orientation="Vertical">
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
                                 <Run Text="{x:Bind ViewModel.SelectedFeature.Name, Mode=OneWay}" />
-                                <Run Text="{x:Bind ViewModel.SelectedFeature.Identity, Mode=OneWay}" FontSize="{StaticResource SecondaryTextFontSize}" Foreground="{StaticResource TextFillColorSecondaryBrush}" />
+                                <Run
+                                    FontSize="{StaticResource SecondaryTextFontSize}"
+                                    Foreground="{StaticResource TextFillColorSecondaryBrush}"
+                                    Text="{x:Bind ViewModel.SelectedFeature.Identity, Mode=OneWay}" />
                             </TextBlock>
-                            <TextBlock Text="{x:Bind ViewModel.SelectedFeature.Description, Mode=OneWay}" TextWrapping="Wrap" Style="{StaticResource SecondaryTextBlockStyle}" />
+                            <TextBlock
+                                Style="{StaticResource SecondaryTextBlockStyle}"
+                                Text="{x:Bind ViewModel.SelectedFeature.Description, Mode=OneWay}"
+                                TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
-                    <Button Style="{StaticResource MicaCardCommandLink}">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Padding="15,10,20,10">
-                            <CheckBox x:Name="FeatureStateCheckBox" IsThreeState="True" IsHitTestVisible="False"
-                                      IsEnabled="{x:Bind ViewModel.SelectedFeature.IsEnabled, Mode=OneWay}"
-                                      IsChecked="{x:Bind ViewModel.SelectedFeature.IsChecked, Mode=OneWay}">
+                    <Border Margin="0,5,0,5" Style="{StaticResource MicaCardBorder}">
+                        <StackPanel
+                            Padding="15,10,20,10"
+                            HorizontalAlignment="Stretch"
+                            Orientation="Vertical">
+                            <CheckBox
+                                x:Name="FeatureStateCheckBox"
+                                IsChecked="{x:Bind ViewModel.SelectedFeature.IsChecked, Mode=OneWay}"
+                                IsEnabled="{x:Bind ViewModel.SelectedFeature.IsEnabled, Mode=OneWay}"
+                                IsHitTestVisible="False"
+                                IsThreeState="True">
                                 <CheckBox.Content>
                                     <TextBlock Text="{x:Bind ViewModel.SelectedFeature.StateText, Mode=OneWay}" />
                                 </CheckBox.Content>
                             </CheckBox>
 
                         </StackPanel>
-                        <Button.Flyout>
-                            <MenuFlyout ShouldConstrainToRootBounds="False" Placement="Bottom">
-                                <MenuFlyoutItem Text="Set Enabled" />
-                                <MenuFlyoutItem Text="Set Disabled" />
-                                <MenuFlyoutSubItem Text="Set ...">
-                                    <MenuFlyoutItem Text="Removed" />
-                                </MenuFlyoutSubItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}">
+                    </Border>
+                    <Button Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -77,20 +99,32 @@
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEC50;" Margin="5,0,15,0" />
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <FontIcon
+                                        Margin="5,0,15,0"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        Glyph="&#xEC50;" />
+                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
-                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        <TextBlock
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
                                             Text="Some package files may be available in your disk" />
                                     </StackPanel>
                                 </StackPanel>
 
-                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                                <FontIcon
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Command="{x:Bind ViewModel.FeatureOpenRegistryCommand.Command}">
+                    <Button Command="{x:Bind ViewModel.FeatureOpenRegistryCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -98,20 +132,33 @@
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="22" Glyph="&#xECAA;" Margin="5,0,15,0" />
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <FontIcon
+                                        Margin="5,0,15,0"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontSize="22"
+                                        Glyph="&#xECAA;" />
+                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
-                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        <TextBlock
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
                                             Text="Inspect the component key in the registry" />
                                     </StackPanel>
                                 </StackPanel>
 
-                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                                <FontIcon
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MicaCardCommandLink}" Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}">
+                    <Button Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -119,28 +166,48 @@
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE897;" Margin="5,0,15,0" />
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <FontIcon
+                                        Margin="5,0,15,0"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        Glyph="&#xE897;" />
+                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open Support Information" />
-                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        <TextBlock
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
                                             Text="Open the Microsoft KnowledgeBase for this feature" />
                                     </StackPanel>
                                 </StackPanel>
 
-                                <FontIcon Grid.Column="2" HorizontalAlignment="Right" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+                                <FontIcon
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>
                     </Button>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        
-        <Border Grid.Row="1" Grid.Column="0" BorderBrush="{ThemeResource TextControlBorderBrush}" BorderThickness="1">
-            <TreeView x:Name="FeatureTree" SelectionMode="Single" CanReorderItems="False"
-                      AllowDrop="False" CanDragItems="False"
-                      ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.SelectedFeature, Mode=TwoWay}">
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            BorderBrush="{ThemeResource TextControlBorderBrush}"
+            BorderThickness="1">
+            <TreeView
+                x:Name="FeatureTree"
+                AllowDrop="False"
+                CanDragItems="False"
+                CanReorderItems="False"
+                ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedFeature, Mode=TwoWay}"
+                SelectionMode="Single">
                 <TreeView.ItemContainerTransitions>
                     <TransitionCollection>
                         <RepositionThemeTransition />
@@ -150,33 +217,33 @@
                 <TreeView.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyout.Items>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureEnableCommand}"
-                                            Text="{x:Bind ViewModel.FeatureEnableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureEnableCommand}" Text="{x:Bind ViewModel.FeatureEnableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureEnableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureDisableCommand}"
-                                            Text="{x:Bind ViewModel.FeatureDisableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureDisableCommand}" Text="{x:Bind ViewModel.FeatureDisableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureDisableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGoBackCommand}"
-                                            Text="{x:Bind ViewModel.FeatureGoBackCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGoBackCommand}" Text="{x:Bind ViewModel.FeatureGoBackCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGoBackCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenExplorerCommand}"
-                                            Text="{x:Bind ViewModel.FeatureOpenExplorerCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGetPackageCommand}" Text="{x:Bind ViewModel.FeatureGetPackageCommand.Label}">
+                                <MenuFlyoutItem.Icon>
+                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGetPackageCommand.IconSource}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenExplorerCommand}" Text="{x:Bind ViewModel.FeatureOpenExplorerCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenExplorerCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenRegistryCommand}"
-                                            Text="{x:Bind ViewModel.FeatureOpenRegistryCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenRegistryCommand}" Text="{x:Bind ViewModel.FeatureOpenRegistryCommand.Label}">
                                 <MenuFlyoutItem.Icon>
                                     <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenRegistryCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
@@ -186,9 +253,12 @@
                 </TreeView.ContextFlyout>
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FeatureViewModel">
-                        <TreeViewItem ItemsSource="{x:Bind Children}" ToolTipService.ToolTip="{x:Bind Description}"
-                                      DoubleTapped="FeatureTreeItem_DoubleTapped" RightTapped="FeatureTreeItem_RightTapped">
-                            
+                        <TreeViewItem
+                            DoubleTapped="FeatureTreeItem_DoubleTapped"
+                            ItemsSource="{x:Bind Children}"
+                            RightTapped="FeatureTreeItem_RightTapped"
+                            ToolTipService.ToolTip="{x:Bind Description}">
+
                             <StackPanel Orientation="Horizontal">
                                 <IconSourceElement IconSource="{x:Bind Icon, Mode=OneWay}" />
                                 <TextBlock Margin="10,8,0,8" VerticalAlignment="Center">

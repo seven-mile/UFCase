@@ -11,6 +11,7 @@ namespace UFCase
 
         Windows.Foundation.IAsyncAction Initialize();
         Windows.Foundation.IAsyncAction NavigateTo(String pageName);
+        Windows.Foundation.IAsyncAction NavigateTo(String pageName, Object navContext);
         Windows.Foundation.IAsyncAction Refresh();
         void GoBack();
     }

@@ -14,7 +14,7 @@ namespace winrt::UFCase::implementation
         IInspectable CurrentViewModel();
 
         IAsyncAction Initialize();
-        IAsyncAction NavigateTo(hstring const &pageName);
+        IAsyncAction NavigateTo(hstring const &pageName, IInspectable navContext = {nullptr});
         IAsyncAction Refresh();
         void GoBack();
         void HandleHrError(hresult_error err);

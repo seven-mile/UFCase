@@ -19,7 +19,15 @@ PackagesPage::PackagesPage() { InitializeComponent(); }
 void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e) {
   m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
-  no_await(GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100));
+  no_await([self = get_strong()]() -> IAsyncAction {
+      co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
+      RunUITask([self] {
+        if (auto item = self->PkgList().SelectedItem()) {
+          self->PkgList().ScrollIntoView(
+              item, Controls::ScrollIntoViewAlignment::Leading);
+        }  
+      });
+  });
 
   return;
 }
@@ -48,5 +56,13 @@ void winrt::UFCase::implementation::PackagesPage::Button_Click(
         cd.PrimaryButtonText(L"OK");
         co_await cd.ShowAsync();
     }();
+
+}
+
+void winrt::UFCase::implementation::PackagesPage::PkgList_SelectionChanged(
+    winrt::Windows::Foundation::IInspectable const &sender,
+    winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const &e) {
+
+    PkgList().ScrollIntoView(PkgList().SelectedItem());
 
 }

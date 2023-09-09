@@ -123,6 +123,11 @@ namespace winrt::UFCase::implementation
         return UFCase::PackageViewModel(m_model.RawParentPackage()->GetHandle());
     }
 
+    UFCase::PackageViewModel FeatureViewModel::ContentPackage()
+    {
+        return UFCase::PackageViewModel(m_model.RawFeaturePackage()->GetHandle());
+    }
+
     FeatureViewModel::child_t FeatureViewModel::Children()
     {
         return m_children;

@@ -30,6 +30,7 @@ namespace winrt::UFCase {
         hstring DownloadSize() const;
         hstring SetMembership() const;
         PackageModel *RawParentPackage() const;
+        PackageModel *RawFeaturePackage() const;
         void Enable();
         void Disable();
         std::vector<FeatureModel*> GetParentFeatureCollection() const;

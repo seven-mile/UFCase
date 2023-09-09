@@ -37,6 +37,7 @@ namespace winrt::UFCase::implementation
         hstring SetMembership();
 
         UFCase::PackageViewModel Package();
+        UFCase::PackageViewModel ContentPackage();
 
         child_t Children();
 

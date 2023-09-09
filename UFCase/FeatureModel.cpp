@@ -90,6 +90,17 @@ namespace winrt::UFCase {
         return &package;
     }
 
+    PackageModel *FeatureModel::RawFeaturePackage() const
+    {
+        com_ptr<ICbsPackage> pPkg;
+        check_hresult(GetInterface()->GetPackage(pPkg.put()));
+        
+        auto pkg = PackageModel::Create(package.Session(), pPkg);
+        OutputDebugString(pkg->Identity().c_str());
+        OutputDebugString(L"\n");
+        return pkg;
+    }
+
     void FeatureModel::Enable()
     {
         check_hresult(GetInterface()->SetInstallState(0, CbsInstallStateInstallRequested));

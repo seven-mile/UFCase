@@ -17,6 +17,10 @@ namespace winrt::UFCase::implementation
         void
         Button_Click(winrt::Windows::Foundation::IInspectable const &sender,
                      winrt::Microsoft::UI::Xaml::RoutedEventArgs const &e);
+        void PkgList_SelectionChanged(
+            winrt::Windows::Foundation::IInspectable const &sender,
+            winrt::Microsoft::UI::Xaml::Controls::
+                SelectionChangedEventArgs const &e);
     };
     }
 
