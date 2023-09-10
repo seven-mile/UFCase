@@ -34,6 +34,9 @@ namespace winrt::UFCase::implementation
     /// <param name="e">Details about the launch request and process.</param>
     void App::OnLaunched(LaunchActivatedEventArgs const&)
     {
+        while( !::IsDebuggerPresent() )
+            ::Sleep( 100 ); // to avoid 100% CPU load
+
         std::filesystem::path pathAppData = GetOnlineRoamingAppDataDir();
 
         pathAppData /= L".UFCase";

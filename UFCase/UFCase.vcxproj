@@ -108,7 +108,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpplatest</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
       <BuildStlModules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</BuildStlModules>
     </ClCompile>
@@ -136,6 +136,8 @@
     <ClInclude Include="CacheUtil.h" />
     <ClInclude Include="CbsUtil.h" />
     <ClInclude Include="CCbsUIHandler.h" />
+    <ClInclude Include="cdf_types.h" />
+    <ClInclude Include="csiapi.h" />
     <ClInclude Include="ErrorDialog.h">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -167,6 +169,7 @@
       <DependentUpon>ImageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="isolation.h" />
     <ClInclude Include="MainNavigationService.h">
       <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -213,6 +216,7 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SSShimApi.h" />
+    <ClInclude Include="StoreModel.h" />
     <ClInclude Include="SysInfoStaticViewModel.h">
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -229,6 +233,7 @@
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="wcpdef.h" />
     <ClInclude Include="XamlUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +353,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="StoreModel.cpp" />
     <ClCompile Include="SysInfoStaticViewModel.cpp">
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -475,6 +481,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-format" />
     <None Include=".editorconfig" />
     <None Include="EmbedAssets\win11.svg" />
     <None Include="EmbedAssets\win7.svg" />

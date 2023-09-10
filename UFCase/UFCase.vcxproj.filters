@@ -106,6 +106,9 @@
     <ClCompile Include="GlobalUtil.cpp">
       <Filter>libraries\utils</Filter>
     </ClCompile>
+    <ClCompile Include="StoreModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -170,6 +173,21 @@
     </ClInclude>
     <ClInclude Include="CacheUtil.h">
       <Filter>libraries\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="isolation.h">
+      <Filter>libraries\servicingapi</Filter>
+    </ClInclude>
+    <ClInclude Include="csiapi.h">
+      <Filter>libraries\servicingapi</Filter>
+    </ClInclude>
+    <ClInclude Include="wcpdef.h">
+      <Filter>libraries\servicingapi</Filter>
+    </ClInclude>
+    <ClInclude Include="cdf_types.h">
+      <Filter>libraries\servicingapi</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreModel.h">
+      <Filter>models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +271,7 @@
       <Filter>resources\EmbedAssets</Filter>
     </None>
     <None Include="UFCase_TemporaryKey.pfx" />
+    <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CbsApi.idl">

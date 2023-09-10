@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 namespace winrt::UFCase {
 
 inline hstring ParseCbsTimeStampString(const wchar_t* ts_str) {
@@ -25,19 +27,38 @@ inline hstring ParseCbsTimeStampString(const wchar_t* ts_str) {
         sysTimeTmp.wSecond).c_str();
 }
 
-template<class T, class IEnumT>
-inline std::vector<com_ptr<T>> GetIEnumComPtrVector(com_ptr<IEnumT> pEnum)
+template <class T, typename IntT = ULONG, class IEnumT>
+inline std::vector<winrt::com_ptr<T>> GetIEnumComPtrVector(winrt::com_ptr<IEnumT> pEnum)
 {
-    std::vector<com_ptr<T>> v{};
-    ULONG k;
-    do {
-        com_ptr<T> ptr;
-        pEnum->Next(1lu, ptr.put(), &k);
-        if (ptr) v.push_back(ptr);
-    } while (k);
+  std::vector<winrt::com_ptr<T>> v;
 
-    return v;
+  IntT k;
+
+  do {
+    winrt::com_ptr<T> ptr;
+    pEnum->Next(1, ptr.put(), &k);
+    if (ptr) v.push_back(ptr);
+  } while (k);
+
+  return v;
 }
+
+template <class T, typename IntT = ULONG, class IEnumT>
+inline std::vector<T> GetIEnumStructVector(winrt::com_ptr<IEnumT> pEnum)
+{
+  std::vector<T> v;
+  IntT *pk = new IntT;
+  T ptr;
+
+  while (true) {
+    [[maybe_unused]] HRESULT _hr = pEnum->Next(1, &ptr, pk);
+    if (*pk) v.push_back(ptr);
+    else break;
+  }
+
+  return v;
+}
+
 
 }
 
