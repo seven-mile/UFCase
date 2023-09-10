@@ -71,13 +71,18 @@
                                         Padding="15,10,20,15"
                                         HorizontalAlignment="Stretch"
                                         Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
-                                            <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
-                                            <Run
-                                                FontSize="{StaticResource SecondaryTextFontSize}"
-                                                Foreground="{StaticResource TextFillColorSecondaryBrush}"
-                                                Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" />
-                                        </TextBlock>
+                                        <RichTextBlock>
+                                            <Paragraph>
+                                                <Run
+                                                    FontSize="{StaticResource SubtitleTextBlockFontSize}"
+                                                    FontWeight="SemiBold"
+                                                    Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
+                                                <Run
+                                                    FontSize="{StaticResource SecondaryTextFontSize}"
+                                                    Foreground="{StaticResource TextFillColorSecondaryBrush}"
+                                                    Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" />
+                                            </Paragraph>
+                                        </RichTextBlock>
                                         <TextBlock
                                             Style="{StaticResource SecondaryTextBlockStyle}"
                                             Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}"
