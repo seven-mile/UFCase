@@ -51,6 +51,8 @@ namespace winrt::UFCase::implementation
         }
 
         HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1") {
+            if (!m_selected)
+                co_return;
             auto manifest_root = ImageModel::Current()->Bootdrive() / L"Windows" / L"servicing" / L"Packages";
             auto manifest_name = m_selected.DetailIdentity() + L".mum";
             auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync((manifest_root / manifest_name.c_str()).c_str());
