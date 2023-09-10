@@ -29,18 +29,19 @@ namespace winrt::UFCase::implementation
         report_prog(70);
         uint32_t cnt = 0;
         
-        co_await ui_thread;
-
-
         for (auto&& pkg : pkgs) {
             UFCase::PackageViewModel pkg_vm(pkg->GetHandle());
             if (is_nav && m_nav_ctx && pkg->Identity() == m_nav_ctx.SelectPkgId()) {
                 assert(!m_selected);
                 m_selected = pkg_vm;
             }
-            m_packages.Append(pkg_vm);
+            RunUITask([=]{
+                m_packages.Append(pkg_vm);
+            });
             report_prog(static_cast<uint32_t>(70 + 30 * ++cnt / pkgs.size()));
         }
+
+        co_await ui_thread;
 
         m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Packages" });
         m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });

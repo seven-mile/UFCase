@@ -21,7 +21,7 @@ namespace winrt::UFCase::implementation
         uint32_t CurrentProgress() {
             if (!_weight_sum) return 100;
 
-            return static_cast<uint32_t>(std::round(100.0 * _progress_product_sum / _weight_sum));
+            return static_cast<uint32_t>(std::round(1.0 * _progress_product_sum / _weight_sum));
         }
 
         Visibility Visibility() {
@@ -33,6 +33,7 @@ namespace winrt::UFCase::implementation
 
         void ReportStateChange() {
             RunUITask([this]() {
+                //OutputDebugString(L"Now notify progress state change.\n");
                 _property_changed(*this, Data::PropertyChangedEventArgs{ L"CurrentProgress" });
                 _property_changed(*this, Data::PropertyChangedEventArgs{ L"Visibility" });
             });
@@ -47,6 +48,8 @@ namespace winrt::UFCase::implementation
             HANDLE comp_event = CreateEvent(NULL, FALSE, FALSE, nullptr);
 
             provider.Progress([this, weight](auto const &provider, uint32_t prog) {
+                auto prev_total_prog = CurrentProgress();
+
                 auto& cur_prog = _progress_list[provider];
                 assert(prog >= cur_prog);
                 _progress_product_sum += (prog - cur_prog) * weight;
@@ -54,7 +57,8 @@ namespace winrt::UFCase::implementation
                 //    cur_prog, prog, _progress_list.size(), _progress_product_sum, _weight_sum).c_str());
                 cur_prog = prog;
 
-                ReportStateChange();
+                if (CurrentProgress() != prev_total_prog)
+                    ReportStateChange();
             });
 
             provider.Completed([this, weight, comp_event](auto const& provider, auto const&) {

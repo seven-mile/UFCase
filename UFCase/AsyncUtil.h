@@ -39,11 +39,13 @@ namespace winrt::UFCase {
 
     inline void DispatchTask(
         Microsoft::UI::Dispatching::DispatcherQueue Q,
-        std::function<void()> const &H) {
+        std::function<void()> const &H,
+        Microsoft::UI::Dispatching::DispatcherQueuePriority P
+          = Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal) {
 
         auto* pH = new std::function<void()>{ H };
 
-        Q.TryEnqueue([pH]() -> void {
+        Q.TryEnqueue(P, [pH]() -> void {
             (*pH)();
             delete pH;
         });
@@ -51,12 +53,14 @@ namespace winrt::UFCase {
 
     inline IAsyncAction DispatchTaskAsync(
         Microsoft::UI::Dispatching::DispatcherQueue Q,
-        std::function<IAsyncAction()> const &H) {
+        std::function<IAsyncAction()> const &H,
+        Microsoft::UI::Dispatching::DispatcherQueuePriority P
+          = Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal) {
 
         HANDLE comp_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         auto* pH = new std::function<IAsyncAction()>{ H };
 
-        Q.TryEnqueue([=]() -> IAsyncAction {
+        Q.TryEnqueue(P, [=]() -> IAsyncAction {
             // use it after the suspension point
             auto* copied_pH = pH;
             auto* copied_comp_event = comp_event;
@@ -70,12 +74,16 @@ namespace winrt::UFCase {
         co_return;
     }
 
-    inline void RunUITask(std::function<void()> const &H) {
-        DispatchTask(GlobalRes::MainWnd().DispatcherQueue(), H);
+    inline void RunUITask(std::function<void()> const &H,
+        Microsoft::UI::Dispatching::DispatcherQueuePriority P
+          = Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal) {
+        DispatchTask(GlobalRes::MainWnd().DispatcherQueue(), H, P);
     }
 
-    inline IAsyncAction RunUITaskAsync(std::function<IAsyncAction()> const& H) {
-        co_await DispatchTaskAsync(GlobalRes::MainWnd().DispatcherQueue(), H);
+    inline IAsyncAction RunUITaskAsync(std::function<IAsyncAction()> const& H,
+        Microsoft::UI::Dispatching::DispatcherQueuePriority P
+          = Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal) {
+        co_await DispatchTaskAsync(GlobalRes::MainWnd().DispatcherQueue(), H, P);
         co_return;
     }
 
