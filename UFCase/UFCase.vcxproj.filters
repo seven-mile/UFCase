@@ -71,6 +71,9 @@
     <Midl Include="RelayCommand.idl">
       <Filter>libraries\mvvm</Filter>
     </Midl>
+    <Midl Include="ComponentViewModel.idl">
+      <Filter>view_models</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -107,6 +110,9 @@
       <Filter>libraries\utils</Filter>
     </ClCompile>
     <ClCompile Include="StoreModel.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentModel.cpp">
       <Filter>models</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="StoreModel.h">
       <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentModel.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="PropChgUtil.h">
+      <Filter>libraries\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

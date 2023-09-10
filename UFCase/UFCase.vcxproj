@@ -137,6 +137,11 @@
     <ClInclude Include="CbsUtil.h" />
     <ClInclude Include="CCbsUIHandler.h" />
     <ClInclude Include="cdf_types.h" />
+    <ClInclude Include="ComponentModel.h" />
+    <ClInclude Include="ComponentViewModel.h">
+      <DependentUpon>ComponentViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="csiapi.h" />
     <ClInclude Include="ErrorDialog.h">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
@@ -202,6 +207,7 @@
     <ClInclude Include="MainWindow.xaml.h">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="PropChgUtil.h" />
     <ClInclude Include="RelayCommand.h">
       <DependentUpon>RelayCommand.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -279,6 +285,11 @@
     <ClCompile Include="CbsApiProxy.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ComponentModel.cpp" />
+    <ClCompile Include="ComponentViewModel.cpp">
+      <DependentUpon>ComponentViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="ErrorDialog.cpp">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
@@ -414,6 +425,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
     </CustomBuild>
+    <Midl Include="ComponentViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="ErrorDialog.idl">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,0 +1,25 @@
+namespace UFCase
+{
+    struct ComponentFileViewModel
+    {
+        String Name;
+        String Status;
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass ComponentViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ComponentViewModel(UInt64 hModel);
+
+        String TextForm{ get; };
+        String KeyForm{ get; };
+
+        String Manifest{ get; };
+
+        String Status{ get; };
+        String PayloadPath{ get; };
+
+        Windows.Foundation.Collections.IObservableVector<ComponentFileViewModel> Files{ get; };
+    }
+}

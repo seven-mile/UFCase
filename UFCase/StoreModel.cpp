@@ -13,8 +13,11 @@
 #include <type_traits>
 #include <unordered_map>
 
+#include "CbsUtil.h"
+
 #include "ImageModel.h"
 #include "StoreModel.h"
+#include "ComponentModel.h"
 
 namespace winrt::UFCase
 {
@@ -132,7 +135,7 @@ namespace winrt::UFCase
                 AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
         }
 
-        WcpGuard::WcpGuard(winrt::com_ptr<IMalloc> pMalloc)
+        WcpGuard::WcpGuard(com_ptr<IMalloc> pMalloc)
         {
             EnsureBackupRestorePrivilege();
 
@@ -172,10 +175,24 @@ namespace winrt::UFCase
             return strong;
         }
 
-        std::pair<winrt::com_ptr<IStore2>, winrt::com_ptr<ICSIStore>> LoadOnlineStores()
+        std::pair<com_ptr<IIdentityAuthority>, com_ptr<IAppIdAuthority>> GetStoreAuthorities()
         {
-            winrt::com_ptr<IStore2> pStore;
-            winrt::com_ptr<ICSIStore> pCSIStore;
+            winrt::com_ptr<IIdentityAuthority> pIdentAuth;
+            const auto fnGetIdentityAuthority = GetFunction<PGET_IDENTITY_AUTHORITY_FUNCTION>(
+                WCP_DLL_FILENAME, "GetIdentityAuthority");
+            winrt::check_hresult(fnGetIdentityAuthority(pIdentAuth.put()));
+
+            winrt::com_ptr<IAppIdAuthority> pAppIdAuth;
+            const auto fnGetAppIdAuthority =
+                GetFunction<PGET_APPID_AUTHORITY_FUNCTION>(WCP_DLL_FILENAME, "GetAppIdAuthority");
+            winrt::check_hresult(fnGetAppIdAuthority(pAppIdAuth.put()));
+            return {pIdentAuth, pAppIdAuth};
+        }
+
+        std::pair<com_ptr<IStore2>, com_ptr<ICSIStore>> LoadOnlineStores()
+        {
+            com_ptr<IStore2> pStore;
+            com_ptr<ICSIStore> pCSIStore;
 
             auto pfnGetSystemStore =
                 GetFunction<PGET_SYSTEM_STORE_FUNCTION>(WCP_DLL_FILENAME, "GetSystemStore");
@@ -188,13 +205,13 @@ namespace winrt::UFCase
             return {pStore, pCSIStore};
         }
 
-        std::pair<winrt::com_ptr<IStore2>, winrt::com_ptr<ICSIStore>> LoadOfflineStores(
+        std::pair<com_ptr<IStore2>, com_ptr<ICSIStore>> LoadOfflineStores(
             std::filesystem::path windir)
         {
             using namespace std::literals::string_literals;
 
-            winrt::com_ptr<IStore2> pStore;
-            winrt::com_ptr<ICSIStore> pCSIStore;
+            com_ptr<IStore2> pStore;
+            com_ptr<ICSIStore> pCSIStore;
 
             auto pfnOpenExistingOfflineStore = GetFunction<POPEN_EXISTING_OFFLINE_STORE_FUNCTION>(
                 WCP_DLL_FILENAME, "OpenExistingOfflineStore");
@@ -307,18 +324,30 @@ namespace winrt::UFCase
     } // namespace WcpUtil
 
     StoreModel::StoreModel(ImageModel *image, com_ptr<IStore2> sxs_store,
-                           com_ptr<ICSIStore> csi_store,
+                           com_ptr<ICSIStore> csi_store, com_ptr<IIdentityAuthority> ident_auth,
+                           com_ptr<IAppIdAuthority> appid_auth,
                            std::shared_ptr<WcpUtil::WcpGuard> wcp_guard)
-        : image(*image), sxs_store(sxs_store), csi_store(csi_store), wcp_guard(wcp_guard)
+        : image(*image), sxs_store(sxs_store), csi_store(csi_store), ident_auth(ident_auth),
+          appid_auth(appid_auth), wcp_guard(wcp_guard)
     {
+    }
+
+    StoreModel::~StoreModel()
+    {
+        for (auto &&[_, val] : components)
+        {
+            ModelManager<ComponentModel>::Erase(val);
+        }
+        components.clear();
     }
 
     StoreModel *StoreModel::Create(ImageModel *image)
     {
         auto wcp_guard = WcpUtil::WcpGuard::GetStrong();
 
-        winrt::com_ptr<IStore2> pStore;
-        winrt::com_ptr<ICSIStore> pCSIStore;
+        com_ptr<IStore2> pStore;
+        com_ptr<ICSIStore> pCSIStore;
+        auto &&[pIdentAuth, pAppIdAuth] = WcpUtil::GetStoreAuthorities();
 
         if (image->Type() == ImageType::Online)
         {
@@ -329,7 +358,76 @@ namespace winrt::UFCase
             std::tie(pStore, pCSIStore) = WcpUtil::LoadOfflineStores(image->WinDir());
         }
 
-        return new StoreModel{image, pStore, pCSIStore, wcp_guard};
+        return new StoreModel{image, pStore, pCSIStore, pIdentAuth, pAppIdAuth, wcp_guard};
+    }
+
+    std::optional<ComponentModel *> StoreModel::OpenComponent(hstring id)
+    {
+        com_ptr<IDefinitionIdentity> asm_id;
+        check_hresult(ident_auth->TextToDefinition(0, id.c_str(), asm_id.put()));
+        return OpenComponent(asm_id);
+    }
+
+    std::optional<ComponentModel *> StoreModel::OpenComponent(
+        com_ptr<IDefinitionIdentity> pDefIdent)
+    {
+        ULONGLONG hashkey{};
+        check_hresult(ident_auth->HashDefinition(0, pDefIdent.get(), &hashkey));
+
+        if (auto it = components.find(hashkey); it != components.end())
+        {
+            return &ComponentModel::GetInstance(it->second);
+        }
+        else
+        {
+            if (auto *p = ComponentModel::Create(this, pDefIdent))
+            {
+                components[hashkey] = p->GetHandle();
+                return p;
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        }
+    }
+
+    std::vector<ComponentModel *> StoreModel::CreateModelsFromIEnumASM(
+        com_ptr<IEnumSTORE_ASSEMBLY> pEnum)
+    {
+        std::vector<ComponentModel *> res{};
+
+        for (auto &store_asm : GetIEnumStructVector<STORE_ASSEMBLY, SIZE_T>(pEnum))
+        {
+            com_ptr<IDefinitionIdentity> asm_id;
+            asm_id.attach(store_asm.pIDefinitionIdentity);
+
+            if (auto p = OpenComponent(asm_id); p.has_value())
+                res.push_back(*p);
+        }
+
+        return res;
+    }
+
+    std::vector<ComponentModel *> StoreModel::Components()
+    {
+        winrt::com_ptr<::IUnknown> pRawAssemblies;
+        check_hresult(sxs_store->EnumAssemblies(0, NULL, __uuidof(IEnumSTORE_ASSEMBLY),
+                                                pRawAssemblies.put()));
+
+        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
+    }
+
+    std::vector<ComponentModel *> StoreModel::MatchComponents(hstring ref_id)
+    {
+        com_ptr<IReferenceIdentity> asm_id;
+        check_hresult(ident_auth->TextToReference(0, ref_id.c_str(), asm_id.put()));
+
+        winrt::com_ptr<::IUnknown> pRawAssemblies;
+        check_hresult(sxs_store->EnumAssemblies(0, asm_id.get(), __uuidof(IEnumSTORE_ASSEMBLY),
+                                                pRawAssemblies.put()));
+
+        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
     }
 
 } // namespace winrt::UFCase
