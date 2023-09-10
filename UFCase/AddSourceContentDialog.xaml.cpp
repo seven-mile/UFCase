@@ -9,6 +9,8 @@
 #include <microsoft.ui.xaml.window.h>
 #include <shobjidl_core.h>
 
+#include <wil/resource.h>
+
 #include "GlobalUtil.h"
 
 namespace winrt {
@@ -27,23 +29,37 @@ namespace winrt::UFCase::implementation
         return this->SourceTextBox().Text();
     }
 
-    void AddSourceContentDialog::BrowserButton_Click(IInspectable const&, RoutedEventArgs const&)
+    fire_and_forget AddSourceContentDialog::BrowserButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        FolderPicker fp{};
-        
-        HWND hWndParent{};
-        check_hresult(GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(&hWndParent));
-        fp.as<IInitializeWithWindow>()->Initialize(hWndParent);
+        auto lifetime = get_strong();
 
-        fp.CommitButtonText(L"Add source");
-        fp.SuggestedStartLocation(PickerLocationId::ComputerFolder);
-        fp.ViewMode(PickerViewMode::List);
-        fp.PickSingleFolderAsync().Completed([txtBox = this->SourceTextBox()](auto const&op, auto const&) {
-            if (Windows::Storage::StorageFolder stFolder = op.GetResults()) {
-                txtBox.DispatcherQueue().TryEnqueue([stFolder, txtBox]() {
-                    txtBox.Text(stFolder.Path());
-                });
-            }
+        co_await resume_background();
+
+        auto fd = create_instance<IFileDialog>(CLSID_FileOpenDialog);
+        check_hresult(fd->SetOptions(FOS_PICKFOLDERS));
+
+        check_hresult(fd->SetTitle(L"Select a source folder"));
+
+        HWND hwndOwner;
+        GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(reinterpret_cast<HWND*>(&hwndOwner));
+
+        check_hresult(fd->Show(hwndOwner));
+
+        com_ptr<IShellItem> item;
+        check_hresult(fd->GetResult(item.put()));
+
+        hstring path = L"";
+        {
+            wil::unique_cotaskmem_string sh_path;
+            // maybe the shell item has no path
+            if (SUCCEEDED(item->GetDisplayName(SIGDN_FILESYSPATH, wil::out_param(sh_path))))
+                path = sh_path.get();
+        }
+
+        auto txtBox = SourceTextBox();
+
+        txtBox.DispatcherQueue().TryEnqueue([path, txtBox]() {
+            txtBox.Text(path.c_str());
         });
     }
 }

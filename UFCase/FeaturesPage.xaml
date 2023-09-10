@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="7*" MinWidth="450" />
+            <ColumnDefinition Width="4*" MinWidth="450" />
         </Grid.ColumnDefinitions>
 
         <CommandBar

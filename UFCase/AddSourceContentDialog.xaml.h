@@ -11,7 +11,7 @@ namespace winrt::UFCase::implementation
 
         hstring SourcePath();
 
-        void BrowserButton_Click(IInspectable const& sender, RoutedEventArgs const& args);
+        fire_and_forget BrowserButton_Click(IInspectable const& sender, RoutedEventArgs const& args);
     };
 }
 
