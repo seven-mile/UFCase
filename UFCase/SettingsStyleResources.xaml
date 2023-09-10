@@ -1,15 +1,22 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style x:Key="SettingsMicaCard" TargetType="Border" BasedOn="{StaticResource MicaCardBorder}">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style
+        x:Key="SettingsMicaCard"
+        BasedOn="{StaticResource MicaCardBorder}"
+        TargetType="Border">
         <Setter Property="Padding" Value="15" />
     </Style>
-    <Style x:Key="SettingsMicaCardCommandLink" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+    <Style
+        x:Key="SettingsMicaCardCommandLink"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="Button">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Padding" Value="15" />
     </Style>
-    <Style x:Key="SettingGroupHeader" TargetType="TextBlock" BasedOn="{StaticResource SubtitleTextBlockStyle}">
+    <Style
+        x:Key="SettingGroupHeader"
+        BasedOn="{StaticResource SubtitleTextBlockStyle}"
+        TargetType="TextBlock">
         <Setter Property="Transitions">
             <Setter.Value>
                 <TransitionCollection>
