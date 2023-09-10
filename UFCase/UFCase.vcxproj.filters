@@ -34,6 +34,9 @@
     <Page Include="ErrorDialog.xaml">
       <Filter>views\dialogs</Filter>
     </Page>
+    <Page Include="ComponentsPage.xaml">
+      <Filter>views\pages</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -72,6 +75,9 @@
       <Filter>libraries\mvvm</Filter>
     </Midl>
     <Midl Include="ComponentViewModel.idl">
+      <Filter>view_models</Filter>
+    </Midl>
+    <Midl Include="ComponentsPageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
   </ItemGroup>

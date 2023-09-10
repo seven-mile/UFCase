@@ -90,6 +90,12 @@ namespace winrt::UFCase::implementation
                 frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
                 co_return;
             }
+            else if (page_name == L"Components")
+            {
+                ComponentsPageViewModel vm{};
+                frame.Navigate(xaml_typename<ComponentsPage>(), box_value(vm));
+                co_return;
+            }
         }
         catch (const hresult_error &e)
         {

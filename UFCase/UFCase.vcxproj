@@ -138,6 +138,14 @@
     <ClInclude Include="CCbsUIHandler.h" />
     <ClInclude Include="cdf_types.h" />
     <ClInclude Include="ComponentModel.h" />
+    <ClInclude Include="ComponentsPage.h">
+      <DependentUpon>ComponentsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ComponentsPageViewModel.h">
+      <DependentUpon>ComponentsPageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="ComponentViewModel.h">
       <DependentUpon>ComponentViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -247,6 +255,9 @@
     <Page Include="AddSourceContentDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ComponentsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ErrorDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -287,6 +298,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ComponentModel.cpp" />
+    <ClCompile Include="ComponentsPage.cpp">
+      <DependentUpon>ComponentsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ComponentsPageViewModel.cpp">
+      <DependentUpon>ComponentsPageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ComponentViewModel.cpp">
       <DependentUpon>ComponentViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -425,6 +444,13 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
     </CustomBuild>
+    <Midl Include="ComponentsPage.idl">
+      <DependentUpon>ComponentsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="ComponentsPageViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="ComponentViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>

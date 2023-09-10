@@ -1,0 +1,10 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass ComponentsPageViewModel 
+    {
+        ComponentsPageViewModel();
+        Int32 MyProperty;
+    }
+}
