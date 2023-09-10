@@ -10,9 +10,9 @@ namespace winrt::UFCase::implementation
     {
         using namespace std::chrono_literals;
         m_timer.Interval(1s);
-        m_update_token = m_timer.Tick([this, &chg = this->m_propertyChanged](auto &, auto &) {
-            chg(*this, winrt::Data::PropertyChangedEventArgs{L"CPUUtilization"});
-            chg(*this, winrt::Data::PropertyChangedEventArgs{L"MemoryUsage"});
+        m_update_token = m_timer.Tick([this](auto &, auto &) {
+            NotifyPropChange(L"CPUUtilization");
+            NotifyPropChange(L"MemoryUsage");
         });
     }
 
@@ -44,8 +44,7 @@ namespace winrt::UFCase::implementation
         m_cpu_util = 100 * (1.0 - 1.0 * dur_idle.count() / dur_all.count());
 
         // update comment
-        this->m_propertyChanged(*this,
-                                winrt::Data::PropertyChangedEventArgs{L"CPUUtilizationComment"});
+        NotifyPropChange(L"CPUUtilizationComment");
 
         return m_cpu_util;
     }
@@ -61,8 +60,7 @@ namespace winrt::UFCase::implementation
         auto usg = 100.0 * UsedMemoryInBytes(rep) / AllMemoryInBytes(rep);
 
         // update comment
-        this->m_propertyChanged(*this,
-                                winrt::Data::PropertyChangedEventArgs{L"MemoryUsageComment"});
+        NotifyPropChange(L"MemoryUsageComment");
 
         return usg;
     }
@@ -73,17 +71,6 @@ namespace winrt::UFCase::implementation
         return std::format(L"{}/{}", TextizeBytes(m_used_mem).c_str(),
                            TextizeBytes(m_all_mem).c_str())
             .c_str();
-    }
-
-    winrt::event_token SysInfoRealtimeProvider::PropertyChanged(
-        winrt::Data::PropertyChangedEventHandler const &value)
-    {
-        return m_propertyChanged.add(value);
-    }
-
-    void SysInfoRealtimeProvider::PropertyChanged(winrt::event_token const &token)
-    {
-        m_propertyChanged.remove(token);
     }
 
     uint64_t SysInfoRealtimeProvider::UsedMemoryInBytes(winrt::SystemMemoryUsageReport rep)

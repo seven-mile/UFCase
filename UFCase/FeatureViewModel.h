@@ -6,17 +6,13 @@
 #include "FeatureModel.h"
 
 #include "CacheUtil.h"
+#include "PropChgUtil.h"
 
 namespace winrt::UFCase::implementation
 {
-    struct FeatureViewModel : FeatureViewModelT<FeatureViewModel>
+    struct FeatureViewModel : FeatureViewModelT<FeatureViewModel>,
+                              ImplPropertyChangedT<FeatureViewModel>
     {
-
-        winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
-        // implement INotifyPropertyChanged
-        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
-        void PropertyChanged(winrt::event_token const& token);
-
         FeatureModel m_model;
 
         using child_t = IObservableVector<UFCase::FeatureViewModel>;
@@ -67,7 +63,8 @@ namespace winrt::UFCase::implementation
         PropertyCache<IReference<bool>, FeatureViewModel> IsChecked{ *this, &FeatureViewModel::IsCheckedRaw };
         // clang-format on
 
-        void Prefetch() {
+        void Prefetch()
+        {
             Name();
             Description();
             Identity();
@@ -81,20 +78,21 @@ namespace winrt::UFCase::implementation
             IsChecked();
         }
 
-    private:
-        void NotifyCommonPropertyChanged() {
-            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"State"});
-            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"StateText"});
-            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"Icon"});
-            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"IsEnabled"});
-            m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"IsChecked"});
+      private:
+        void NotifyCommonPropertyChanged()
+        {
+            NotifyPropChange(L"State");
+            NotifyPropChange(L"StateText");
+            NotifyPropChange(L"Icon");
+            NotifyPropChange(L"IsEnabled");
+            NotifyPropChange(L"IsChecked");
         }
     };
-}
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
     struct FeatureViewModel : FeatureViewModelT<FeatureViewModel, implementation::FeatureViewModel>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

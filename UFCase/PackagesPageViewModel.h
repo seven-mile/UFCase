@@ -7,6 +7,7 @@
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
 
 #include "XamlUtil.h"
+#include "PropChgUtil.h"
 
 #include "ImageModel.h"
 
@@ -33,7 +34,8 @@ namespace winrt::UFCase::implementation
         hstring m_sel_pkg;
     };
 
-    struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel>
+    struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel>,
+                                   ImplPropertyChangedT<PackagesPageViewModel>
     {
         PackagesPageViewModel(UFCase::ImageViewModel image) : m_image(image)
         {
@@ -63,7 +65,7 @@ namespace winrt::UFCase::implementation
         void SelectedPackage(UFCase::PackageViewModel value)
         {
             m_selected = value;
-            // m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });
+            // NotifyPropChange(L"SelectedPackage");
         }
 
         UFCase::PackagesPageNavigationContext NavContext()
@@ -72,17 +74,6 @@ namespace winrt::UFCase::implementation
         }
 
         IAsyncActionWithProgress<uint32_t> PullData(bool is_nav = true);
-
-        // implement INotifyPropertyChanged
-        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const &value)
-        {
-            return m_property_changed.add(value);
-        }
-
-        void PropertyChanged(winrt::event_token const &token)
-        {
-            m_property_changed.remove(token);
-        }
 
         HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1")
         {
@@ -127,9 +118,6 @@ namespace winrt::UFCase::implementation
         IObservableVector<UFCase::PackageViewModel> m_packages{nullptr};
         UFCase::PackageViewModel m_selected{nullptr};
         UFCase::PackagesPageNavigationContext m_nav_ctx;
-
-        winrt::event<winrt::Data::PropertyChangedEventHandler> m_property_changed{};
-
     };
 
 } // namespace winrt::UFCase::implementation

@@ -90,7 +90,8 @@ namespace winrt::UFCase::implementation
         report_prog(100);
 
         co_await ui_thread;
-        m_property_changed(*this, Data::PropertyChangedEventArgs{L"RootFeatures"});
+
+        NotifyPropChange(L"RootFeatures");
 
         co_return;
     }

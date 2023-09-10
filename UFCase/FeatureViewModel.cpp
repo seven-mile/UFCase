@@ -39,17 +39,6 @@ namespace winrt::UFCase::implementation
         Prefetch();
     }
 
-    winrt::event_token FeatureViewModel::PropertyChanged(
-        winrt::Data::PropertyChangedEventHandler const &value)
-    {
-        return this->m_propertyChanged.add(value);
-    }
-
-    void FeatureViewModel::PropertyChanged(winrt::event_token const &token)
-    {
-        this->m_propertyChanged.remove(token);
-    }
-
     hstring FeatureViewModel::NameRaw()
     {
         auto &&res = m_model.DisplayName();
@@ -177,7 +166,7 @@ namespace winrt::UFCase::implementation
     void FeatureViewModel::ModificationMark(hstring const &val)
     {
         m_mark = val;
-        m_propertyChanged(*this, Data::PropertyChangedEventArgs{L"ModificationMark"});
+        NotifyPropChange(L"ModificationMark");
     }
 
     IconSource FeatureViewModel::Icon()

@@ -43,8 +43,8 @@ namespace winrt::UFCase::implementation
 
         co_await ui_thread;
 
-        m_property_changed(*this, Data::PropertyChangedEventArgs{L"Packages"});
-        m_property_changed(*this, Data::PropertyChangedEventArgs{L"SelectedPackage"});
+        NotifyPropChange(L"Packages");
+        NotifyPropChange(L"SelectedPackage");
 
         co_return;
     }

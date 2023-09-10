@@ -7,6 +7,7 @@
 #include "PackageModel.h"
 
 #include "XamlUtil.h"
+#include "PropChgUtil.h"
 
 #include <winrt/Windows.ApplicationModel.DataTransfer.h>
 #include <winrt/Windows.System.h>
@@ -16,7 +17,8 @@
 
 namespace winrt::UFCase::implementation
 {
-    struct FeaturesPageViewModel : FeaturesPageViewModelT<FeaturesPageViewModel>
+    struct FeaturesPageViewModel : FeaturesPageViewModelT<FeaturesPageViewModel>,
+                                   ImplPropertyChangedT<FeaturesPageViewModel>
     {
         FeaturesPageViewModel(ImageViewModel image) : m_image(image)
         {
@@ -33,17 +35,6 @@ namespace winrt::UFCase::implementation
 
         IAsyncActionWithProgress<uint32_t> PullData();
 
-        // implement INotifyPropertyChanged
-        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const &value)
-        {
-            return m_property_changed.add(value);
-        }
-
-        void PropertyChanged(winrt::event_token const &token)
-        {
-            m_property_changed.remove(token);
-        }
-
         FeatureViewModel SelectedFeature()
         {
             return m_selected;
@@ -52,7 +43,7 @@ namespace winrt::UFCase::implementation
         void SelectedFeature(FeatureViewModel feature)
         {
             m_selected = feature;
-            m_property_changed(*this, Data::PropertyChangedEventArgs{L"SelectedFeature"});
+            NotifyPropChange(L"SelectedFeature");
 
             NotifyCommandsCanExecuteChanged();
         }
@@ -178,7 +169,7 @@ namespace winrt::UFCase::implementation
         {
             // clear selection
             m_selected = nullptr;
-            m_property_changed(*this, Data::PropertyChangedEventArgs{L"SelectedFeature"});
+            NotifyPropChange(L"SelectedFeature");
 
             co_await GlobalRes::MainProgServ().InsertTask(PullData(), 100);
             co_return;
@@ -189,8 +180,6 @@ namespace winrt::UFCase::implementation
         IObservableVector<FeatureViewModel> m_features{nullptr};
         FeatureViewModel m_selected{nullptr};
         uint64_t m_session = 0;
-
-        winrt::event<winrt::Data::PropertyChangedEventHandler> m_property_changed{};
 
         uint64_t SessionHandle()
         {

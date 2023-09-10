@@ -25,7 +25,7 @@ namespace winrt::UFCase::implementation
                 co_await GlobalRes::MainProgServ().InsertTask(SearchImages(), 200);
                 self->m_images = GetImageSearchResult();
                 RunUITask([self]() {
-                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Images"});
+                    self->NotifyPropChange(L"Images");
                     self->SelectedIndex(0);
                 });
             });
@@ -50,20 +50,8 @@ namespace winrt::UFCase::implementation
 
         RunUITaskAsync([self = get_strong()]() -> IAsyncAction {
             co_await GlobalRes::MainNavServ().Initialize();
-            self->m_property_changed(*self,
-                                     winrt::Data::PropertyChangedEventArgs{L"SelectedIndex"});
+            self->NotifyPropChange(L"SelectedIndex");
         });
-    }
-
-    winrt::event_token ImageSelectorViewModel::PropertyChanged(
-        winrt::Data::PropertyChangedEventHandler const &value)
-    {
-        return this->m_property_changed.add(value);
-    }
-
-    void ImageSelectorViewModel::PropertyChanged(winrt::event_token const &token)
-    {
-        this->m_property_changed.remove(token);
     }
 
 } // namespace winrt::UFCase::implementation

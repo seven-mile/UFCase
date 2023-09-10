@@ -67,8 +67,8 @@ namespace winrt::UFCase::implementation
 
                 self->m_info_loading = false;
                 RunUITask([self]() {
-                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Version"});
-                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Selectable"});
+                    self->NotifyPropChange(L"Version");
+                    self->NotifyPropChange(L"Selectable");
                 });
             });
         }
@@ -86,8 +86,8 @@ namespace winrt::UFCase::implementation
                 self->m_edition = self->m_model.Edition();
                 self->m_info_loading = false;
                 RunUITask([self]() {
-                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Edition"});
-                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Selectable"});
+                    self->NotifyPropChange(L"Edition");
+                    self->NotifyPropChange(L"Selectable");
                 });
             });
         }
@@ -149,7 +149,7 @@ namespace winrt::UFCase::implementation
                     // major >= 11
                     self->m_icon = Icon11;
                     RunUITask([self]() {
-                        self->m_property_changed(*self, Data::PropertyChangedEventArgs{L"Icon"});
+                        self->NotifyPropChange(L"Icon");
                     });
                 });
             }

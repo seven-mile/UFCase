@@ -4,6 +4,7 @@
 
 #include "GlobalUtil.h"
 #include "AsyncUtil.h"
+#include "PropChgUtil.h"
 
 #include <wil/resource.h>
 
@@ -12,7 +13,8 @@
 
 namespace winrt::UFCase::implementation
 {
-    struct MainProgressService : MainProgressServiceT<MainProgressService>
+    struct MainProgressService : MainProgressServiceT<MainProgressService>,
+                                 ImplPropertyChangedT<MainProgressService>
     {
         MainProgressService()
         {
@@ -40,8 +42,8 @@ namespace winrt::UFCase::implementation
         {
             RunUITask([self = get_strong()]() {
                 // OutputDebugString(L"Now notify progress state change.\n");
-                self->_property_changed(*self, Data::PropertyChangedEventArgs{L"CurrentProgress"});
-                self->_property_changed(*self, Data::PropertyChangedEventArgs{L"Visibility"});
+                self->NotifyPropChange(L"CurrentProgress");
+                self->NotifyPropChange(L"Visibility");
             });
         }
 
@@ -91,18 +93,6 @@ namespace winrt::UFCase::implementation
 
         std::unordered_map<IAsyncActionWithProgress<uint32_t>, uint32_t> _progress_list;
         uint32_t _progress_product_sum = 0, _weight_sum = 0;
-
-        event<Data::PropertyChangedEventHandler> _property_changed{};
-
-        event_token PropertyChanged(Data::PropertyChangedEventHandler handler)
-        {
-            return _property_changed.add(handler);
-        }
-
-        void PropertyChanged(event_token token)
-        {
-            _property_changed.remove(token);
-        }
     };
 } // namespace winrt::UFCase::implementation
 

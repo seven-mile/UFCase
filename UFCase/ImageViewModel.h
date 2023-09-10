@@ -4,9 +4,11 @@
 
 #include "ImageModel.h"
 
+#include "PropChgUtil.h"
+
 namespace winrt::UFCase::implementation
 {
-    struct ImageViewModel : ImageViewModelT<ImageViewModel>
+    struct ImageViewModel : ImageViewModelT<ImageViewModel>, ImplPropertyChangedT<ImageViewModel>
     {
         ImageViewModel(uint64_t hModel);
 
@@ -21,16 +23,6 @@ namespace winrt::UFCase::implementation
         uint64_t OpenSession();
         void CloseSession(uint64_t handle);
 
-        event_token PropertyChanged(Data::PropertyChangedEventHandler const &handler)
-        {
-            return m_property_changed.add(handler);
-        }
-
-        void PropertyChanged(event_token const &token)
-        {
-            m_property_changed.remove(token);
-        }
-
         bool Selectable()
         {
             return m_info_loading;
@@ -41,9 +33,8 @@ namespace winrt::UFCase::implementation
         hstring m_version, m_edition;
         Media::ImageSource m_icon{nullptr};
         bool m_icon_loading = false, m_info_loading = false;
-
-        event<Data::PropertyChangedEventHandler> m_property_changed{};
     };
+
 } // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
