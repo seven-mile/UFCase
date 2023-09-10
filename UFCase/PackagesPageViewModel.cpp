@@ -23,10 +23,10 @@ namespace winrt::UFCase::implementation
 
         auto report_prog = co_await get_progress_token();
         auto& session = SessionModel::GetInstance(m_image.OpenSession());
-        report_prog(30);
+        report_prog(25);
 
         auto&& pkgs = session.Packages(0x50);
-        report_prog(70);
+        report_prog(50);
         uint32_t cnt = 0;
         
         for (auto&& pkg : pkgs) {
@@ -38,7 +38,7 @@ namespace winrt::UFCase::implementation
             RunUITask([=]{
                 m_packages.Append(pkg_vm);
             });
-            report_prog(static_cast<uint32_t>(70 + 30 * ++cnt / pkgs.size()));
+            report_prog(static_cast<uint32_t>(50 + 50 * ++cnt / pkgs.size()));
         }
 
         co_await ui_thread;
