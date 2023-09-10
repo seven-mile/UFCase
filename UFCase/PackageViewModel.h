@@ -5,6 +5,8 @@
 
 #include "PackageModel.h"
 
+#include "CacheUtil.h"
+
 namespace winrt::UFCase::implementation
 {
     struct PackageViewModel : PackageViewModelT<PackageViewModel>
@@ -15,28 +17,77 @@ namespace winrt::UFCase::implementation
 
         uint64_t Handle();
 
-        hstring ListName();
-        hstring ListIdentity();
-        Visibility ListIdentityVisibility();
-        hstring DetailName();
-        hstring DetailIdentity();
-        hstring ReleaseType();
-        hstring State();
-        hstring Description();
-        hstring RestartRequired();
-        hstring ProductName();
-        hstring ProductVersion();
-        hstring Company();
-        hstring Copyright();
-        hstring SupportInformation();
-        hstring CreationTime();
-        hstring LastUpdateTime();
-        hstring InstallTime();
-        hstring InstallPackageName();
-        hstring InstallLocation();
-        hstring InstallClient();
-        hstring InstallUserName();
-        bool IsApplicable();
+        hstring ListNameRaw();
+        hstring ListIdentityRaw();
+        Visibility ListIdentityVisibilityRaw();
+        hstring DetailNameRaw();
+        hstring DetailIdentityRaw();
+        hstring ReleaseTypeRaw();
+        hstring StateRaw();
+        hstring DescriptionRaw();
+        hstring RestartRequiredRaw();
+        hstring ProductNameRaw();
+        hstring ProductVersionRaw();
+        hstring CompanyRaw();
+        hstring CopyrightRaw();
+        hstring SupportInformationRaw();
+        hstring CreationTimeRaw();
+        hstring LastUpdateTimeRaw();
+        hstring InstallTimeRaw();
+        hstring InstallPackageNameRaw();
+        hstring InstallLocationRaw();
+        hstring InstallClientRaw();
+        hstring InstallUserNameRaw();
+        bool IsApplicableRaw();
+
+        PropertyCache<hstring, PackageViewModel> ListName{ *this, &PackageViewModel::ListNameRaw };
+        PropertyCache<hstring, PackageViewModel> ListIdentity{ *this, &PackageViewModel::ListIdentityRaw };
+        PropertyCache<Visibility, PackageViewModel> ListIdentityVisibility{ *this, &PackageViewModel::ListIdentityVisibilityRaw };
+        PropertyCache<hstring, PackageViewModel> DetailName{ *this, &PackageViewModel::DetailNameRaw };
+        PropertyCache<hstring, PackageViewModel> DetailIdentity{ *this, &PackageViewModel::DetailIdentityRaw };
+        PropertyCache<hstring, PackageViewModel> ReleaseType{ *this, &PackageViewModel::ReleaseTypeRaw };
+        PropertyCache<hstring, PackageViewModel> State{ *this, &PackageViewModel::StateRaw };
+        PropertyCache<hstring, PackageViewModel> Description{ *this, &PackageViewModel::DescriptionRaw };
+        PropertyCache<hstring, PackageViewModel> RestartRequired{ *this, &PackageViewModel::RestartRequiredRaw };
+        PropertyCache<hstring, PackageViewModel> ProductName{ *this, &PackageViewModel::ProductNameRaw };
+        PropertyCache<hstring, PackageViewModel> ProductVersion{ *this, &PackageViewModel::ProductVersionRaw };
+        PropertyCache<hstring, PackageViewModel> Company{ *this, &PackageViewModel::CompanyRaw };
+        PropertyCache<hstring, PackageViewModel> Copyright{ *this, &PackageViewModel::CopyrightRaw };
+        PropertyCache<hstring, PackageViewModel> SupportInformation{ *this, &PackageViewModel::SupportInformationRaw };
+        PropertyCache<hstring, PackageViewModel> CreationTime{ *this, &PackageViewModel::CreationTimeRaw };
+        PropertyCache<hstring, PackageViewModel> LastUpdateTime{ *this, &PackageViewModel::LastUpdateTimeRaw };
+        PropertyCache<hstring, PackageViewModel> InstallTime{ *this, &PackageViewModel::InstallTimeRaw };
+        PropertyCache<hstring, PackageViewModel> InstallPackageName{ *this, &PackageViewModel::InstallPackageNameRaw };
+        PropertyCache<hstring, PackageViewModel> InstallLocation{ *this, &PackageViewModel::InstallLocationRaw };
+        PropertyCache<hstring, PackageViewModel> InstallClient{ *this, &PackageViewModel::InstallClientRaw };
+        PropertyCache<hstring, PackageViewModel> InstallUserName{ *this, &PackageViewModel::InstallUserNameRaw };
+        PropertyCache<bool, PackageViewModel> IsApplicable{ *this, &PackageViewModel::IsApplicableRaw };
+
+        void Prefetch() {
+
+            ListName();
+            ListIdentity();
+            ListIdentityVisibility();
+            DetailName();
+            DetailIdentity();
+            ReleaseType();
+            State();
+            Description();
+            RestartRequired();
+            ProductName();
+            ProductVersion();
+            Company();
+            Copyright();
+            SupportInformation();
+            CreationTime();
+            LastUpdateTime();
+            InstallTime();
+            InstallPackageName();
+            InstallLocation();
+            InstallClient();
+            InstallUserName();
+            IsApplicable();
+        }
     };
 }
 

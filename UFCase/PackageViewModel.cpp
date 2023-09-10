@@ -11,18 +11,21 @@
 
 namespace winrt::UFCase::implementation
 {
-    PackageViewModel::PackageViewModel(uint64_t hModel) : m_model(PackageModel::GetInstance(hModel)) { }
+    PackageViewModel::PackageViewModel(uint64_t hModel)
+        : m_model(PackageModel::GetInstance(hModel)) {
+        Prefetch();
+    }
 
     uint64_t PackageViewModel::Handle() {
         return m_model.GetHandle();
     }
 
-    hstring PackageViewModel::ReleaseType()
+    hstring PackageViewModel::ReleaseTypeRaw()
     {
         return m_model.ReleaseType();
     }
 
-    hstring PackageViewModel::State()
+    hstring PackageViewModel::StateRaw()
     {
         auto state = m_model.State();
         switch (state) {
@@ -57,14 +60,14 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    hstring PackageViewModel::ListName()
+    hstring PackageViewModel::ListNameRaw()
     {
         auto &&res = m_model.Name();
         if (res.empty()) return m_model.Identity();
         return res;
     }
 
-    hstring PackageViewModel::ListIdentity()
+    hstring PackageViewModel::ListIdentityRaw()
     {
         auto&& res = m_model.Name();
         // avoid repetition of display
@@ -72,7 +75,7 @@ namespace winrt::UFCase::implementation
         return m_model.Identity();
     }
 
-    Visibility PackageViewModel::ListIdentityVisibility()
+    Visibility PackageViewModel::ListIdentityVisibilityRaw()
     {
         auto&& res = m_model.Name();
         // avoid repetition of display
@@ -80,91 +83,91 @@ namespace winrt::UFCase::implementation
         return Visibility::Visible;
     }
 
-    hstring PackageViewModel::DetailName()
+    hstring PackageViewModel::DetailNameRaw()
     {
         auto&& res = m_model.Name();
         if (res.empty()) return L"(Unnamed)";
         return res;
     }
 
-    hstring PackageViewModel::DetailIdentity()
+    hstring PackageViewModel::DetailIdentityRaw()
     {
         return m_model.Identity();
     }
 
-    hstring PackageViewModel::Description()
+    hstring PackageViewModel::DescriptionRaw()
     {
         auto &&res = m_model.Description();
         if (res.empty()) return L"No description.";
         return res;
     }
 
-    hstring PackageViewModel::RestartRequired()
+    hstring PackageViewModel::RestartRequiredRaw()
     {
         return m_model.RestartRequired();
     }
 
-    hstring PackageViewModel::ProductName()
+    hstring PackageViewModel::ProductNameRaw()
     {
         return m_model.ProductName();
     }
 
-    hstring PackageViewModel::ProductVersion()
+    hstring PackageViewModel::ProductVersionRaw()
     {
         return m_model.ProductVersion();
     }
 
-    hstring PackageViewModel::Company()
+    hstring PackageViewModel::CompanyRaw()
     {
         return m_model.Company();
     }
 
-    hstring PackageViewModel::Copyright()
+    hstring PackageViewModel::CopyrightRaw()
     {
         return m_model.Copyright();
     }
 
-    hstring PackageViewModel::SupportInformation()
+    hstring PackageViewModel::SupportInformationRaw()
     {
         return m_model.SupportInformation();
     }
 
-    hstring PackageViewModel::CreationTime()
+    hstring PackageViewModel::CreationTimeRaw()
     {
         return ParseCbsTimeStampString(m_model.CreationTime().c_str());
     }
 
-    hstring PackageViewModel::LastUpdateTime()
+    hstring PackageViewModel::LastUpdateTimeRaw()
     {
         return ParseCbsTimeStampString(m_model.LastUpdateTime().c_str());
     }
 
-    hstring PackageViewModel::InstallTime()
+    hstring PackageViewModel::InstallTimeRaw()
     {
         return ParseCbsTimeStampString(m_model.InstallTime().c_str());
     }
 
-    hstring PackageViewModel::InstallPackageName()
+    hstring PackageViewModel::InstallPackageNameRaw()
     {
         return m_model.InstallPackageName();
     }
 
-    hstring PackageViewModel::InstallLocation()
+    hstring PackageViewModel::InstallLocationRaw()
     {
         return m_model.InstallLocation();
     }
 
-    hstring PackageViewModel::InstallClient()
+    hstring PackageViewModel::InstallClientRaw()
     {
         return m_model.InstallClient();
     }
 
-    hstring PackageViewModel::InstallUserName()
+    hstring PackageViewModel::InstallUserNameRaw()
     {
         return m_model.InstallUserName();
     }
 
-    bool PackageViewModel::IsApplicable() {
+    bool PackageViewModel::IsApplicableRaw() {
         return m_model.IsApplicable();
     }
 }

@@ -5,6 +5,8 @@
 
 #include "FeatureModel.h"
 
+#include "CacheUtil.h"
+
 namespace winrt::UFCase::implementation
 {
     struct FeatureViewModel : FeatureViewModelT<FeatureViewModel>
@@ -24,17 +26,17 @@ namespace winrt::UFCase::implementation
 
         FeatureViewModel(uint64_t hModel);
 
-        hstring Name();
-        hstring Description();
-        hstring Identity();
-        FeatureState State();
-        hstring StateText();
+        hstring NameRaw();
+        hstring DescriptionRaw();
+        hstring IdentityRaw();
+        FeatureState StateRaw();
+        hstring StateTextRaw();
 
-        hstring DisplayFile();
-        hstring Restart();
-        hstring PsfName();
-        hstring DownloadSize();
-        hstring SetMembership();
+        hstring DisplayFileRaw();
+        hstring RestartRaw();
+        hstring PsfNameRaw();
+        hstring DownloadSizeRaw();
+        hstring SetMembershipRaw();
 
         UFCase::PackageViewModel Package();
         UFCase::PackageViewModel ContentPackage();
@@ -42,7 +44,7 @@ namespace winrt::UFCase::implementation
         child_t Children();
 
         bool IsEnabled();
-        IReference<bool> IsChecked();
+        IReference<bool> IsCheckedRaw();
 
         hstring ModificationMark();
         void ModificationMark(const hstring &value);
@@ -50,6 +52,32 @@ namespace winrt::UFCase::implementation
 
         void Enable();
         void Disable();
+
+        PropertyCache<hstring, FeatureViewModel> Name{ *this, &FeatureViewModel::NameRaw };
+        PropertyCache<hstring, FeatureViewModel> Description{ *this, &FeatureViewModel::DescriptionRaw };
+        PropertyCache<hstring, FeatureViewModel> Identity{ *this, &FeatureViewModel::IdentityRaw };
+        PropertyCache<FeatureState, FeatureViewModel> State{ *this, &FeatureViewModel::StateRaw };
+        PropertyCache<hstring, FeatureViewModel> StateText{ *this, &FeatureViewModel::StateTextRaw };
+        PropertyCache<hstring, FeatureViewModel> DisplayFile{ *this, &FeatureViewModel::DisplayFileRaw };
+        PropertyCache<hstring, FeatureViewModel> Restart{ *this, &FeatureViewModel::RestartRaw };
+        PropertyCache<hstring, FeatureViewModel> PsfName{ *this, &FeatureViewModel::PsfNameRaw };
+        PropertyCache<hstring, FeatureViewModel> DownloadSize{ *this, &FeatureViewModel::DownloadSizeRaw };
+        PropertyCache<hstring, FeatureViewModel> SetMembership{ *this, &FeatureViewModel::SetMembershipRaw };
+        PropertyCache<IReference<bool>, FeatureViewModel> IsChecked{ *this, &FeatureViewModel::IsCheckedRaw };
+
+        void Prefetch() {
+            Name();
+            Description();
+            Identity();
+            State();
+            StateText();
+            DisplayFile();
+            Restart();
+            PsfName();
+            DownloadSize();
+            SetMembership();
+            IsChecked();
+        }
 
     private:
         void NotifyCommonPropertyChanged() {

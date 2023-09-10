@@ -32,6 +32,8 @@ namespace winrt::UFCase::implementation
                 break;
             }
         });
+
+        Prefetch();
     }
 
     winrt::event_token FeatureViewModel::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
@@ -44,23 +46,23 @@ namespace winrt::UFCase::implementation
         this->m_propertyChanged.remove(token);
     }
 
-    hstring FeatureViewModel::Name()
+    hstring FeatureViewModel::NameRaw()
     {
         auto &&res = m_model.DisplayName();
         if (res.empty()) return m_model.Name();
         return res;
     }
-    hstring FeatureViewModel::Description()
+    hstring FeatureViewModel::DescriptionRaw()
     {
         auto &&res = m_model.Description();
         if (res.empty()) return L"No description.";
         return res;
     }
-    hstring FeatureViewModel::Identity()
+    hstring FeatureViewModel::IdentityRaw()
     {
         return m_model.Name();
     }
-    FeatureState FeatureViewModel::State()
+    FeatureState FeatureViewModel::StateRaw()
     {
         auto state = m_model.RequestedState();
         switch (state) {
@@ -82,7 +84,7 @@ namespace winrt::UFCase::implementation
             return FeatureState::Invalid;
         }
     }
-    hstring FeatureViewModel::StateText()
+    hstring FeatureViewModel::StateTextRaw()
     {
         switch (this->State()) {
             case FeatureState::Unavailable: return L"Unavailable";
@@ -93,27 +95,27 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    hstring FeatureViewModel::DisplayFile()
+    hstring FeatureViewModel::DisplayFileRaw()
     {
         return m_model.DisplayFile();
     }
 
-    hstring FeatureViewModel::Restart()
+    hstring FeatureViewModel::RestartRaw()
     {
         return m_model.Restart();
     }
 
-    hstring FeatureViewModel::PsfName()
+    hstring FeatureViewModel::PsfNameRaw()
     {
         return m_model.PsfName();
     }
 
-    hstring FeatureViewModel::DownloadSize()
+    hstring FeatureViewModel::DownloadSizeRaw()
     {
         return m_model.DownloadSize();
     }
 
-    hstring FeatureViewModel::SetMembership()
+    hstring FeatureViewModel::SetMembershipRaw()
     {
         return m_model.SetMembership();
     }
@@ -139,7 +141,7 @@ namespace winrt::UFCase::implementation
             && this->State() != FeatureState::Invalid;
     }
 
-    IReference<bool> FeatureViewModel::IsChecked()
+    IReference<bool> FeatureViewModel::IsCheckedRaw()
     {
         uint32_t cnt = 0;
         for (auto child : m_children) {

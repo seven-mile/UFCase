@@ -133,6 +133,7 @@
     </ClInclude>
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AsyncUtil.h" />
+    <ClInclude Include="CacheUtil.h" />
     <ClInclude Include="CbsUtil.h" />
     <ClInclude Include="CCbsUIHandler.h" />
     <ClInclude Include="ErrorDialog.h">

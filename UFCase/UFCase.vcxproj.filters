@@ -168,6 +168,9 @@
     <ClInclude Include="AsyncUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
+    <ClInclude Include="CacheUtil.h">
+      <Filter>libraries\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">

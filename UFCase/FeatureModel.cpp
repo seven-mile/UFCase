@@ -79,10 +79,12 @@ namespace winrt::UFCase {
 
     hstring FeatureModel::SetMembership() const
     {
-        unique_malloc_wstring ws_declared_set;
-        _CbsCardinality cardinality;
-        check_hresult(GetInterface()->GetDeclaredSet(8, wil::out_param(ws_declared_set), &cardinality));
-        return ws_declared_set.get();
+        // todo: find out what's this
+        //unique_malloc_wstring ws_declared_set;
+        //_CbsCardinality cardinality;
+        //check_hresult(GetInterface()->GetDeclaredSet(8, wil::out_param(ws_declared_set), &cardinality));
+        //return ws_declared_set.get();
+        return L"Not impl";
     }
 
     PackageModel *FeatureModel::RawParentPackage() const
