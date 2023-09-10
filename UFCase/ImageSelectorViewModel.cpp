@@ -18,12 +18,12 @@ namespace winrt::UFCase::implementation
     IObservableVector<UFCase::ImageViewModel> ImageSelectorViewModel::Images()
     {
         if (!m_images) {
-            DispatchTaskAsync(GlobalRes::WorkerQueue(), [this]() -> IAsyncAction {
+            DispatchTaskAsync(GlobalRes::WorkerQueue(), [self = get_strong()]() -> IAsyncAction {
                 co_await GlobalRes::MainProgServ().InsertTask(SearchImages(), 200);
-                m_images = GetImageSearchResult();
-                RunUITask([this]() {
-                    m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Images" });
-                    SelectedIndex(0);
+                self->m_images = GetImageSearchResult();
+                RunUITask([self]() {
+                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Images" });
+                    self->SelectedIndex(0);
                 });
             });
         }
@@ -45,9 +45,9 @@ namespace winrt::UFCase::implementation
 
         m_images.GetAt(value).Select();
 
-        RunUITaskAsync([this]() -> IAsyncAction {
+        RunUITaskAsync([self = get_strong()]() -> IAsyncAction {
             co_await GlobalRes::MainNavServ().Initialize();
-            this->m_property_changed(*this, winrt::Data::PropertyChangedEventArgs{L"SelectedIndex"});
+            self->m_property_changed(*self, winrt::Data::PropertyChangedEventArgs{L"SelectedIndex"});
         });
 
     }

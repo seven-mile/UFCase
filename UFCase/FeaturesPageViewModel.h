@@ -109,7 +109,7 @@ namespace winrt::UFCase::implementation
             static AddSourceContentDialog addSrcDlg{};
 
             addSrcDlg.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-            addSrcDlg.ShowAsync().Completed([this](auto const& op, auto const&) {
+            addSrcDlg.ShowAsync().Completed([](auto const& op, auto const&) {
                 if (op.GetResults() == ContentDialogResult::Primary) {
                     if (auto path = std::filesystem::path(addSrcDlg.SourcePath().c_str());
                         std::filesystem::exists(path) && std::filesystem::is_directory(path)) {

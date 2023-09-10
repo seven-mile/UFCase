@@ -32,10 +32,10 @@ namespace winrt::UFCase::implementation
         }
 
         void ReportStateChange() {
-            RunUITask([this]() {
+            RunUITask([self = get_strong()]() {
                 //OutputDebugString(L"Now notify progress state change.\n");
-                _property_changed(*this, Data::PropertyChangedEventArgs{ L"CurrentProgress" });
-                _property_changed(*this, Data::PropertyChangedEventArgs{ L"Visibility" });
+                self->_property_changed(*self, Data::PropertyChangedEventArgs{ L"CurrentProgress" });
+                self->_property_changed(*self, Data::PropertyChangedEventArgs{ L"Visibility" });
             });
         }
 

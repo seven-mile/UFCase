@@ -19,12 +19,12 @@
 namespace winrt::UFCase::implementation
 {
     FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel)) {
-        m_children.VectorChanged([this](auto const&, IVectorChangedEventArgs args) {
+        m_children.VectorChanged([self = get_strong()](auto const&, IVectorChangedEventArgs args) {
             switch (args.CollectionChange()) {
             case CollectionChange::ItemInserted:
-                m_children.GetAt(args.Index()).PropertyChanged([this](auto const&, auto const&) {
-                    RunUITask([this]() {
-                        NotifyCommonPropertyChanged();
+                self->m_children.GetAt(args.Index()).PropertyChanged([self](auto const&, auto const&) {
+                    RunUITask([self]() {
+                        self->NotifyCommonPropertyChanged();
                     });
                 });
                 break;

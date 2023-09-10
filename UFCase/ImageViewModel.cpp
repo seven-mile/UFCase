@@ -28,35 +28,35 @@ namespace winrt::UFCase::implementation
             m_version = L"Loading";
             this->m_info_loading = true;
 
-            DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
-                auto&& ver = this->m_model.Version();
+            DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
+                auto ver = self->m_model.Version();
                 if (ver.major == 6) {
                     // includes vista
                     if (ver.minor <= 1) {
-                        this->m_version = L"Win 7";
+                        self->m_version = L"Win 7";
                     } else {
                         if (ver.minor == 2)
-                            this->m_version = L"Win 8";
+                            self->m_version = L"Win 8";
                         else
-                            this->m_version = L"Win 8.1";
+                            self->m_version = L"Win 8.1";
                     }
                 } else if (ver.major == 10) {
                     // win11 pre-release is less than 22000
                     if (ver.build > 21900) {
-                        this->m_version = L"Win 11";
+                        self->m_version = L"Win 11";
                     } else {
-                        this->m_version = L"Win 10";
+                        self->m_version = L"Win 10";
                     }
                 } else if (ver.major == 11) {
-                    this->m_version = L"Win 11";
+                    self->m_version = L"Win 11";
                 } else {
-                    this->m_version = L"Win Unk";
+                    self->m_version = L"Win Unk";
                 }
 
-                this->m_info_loading = false;
-                RunUITask([this]() {
-                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Version" });
-                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Selectable" });
+                self->m_info_loading = false;
+                RunUITask([self]() {
+                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Version" });
+                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Selectable" });
                 });
             });
         }
@@ -70,12 +70,12 @@ namespace winrt::UFCase::implementation
             m_edition = L"Loading";
             this->m_info_loading = true;
 
-            DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
-                this->m_edition = this->m_model.Edition();
-                this->m_info_loading = false;
-                RunUITask([this]() {
-                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Edition" });
-                    this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Selectable" });
+            DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
+                self->m_edition = self->m_model.Edition();
+                self->m_info_loading = false;
+                RunUITask([self]() {
+                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Edition" });
+                    self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Selectable" });
                 });
             });
         }
@@ -103,27 +103,27 @@ namespace winrt::UFCase::implementation
             if (!m_icon_loading) {
                 m_icon_loading = true;
 
-                DispatchTask(GlobalRes::WorkerQueue(), [this]() -> void {
-                    if (!this->m_version.empty()) {
-                        auto&& ver = this->m_model.Version();
+                DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
+                    if (!self->m_version.empty()) {
+                        auto&& ver = self->m_model.Version();
                         if (ver.major == 6) {
                             // includes vista
                             if (ver.minor <= 1) {
-                                this->m_icon = Icon7;
+                                self->m_icon = Icon7;
                             } else {
-                                this->m_icon = Icon8;
+                                self->m_icon = Icon8;
                             }
                         } else if (ver.major == 10) {
                             // win11 pre-release is less than 22000
                             if (ver.build <= 21900) {
-                                this->m_icon = Icon10;
+                                self->m_icon = Icon10;
                             }
                         }
                     }
                     // major >= 11
-                    this->m_icon = Icon11;
-                    RunUITask([this]() {
-                        this->m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Icon" });
+                    self->m_icon = Icon11;
+                    RunUITask([self]() {
+                        self->m_property_changed(*self, Data::PropertyChangedEventArgs{ L"Icon" });
                     });
                 });
             }
