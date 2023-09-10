@@ -13,6 +13,16 @@ namespace winrt::UFCase {
         std::shared_mutex mtx;
         std::map<std::pair<ClassT*, void*>, std::any> caches;
 
+        template <typename RetT>
+        void *Conv(RetT ((ClassT::*field)())) {
+            union {
+                void *raw;
+                RetT ((ClassT::*typed)());
+            } conv{};
+            conv.typed = field;
+            return conv.raw;
+        }
+
     public:
         static ClassCacheStore<ClassT> &Instance() {
             static ClassCacheStore<ClassT> instance;
@@ -22,15 +32,16 @@ namespace winrt::UFCase {
         template <typename RetT>
         void Set(ClassT *cls, RetT ((ClassT::*field)()), RetT const &value) {
             std::unique_lock g{mtx};
-            union {
-                void *raw;
-                RetT ((ClassT::*typed)());
-            } conv{};
-            conv.typed = field;
-            caches[{cls, conv.raw}] = value;
+            caches[{cls, Conv(field)}] = value;
         }
 
-        void InvalidateAll() {
+        template <typename RetT>
+        void Invalidate(ClassT *cls, RetT ((ClassT::*field)())) {
+            std::unique_lock g{mtx};
+            caches.erase({cls, Conv(field)});
+        }
+
+        void Invalidate() {
             std::unique_lock g{mtx};
             caches.clear();
         }
@@ -38,13 +49,8 @@ namespace winrt::UFCase {
         template <typename RetT>
         std::optional<RetT> Get(ClassT *cls, RetT ((ClassT::*field)())) {
             std::shared_lock g{mtx};
-            union {
-                void *raw;
-                RetT ((ClassT::*typed)());
-            } conv{};
-            conv.typed = field;
             try {
-                return std::any_cast<RetT>(caches.at({cls, conv.raw}));
+                return std::any_cast<RetT>(caches.at({cls, Conv(field)}));
             } catch (std::out_of_range const &) {
                 return std::nullopt;
             }
@@ -62,6 +68,9 @@ namespace winrt::UFCase {
 
       public:
         PropertyCache(ClassT &self, MemberT prop): self(self), prop(prop) {}
+        ~PropertyCache() {
+            ClassCacheStore<ClassT>::Instance().Invalidate(&self, prop);
+        }
 
         RetT operator()() {
             if (auto val = ClassCacheStore<ClassT>::Instance().Get(&self, prop); val.has_value()) {
