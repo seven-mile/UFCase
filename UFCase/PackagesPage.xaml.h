@@ -8,18 +8,22 @@ namespace winrt::UFCase::implementation
     {
         PackagesPage();
 
-        void OnNavigatedTo(const Navigation::NavigationEventArgs& e);
+        void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
 
         UFCase::PackagesPageViewModel m_view_model{nullptr};
-        UFCase::PackagesPageViewModel ViewModel() { return m_view_model; }
+        UFCase::PackagesPageViewModel ViewModel()
+        {
+            return m_view_model;
+        }
 
-        void ListViewItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const& e);
+        void ListViewItem_RightTapped(IInspectable const &sender,
+                                      Input::RightTappedRoutedEventArgs const &e);
     };
-}
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
     struct PackagesPage : PackagesPageT<PackagesPage, implementation::PackagesPage>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

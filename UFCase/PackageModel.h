@@ -4,25 +4,29 @@
 #include "CbsApi.h"
 #include "GitObject.h"
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
 
     class FeatureModel;
     class SessionModel;
 
-    class PackageModel : public Model<PackageModel>,
-                         public GitObject<ICbsPackage>
+    class PackageModel : public Model<PackageModel>, public GitObject<ICbsPackage>
     {
         friend class SessionModel;
         friend class FeatureModel;
         SessionModel &session;
         std::unordered_map<hstring, uint64_t> updates;
 
-        PackageModel(SessionModel *session, com_ptr<ICbsPackage> package) : session(*session), GitObject(package) { }
-        static PackageModel* Create(SessionModel* session, com_ptr<ICbsPackage> package);
-    public:
+        PackageModel(SessionModel *session, com_ptr<ICbsPackage> package)
+            : session(*session), GitObject(package)
+        {
+        }
 
-        SessionModel* Session() const;
-    
+        static PackageModel *Create(SessionModel *session, com_ptr<ICbsPackage> package);
+
+      public:
+        SessionModel *Session() const;
+
         hstring Identity() const;
         hstring ReleaseType() const;
         _CbsInstallState State() const;
@@ -45,10 +49,10 @@ namespace winrt::UFCase {
         void Install() const;
         void Remove() const;
         void Stage() const;
-        FeatureModel* OpenFeature(hstring const &name);
-        std::vector<FeatureModel*> GetPackageFeatureCollection(
+        FeatureModel *OpenFeature(hstring const &name);
+        std::vector<FeatureModel *> GetPackageFeatureCollection(
             _CbsApplicability appl = CbsApplicabilityNotApplicable,
             _CbsSelectability sele = CbsSelectabilityRootClass);
     };
 
-}
+} // namespace winrt::UFCase

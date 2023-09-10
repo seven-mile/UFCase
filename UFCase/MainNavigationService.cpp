@@ -35,7 +35,8 @@ namespace winrt::UFCase::implementation
 
     IAsyncAction MainNavigationService::Initialize()
     {
-        while (_stackNavItem.size()) _stackNavItem.pop();
+        while (_stackNavItem.size())
+            _stackNavItem.pop();
 
         co_await this->NavigateTo(L"SysInfo");
 
@@ -46,45 +47,57 @@ namespace winrt::UFCase::implementation
         co_return;
     }
 
-    IAsyncAction MainNavigationService::NavigateTo(hstring const& page_name, IInspectable navContext)
+    IAsyncAction MainNavigationService::NavigateTo(hstring const &page_name,
+                                                   IInspectable navContext)
     {
         _isNavigating = true;
-        auto $scope { wil::scope_exit([this]() { _isNavigating = false; }) };
+        auto $scope{wil::scope_exit([this]() { _isNavigating = false; })};
 
         _stackNavItem.push(page_name);
         this->MatchNavViewSelectedItem();
-    try {
-        auto cancel_token = co_await get_cancellation_token();
-        auto frame = this->ContentFrame();
-        if (page_name == L"Settings") {
-            frame.Navigate(xaml_typename<SettingsPage>());
+        try
+        {
+            auto cancel_token = co_await get_cancellation_token();
+            auto frame = this->ContentFrame();
+            if (page_name == L"Settings")
+            {
+                frame.Navigate(xaml_typename<SettingsPage>());
 
-            co_return;
-        } else if (page_name == L"SysInfo") {
-            frame.Navigate(xaml_typename<SysInfoPage>());
+                co_return;
+            }
+            else if (page_name == L"SysInfo")
+            {
+                frame.Navigate(xaml_typename<SysInfoPage>());
 
-            co_return;
-        } else if (page_name == L"Features") {
-            FeaturesPageViewModel vm{ ImageViewModel{ImageModel::Current()->GetHandle()} };
+                co_return;
+            }
+            else if (page_name == L"Features")
+            {
+                FeaturesPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()}};
 
-            frame.Navigate(xaml_typename<FeaturesPage>(), box_value(vm));
+                frame.Navigate(xaml_typename<FeaturesPage>(), box_value(vm));
 
-            co_return;
-        } else if (page_name == L"Optionals") {
-            // fall through
-        } else if (page_name == L"Packages") {
-            PackagesPageViewModel vm{
-                ImageViewModel{ImageModel::Current()->GetHandle()},
-                navContext.as<UFCase::PackagesPageNavigationContext>()};
-            frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
+                co_return;
+            }
+            else if (page_name == L"Optionals")
+            {
+                // fall through
+            }
+            else if (page_name == L"Packages")
+            {
+                PackagesPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()},
+                                         navContext.as<UFCase::PackagesPageNavigationContext>()};
+                frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
+                co_return;
+            }
+        }
+        catch (const hresult_error &e)
+        {
+            this->HandleHrError(e);
             co_return;
         }
-    } catch (const hresult_error& e) {
-        this->HandleHrError(e);
-        co_return;
-    }
 
-    this->HandleHrError(hresult_not_implemented());
+        this->HandleHrError(hresult_not_implemented());
     }
 
     IAsyncAction MainNavigationService::Refresh()
@@ -95,16 +108,16 @@ namespace winrt::UFCase::implementation
         co_await this->NavigateTo(_stackNavItem.top());
         _stackNavItem.pop();
 
-        //OutputDebugString(L"Ref\n");
-        //DebugFrameBackStack(this->ContentFrame().BackStack());
-        
+        // OutputDebugString(L"Ref\n");
+        // DebugFrameBackStack(this->ContentFrame().BackStack());
+
         co_return;
     }
 
     void MainNavigationService::GoBack()
     {
-        //OutputDebugString(L"Before GoBack");
-        //DebugFrameBackStack(this->ContentFrame().BackStack());
+        // OutputDebugString(L"Before GoBack");
+        // DebugFrameBackStack(this->ContentFrame().BackStack());
 
         this->ContentFrame().GoBack();
         _stackNavItem.pop();
@@ -114,7 +127,8 @@ namespace winrt::UFCase::implementation
 
     void MainNavigationService::HandleHrError(hresult_error err)
     {
-        if (_isNavigating) {
+        if (_isNavigating)
+        {
             // roll back NavView state
             _stackNavItem.pop();
             this->MatchNavViewSelectedItem();
@@ -141,16 +155,19 @@ namespace winrt::UFCase::implementation
     {
         auto navView = GlobalRes::MainWnd().NavView();
         auto cur_page = _stackNavItem.top();
-        if (cur_page == L"Settings") {
+        if (cur_page == L"Settings")
+        {
             navView.SelectedItem(navView.SettingsItem());
         }
 
-        for (auto rawitem : navView.MenuItems()) {
+        for (auto rawitem : navView.MenuItems())
+        {
             auto item = rawitem.as<NavigationViewItem>();
-            if (unbox_value_or<hstring>(item.Tag(), L"") == cur_page) {
+            if (unbox_value_or<hstring>(item.Tag(), L"") == cur_page)
+            {
                 navView.SelectedItem(item);
                 break;
             }
         }
     }
-}
+} // namespace winrt::UFCase::implementation

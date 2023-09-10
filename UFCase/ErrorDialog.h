@@ -16,7 +16,7 @@ namespace winrt::UFCase::implementation
         hstring Message();
         void Message(const hstring &val);
 
-    private:
+      private:
         int m_code;
         hstring m_msg;
     };
@@ -25,14 +25,16 @@ namespace winrt::UFCase::implementation
     {
         UFCase::HrError error;
 
-        ErrorDialog(UFCase::HrError error) : error(error) {
+        ErrorDialog(UFCase::HrError error) : error(error)
+        {
             InitializeComponent();
 
             TitleBlock().Text(std::format(L"Error: 0x{:x}", error.Code()));
             MsgBlock().Text(error.Message());
         }
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
@@ -43,4 +45,4 @@ namespace winrt::UFCase::factory_implementation
     struct ErrorDialog : ErrorDialogT<ErrorDialog, implementation::ErrorDialog>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

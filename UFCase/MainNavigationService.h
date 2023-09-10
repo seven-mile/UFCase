@@ -21,17 +21,19 @@ namespace winrt::UFCase::implementation
         Frame ContentFrame();
         void MatchNavViewSelectedItem();
 
-    private:
+      private:
         static constexpr auto _unknownPageName = L"(unknown)";
-        IInspectable _currentPageVM {nullptr};
+        IInspectable _currentPageVM{nullptr};
         std::stack<hstring> _stackNavItem{};
         bool _isNavigating = false;
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
-    struct MainNavigationService : MainNavigationServiceT<MainNavigationService, implementation::MainNavigationService>
+    struct MainNavigationService
+        : MainNavigationServiceT<MainNavigationService, implementation::MainNavigationService>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

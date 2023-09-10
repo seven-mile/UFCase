@@ -18,7 +18,8 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
 
         // set-up inv-map
-        for (auto &&[key, val] : mapUriToTypeName) {
+        for (auto &&[key, val] : mapUriToTypeName)
+        {
             mapTypeNameToUri[val.Name] = key;
         }
 
@@ -35,15 +36,17 @@ namespace winrt::UFCase::implementation
         m_path = value;
     }
 
-    void SettingsPage::SettingsPathBar_ItemClicked(BreadcrumbBar const& sender, BreadcrumbBarItemClickedEventArgs const& args)
+    void SettingsPage::SettingsPathBar_ItemClicked(BreadcrumbBar const &sender,
+                                                   BreadcrumbBarItemClickedEventArgs const &args)
     {
         auto vec = sender.ItemsSource().as<IObservableVector<hstring>>();
-        while (static_cast<int32_t>(vec.Size())-1 > args.Index())
+        while (static_cast<int32_t>(vec.Size()) - 1 > args.Index())
             vec.RemoveAtEnd();
         this->SubPageFrame().Navigate(mapUriToTypeName[this->PackBreadcrumUri()]);
     }
 
-    void SettingsPage::SubPageFrame_Navigated(IInspectable const&, Navigation::NavigationEventArgs const& args)
+    void SettingsPage::SubPageFrame_Navigated(IInspectable const &,
+                                              Navigation::NavigationEventArgs const &args)
     {
         this->UnpackBreadcrumUri(mapTypeNameToUri[args.SourcePageType().Name]);
     }
@@ -51,7 +54,8 @@ namespace winrt::UFCase::implementation
     hstring SettingsPage::PackBreadcrumUri()
     {
         std::wstring res;
-        for (auto &&part : this->SettingsPath()) {
+        for (auto &&part : this->SettingsPath())
+        {
             res += part + L"/";
         }
         // remove terminated-slash
@@ -59,12 +63,15 @@ namespace winrt::UFCase::implementation
         return res.c_str();
     }
 
-    void SettingsPage::UnpackBreadcrumUri(winrt::hstring const &hpath) {
+    void SettingsPage::UnpackBreadcrumUri(winrt::hstring const &hpath)
+    {
         this->SettingsPath().Clear();
         std::wstring path = hpath.c_str();
-        for (size_t off = 0, nxt_off = 0; nxt_off != std::wstring::npos && off < path.size(); off = nxt_off + 1) {
+        for (size_t off = 0, nxt_off = 0; nxt_off != std::wstring::npos && off < path.size();
+             off = nxt_off + 1)
+        {
             this->SettingsPath().Append(path.substr(off, nxt_off = path.find_first_of(L'/', off)));
         }
     }
 
-}
+} // namespace winrt::UFCase::implementation

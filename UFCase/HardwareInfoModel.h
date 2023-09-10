@@ -1,14 +1,15 @@
 #pragma once
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
 
     class HardwareInfoModel
     {
-    public:
+      public:
         static hstring GetFirmwareType();
         static hstring GetManufacturer();
         static hstring GetCPUArchitecture();
         static hstring GetCPUDisplayName();
     };
 
-}
+} // namespace winrt::UFCase

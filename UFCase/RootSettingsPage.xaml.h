@@ -7,13 +7,16 @@ namespace winrt::UFCase::implementation
     struct RootSettingsPage : RootSettingsPageT<RootSettingsPage>
     {
         RootSettingsPage();
-        void Group4Row1_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e);
+
+        void Group4Row1_Click(winrt::Windows::Foundation::IInspectable const &sender,
+                              winrt::Microsoft::UI::Xaml::RoutedEventArgs const &e);
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
     struct RootSettingsPage : RootSettingsPageT<RootSettingsPage, implementation::RootSettingsPage>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

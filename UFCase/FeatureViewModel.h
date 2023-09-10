@@ -53,6 +53,7 @@ namespace winrt::UFCase::implementation
         void Enable();
         void Disable();
 
+        // clang-format off
         PropertyCache<hstring, FeatureViewModel> Name{ *this, &FeatureViewModel::NameRaw };
         PropertyCache<hstring, FeatureViewModel> Description{ *this, &FeatureViewModel::DescriptionRaw };
         PropertyCache<hstring, FeatureViewModel> Identity{ *this, &FeatureViewModel::IdentityRaw };
@@ -64,6 +65,7 @@ namespace winrt::UFCase::implementation
         PropertyCache<hstring, FeatureViewModel> DownloadSize{ *this, &FeatureViewModel::DownloadSizeRaw };
         PropertyCache<hstring, FeatureViewModel> SetMembership{ *this, &FeatureViewModel::SetMembershipRaw };
         PropertyCache<IReference<bool>, FeatureViewModel> IsChecked{ *this, &FeatureViewModel::IsCheckedRaw };
+        // clang-format on
 
         void Prefetch() {
             Name();

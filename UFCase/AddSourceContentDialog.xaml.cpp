@@ -13,7 +13,8 @@
 
 #include "GlobalUtil.h"
 
-namespace winrt {
+namespace winrt
+{
     using namespace Windows::Storage::Pickers;
 }
 
@@ -29,7 +30,8 @@ namespace winrt::UFCase::implementation
         return this->SourceTextBox().Text();
     }
 
-    fire_and_forget AddSourceContentDialog::BrowserButton_Click(IInspectable const&, RoutedEventArgs const&)
+    fire_and_forget AddSourceContentDialog::BrowseButton_Click(IInspectable const &,
+                                                               RoutedEventArgs const &)
     {
         auto lifetime = get_strong();
 
@@ -41,7 +43,8 @@ namespace winrt::UFCase::implementation
         check_hresult(fd->SetTitle(L"Select a source folder"));
 
         HWND hwndOwner;
-        GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(reinterpret_cast<HWND*>(&hwndOwner));
+        GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(
+            reinterpret_cast<HWND *>(&hwndOwner));
 
         check_hresult(fd->Show(hwndOwner));
 
@@ -58,8 +61,7 @@ namespace winrt::UFCase::implementation
 
         auto txtBox = SourceTextBox();
 
-        txtBox.DispatcherQueue().TryEnqueue([path, txtBox]() {
-            txtBox.Text(path.c_str());
-        });
+        txtBox.DispatcherQueue().TryEnqueue([path, txtBox]() { txtBox.Text(path.c_str()); });
     }
-}
+
+} // namespace winrt::UFCase::implementation

@@ -1,24 +1,38 @@
 #pragma once
 
-#include <filesystem>
 #include <ShlObj_core.h>
 
-namespace winrt::UFCase {
+#include <wil/resource.h>
+#include <wil/win32_helpers.h>
+
+#include <filesystem>
+
+namespace winrt::UFCase
+{
+
+    inline std::filesystem::path GetOnlineKnownFolder(guid folder_id)
+    {
+        static std::unordered_map<guid, std::filesystem::path> mem_known_folder;
+        if (auto it = mem_known_folder.find(folder_id); it != mem_known_folder.end())
+            return it->second;
+
+        wil::unique_cotaskmem_string path_tmp;
+
+        auto get_folder_path_ret = SHGetKnownFolderPath(folder_id, 0, nullptr, path_tmp.put());
+
+        if (get_folder_path_ret != S_OK)
+        {
+            throw_hresult(HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND));
+        }
+        std::wstring copied_path = path_tmp.get();
+        return mem_known_folder[folder_id] = copied_path;
+    }
 
     inline std::filesystem::path GetOnlineWindir()
     {
-        static std::filesystem::path pathBd{};
-        if (!pathBd.empty()) return pathBd;
-
-        { // first call
-            static wchar_t pathBuffer[MAX_PATH]{};
-            if (!GetWindowsDirectory(pathBuffer, MAX_PATH))
-                winrt::throw_last_error();
-            pathBd = pathBuffer;
-        }
-        return pathBd;
+        return GetOnlineKnownFolder(FOLDERID_Windows);
     }
-    
+
     inline std::filesystem::path GetOnlineBootdrive()
     {
         return GetOnlineWindir().parent_path();
@@ -27,23 +41,6 @@ namespace winrt::UFCase {
     inline std::filesystem::path GetOnlineSystem32()
     {
         return GetOnlineWindir() / L"System32";
-    }
-
-    inline std::filesystem::path GetOnlineKnownFolder(guid folder_id) {
-        static std::unordered_map<guid, std::filesystem::path> mem_known_folder;
-        if (auto it = mem_known_folder.find(folder_id); it != mem_known_folder.end())
-            return it->second;
-
-        PWSTR path_tmp;
-        auto get_folder_path_ret = SHGetKnownFolderPath(folder_id, 0, nullptr, &path_tmp);
-
-        if (get_folder_path_ret != S_OK) {
-            CoTaskMemFree(path_tmp);
-            throw_hresult(HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND));
-        }
-        std::wstring copied_path = path_tmp;
-        CoTaskMemFree(path_tmp);
-        return mem_known_folder[folder_id] = copied_path;
     }
 
     inline std::filesystem::path GetOnlineHomeDir()
@@ -61,4 +58,4 @@ namespace winrt::UFCase {
         return GetOnlineKnownFolder(FOLDERID_RoamingAppData);
     }
 
-}
+} // namespace winrt::UFCase

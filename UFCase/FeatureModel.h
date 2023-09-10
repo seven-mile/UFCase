@@ -3,22 +3,24 @@
 #include "CbsApi.h"
 #include "GitObject.h"
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
 
     class PackageModel;
 
-    class FeatureModel : public Model<FeatureModel>,
-                         public GitObject<ICbsUpdate>
+    class FeatureModel : public Model<FeatureModel>, public GitObject<ICbsUpdate>
     {
         PackageModel &package;
 
         FeatureModel(com_ptr<ICbsUpdate> update, PackageModel *package)
-            : GitObject(update), package(*package) {  }
+            : GitObject(update), package(*package)
+        {
+        }
 
         friend class PackageModel;
-        static FeatureModel* Create(com_ptr<ICbsUpdate> update, PackageModel *parent);
-    public:
+        static FeatureModel *Create(com_ptr<ICbsUpdate> update, PackageModel *parent);
 
+      public:
         hstring Name() const;
         _CbsInstallState CurrentState() const;
         _CbsInstallState RequestedState() const;
@@ -33,8 +35,7 @@ namespace winrt::UFCase {
         PackageModel *RawFeaturePackage() const;
         void Enable();
         void Disable();
-        std::vector<FeatureModel*> GetParentFeatureCollection() const;
+        std::vector<FeatureModel *> GetParentFeatureCollection() const;
     };
 
-}
-
+} // namespace winrt::UFCase

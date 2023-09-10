@@ -15,47 +15,84 @@
 namespace winrt::UFCase::implementation
 {
 
-    struct PackagesPageNavigationContext : PackagesPageNavigationContextT<PackagesPageNavigationContext> {
+    struct PackagesPageNavigationContext
+        : PackagesPageNavigationContextT<PackagesPageNavigationContext>
+    {
         PackagesPageNavigationContext() = default;
 
-        hstring SelectPkgId() { return m_sel_pkg; }
-        void SelectPkgId(hstring value) { m_sel_pkg = value; }
+        hstring SelectPkgId()
+        {
+            return m_sel_pkg;
+        }
+
+        void SelectPkgId(hstring value)
+        {
+            m_sel_pkg = value;
+        }
 
         hstring m_sel_pkg;
     };
 
     struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel>
     {
-        PackagesPageViewModel(UFCase::ImageViewModel image): m_image(image) { }
-        PackagesPageViewModel(UFCase::ImageViewModel image, UFCase::PackagesPageNavigationContext nav_ctx)
-            : m_image(image), m_nav_ctx(nav_ctx) { }
-
-        UFCase::ImageViewModel Image() { return m_image; }
-        IObservableVector<UFCase::PackageViewModel> Packages() { return m_packages; }
-        UFCase::PackageViewModel SelectedPackage() { return m_selected; }
-        void SelectedPackage(UFCase::PackageViewModel value) {
-            m_selected = value;
-            //m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });
+        PackagesPageViewModel(UFCase::ImageViewModel image) : m_image(image)
+        {
         }
 
-        UFCase::PackagesPageNavigationContext NavContext() { return m_nav_ctx; }
+        PackagesPageViewModel(UFCase::ImageViewModel image,
+                              UFCase::PackagesPageNavigationContext nav_ctx)
+            : m_image(image), m_nav_ctx(nav_ctx)
+        {
+        }
+
+        UFCase::ImageViewModel Image()
+        {
+            return m_image;
+        }
+
+        IObservableVector<UFCase::PackageViewModel> Packages()
+        {
+            return m_packages;
+        }
+
+        UFCase::PackageViewModel SelectedPackage()
+        {
+            return m_selected;
+        }
+
+        void SelectedPackage(UFCase::PackageViewModel value)
+        {
+            m_selected = value;
+            // m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });
+        }
+
+        UFCase::PackagesPageNavigationContext NavContext()
+        {
+            return m_nav_ctx;
+        }
 
         IAsyncActionWithProgress<uint32_t> PullData(bool is_nav = true);
 
         // implement INotifyPropertyChanged
-        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value) {
+        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const &value)
+        {
             return m_property_changed.add(value);
         }
-        void PropertyChanged(winrt::event_token const& token) {
+
+        void PropertyChanged(winrt::event_token const &token)
+        {
             m_property_changed.remove(token);
         }
 
-        HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1") {
+        HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1")
+        {
             if (!m_selected)
                 co_return;
-            auto manifest_root = ImageModel::Current()->Bootdrive() / L"Windows" / L"servicing" / L"Packages";
+            auto manifest_root =
+                ImageModel::Current()->Bootdrive() / L"Windows" / L"servicing" / L"Packages";
             auto manifest_name = m_selected.DetailIdentity() + L".mum";
-            auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync((manifest_root / manifest_name.c_str()).c_str());
+            auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync(
+                (manifest_root / manifest_name.c_str()).c_str());
             auto manifest = co_await Windows::Storage::FileIO::ReadTextAsync(file);
             ContentDialog cd;
             cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
@@ -75,31 +112,38 @@ namespace winrt::UFCase::implementation
             co_await cd.ShowAsync();
         }
 
-        HandleCommandAsync(PackageShowInFileExplorer, L"Open in explorer", L"\xE8DA") {
+        HandleCommandAsync(PackageShowInFileExplorer, L"Open in explorer", L"\xE8DA")
+        {
             co_return;
         }
 
-        HandleCommandAsync(PackageShowInRegistry, L"Open in registry", L"") {
+        HandleCommandAsync(PackageShowInRegistry, L"Open in registry", L"")
+        {
             co_return;
         }
 
-    private:
+      private:
         UFCase::ImageViewModel m_image{nullptr};
         IObservableVector<UFCase::PackageViewModel> m_packages{nullptr};
         UFCase::PackageViewModel m_selected{nullptr};
         UFCase::PackagesPageNavigationContext m_nav_ctx;
 
         winrt::event<winrt::Data::PropertyChangedEventHandler> m_property_changed{};
+
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
-    struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel, implementation::PackagesPageViewModel>
+    struct PackagesPageViewModel
+        : PackagesPageViewModelT<PackagesPageViewModel, implementation::PackagesPageViewModel>
     {
     };
 
-    struct PackagesPageNavigationContext : PackagesPageNavigationContextT<PackagesPageNavigationContext, implementation::PackagesPageNavigationContext>
+    struct PackagesPageNavigationContext
+        : PackagesPageNavigationContextT<PackagesPageNavigationContext,
+                                         implementation::PackagesPageNavigationContext>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

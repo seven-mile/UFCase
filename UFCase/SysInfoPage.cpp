@@ -29,17 +29,16 @@ namespace winrt::UFCase::implementation
         return m_realtime;
     }
 
-    void SysInfoPage::ToggleSwitch_Toggled(IInspectable const& sender, RoutedEventArgs const&)
+    void SysInfoPage::ToggleSwitch_Toggled(IInspectable const &sender, RoutedEventArgs const &)
     {
         auto swch = sender.as<ToggleSwitch>();
         if (swch.IsOn())
             this->RealtimeInfo().Timer().Start();
-        else this->RealtimeInfo().Timer().Stop();
+        else
+            this->RealtimeInfo().Timer().Stop();
 
         AppConfig::SetSysinfoAutoRefresh(swch.IsOn());
         AppConfig::WriteAppConfigToFile();
     }
 
-}
-
-
+} // namespace winrt::UFCase::implementation

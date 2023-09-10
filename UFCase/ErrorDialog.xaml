@@ -2,28 +2,47 @@
     x:Class="UFCase.ErrorDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UFCase"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:UFCase"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Style="{StaticResource DefaultContentDialogStyle}"
     Title="Error"
-    PrimaryButtonText="OK">
-    
-    <StackPanel Orientation="Horizontal" Margin="30,20,70,20">
+    PrimaryButtonText="OK"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="30,20,70,20" Orientation="Horizontal">
         <Border Width="Auto">
-            <FontIcon VerticalAlignment="Top" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="48" Glyph="&#xEB90;">
+            <FontIcon
+                VerticalAlignment="Top"
+                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                FontSize="48"
+                Glyph="&#xEB90;">
                 <FontIcon.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#ff0033" Offset="0" />
-                        <GradientStop Color="#cc0000" Offset="1" />
+                        <GradientStop Offset="0" Color="#ff0033" />
+                        <GradientStop Offset="1" Color="#cc0000" />
                     </LinearGradientBrush>
                 </FontIcon.Foreground>
             </FontIcon>
         </Border>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="50,0,0,0">
-            <TextBlock x:Name="TitleBlock" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Left" Text="Error Title" />
-            <TextBlock x:Name="MsgBlock" VerticalAlignment="Top" FontSize="18" TextWrapping="WrapWholeWords" Margin="0,20,0,20" Text="Error Message" />
+        <StackPanel
+            Margin="50,0,0,0"
+            HorizontalAlignment="Stretch"
+            Orientation="Vertical">
+            <TextBlock
+                x:Name="TitleBlock"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Error Title"
+                TextWrapping="Wrap" />
+            <TextBlock
+                x:Name="MsgBlock"
+                Margin="0,20,0,20"
+                VerticalAlignment="Top"
+                FontSize="18"
+                Text="Error Message"
+                TextWrapping="WrapWholeWords" />
         </StackPanel>
     </StackPanel>
 </ContentDialog>

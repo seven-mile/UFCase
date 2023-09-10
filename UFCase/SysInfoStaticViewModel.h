@@ -21,16 +21,17 @@ namespace winrt::UFCase::implementation
         hstring OSArchitecture();
         hstring IsWinPE();
 
-    private:
+      private:
         ImageModel &m_model;
     };
 
-}
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
-    struct SysInfoStaticViewModel : SysInfoStaticViewModelT<SysInfoStaticViewModel, implementation::SysInfoStaticViewModel>
+    struct SysInfoStaticViewModel
+        : SysInfoStaticViewModelT<SysInfoStaticViewModel, implementation::SysInfoStaticViewModel>
     {
     };
 
-}
+} // namespace winrt::UFCase::factory_implementation

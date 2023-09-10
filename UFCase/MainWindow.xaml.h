@@ -25,7 +25,7 @@ namespace winrt
     using namespace Microsoft::UI::Composition::SystemBackdrops;
     using namespace Microsoft::UI::Xaml;
     using namespace Windows::System;
-}
+} // namespace winrt
 
 namespace winrt::UFCase::implementation
 {
@@ -38,17 +38,22 @@ namespace winrt::UFCase::implementation
         void ConfigWindowTitlebar();
 
         // Control Events
-        void NavView_ItemInvoked(NavigationView const& sender, NavigationViewItemInvokedEventArgs const& args);
-        void NavView_DisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& args);
-        void NavView_BackRequested(NavigationView const& sender, NavigationViewBackRequestedEventArgs const& args);
-    private:
-        winrt::DispatcherQueueController m_dispatcherQueueController{ nullptr };
+        void NavView_ItemInvoked(NavigationView const &sender,
+                                 NavigationViewItemInvokedEventArgs const &args);
+        void NavView_DisplayModeChanged(NavigationView const &sender,
+                                        NavigationViewDisplayModeChangedEventArgs const &args);
+        void NavView_BackRequested(NavigationView const &sender,
+                                   NavigationViewBackRequestedEventArgs const &args);
+
+      private:
+        winrt::DispatcherQueueController m_dispatcherQueueController{nullptr};
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
     struct MainWindow : MainWindowT<MainWindow, implementation::MainWindow>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

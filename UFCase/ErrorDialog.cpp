@@ -15,17 +15,21 @@ using namespace Windows::UI::Xaml;
 
 namespace winrt::UFCase::implementation
 {
-    HrError::HrError() : m_code() { }
+    HrError::HrError() : m_code()
+    {
+    }
 
     HrError::HrError(uint32_t hr) : m_code(hr)
     {
-        std::filesystem::path pathMsgdll{ GetOnlineWindir() / L"servicing\\CbsMsg.dll" };
+        std::filesystem::path pathMsgdll{GetOnlineWindir() / L"servicing\\CbsMsg.dll"};
 
         static auto hmsg = ::LoadLibrary(pathMsgdll.c_str());
-        if (!hmsg) throw_last_error();
+        if (!hmsg)
+            throw_last_error();
         LPWSTR buffer;
-        if (!::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_ALLOCATE_BUFFER,
-            hmsg, hr, 0, reinterpret_cast<LPWSTR>(&buffer), 0, nullptr))
+        if (!::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_FROM_HMODULE |
+                                 FORMAT_MESSAGE_ALLOCATE_BUFFER,
+                             hmsg, hr, 0, reinterpret_cast<LPWSTR>(&buffer), 0, nullptr))
             throw_last_error();
         m_msg = buffer;
         ::LocalFree(buffer);
@@ -46,9 +50,9 @@ namespace winrt::UFCase::implementation
         return m_msg;
     }
 
-    void HrError::Message(const hstring& val)
+    void HrError::Message(const hstring &val)
     {
         m_msg = val;
     }
 
-}
+} // namespace winrt::UFCase::implementation

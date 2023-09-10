@@ -8,9 +8,10 @@ namespace winrt::UFCase::implementation
     {
         App();
 
-        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
+        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const &);
 
-    private:
-        UFCase::MainWindow window{ nullptr };
+      private:
+        UFCase::MainWindow window{nullptr};
     };
-}
+
+} // namespace winrt::UFCase::implementation

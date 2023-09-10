@@ -2,8 +2,10 @@
 
 #include <winrt/UFCase.h>
 
-namespace winrt::UFCase {
-    namespace GlobalRes {
+namespace winrt::UFCase
+{
+    namespace GlobalRes
+    {
         void MainWnd(MainWindow mainWnd);
         MainWindow MainWnd();
 
@@ -16,5 +18,7 @@ namespace winrt::UFCase {
         Media::FontFamily SymbolThemeFontFamily();
 
         Microsoft::UI::Dispatching::DispatcherQueue WorkerQueue();
-    }
-}
+
+    } // namespace GlobalRes
+
+} // namespace winrt::UFCase

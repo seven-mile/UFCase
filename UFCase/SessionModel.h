@@ -3,38 +3,41 @@
 #include "GitObject.h"
 #include "CbsApi.h"
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
 
     class ImageModel;
     class PackageModel;
 
-    class SessionModel : public Model<SessionModel>,
-                         public GitObject<ICbsSession>
+    class SessionModel : public Model<SessionModel>, public GitObject<ICbsSession>
     {
         friend class ImageModel;
 
         ImageModel &image;
-        _CbsSessionOption option {CbsSessionOptionNone};
+        _CbsSessionOption option{CbsSessionOptionNone};
         DWORD session_cookie{NULL};
         std::unordered_map<hstring, uint64_t> packages;
 
-        SessionModel(ImageModel* image, com_ptr<ICbsSession> session);
-        static SessionModel* Create(ImageModel* image, _CbsSessionOption option = CbsSessionOptionNone);
+        SessionModel(ImageModel *image, com_ptr<ICbsSession> session);
+        static SessionModel *Create(ImageModel *image,
+                                    _CbsSessionOption option = CbsSessionOptionNone);
 
-        PackageModel* OpenPackageWithoutHash(com_ptr<ICbsIdentity> identity);
-    public:
+        PackageModel *OpenPackageWithoutHash(com_ptr<ICbsIdentity> identity);
+
+      public:
         ~SessionModel();
 
-        void AddSource(hstring const& source_dir);
+        void AddSource(hstring const &source_dir);
         IAsyncActionWithProgress<uint32_t> SaveChanges();
 
         // 0x1b0 0x130
-        std::vector<PackageModel*> Packages(DWORD option = 0x1b0);
-        PackageModel* OpenPackage(com_ptr<ICbsIdentity> identity);
-        PackageModel* OpenPackage(hstring const& identity);
+        std::vector<PackageModel *> Packages(DWORD option = 0x1b0);
+        PackageModel *OpenPackage(com_ptr<ICbsIdentity> identity);
+        PackageModel *OpenPackage(hstring const &identity);
 
-        PackageModel* FoundationPackage();
-        PackageModel* ProductPackage();
+        PackageModel *FoundationPackage();
+        PackageModel *ProductPackage();
+
     };
 
-}
+} // namespace winrt::UFCase

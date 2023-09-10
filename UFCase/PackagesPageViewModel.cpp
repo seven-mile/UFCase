@@ -22,30 +22,30 @@ namespace winrt::UFCase::implementation
         co_await resume_background();
 
         auto report_prog = co_await get_progress_token();
-        auto& session = SessionModel::GetInstance(m_image.OpenSession());
+        auto &session = SessionModel::GetInstance(m_image.OpenSession());
         report_prog(25);
 
-        auto&& pkgs = session.Packages(0x50);
+        auto &&pkgs = session.Packages(0x50);
         report_prog(50);
         uint32_t cnt = 0;
-        
-        for (auto&& pkg : pkgs) {
+
+        for (auto &&pkg : pkgs)
+        {
             UFCase::PackageViewModel pkg_vm(pkg->GetHandle());
-            if (is_nav && m_nav_ctx && pkg->Identity() == m_nav_ctx.SelectPkgId()) {
+            if (is_nav && m_nav_ctx && pkg->Identity() == m_nav_ctx.SelectPkgId())
+            {
                 assert(!m_selected);
                 m_selected = pkg_vm;
             }
-            RunUITask([=]{
-                m_packages.Append(pkg_vm);
-            });
+            RunUITask([=] { m_packages.Append(pkg_vm); });
             report_prog(static_cast<uint32_t>(50 + 50 * ++cnt / pkgs.size()));
         }
 
         co_await ui_thread;
 
-        m_property_changed(*this, Data::PropertyChangedEventArgs{ L"Packages" });
-        m_property_changed(*this, Data::PropertyChangedEventArgs{ L"SelectedPackage" });
+        m_property_changed(*this, Data::PropertyChangedEventArgs{L"Packages"});
+        m_property_changed(*this, Data::PropertyChangedEventArgs{L"SelectedPackage"});
 
         co_return;
     }
-}
+} // namespace winrt::UFCase::implementation

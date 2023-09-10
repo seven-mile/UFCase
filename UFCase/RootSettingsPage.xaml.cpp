@@ -21,11 +21,9 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    void RootSettingsPage::Group4Row1_Click(IInspectable const&, RoutedEventArgs const&)
+    void RootSettingsPage::Group4Row1_Click(IInspectable const &, RoutedEventArgs const &)
     {
         this->Frame().Navigate(xaml_typename<TemplateSettingsPage>());
     }
 
-}
-
-
+} // namespace winrt::UFCase::implementation

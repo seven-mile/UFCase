@@ -1,8 +1,8 @@
 #pragma once
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
     IAsyncActionWithProgress<uint32_t> SearchImages();
     IObservableVector<struct ImageViewModel> GetImageSearchResult();
-}
 
-
+} // namespace winrt::UFCase

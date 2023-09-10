@@ -16,20 +16,23 @@ namespace winrt::UFCase::implementation
         InitializeComponent();
     }
 
-    void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs& e)
+    void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        if (auto val = e.Parameter().try_as<FeaturesPageViewModel>()) {
+        if (auto val = e.Parameter().try_as<FeaturesPageViewModel>())
+        {
             m_view_model = val;
-            
-            m_view_model.RefreshCommand().Execute(nullptr);
 
-        } else {
+            m_view_model.RefreshCommand().Execute(nullptr);
+        }
+        else
+        {
             throw winrt::hresult_invalid_argument();
         }
         return;
     }
 
-    void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const& sender, Input::DoubleTappedRoutedEventArgs const&e)
+    void FeaturesPage::FeatureTreeItem_DoubleTapped(IInspectable const &sender,
+                                                    Input::DoubleTappedRoutedEventArgs const &e)
     {
         auto item = sender.as<TreeViewItem>();
         item.IsExpanded(!item.IsExpanded());
@@ -37,7 +40,8 @@ namespace winrt::UFCase::implementation
         e.Handled(true);
     }
 
-    void FeaturesPage::FeatureTreeItem_RightTapped(IInspectable const& sender, Input::RightTappedRoutedEventArgs const &e)
+    void FeaturesPage::FeatureTreeItem_RightTapped(IInspectable const &sender,
+                                                   Input::RightTappedRoutedEventArgs const &e)
     {
         auto feature = sender.as<FrameworkElement>().DataContext().as<FeatureViewModel>();
         m_view_model.SelectedFeature(feature);
@@ -45,4 +49,5 @@ namespace winrt::UFCase::implementation
         // continue to pop up context menu
         e.Handled(false);
     }
-}
+
+} // namespace winrt::UFCase::implementation

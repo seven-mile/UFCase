@@ -40,6 +40,7 @@ namespace winrt::UFCase::implementation
         hstring InstallUserNameRaw();
         bool IsApplicableRaw();
 
+        // clang-format off
         PropertyCache<hstring, PackageViewModel> ListName{ *this, &PackageViewModel::ListNameRaw };
         PropertyCache<hstring, PackageViewModel> ListIdentity{ *this, &PackageViewModel::ListIdentityRaw };
         PropertyCache<Visibility, PackageViewModel> ListIdentityVisibility{ *this, &PackageViewModel::ListIdentityVisibilityRaw };
@@ -62,9 +63,10 @@ namespace winrt::UFCase::implementation
         PropertyCache<hstring, PackageViewModel> InstallClient{ *this, &PackageViewModel::InstallClientRaw };
         PropertyCache<hstring, PackageViewModel> InstallUserName{ *this, &PackageViewModel::InstallUserNameRaw };
         PropertyCache<bool, PackageViewModel> IsApplicable{ *this, &PackageViewModel::IsApplicableRaw };
+        // clang-format on
 
-        void Prefetch() {
-
+        void Prefetch()
+        {
             ListName();
             ListIdentity();
             ListIdentityVisibility();
@@ -89,11 +91,11 @@ namespace winrt::UFCase::implementation
             IsApplicable();
         }
     };
-}
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
     struct PackageViewModel : PackageViewModelT<PackageViewModel, implementation::PackageViewModel>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

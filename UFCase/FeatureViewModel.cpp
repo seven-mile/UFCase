@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
+
 #include "CbsApi.h"
+
 #include "FeatureViewModel.h"
 #if __has_include("FeatureViewModel.g.cpp")
 #include "FeatureViewModel.g.cpp"
@@ -9,24 +11,25 @@
 
 #include <winrt/Windows.Storage.Streams.h>
 
-#include "MallocUtil.h"
+#include "AsyncUtil.h"
 #include "CbsUtil.h"
 #include "GlobalUtil.h"
-#include "AsyncUtil.h"
+#include "MallocUtil.h"
 
 #include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
-    FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel)) {
-        m_children.VectorChanged([self = get_strong()](auto const&, IVectorChangedEventArgs args) {
-            switch (args.CollectionChange()) {
+    FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel))
+    {
+        m_children.VectorChanged([self = get_strong()](auto const &, IVectorChangedEventArgs args) {
+            switch (args.CollectionChange())
+            {
             case CollectionChange::ItemInserted:
-                self->m_children.GetAt(args.Index()).PropertyChanged([self](auto const&, auto const&) {
-                    RunUITask([self]() {
-                        self->NotifyCommonPropertyChanged();
+                self->m_children.GetAt(args.Index())
+                    .PropertyChanged([self](auto const &, auto const &) {
+                        RunUITask([self]() { self->NotifyCommonPropertyChanged(); });
                     });
-                });
                 break;
             default:
                 break;
@@ -36,12 +39,13 @@ namespace winrt::UFCase::implementation
         Prefetch();
     }
 
-    winrt::event_token FeatureViewModel::PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value)
+    winrt::event_token FeatureViewModel::PropertyChanged(
+        winrt::Data::PropertyChangedEventHandler const &value)
     {
         return this->m_propertyChanged.add(value);
     }
 
-    void FeatureViewModel::PropertyChanged(winrt::event_token const& token)
+    void FeatureViewModel::PropertyChanged(winrt::event_token const &token)
     {
         this->m_propertyChanged.remove(token);
     }
@@ -49,13 +53,15 @@ namespace winrt::UFCase::implementation
     hstring FeatureViewModel::NameRaw()
     {
         auto &&res = m_model.DisplayName();
-        if (res.empty()) return m_model.Name();
+        if (res.empty())
+            return m_model.Name();
         return res;
     }
     hstring FeatureViewModel::DescriptionRaw()
     {
         auto &&res = m_model.Description();
-        if (res.empty()) return L"No description.";
+        if (res.empty())
+            return L"No description.";
         return res;
     }
     hstring FeatureViewModel::IdentityRaw()
@@ -65,18 +71,21 @@ namespace winrt::UFCase::implementation
     FeatureState FeatureViewModel::StateRaw()
     {
         auto state = m_model.RequestedState();
-        switch (state) {
+        switch (state)
+        {
         case CbsInstallStateInstallRequested:
         case CbsInstallStateInstalled:
-        //case CbsInstallStatePermanent:
-            if (std::optional<bool> opt = this->IsChecked(); opt.has_value()) {
+            // case CbsInstallStatePermanent:
+            if (std::optional<bool> opt = this->IsChecked(); opt.has_value())
+            {
                 assert(*opt);
                 return FeatureState::Enabled;
             }
-            else return FeatureState::PartiallyEnabled;
+            else
+                return FeatureState::PartiallyEnabled;
         case CbsInstallStateUninstallRequested:
         case CbsInstallStateStaged:
-        //case CbsInstallStateResolved:
+            // case CbsInstallStateResolved:
             return FeatureState::Disabled;
         case CbsInstallStateAbsent:
             return FeatureState::Unavailable;
@@ -86,12 +95,18 @@ namespace winrt::UFCase::implementation
     }
     hstring FeatureViewModel::StateTextRaw()
     {
-        switch (this->State()) {
-            case FeatureState::Unavailable: return L"Unavailable";
-            case FeatureState::Disabled: return L"Disabled";
-            case FeatureState::PartiallyEnabled: return L"PartiallyEnabled";
-            case FeatureState::Enabled: return L"Enabled";
-            default: return L"Invalid";
+        switch (this->State())
+        {
+        case FeatureState::Unavailable:
+            return L"Unavailable";
+        case FeatureState::Disabled:
+            return L"Disabled";
+        case FeatureState::PartiallyEnabled:
+            return L"PartiallyEnabled";
+        case FeatureState::Enabled:
+            return L"Enabled";
+        default:
+            return L"Invalid";
         }
     }
 
@@ -137,19 +152,21 @@ namespace winrt::UFCase::implementation
 
     bool FeatureViewModel::IsEnabled()
     {
-        return this->State() != FeatureState::Unavailable
-            && this->State() != FeatureState::Invalid;
+        return this->State() != FeatureState::Unavailable && this->State() != FeatureState::Invalid;
     }
 
     IReference<bool> FeatureViewModel::IsCheckedRaw()
     {
         uint32_t cnt = 0;
-        for (auto child : m_children) {
+        for (auto child : m_children)
+        {
             std::optional<bool> t = child.IsChecked();
             cnt += t.has_value() && *t;
         }
-        if (cnt < m_children.Size()) return std::optional<bool>(std::nullopt);
-        if (m_model.RequestedState() >= CbsInstallStateInstallRequested) return true;
+        if (cnt < m_children.Size())
+            return std::optional<bool>(std::nullopt);
+        if (m_model.RequestedState() >= CbsInstallStateInstallRequested)
+            return true;
         return false;
     }
 
@@ -168,15 +185,20 @@ namespace winrt::UFCase::implementation
         FontIconSource src{};
         src.FontFamily(GlobalRes::SymbolThemeFontFamily());
 
-        switch (this->State()) {
+        switch (this->State())
+        {
         case FeatureState::Enabled:
-            src.Glyph(L"\uf16c"); break;
+            src.Glyph(L"\uf16c");
+            break;
         case FeatureState::Disabled:
-            src.Glyph(L"\uf16b"); break;
+            src.Glyph(L"\uf16b");
+            break;
         case FeatureState::PartiallyEnabled:
-            src.Glyph(L"\uf16d"); break;
+            src.Glyph(L"\uf16d");
+            break;
         case FeatureState::Unavailable:
-            src.Glyph(L"\uea39"); break;
+            src.Glyph(L"\uea39");
+            break;
 
         default:
             throw_hresult(HRESULT_FROM_WIN32(ERROR_INVALID_STATE));
@@ -196,4 +218,4 @@ namespace winrt::UFCase::implementation
 
         NotifyCommonPropertyChanged();
     }
-}
+} // namespace winrt::UFCase::implementation

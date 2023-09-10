@@ -7,9 +7,11 @@
 #include <filesystem>
 #include <set>
 
-namespace winrt::UFCase {
+namespace winrt::UFCase
+{
 
-    enum class ImageType {
+    enum class ImageType
+    {
         Online,
         Offline
     };
@@ -21,24 +23,27 @@ namespace winrt::UFCase {
     {
         std::filesystem::path bootdrive;
 
-        ImageModel(std::filesystem::path const& bootdrive);
+        ImageModel(std::filesystem::path const &bootdrive);
         std::set<uint64_t> sessions;
 
         // persist registry access
-        SessionModel* basic_sess;
-        StoreModel* sxs_store;
+        SessionModel *basic_sess;
+        StoreModel *sxs_store;
 
-    public:
+      public:
         ~ImageModel();
 
-        static ImageModel* Create(std::filesystem::path const& bootdrive);
-        static ImageModel* Current();
-        static void Current(ImageModel*);
+        static ImageModel *Create(std::filesystem::path const &bootdrive);
+        static ImageModel *Current();
+        static void Current(ImageModel *);
 
-        SessionModel* OpenSession(_CbsSessionOption option = CbsSessionOptionNone);
+        SessionModel *OpenSession(_CbsSessionOption option = CbsSessionOptionNone);
         void CloseSession(uint64_t handle);
 
-        StoreModel* SxsStore() { return sxs_store; }
+        StoreModel *SxsStore()
+        {
+            return sxs_store;
+        }
 
         std::filesystem::path Bootdrive();
         std::filesystem::path WinDir();
@@ -48,5 +53,7 @@ namespace winrt::UFCase {
         hstring Edition();
         hstring Architecture();
         bool IsWinPE();
+
     };
-}
+
+} // namespace winrt::UFCase

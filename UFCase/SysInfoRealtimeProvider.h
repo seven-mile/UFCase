@@ -4,7 +4,8 @@
 
 #include <winrt/Windows.System.Diagnostics.h>
 
-namespace winrt {
+namespace winrt
+{
     using namespace Windows::System::Diagnostics;
 }
 
@@ -23,10 +24,10 @@ namespace winrt::UFCase::implementation
         double MemoryUsage();
         winrt::hstring MemoryUsageComment();
 
-        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const& value);
-        void PropertyChanged(winrt::event_token const& token);
+        winrt::event_token PropertyChanged(winrt::Data::PropertyChangedEventHandler const &value);
+        void PropertyChanged(winrt::event_token const &token);
 
-    private:
+      private:
         winrt::DispatcherTimer m_timer;
         winrt::event_token m_update_token;
         winrt::event<winrt::Data::PropertyChangedEventHandler> m_propertyChanged;
@@ -36,11 +37,13 @@ namespace winrt::UFCase::implementation
         double m_cpu_util = 0;
         uint64_t m_used_mem = 0, m_all_mem = 0;
     };
-}
+
+} // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
-    struct SysInfoRealtimeProvider : SysInfoRealtimeProviderT<SysInfoRealtimeProvider, implementation::SysInfoRealtimeProvider>
+    struct SysInfoRealtimeProvider
+        : SysInfoRealtimeProviderT<SysInfoRealtimeProvider, implementation::SysInfoRealtimeProvider>
     {
     };
-}
+} // namespace winrt::UFCase::factory_implementation

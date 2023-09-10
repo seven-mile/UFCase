@@ -8,15 +8,15 @@
 #include "CbsUtil.h"
 #include <wil/resource.h>
 
-
 namespace winrt::UFCase::implementation
 {
-    PackageViewModel::PackageViewModel(uint64_t hModel)
-        : m_model(PackageModel::GetInstance(hModel)) {
+    PackageViewModel::PackageViewModel(uint64_t hModel) : m_model(PackageModel::GetInstance(hModel))
+    {
         Prefetch();
     }
 
-    uint64_t PackageViewModel::Handle() {
+    uint64_t PackageViewModel::Handle()
+    {
         return m_model.GetHandle();
     }
 
@@ -28,7 +28,8 @@ namespace winrt::UFCase::implementation
     hstring PackageViewModel::StateRaw()
     {
         auto state = m_model.State();
-        switch (state) {
+        switch (state)
+        {
         case CbsInstallStateAbsent:
             return L"Absent";
         case CbsInstallStateCancel:
@@ -63,30 +64,34 @@ namespace winrt::UFCase::implementation
     hstring PackageViewModel::ListNameRaw()
     {
         auto &&res = m_model.Name();
-        if (res.empty()) return m_model.Identity();
+        if (res.empty())
+            return m_model.Identity();
         return res;
     }
 
     hstring PackageViewModel::ListIdentityRaw()
     {
-        auto&& res = m_model.Name();
+        auto &&res = m_model.Name();
         // avoid repetition of display
-        if (res.empty()) return L"";
+        if (res.empty())
+            return L"";
         return m_model.Identity();
     }
 
     Visibility PackageViewModel::ListIdentityVisibilityRaw()
     {
-        auto&& res = m_model.Name();
+        auto &&res = m_model.Name();
         // avoid repetition of display
-        if (res.empty()) return Visibility::Collapsed;
+        if (res.empty())
+            return Visibility::Collapsed;
         return Visibility::Visible;
     }
 
     hstring PackageViewModel::DetailNameRaw()
     {
-        auto&& res = m_model.Name();
-        if (res.empty()) return L"(Unnamed)";
+        auto &&res = m_model.Name();
+        if (res.empty())
+            return L"(Unnamed)";
         return res;
     }
 
@@ -98,7 +103,8 @@ namespace winrt::UFCase::implementation
     hstring PackageViewModel::DescriptionRaw()
     {
         auto &&res = m_model.Description();
-        if (res.empty()) return L"No description.";
+        if (res.empty())
+            return L"No description.";
         return res;
     }
 
@@ -167,7 +173,8 @@ namespace winrt::UFCase::implementation
         return m_model.InstallUserName();
     }
 
-    bool PackageViewModel::IsApplicableRaw() {
+    bool PackageViewModel::IsApplicableRaw()
+    {
         return m_model.IsApplicable();
     }
-}
+} // namespace winrt::UFCase::implementation
