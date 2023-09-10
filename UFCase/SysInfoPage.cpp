@@ -13,7 +13,12 @@ namespace winrt::UFCase::implementation
 {
     SysInfoPage::SysInfoPage()
     {
-        InitializeComponent();
+    }
+
+    void SysInfoPage::InitializeComponent()
+    {
+        SysInfoPageT::InitializeComponent();
+
         m_static = UFCase::SysInfoStaticViewModel(ImageModel::Current()->GetHandle());
 
         this->AutoRefreshSwitch().IsOn(AppConfig::GetSysinfoAutoRefresh());

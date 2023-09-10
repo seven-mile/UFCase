@@ -13,7 +13,6 @@ namespace winrt::UFCase::implementation
 {
     FeaturesPage::FeaturesPage()
     {
-        InitializeComponent();
     }
 
     void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)

@@ -18,7 +18,6 @@ namespace winrt::UFCase::implementation
 {
     RootSettingsPage::RootSettingsPage()
     {
-        InitializeComponent();
     }
 
     void RootSettingsPage::Group4Row1_Click(IInspectable const &, RoutedEventArgs const &)

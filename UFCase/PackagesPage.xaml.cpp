@@ -18,7 +18,6 @@ namespace winrt::UFCase::implementation
 
     PackagesPage::PackagesPage()
     {
-        InitializeComponent();
     }
 
     void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)

@@ -8,6 +8,8 @@ namespace winrt::UFCase::implementation
     {
         SettingsPage();
 
+        void InitializeComponent();
+
         IObservableVector<hstring> SettingsPath();
         void SettingsPath(IObservableVector<hstring> const &);
         void SettingsPathBar_ItemClicked(BreadcrumbBar const &sender,

@@ -16,8 +16,11 @@ namespace winrt::UFCase::implementation
     MainWindow::MainWindow()
     {
         GlobalRes::MainWnd(*this);
+    }
 
-        InitializeComponent();
+    void MainWindow::InitializeComponent()
+    {
+        MainWindowT::InitializeComponent();
 
         // other ui config
         this->UpdateTitleByConfig();

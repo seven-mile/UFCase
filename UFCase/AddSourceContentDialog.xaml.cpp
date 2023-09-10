@@ -22,7 +22,6 @@ namespace winrt::UFCase::implementation
 {
     AddSourceContentDialog::AddSourceContentDialog()
     {
-        InitializeComponent();
     }
 
     hstring AddSourceContentDialog::SourcePath()

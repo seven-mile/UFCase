@@ -14,6 +14,8 @@ namespace winrt::UFCase::implementation
     {
         SysInfoPage();
 
+        void InitializeComponent();
+
         UFCase::SysInfoStaticViewModel StaticInfo();
         UFCase::SysInfoRealtimeProvider RealtimeInfo();
         void ToggleSwitch_Toggled(IInspectable const &sender, RoutedEventArgs const &e);

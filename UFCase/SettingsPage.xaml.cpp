@@ -15,7 +15,11 @@ namespace winrt::UFCase::implementation
 
     SettingsPage::SettingsPage()
     {
-        InitializeComponent();
+    }
+
+    void SettingsPage::InitializeComponent()
+    {
+        SettingsPageT::InitializeComponent();
 
         // set-up inv-map
         for (auto &&[key, val] : mapUriToTypeName)

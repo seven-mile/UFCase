@@ -14,6 +14,5 @@ namespace winrt::UFCase::implementation
 {
     TemplateSettingsPage::TemplateSettingsPage()
     {
-        InitializeComponent();
     }
-}
+} // namespace winrt::UFCase::implementation

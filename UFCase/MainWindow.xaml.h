@@ -33,6 +33,9 @@ namespace winrt::UFCase::implementation
     {
         MainWindow();
 
+        // Override InitializeComponent
+        void InitializeComponent();
+
         // Internal Functions
         void UpdateTitleByConfig();
         void ConfigWindowTitlebar();

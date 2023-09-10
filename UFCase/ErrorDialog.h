@@ -27,8 +27,10 @@ namespace winrt::UFCase::implementation
 
         ErrorDialog(UFCase::HrError error) : error(error)
         {
-            InitializeComponent();
+        }
 
+        void InitializeComponent() {
+            ErrorDialogT::InitializeComponent();
             TitleBlock().Text(std::format(L"Error: 0x{:x}", error.Code()));
             MsgBlock().Text(error.Message());
         }
