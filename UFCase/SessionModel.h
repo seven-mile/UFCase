@@ -15,7 +15,6 @@ namespace winrt::UFCase
 
         ImageModel &image;
         _CbsSessionOption option{CbsSessionOptionNone};
-        DWORD session_cookie{NULL};
         std::unordered_map<hstring, uint64_t> packages;
 
         SessionModel(ImageModel *image, com_ptr<ICbsSession> session);

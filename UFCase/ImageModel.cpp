@@ -17,6 +17,8 @@ namespace winrt::UFCase
     ImageModel::ImageModel(std::filesystem::path const &bootdrive) : bootdrive(bootdrive)
     {
         this->basic_sess = SessionModel::Create(this);
+        // Prefetch for later use, and ensure hive loaded
+        this->basic_sess->ProductPackage();
         this->sxs_store = StoreModel::Create(this);
         if (!current && this->Type() == ImageType::Online)
         {
