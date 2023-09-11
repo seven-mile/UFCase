@@ -1,10 +1,18 @@
+import "ImageViewModel.idl";
+import "ComponentViewModel.idl";
+
 namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass ComponentsPageViewModel 
+    runtimeclass ComponentsPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        ComponentsPageViewModel();
-        Int32 MyProperty;
+        ComponentsPageViewModel(ImageViewModel image);
+
+        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
+
+        Windows.Foundation.Collections.IObservableVector<ComponentViewModel> Components{ get; };
+
+        ComponentViewModel SelectedComponent;
     }
 }

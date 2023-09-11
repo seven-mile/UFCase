@@ -24,6 +24,40 @@ namespace winrt::UFCase::implementation
         return m_model.KeyForm();
     }
 
+    hstring ComponentViewModel::NameRaw()
+    {
+        if (auto name = m_model.GetAttribute(L"Name"); name.empty()) {
+            return L"(unnamed)";
+        } else {
+            return name;
+        }
+    }
+
+    hstring ComponentViewModel::CultureRaw()
+    {
+        return m_model.GetAttribute(L"Culture");
+    }
+
+    hstring ComponentViewModel::VersionRaw()
+    {
+        return m_model.GetAttribute(L"Version");
+    }
+
+    hstring ComponentViewModel::PublicKeyTokenRaw()
+    {
+        return m_model.GetAttribute(L"PublicKeyToken");
+    }
+
+    hstring ComponentViewModel::ProcessorArchitectureRaw()
+    {
+        return m_model.GetAttribute(L"ProcessorArchitecture");
+    }
+
+    hstring ComponentViewModel::VersionScopeRaw()
+    {
+        return m_model.GetAttribute(L"VersionScope");
+    }
+
     hstring ComponentViewModel::ManifestRaw()
     {
         return m_model.Manifest();

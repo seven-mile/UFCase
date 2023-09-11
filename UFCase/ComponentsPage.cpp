@@ -4,23 +4,34 @@
 #include "ComponentsPage.g.cpp"
 #endif
 
-using namespace winrt;
-using namespace Windows::UI::Xaml;
+#include "GlobalUtil.h"
+#include "AsyncUtil.h"
 
 namespace winrt::UFCase::implementation
 {
-    int32_t ComponentsPage::MyProperty()
+    void ComponentsPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        throw hresult_not_implemented();
+        m_view_model = e.Parameter().as<UFCase::ComponentsPageViewModel>();
+        no_await([self = get_strong()]() -> IAsyncAction {
+            co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
+            RunUITask([self] {
+                if (auto item = self->CompList().SelectedItem())
+                {
+                    self->CompList().ScrollIntoView(item,
+                                                    Controls::ScrollIntoViewAlignment::Leading);
+                }
+            });
+        });
     }
 
-    void ComponentsPage::MyProperty(int32_t /* value */)
+    void ComponentsPage::ListViewItem_RightTapped(IInspectable const &sender,
+                                                  Input::RightTappedRoutedEventArgs const &e)
     {
-        throw hresult_not_implemented();
-    }
+        auto item = sender.as<ListViewItem>();
+        auto list = CompList();
+        list.SelectedItem(list.ItemFromContainer(item));
+        item.IsSelected(true);
 
-    void ComponentsPage::ClickHandler(IInspectable const &, RoutedEventArgs const &)
-    {
-        Button().Content(box_value(L"Clicked"));
+        e.Handled(false);
     }
 } // namespace winrt::UFCase::implementation

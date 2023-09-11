@@ -8,14 +8,18 @@ namespace winrt::UFCase::implementation
     {
         ComponentsPage()
         {
-            // Xaml objects should not call InitializeComponent during construction.
-            // See https://github.com/microsoft/cppwinrt/tree/master/nuget#initializecomponent
         }
 
-        int32_t MyProperty();
-        void MyProperty(int32_t value);
+        void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
 
-        void ClickHandler(IInspectable const &sender, RoutedEventArgs const &args);
+        UFCase::ComponentsPageViewModel m_view_model{nullptr};
+        UFCase::ComponentsPageViewModel ViewModel()
+        {
+            return m_view_model;
+        }
+
+        void ListViewItem_RightTapped(IInspectable const &sender,
+                                      Input::RightTappedRoutedEventArgs const &e);
     };
 } // namespace winrt::UFCase::implementation
 

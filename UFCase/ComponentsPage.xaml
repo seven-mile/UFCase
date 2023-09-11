@@ -2,12 +2,297 @@
     x:Class="UFCase.ComponentsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UFCase"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:UFCase"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="Button" Click="ClickHandler">Click Me</Button>
-    </StackPanel>
+    <SplitView
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        DisplayMode="Inline"
+        IsPaneOpen="True"
+        OpenPaneLength="500"
+        PanePlacement="Right">
+        <SplitView.PaneBackground>
+            <SolidColorBrush Color="Transparent" />
+        </SplitView.PaneBackground>
+        <SplitView.Pane>
+            <ScrollViewer
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <Grid
+                    x:Name="FeatureInfoPanel"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Grid.Row="0"
+                        Padding="20,0,20,0"
+                        HorizontalAlignment="Stretch"
+                        Orientation="Vertical">
+                        <Border Margin="0,5,0,5" Style="{StaticResource MicaCardBorder}">
+                            <StackPanel
+                                Padding="15,10,20,15"
+                                HorizontalAlignment="Stretch"
+                                Orientation="Vertical">
+                                <RichTextBlock>
+                                    <Paragraph>
+                                        <Run
+                                            FontSize="{StaticResource SubtitleTextBlockFontSize}"
+                                            FontWeight="SemiBold"
+                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.TextForm), Mode=OneWay}" />
+                                        <Run
+                                            FontSize="{StaticResource SecondaryTextFontSize}"
+                                            Foreground="{StaticResource TextFillColorSecondaryBrush}"
+                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.KeyForm), Mode=OneWay}" />
+                                    </Paragraph>
+                                </RichTextBlock>
+                                <TextBlock
+                                    Style="{StaticResource SecondaryTextBlockStyle}"
+                                    Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.PayloadPath), Mode=OneWay}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                        <Button Style="{StaticResource MicaCardCommandLink}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Orientation="Horizontal">
+                                        <FontIcon
+                                            Margin="5,0,15,0"
+                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                            Glyph="&#xEC50;" />
+                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
+                                            <TextBlock
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Text="Show manifest content for you." />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <FontIcon
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        Glyph="&#xe8a7;" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Button Style="{StaticResource MicaCardCommandLink}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Orientation="Horizontal">
+                                        <FontIcon
+                                            Margin="5,0,15,0"
+                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                            Glyph="&#xEC50;" />
+                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
+                                            <TextBlock
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Text="Some package files may be available in your disk" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <FontIcon
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        Glyph="&#xe8a7;" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Button Style="{StaticResource MicaCardCommandLink}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Orientation="Horizontal">
+                                        <FontIcon
+                                            Margin="5,0,15,0"
+                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                            FontSize="22"
+                                            Glyph="&#xECAA;" />
+                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
+                                            <TextBlock
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Text="Inspect the component key in the registry" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <FontIcon
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        Glyph="&#xe8a7;" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </SplitView.Pane>
+        <ListView
+            x:Name="CompList"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            IsItemClickEnabled="False"
+            ItemsSource="{x:Bind ViewModel.Components, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.SelectedComponent, Mode=TwoWay}"
+            SelectionMode="Single">
+            <ListView.Resources>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <ContentThemeTransition />
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ComponentViewModel">
+                    <ListViewItem RightTapped="ListViewItem_RightTapped">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="32" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="24" />
+                                <RowDefinition Height="8" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource SubtitleTextBlockStyle}"
+                                Text="{x:Bind Name}"
+                                TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource SecondaryTextBlockStyle}"
+                                Text="{x:Bind KeyForm}"
+                                TextTrimming="CharacterEllipsis" />
+                            <!--  SecondaryTextFontSize  -->
+                            <Grid Grid.Row="2" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Margin="3,0,3,0"
+                                    Padding="2,0,2,0"
+                                    Background="DarkOrange"
+                                    CornerRadius="4,4,4,4">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="White"
+                                        Style="{StaticResource SecondaryTextBlockStyle}"
+                                        Text="{x:Bind Status}"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Margin="3,0,3,0"
+                                    Padding="2,0,2,0"
+                                    Background="DodgerBlue"
+                                    CornerRadius="4,4,4,4">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="White"
+                                        Style="{StaticResource SecondaryTextBlockStyle}"
+                                        TextTrimming="CharacterEllipsis">
+                                        <Run Text="{x:Bind Version}" />
+                                        <Run Text="Files" />
+                                    </TextBlock>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Margin="3,0,3,0"
+                                    Padding="2,0,2,0"
+                                    Background="Green"
+                                    CornerRadius="4,4,4,4">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="White"
+                                        Style="{StaticResource SecondaryTextBlockStyle}"
+                                        Text="{x:Bind ProcessorArchitecture}"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Margin="3,0,3,0"
+                                    Padding="2,0,2,0"
+                                    Background="DarkOrchid"
+                                    CornerRadius="4,4,4,4">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="White"
+                                        Style="{StaticResource SecondaryTextBlockStyle}"
+                                        TextTrimming="CharacterEllipsis">
+                                        <Run Text="{x:Bind Files.Size}" />
+                                        <Run Text="Files" />
+                                    </TextBlock>
+                                </Border>
+
+                                <TextBlock
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource SecondaryTextBlockStyle}"
+                                    Text="{x:Bind PayloadPath}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </Grid>
+                            <Border
+                                Grid.Row="0"
+                                Grid.RowSpan="4"
+                                Grid.Column="1">
+                                <AppBarButton
+                                    VerticalAlignment="Center"
+                                    Icon="More"
+                                    IsCompact="False"
+                                    Label="More" />
+                            </Border>
+                        </Grid>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </SplitView>
 </Page>

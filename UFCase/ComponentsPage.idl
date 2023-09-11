@@ -1,9 +1,12 @@
+import "ComponentsPageViewModel.idl";
+
 namespace UFCase
 {
     [default_interface]
     runtimeclass ComponentsPage : Microsoft.UI.Xaml.Controls.Page
     {
         ComponentsPage();
-        Int32 MyProperty;
+
+        ComponentsPageViewModel ViewModel{ get; };
     }
 }

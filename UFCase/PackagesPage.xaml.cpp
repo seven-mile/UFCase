@@ -42,7 +42,6 @@ namespace winrt::UFCase::implementation
     void PackagesPage::ListViewItem_RightTapped(IInspectable const &sender,
                                                 Input::RightTappedRoutedEventArgs const &e)
     {
-
         auto item = sender.as<ListViewItem>();
         auto list = PkgList();
         list.SelectedItem(list.ItemFromContainer(item));

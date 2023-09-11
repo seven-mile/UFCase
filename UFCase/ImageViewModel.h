@@ -3,6 +3,7 @@
 #include "ImageViewModel.g.h"
 
 #include "ImageModel.h"
+#include "StoreModel.h"
 
 #include "PropChgUtil.h"
 
@@ -26,6 +27,10 @@ namespace winrt::UFCase::implementation
         bool Selectable()
         {
             return m_info_loading;
+        }
+
+        uint64_t Store() {
+            return m_model.SxsStore()->GetHandle();
         }
 
       private:

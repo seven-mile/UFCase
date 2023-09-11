@@ -84,26 +84,17 @@ namespace winrt::UFCase
         ULONG read = 0;
         winrt::check_hresult(pStream->Read(buf.data(), (ULONG)buf.size(), &read));
 
-        std::wstring manifestw;
-        wil::AdaptFixedSizeToAllocatedResult(
-            manifestw, [&](PWSTR bufferw, size_t cur_size, size_t *nxt_size) {
-                int ret = MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()),
-                                              bufferw, static_cast<int>(cur_size));
+        const int cchBuffer =
+            MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()), nullptr, 0);
+        // null termination
+        auto bufferw = std::make_unique<wchar_t[]>(cchBuffer + 1);
+        const int ret = MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()),
+                                            bufferw.get(), cchBuffer);
 
-                if (!ret)
-                {
-                    *nxt_size *= 2;
-                }
-                else
-                {
-                    // for null term
-                    *nxt_size = ret + sizeof(wchar_t);
-                }
+        assert(ret == cchBuffer);
+        check_win32(GetLastError());
 
-                return S_OK;
-            });
-
-        return manifestw.c_str();
+        return bufferw.get();
     }
 
     DWORD ComponentModel::Status()
@@ -120,9 +111,12 @@ namespace winrt::UFCase
         CSI_COMPONENT_PAYLOAD_INFORMATION payloadInfo{sizeof(payloadInfo)};
 
         // optional flag: ISTORE_LOCK_ASSEMBLY_PATH_FLAG_NOT_FOUND_RETURNS_NULL
-        check_hresult(store.csi_store->GetComponentInformation(
+        auto hr = (store.csi_store->GetComponentInformation(
             0, ICSISTORE_GET_COMPONENT_INFORMATION_CLASS_PAYLOAD, asm_id.get(), sizeof(payloadInfo),
             &payloadInfo));
+        if (FAILED(hr)) {
+            return L"NOTIMPL";
+        }
         com_ptr<::IUnknown> component_lock;
         component_lock.attach(payloadInfo.pComponentLock);
         return payloadInfo.pszPayloadRoot;

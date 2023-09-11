@@ -17,6 +17,13 @@ namespace winrt::UFCase::implementation
         hstring TextFormRaw();
         hstring KeyFormRaw();
 
+        hstring NameRaw();
+        hstring CultureRaw();
+        hstring VersionRaw();
+        hstring PublicKeyTokenRaw();
+        hstring ProcessorArchitectureRaw();
+        hstring VersionScopeRaw();
+
         hstring ManifestRaw();
 
         hstring StatusRaw();
@@ -27,6 +34,12 @@ namespace winrt::UFCase::implementation
         // clang-format off
         PropertyCache<hstring, ComponentViewModel> TextForm{*this, &ComponentViewModel::TextFormRaw};
         PropertyCache<hstring, ComponentViewModel> KeyForm{*this, &ComponentViewModel::KeyFormRaw};
+        PropertyCache<hstring, ComponentViewModel> Name{*this, &ComponentViewModel::NameRaw};
+        PropertyCache<hstring, ComponentViewModel> Culture{*this, &ComponentViewModel::CultureRaw};
+        PropertyCache<hstring, ComponentViewModel> Version{*this, &ComponentViewModel::VersionRaw};
+        PropertyCache<hstring, ComponentViewModel> PublicKeyToken{*this, &ComponentViewModel::PublicKeyTokenRaw};
+        PropertyCache<hstring, ComponentViewModel> ProcessorArchitecture{*this, &ComponentViewModel::ProcessorArchitectureRaw};
+        PropertyCache<hstring, ComponentViewModel> VersionScope{*this, &ComponentViewModel::VersionScopeRaw};
         PropertyCache<hstring, ComponentViewModel> Manifest{*this, &ComponentViewModel::ManifestRaw};
         PropertyCache<hstring, ComponentViewModel> Status{*this, &ComponentViewModel::StatusRaw};
         PropertyCache<hstring, ComponentViewModel> PayloadPath{*this, &ComponentViewModel::PayloadPathRaw};

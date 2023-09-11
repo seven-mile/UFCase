@@ -20,5 +20,7 @@ namespace UFCase
 
         UInt64 OpenSession();
         void CloseSession(UInt64 hModel);
+
+        UInt64 Store{ get; };
     }
 }

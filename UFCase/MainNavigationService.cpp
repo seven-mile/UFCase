@@ -92,7 +92,7 @@ namespace winrt::UFCase::implementation
             }
             else if (page_name == L"Components")
             {
-                ComponentsPageViewModel vm{};
+                ComponentsPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()}};
                 frame.Navigate(xaml_typename<ComponentsPage>(), box_value(vm));
                 co_return;
             }

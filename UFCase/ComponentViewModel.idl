@@ -15,10 +15,19 @@ namespace UFCase
         String TextForm{ get; };
         String KeyForm{ get; };
 
+        String Name{ get; };
+        String Culture{ get; };
+        String Version{ get; };
+        String PublicKeyToken{ get; };
+        String ProcessorArchitecture{ get; };
+        String VersionScope{ get; };
+
         String Manifest{ get; };
 
         String Status{ get; };
         String PayloadPath{ get; };
+
+
 
         Windows.Foundation.Collections.IObservableVector<ComponentFileViewModel> Files{ get; };
     }
