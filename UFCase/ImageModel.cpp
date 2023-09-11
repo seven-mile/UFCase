@@ -17,9 +17,15 @@ namespace winrt::UFCase
     ImageModel::ImageModel(std::filesystem::path const &bootdrive) : bootdrive(bootdrive)
     {
         this->basic_sess = SessionModel::Create(this);
-        // Prefetch for later use, and ensure hive loaded
-        this->basic_sess->ProductPackage();
-        this->sxs_store = StoreModel::Create(this);
+        this->sxs_store = nullptr;
+        // ensure hive loaded
+        try {
+            basic_sess->PerformOperation(CbsOperationTypeInitICSIStore);
+        } catch (hresult_no_interface const&) {
+            // use package loading instead, which is slower
+            basic_sess->ProductPackage();
+        }
+
         if (!current && this->Type() == ImageType::Online)
         {
             current = this;
@@ -77,6 +83,18 @@ namespace winrt::UFCase
         else
         {
             assert(false && "the session to close does not exist");
+        }
+    }
+
+    StoreModel *ImageModel::SxsStore()
+    {
+        if (sxs_store)
+        {
+            return sxs_store;
+        }
+        else
+        {
+            return sxs_store = StoreModel::Create(this);
         }
     }
 

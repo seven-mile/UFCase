@@ -37,6 +37,8 @@ namespace winrt::UFCase
         PackageModel *FoundationPackage();
         PackageModel *ProductPackage();
 
+        void PerformOperation(_CbsOperationType operation);
+
     };
 
 } // namespace winrt::UFCase

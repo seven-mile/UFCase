@@ -133,4 +133,16 @@ namespace winrt::UFCase
         return this->OpenPackage(L"@Product");
     }
 
+    void SessionModel::PerformOperation(_CbsOperationType operation)
+    {
+        if (auto session10 = GetInterface().try_as<ICbsSession10>())
+        {
+            check_hresult(session10->PerformOperation(0, operation));
+        }
+        else
+        {
+            throw hresult_no_interface{};
+        }
+    }
+
 } // namespace winrt::UFCase

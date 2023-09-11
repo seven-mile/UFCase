@@ -40,10 +40,7 @@ namespace winrt::UFCase
         SessionModel *OpenSession(_CbsSessionOption option = CbsSessionOptionNone);
         void CloseSession(uint64_t handle);
 
-        StoreModel *SxsStore()
-        {
-            return sxs_store;
-        }
+        StoreModel *SxsStore();
 
         std::filesystem::path Bootdrive();
         std::filesystem::path WinDir();
@@ -53,7 +50,6 @@ namespace winrt::UFCase
         hstring Edition();
         hstring Architecture();
         bool IsWinPE();
-
     };
 
 } // namespace winrt::UFCase
