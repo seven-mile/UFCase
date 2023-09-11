@@ -168,6 +168,7 @@
       <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="GeneratorUtil.h" />
     <ClInclude Include="GitObject.h" />
     <ClInclude Include="GitUtil.h" />
     <ClInclude Include="GlobalUtil.h" />

@@ -207,6 +207,9 @@
     <ClInclude Include="PropChgUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratorUtil.h">
+      <Filter>libraries\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">

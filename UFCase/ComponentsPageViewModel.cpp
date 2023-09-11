@@ -8,6 +8,7 @@
 #include "ComponentModel.h"
 
 #include "AsyncUtil.h"
+#include "CbsUtil.h"
 
 #include <ranges>
 
@@ -32,15 +33,21 @@ namespace winrt::UFCase::implementation
 
         auto comps = store.Components();
 
-        report_progress(50);
+        // if no reference restriction, estimate 10000 components
+        // if there is reference restriction, this should be fast enough
+        // and do not need a progress bar
+        SIZE_T comps_count = 10000;
 
-        for (int idx = 0; auto *comp : comps)
+        for (SIZE_T idx = 0; auto *comp : comps)
         {
             UFCase::ComponentViewModel comp_vm{comp->GetHandle()};
             RunUITask([=] { m_components.Append(comp_vm); });
 
             ++idx;
-            report_progress(static_cast<uint32_t>(50 + idx * 50 / comps.size()));
+            if (idx <= comps_count)
+            {
+                report_progress(static_cast<uint32_t>(idx * 100 / comps_count));
+            }
         }
 
         co_await ui_thread;

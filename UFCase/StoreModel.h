@@ -2,6 +2,8 @@
 
 #include "Model.h"
 
+#include "GeneratorUtil.h"
+
 #include "csiapi.h"
 #include "isolation.h"
 
@@ -49,14 +51,14 @@ namespace winrt::UFCase
         ~StoreModel();
 
         std::optional<ComponentModel *> OpenComponent(com_ptr<IDefinitionIdentity> pDefIdent);
-        std::vector<ComponentModel *> CreateModelsFromIEnumASM(com_ptr<IEnumSTORE_ASSEMBLY> pEnum);
 
       public:
         static StoreModel *Create(ImageModel *image);
 
         std::optional<ComponentModel *> OpenComponent(hstring id);
-        std::vector<ComponentModel *> Components();
-        std::vector<ComponentModel *> MatchComponents(hstring ref_id);
+        Generator<ComponentModel *> CreateModelsFromIEnumASM(com_ptr<IEnumSTORE_ASSEMBLY> pEnum);
+        Generator<ComponentModel *> Components();
+        Generator<ComponentModel *> MatchComponents(hstring ref_id);
     };
 
 } // namespace winrt::UFCase

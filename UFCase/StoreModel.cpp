@@ -12,6 +12,7 @@
 #include <string>
 #include <type_traits>
 #include <unordered_map>
+#include <ranges>
 
 #include "CbsUtil.h"
 
@@ -392,10 +393,9 @@ namespace winrt::UFCase
         }
     }
 
-    std::vector<ComponentModel *> StoreModel::CreateModelsFromIEnumASM(
+    Generator<ComponentModel *> StoreModel::CreateModelsFromIEnumASM(
         com_ptr<IEnumSTORE_ASSEMBLY> pEnum)
     {
-        std::vector<ComponentModel *> res{};
 
         for (auto &store_asm : GetIEnumStructVector<STORE_ASSEMBLY, SIZE_T>(pEnum))
         {
@@ -403,22 +403,22 @@ namespace winrt::UFCase
             asm_id.attach(store_asm.pIDefinitionIdentity);
 
             if (auto p = OpenComponent(asm_id); p.has_value())
-                res.push_back(*p);
+                co_yield *p;
         }
 
-        return res;
+        co_return;
     }
 
-    std::vector<ComponentModel *> StoreModel::Components()
+    Generator<ComponentModel *> StoreModel::Components()
     {
         winrt::com_ptr<::IUnknown> pRawAssemblies;
         check_hresult(sxs_store->EnumAssemblies(0, NULL, __uuidof(IEnumSTORE_ASSEMBLY),
                                                 pRawAssemblies.put()));
 
-        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
+        return pRawAssemblies.as<IEnumSTORE_ASSEMBLY>();
     }
 
-    std::vector<ComponentModel *> StoreModel::MatchComponents(hstring ref_id)
+    Generator<ComponentModel *> StoreModel::MatchComponents(hstring ref_id)
     {
         com_ptr<IReferenceIdentity> asm_id;
         check_hresult(ident_auth->TextToReference(0, ref_id.c_str(), asm_id.put()));
@@ -427,7 +427,7 @@ namespace winrt::UFCase
         check_hresult(sxs_store->EnumAssemblies(0, asm_id.get(), __uuidof(IEnumSTORE_ASSEMBLY),
                                                 pRawAssemblies.put()));
 
-        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
+        return pRawAssemblies.as<IEnumSTORE_ASSEMBLY>();
     }
 
 } // namespace winrt::UFCase
