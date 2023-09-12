@@ -41,7 +41,8 @@
             Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            VerticalScrollBarVisibility="Auto">
             <Grid
                 x:Name="FeatureInfoPanel"
                 HorizontalAlignment="Stretch"

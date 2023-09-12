@@ -8,10 +8,7 @@
     xmlns:mstext="using:Microsoft.UI.Text"
     mc:Ignorable="d">
 
-    <Grid
-        Margin="50,0,50,0"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -21,7 +18,7 @@
             x:Name="SettingsPathBar"
             Grid.Row="0"
             Grid.Column="0"
-            Margin="5"
+            Margin="55,0,55,0"
             HorizontalAlignment="Stretch"
             ItemClicked="SettingsPathBar_ItemClicked"
             ItemsSource="{x:Bind SettingsPath}">
@@ -35,7 +32,9 @@
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="0"
+            Padding="50,0,50,0"
             HorizontalScrollMode="Disabled"
+            VerticalScrollBarVisibility="Auto"
             VerticalScrollMode="Auto">
             <Frame x:Name="SubPageFrame" Navigated="SubPageFrame_Navigated" />
         </ScrollViewer>

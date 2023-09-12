@@ -68,8 +68,8 @@ namespace winrt::UFCase::implementation
         splash.Activate();
 
         // todo: for debug
-        using namespace std::chrono_literals;
-        co_await 3s;
+        // using namespace std::chrono_literals;
+        // co_await 3s;
 
         auto init_ctx = co_await splash.InitializeAsync();
 

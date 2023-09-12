@@ -88,8 +88,8 @@ namespace winrt::UFCase
             MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()), nullptr, 0);
         // null termination
         auto bufferw = std::make_unique<wchar_t[]>(cchBuffer + 1);
-        const int ret = MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()),
-                                            bufferw.get(), cchBuffer);
+        [[maybe_unused]] const int ret = MultiByteToWideChar(
+            CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()), bufferw.get(), cchBuffer);
 
         assert(ret == cchBuffer);
         check_win32(GetLastError());
@@ -114,7 +114,8 @@ namespace winrt::UFCase
         auto hr = (store.csi_store->GetComponentInformation(
             0, ICSISTORE_GET_COMPONENT_INFORMATION_CLASS_PAYLOAD, asm_id.get(), sizeof(payloadInfo),
             &payloadInfo));
-        if (FAILED(hr)) {
+        if (FAILED(hr))
+        {
             return L"NOTIMPL";
         }
         com_ptr<::IUnknown> component_lock;

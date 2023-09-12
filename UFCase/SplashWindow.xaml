@@ -18,14 +18,17 @@
             VerticalAlignment="Center"
             Orientation="Vertical">
             <TextBlock
+                HorizontalAlignment="Center"
                 Foreground="White"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="UFCase" />
             <ProgressRing
                 Margin="0,15"
+                HorizontalAlignment="Center"
                 Foreground="White"
                 IsActive="True" />
             <TextBlock
+                HorizontalAlignment="Center"
                 Foreground="White"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
                 Text="{x:Bind Status}" />

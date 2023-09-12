@@ -34,6 +34,7 @@ namespace winrt::UFCase::implementation
 
         AppWindow().TitleBar().ExtendsContentIntoTitleBar(true);
         AppWindow().TitleBar().ButtonBackgroundColor(Windows::UI::Colors::Transparent());
+        AppWindow().TitleBar().ButtonInactiveBackgroundColor(Windows::UI::Colors::Transparent());
 
         auto update_dragable_rect = [this] {
             auto sz = AppWindow().Size();
