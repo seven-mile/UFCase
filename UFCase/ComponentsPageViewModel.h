@@ -2,7 +2,10 @@
 
 #include "ComponentsPageViewModel.g.h"
 
+#include <winrt/Microsoft.UI.Xaml.Documents.h>
+
 #include "PropChgUtil.h"
+#include "XamlUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -27,6 +30,34 @@ namespace winrt::UFCase::implementation
         {
             m_selected = value;
             // NotifyPropChange(L"SelectedComponent");
+        }
+
+        HandleCommandAsync(ComponentShowManifest, L"Show manifest", L"\xe8a1")
+        {
+            if (!m_selected)
+                co_return;
+            auto manifest = m_selected.Manifest();
+            ContentDialog cd;
+            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
+            cd.Title(box_value(L"Manifest content"));
+            RichTextBlock txt;
+            Documents::Run run;
+            run.Text(manifest);
+            Documents::Paragraph para;
+            para.Inlines().Append(run);
+            txt.Blocks().Append(para);
+            ScrollViewer sv;
+            sv.Content(txt);
+            cd.Content(sv);
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            cd.MaxHeight(600);
+            co_await cd.ShowAsync();
+        }
+
+        HandleCommandAsync(ComponentShowInFileExplorer, L"Open in explorer", L"\xE8DA")
+        {
+            co_return;
         }
 
       private:

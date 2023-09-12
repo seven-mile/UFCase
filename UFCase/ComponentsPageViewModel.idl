@@ -14,5 +14,9 @@ namespace UFCase
         Windows.Foundation.Collections.IObservableVector<ComponentViewModel> Components{ get; };
 
         ComponentViewModel SelectedComponent;
+
+        Microsoft.UI.Xaml.Input.XamlUICommand ComponentShowManifestCommand{ get; };
+        Microsoft.UI.Xaml.Input.XamlUICommand ComponentShowInFileExplorerCommand{ get; };
+
     }
 }

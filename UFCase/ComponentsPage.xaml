@@ -35,6 +35,8 @@
                         Padding="20,0,20,0"
                         HorizontalAlignment="Stretch"
                         Orientation="Vertical">
+
+                        <!--  Basic Information  -->
                         <Border Margin="0,5,0,5" Style="{StaticResource MicaCardBorder}">
                             <StackPanel
                                 Padding="15,10,20,15"
@@ -45,7 +47,7 @@
                                         <Run
                                             FontSize="{StaticResource SubtitleTextBlockFontSize}"
                                             FontWeight="SemiBold"
-                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.TextForm), Mode=OneWay}" />
+                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.Name), Mode=OneWay}" />
                                         <Run
                                             FontSize="{StaticResource SecondaryTextFontSize}"
                                             Foreground="{StaticResource TextFillColorSecondaryBrush}"
@@ -58,40 +60,26 @@
                                     TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
-                        <Button Style="{StaticResource MicaCardCommandLink}">
-                            <Button.Content>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        Orientation="Horizontal">
-                                        <FontIcon
-                                            Margin="5,0,15,0"
-                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                            Glyph="&#xEC50;" />
-                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
-                                            <TextBlock
-                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                Style="{StaticResource CaptionTextBlockStyle}"
-                                                Text="Show manifest content for you." />
-                                        </StackPanel>
-                                    </StackPanel>
 
-                                    <FontIcon
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Right"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                        Glyph="&#xe8a7;" />
-                                </Grid>
+                        <!--  Commands  -->
+                        <Button Command="{x:Bind ViewModel.ComponentShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                            <Button.Content>
+                                <StackPanel
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.ComponentShowManifestCommand.IconSource}" />
+                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Text="Show manifest content for you." />
+                                    </StackPanel>
+                                </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Button Style="{StaticResource MicaCardCommandLink}">
+                        <Button Command="{x:Bind ViewModel.ComponentShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                             <Button.Content>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -103,50 +91,13 @@
                                         Grid.Column="0"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
-                                        <FontIcon
-                                            Margin="5,0,15,0"
-                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                            Glyph="&#xEC50;" />
+                                        <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.ComponentShowInFileExplorerCommand.IconSource}" />
                                         <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
                                             <TextBlock
                                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Text="Some package files may be available in your disk" />
-                                        </StackPanel>
-                                    </StackPanel>
-
-                                    <FontIcon
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Right"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                        Glyph="&#xe8a7;" />
-                                </Grid>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource MicaCardCommandLink}">
-                            <Button.Content>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        Orientation="Horizontal">
-                                        <FontIcon
-                                            Margin="5,0,15,0"
-                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                            FontSize="22"
-                                            Glyph="&#xECAA;" />
-                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
-                                            <TextBlock
-                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                Style="{StaticResource CaptionTextBlockStyle}"
-                                                Text="Inspect the component key in the registry" />
                                         </StackPanel>
                                     </StackPanel>
 
@@ -213,13 +164,15 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Border
                                     Grid.Column="0"
                                     Margin="3,0,3,0"
                                     Padding="2,0,2,0"
-                                    Background="DarkOrange"
+                                    Background="#ce8647"
                                     CornerRadius="4,4,4,4">
                                     <TextBlock
                                         VerticalAlignment="Center"
@@ -232,7 +185,7 @@
                                     Grid.Column="1"
                                     Margin="3,0,3,0"
                                     Padding="2,0,2,0"
-                                    Background="DodgerBlue"
+                                    Background="#428ee4"
                                     CornerRadius="4,4,4,4">
                                     <TextBlock
                                         VerticalAlignment="Center"
@@ -240,14 +193,13 @@
                                         Style="{StaticResource SecondaryTextBlockStyle}"
                                         TextTrimming="CharacterEllipsis">
                                         <Run Text="{x:Bind Version}" />
-                                        <Run Text="Files" />
                                     </TextBlock>
                                 </Border>
                                 <Border
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     Margin="3,0,3,0"
                                     Padding="2,0,2,0"
-                                    Background="Green"
+                                    Background="#75ab5b"
                                     CornerRadius="4,4,4,4">
                                     <TextBlock
                                         VerticalAlignment="Center"
@@ -257,7 +209,7 @@
                                         TextTrimming="CharacterEllipsis" />
                                 </Border>
                                 <Border
-                                    Grid.Column="1"
+                                    Grid.Column="3"
                                     Margin="3,0,3,0"
                                     Padding="2,0,2,0"
                                     Background="DarkOrchid"
@@ -267,13 +219,12 @@
                                         Foreground="White"
                                         Style="{StaticResource SecondaryTextBlockStyle}"
                                         TextTrimming="CharacterEllipsis">
-                                        <Run Text="{x:Bind Files.Size}" />
-                                        <Run Text="Files" />
+                                        <Run Text="{x:Bind Files.Size}" /> <Run Text="Files" />
                                     </TextBlock>
                                 </Border>
 
                                 <TextBlock
-                                    Grid.Column="2"
+                                    Grid.Column="4"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource SecondaryTextBlockStyle}"
                                     Text="{x:Bind PayloadPath}"

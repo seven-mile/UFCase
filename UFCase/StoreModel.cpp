@@ -415,7 +415,7 @@ namespace winrt::UFCase
         check_hresult(sxs_store->EnumAssemblies(0, NULL, __uuidof(IEnumSTORE_ASSEMBLY),
                                                 pRawAssemblies.put()));
 
-        return pRawAssemblies.as<IEnumSTORE_ASSEMBLY>();
+        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
     }
 
     Generator<ComponentModel *> StoreModel::MatchComponents(hstring ref_id)
@@ -427,7 +427,7 @@ namespace winrt::UFCase
         check_hresult(sxs_store->EnumAssemblies(0, asm_id.get(), __uuidof(IEnumSTORE_ASSEMBLY),
                                                 pRawAssemblies.put()));
 
-        return pRawAssemblies.as<IEnumSTORE_ASSEMBLY>();
+        return CreateModelsFromIEnumASM(pRawAssemblies.as<IEnumSTORE_ASSEMBLY>());
     }
 
 } // namespace winrt::UFCase

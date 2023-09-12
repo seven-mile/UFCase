@@ -107,10 +107,11 @@
             </NavigationView.PaneCustomContent>
 
             <NavigationView.MenuItems>
-                <NavigationViewItem
-                    Content="SysInfo"
-                    Icon="Admin"
-                    Tag="SysInfo" />
+                <NavigationViewItem Content="SysInfo" Tag="SysInfo">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem
                     Content="Features"
                     Icon="AllApps"
@@ -126,7 +127,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem Content="Components" Tag="Components">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE81E;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
