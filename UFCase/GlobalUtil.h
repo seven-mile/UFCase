@@ -17,6 +17,9 @@ namespace winrt::UFCase
 
         Media::FontFamily SymbolThemeFontFamily();
 
+        void UIQueue(Microsoft::UI::Dispatching::DispatcherQueue uiQueue);
+        Microsoft::UI::Dispatching::DispatcherQueue UIQueue();
+
         Microsoft::UI::Dispatching::DispatcherQueue WorkerQueue();
 
     } // namespace GlobalRes

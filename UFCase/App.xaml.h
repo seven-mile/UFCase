@@ -8,10 +8,11 @@ namespace winrt::UFCase::implementation
     {
         App();
 
-        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const &);
+        fire_and_forget OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const &);
 
       private:
         UFCase::MainWindow window{nullptr};
+        UFCase::SplashWindow splash{nullptr};
     };
 
 } // namespace winrt::UFCase::implementation

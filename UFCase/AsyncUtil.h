@@ -84,7 +84,7 @@ namespace winrt::UFCase
                           Microsoft::UI::Dispatching::DispatcherQueuePriority P =
                               Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal)
     {
-        DispatchTask(GlobalRes::MainWnd().DispatcherQueue(), H, P);
+        DispatchTask(GlobalRes::UIQueue(), H, P);
     }
 
     inline IAsyncAction RunUITaskAsync(
@@ -92,7 +92,7 @@ namespace winrt::UFCase
         Microsoft::UI::Dispatching::DispatcherQueuePriority P =
             Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal)
     {
-        co_await DispatchTaskAsync(GlobalRes::MainWnd().DispatcherQueue(), H, P);
+        co_await DispatchTaskAsync(GlobalRes::UIQueue(), H, P);
         co_return;
     }
 

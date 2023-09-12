@@ -230,6 +230,10 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SplashWindow.xaml.h">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SSShimApi.h" />
     <ClInclude Include="StoreModel.h" />
     <ClInclude Include="SysInfoStaticViewModel.h">
@@ -280,6 +284,9 @@
     </Page>
     <Page Include="SettingsStyleResources.xaml">
       <DeploymentContent>true</DeploymentContent>
+    </Page>
+    <Page Include="SplashWindow.xaml">
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SysInfoPage.xaml">
       <SubType>Designer</SubType>
@@ -382,6 +389,10 @@
     <ClCompile Include="SessionModel.cpp" />
     <ClCompile Include="SettingsPage.xaml.cpp">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SplashWindow.xaml.cpp">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="StoreModel.cpp" />
@@ -504,6 +515,10 @@
     </Midl>
     <Midl Include="SettingsPage.idl">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SplashWindow.idl">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="SysInfoStaticViewModel.idl">

@@ -11,6 +11,7 @@ namespace winrt::UFCase::GlobalRes
     static MainWindow refMainWnd{nullptr};
     static MainNavigationService refMainNav{nullptr};
     static MainProgressService refMainProg{nullptr};
+    static Microsoft::UI::Dispatching::DispatcherQueue refUIQueue{nullptr};
 
     void MainWnd(MainWindow mainWnd)
     {
@@ -51,6 +52,17 @@ namespace winrt::UFCase::GlobalRes
             .Resources()
             .Lookup(box_value(L"SymbolThemeFontFamily"))
             .as<Media::FontFamily>();
+    }
+
+    void UIQueue(Microsoft::UI::Dispatching::DispatcherQueue uiQueue)
+    {
+        refUIQueue = uiQueue;
+    }
+
+    Microsoft::UI::Dispatching::DispatcherQueue UIQueue()
+    {
+        assert(refUIQueue);
+        return refUIQueue;
     }
 
     Microsoft::UI::Dispatching::DispatcherQueue WorkerQueue()

@@ -18,36 +18,33 @@ namespace winrt::UFCase
     using list_t = IObservableVector<ImageViewModel>;
 
     static std::unordered_set<ImageModel *> model_set;
-    static std::mutex model_set_mutex;
-    static list_t result_list;
 
-    IAsyncActionWithProgress<uint32_t> SearchOnlineImage(ImageViewModel &result)
+    IAsyncAction ImagePullData(ImageViewModel vm)
+    {
+        auto inner = get_self<implementation::ImageViewModel>(vm);
+        co_await RunUITaskAsync([&]() -> IAsyncAction { co_await inner->PullData(); });
+    }
+
+    IAsyncActionWithProgress<hstring> SearchOnlineImage(ImageViewModel &vm)
     {
         auto report_prog = co_await winrt::get_progress_token();
-        constexpr int MAX_PROG = 10;
 
-        auto image = ImageModel::Create(GetOnlineBootdrive());
-        result = ImageViewModel{image->GetHandle()};
-        report_prog(MAX_PROG / 2);
+        auto bootdrive = GetOnlineBootdrive();
+        report_prog(std::format(L"Initializing online image [{}]", bootdrive.c_str()).c_str());
 
-        auto inner = get_self<implementation::ImageViewModel>(result);
-        co_await RunUITaskAsync([&]() -> IAsyncAction { co_await inner->PullData(); });
-        report_prog(MAX_PROG);
+        auto image = ImageModel::Create(bootdrive);
+        model_set.insert(image);
+        vm = ImageViewModel{image->GetHandle()};
+
+        report_prog(L"Loading information of online image");
+        co_await ImagePullData(vm);
 
         co_return;
     }
 
-    IAsyncActionWithProgress<uint32_t> SearchMountedImage(list_t result)
+    IAsyncActionWithProgress<hstring> SearchMountedImage(list_t result)
     {
         auto report_prog = co_await winrt::get_progress_token();
-        constexpr int MAX_PROG = 45;
-
-        // admin needed
-        if (!IsUserAnAdmin())
-        {
-            report_prog(MAX_PROG);
-            co_return;
-        }
 
         wil::unique_hkey hkeyImgList;
         try
@@ -81,28 +78,24 @@ namespace winrt::UFCase
             DWORD dwType{}, cbData{};
             winrt::check_win32(::RegGetValue(hkeyImgList.get(), nameGuid, L"Mount Path", NULL,
                                              &dwType, pathMount, &cbData));
+            report_prog(L"");
             auto image = ImageModel::Create(pathMount);
-            if (std::scoped_lock lock{model_set_mutex}; !model_set.count(image))
+            if (!model_set.count(image))
             {
                 model_set.insert(image);
-                result.Append(ImageViewModel{image->GetHandle()});
+                ImageViewModel vm{image->GetHandle()};
+                report_prog(
+                    std::format(L"Loading information of mounted image [{}]", pathMount).c_str());
+                co_await ImagePullData(vm);
+                result.Append(vm);
             }
-            report_prog(MAX_PROG * (dwIndex + 1) / cImages);
         }
         co_return;
     }
 
-    IAsyncActionWithProgress<uint32_t> SearchOfflineImages(list_t result)
+    IAsyncActionWithProgress<hstring> SearchOfflineImages(list_t result)
     {
         auto report_prog = co_await winrt::get_progress_token();
-        constexpr int MAX_PROG = 45;
-
-        // admin needed
-        if (!IsUserAnAdmin())
-        {
-            report_prog(MAX_PROG);
-            co_return;
-        }
 
         auto ensure_bootdrive = [](std::filesystem::path path) -> bool {
             return std::filesystem::exists(path) && std::filesystem::exists(path / L"Windows");
@@ -111,65 +104,49 @@ namespace winrt::UFCase
         std::wstring bootdrive = L"A:";
         for (auto &ch = bootdrive[0]; ch <= L'Z'; ch++)
         {
+            report_prog(std::format(L"Initializing offline image [{}]", bootdrive).c_str());
             if (ensure_bootdrive(bootdrive))
             {
                 auto image = ImageModel::Create(bootdrive);
-                if (std::scoped_lock lock{model_set_mutex}; !model_set.count(image))
+                if (!model_set.count(image))
                 {
                     model_set.insert(image);
-                    result.Append(ImageViewModel{image->GetHandle()});
+                    ImageViewModel vm{image->GetHandle()};
+
+                    report_prog(
+                        std::format(L"Loading information of offline image [{}]", bootdrive.c_str())
+                            .c_str());
+                    co_await ImagePullData(vm);
+
+                    result.Append(vm);
                 }
             }
-            report_prog(MAX_PROG * (ch - L'A' + 1) / 26);
         }
         co_return;
     }
 
-    IAsyncActionWithProgress<uint32_t> SearchImages()
+    IAsyncOperationWithProgress<list_t, hstring> SearchImages()
     {
-        if (result_list)
-            co_return;
+        auto result_list = multi_threaded_observable_vector<ImageViewModel>();
 
         model_set.clear();
-        result_list = multi_threaded_observable_vector<ImageViewModel>();
 
         auto report_prog = co_await winrt::get_progress_token();
 
-        // Online part
         ImageViewModel online_vm{nullptr};
-        auto op_online = SearchOnlineImage(online_vm);
-        auto op_mounted = SearchMountedImage(result_list);
-        auto op_offline = SearchOfflineImages(result_list);
-        uint32_t prog_online = 0, prog_mounted = 0, prog_offline = 0;
 
-        op_online.Progress([&](auto &, uint32_t prog) {
-            prog_online = prog;
-            report_prog(prog_online + prog_mounted + prog_offline);
-        });
-        op_mounted.Progress([&](auto &, uint32_t prog) {
-            prog_mounted = prog;
-            report_prog(prog_online + prog_mounted + prog_offline);
-        });
-        op_offline.Progress([&](auto &, uint32_t prog) {
-            prog_offline = prog;
-            report_prog(prog_online + prog_mounted + prog_offline);
-        });
+        auto forward_progress = [&](auto const &op) {
+            op.Progress([&](auto &, auto prog) { report_prog(prog); });
+            return op;
+        };
 
-        co_await op_online;
+        co_await forward_progress(SearchOnlineImage(online_vm));
         result_list.InsertAt(0, online_vm);
 
-        co_await op_mounted;
-        co_await op_offline;
+        co_await forward_progress(SearchMountedImage(result_list));
+        co_await forward_progress(SearchOfflineImages(result_list));
 
-        report_prog(100);
-
-        co_return;
-    }
-
-    list_t GetImageSearchResult()
-    {
-        assert(result_list);
-        return result_list;
+        co_return result_list;
     }
 
 } // namespace winrt::UFCase

@@ -20,12 +20,14 @@ namespace winrt::UFCase::implementation
         ImageSelectorViewModel();
 
         IObservableVector<UFCase::ImageViewModel> Images();
+
         int32_t SelectedIndex();
         void SelectedIndex(int32_t);
 
+        IAsyncActionWithProgress<hstring> PullData();
+
       private:
-        static constexpr int32_t Invalid_Index = -1;
-        int32_t m_selectedIdx = Invalid_Index;
+        int32_t m_selected_idx = -1;
 
         IObservableVector<UFCase::ImageViewModel> m_images;
     };

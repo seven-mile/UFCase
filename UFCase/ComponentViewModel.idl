@@ -27,8 +27,6 @@ namespace UFCase
         String Status{ get; };
         String PayloadPath{ get; };
 
-
-
         Windows.Foundation.Collections.IObservableVector<ComponentFileViewModel> Files{ get; };
     }
 }

@@ -12,7 +12,7 @@
 #include "GlobalUtil.h"
 #include "AsyncUtil.h"
 
-#include <winrt\Windows.UI.Xaml.Interop.h>
+#include <winrt/Windows.UI.Xaml.Interop.h>
 #include <wil/resource.h>
 
 namespace winrt::UFCase::implementation

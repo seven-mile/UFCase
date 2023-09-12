@@ -13,9 +13,17 @@
 
 namespace winrt::UFCase::implementation
 {
-    MainWindow::MainWindow()
+    MainWindow::MainWindow(ImageSelectorViewModel vm) : m_view_model(vm)
     {
         GlobalRes::MainWnd(*this);
+
+        // center the window
+        {
+            auto sz = AppWindow().Size();
+            auto x = (GetSystemMetrics(SM_CXSCREEN) - sz.Width) / 2;
+            auto y = (GetSystemMetrics(SM_CYSCREEN) - sz.Height) / 2;
+            AppWindow().Move({x, y});
+        }
     }
 
     void MainWindow::InitializeComponent()
@@ -23,30 +31,18 @@ namespace winrt::UFCase::implementation
         MainWindowT::InitializeComponent();
 
         // other ui config
-        this->UpdateTitleByConfig();
         this->ConfigWindowTitlebar();
 
         this->SystemBackdrop(Media::MicaBackdrop());
-    }
-
-    void MainWindow::UpdateTitleByConfig()
-    {
-        auto admin_tip = ::IsUserAnAdmin() ? L"" : L"Non-";
-        if (AppConfig::GetStackSource() == 0)
-        {
-            this->AppTitle().Text(std::format(L"UFCase [Online Image] [{}Admin]", admin_tip));
-        }
-        else
-        {
-            this->AppTitle().Text(std::format(L"UFCase [Offline Image, {}] [{}Admin]",
-                                              AppConfig::GetStackArgBootdrive(), admin_tip));
-        }
     }
 
     void MainWindow::ConfigWindowTitlebar()
     {
         try
         {
+            AppTitle().Text(L"UFCase");
+            this->Title(L"UFCase");
+
             if (auto appw = AppWindow())
             {
                 if (auto &&appt = appw.TitleBar())
@@ -126,6 +122,11 @@ namespace winrt::UFCase::implementation
                                            NavigationViewBackRequestedEventArgs const &)
     {
         GlobalRes::MainNavServ().GoBack();
+    }
+
+    ImageSelectorViewModel MainWindow::ViewModel()
+    {
+        return m_view_model;
     }
 
 } // namespace winrt::UFCase::implementation

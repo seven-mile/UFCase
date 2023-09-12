@@ -2,7 +2,6 @@
 
 namespace winrt::UFCase
 {
-    IAsyncActionWithProgress<uint32_t> SearchImages();
-    IObservableVector<struct ImageViewModel> GetImageSearchResult();
+    IAsyncOperationWithProgress<IObservableVector<struct ImageViewModel>, hstring> SearchImages();
 
 } // namespace winrt::UFCase

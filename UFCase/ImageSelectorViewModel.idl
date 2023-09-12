@@ -7,7 +7,10 @@ namespace UFCase
     runtimeclass ImageSelectorViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         ImageSelectorViewModel();
+
         Windows.Foundation.Collections.IObservableVector<ImageViewModel> Images{ get; };
         Int32 SelectedIndex;
+
+        Windows.Foundation.IAsyncActionWithProgress<String> PullData();
     }
 }

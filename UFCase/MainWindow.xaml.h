@@ -31,13 +31,11 @@ namespace winrt::UFCase::implementation
 {
     struct MainWindow : MainWindowT<MainWindow>
     {
-        MainWindow();
+        MainWindow(UFCase::ImageSelectorViewModel vm);
 
         // Override InitializeComponent
         void InitializeComponent();
 
-        // Internal Functions
-        void UpdateTitleByConfig();
         void ConfigWindowTitlebar();
 
         // Control Events
@@ -48,8 +46,11 @@ namespace winrt::UFCase::implementation
         void NavView_BackRequested(NavigationView const &sender,
                                    NavigationViewBackRequestedEventArgs const &args);
 
+        UFCase::ImageSelectorViewModel ViewModel();
+
       private:
         winrt::DispatcherQueueController m_dispatcherQueueController{nullptr};
+        UFCase::ImageSelectorViewModel m_view_model{nullptr};
     };
 
 } // namespace winrt::UFCase::implementation

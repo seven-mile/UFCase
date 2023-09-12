@@ -1,0 +1,22 @@
+import "ImageSelectorViewModel.idl";
+
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass AppInitializeContext
+    {
+        AppInitializeContext();
+
+        ImageSelectorViewModel ImagesViewModel;
+    };
+
+    [default_interface]
+    runtimeclass SplashWindow : Microsoft.UI.Xaml.Window, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        SplashWindow();
+
+        String Status{ get; };
+
+        Windows.Foundation.IAsyncOperation<AppInitializeContext> InitializeAsync();
+    }
+}

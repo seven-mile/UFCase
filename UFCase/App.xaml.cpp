@@ -4,6 +4,7 @@
 
 #include "AppConfig.h"
 #include "PathUtil.h"
+#include "GlobalUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -31,12 +32,15 @@ namespace winrt::UFCase::implementation
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="e">Details about the launch request and process.</param>
-    void App::OnLaunched(LaunchActivatedEventArgs const &)
+    fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const &)
     {
         // #ifdef _DEBUG
         //         while (!::IsDebuggerPresent())
         //             ::Sleep(100); // to avoid 100% CPU load
         // #endif
+
+        apartment_context ui_thread;
+        GlobalRes::UIQueue(Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread());
 
         std::filesystem::path pathAppData = GetOnlineRoamingAppDataDir();
 
@@ -55,11 +59,30 @@ namespace winrt::UFCase::implementation
             AppConfig::WriteAppConfigToFile(cfg_path.c_str());
         }
 
-        window = UFCase::MainWindow();
+        splash = UFCase::SplashWindow();
+
+        auto closed_revoke = splash.Closed([&](auto &&, auto &&) -> IAsyncAction {
+            co_await ui_thread;
+            Application::Current().Exit();
+        });
+        splash.Activate();
+
+        // todo: for debug
+        using namespace std::chrono_literals;
+        co_await 3s;
+
+        auto init_ctx = co_await splash.InitializeAsync();
+
+        co_await ui_thread;
+
+        window = UFCase::MainWindow(init_ctx.ImagesViewModel());
+
+        splash.Closed(closed_revoke);
+        splash.Close();
 
         window.Activate();
 
-        return;
+        co_return;
     }
 
 } // namespace winrt::UFCase::implementation
