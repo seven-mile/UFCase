@@ -11,6 +11,55 @@
 
 namespace winrt::UFCase::implementation
 {
+
+    enum class WindowsVersions
+    {
+        Vista,
+        Win7,
+        Win8,
+        WinBlue,
+        Win10,
+        Win11,
+    };
+
+    WindowsVersions ConvertVersion(FOUR_PART_VERSION raw_ver)
+    {
+        if (raw_ver.major < 6)
+        {
+            throw hresult_not_implemented{};
+        }
+
+        if (raw_ver.major == 6)
+        {
+            // includes vista
+            if (raw_ver.minor <= 1)
+            {
+                return WindowsVersions::Win7;
+            }
+            else
+            {
+                if (raw_ver.minor == 2)
+                    return WindowsVersions::Win8;
+                else
+                    return WindowsVersions::WinBlue;
+            }
+        }
+        else if (raw_ver.major == 10)
+        {
+            // win11 pre-release is less than 22000
+            if (raw_ver.build > 21900)
+            {
+                return WindowsVersions::Win11;
+            }
+            else
+            {
+                return WindowsVersions::Win10;
+            }
+        }
+        // other >= 10
+        return WindowsVersions::Win11;
+    }
+
     ImageViewModel::ImageViewModel(uint64_t hModel) : m_model(ImageModel::GetInstance(hModel))
     {
     }
@@ -22,75 +71,15 @@ namespace winrt::UFCase::implementation
 
     hstring ImageViewModel::Version()
     {
-        if (m_version.empty())
+        if (m_state == LoadingState::Uninitialized)
         {
-            m_version = L"Loading";
-            this->m_info_loading = true;
-
-            DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
-                auto ver = self->m_model.Version();
-                if (ver.major == 6)
-                {
-                    // includes vista
-                    if (ver.minor <= 1)
-                    {
-                        self->m_version = L"Win 7";
-                    }
-                    else
-                    {
-                        if (ver.minor == 2)
-                            self->m_version = L"Win 8";
-                        else
-                            self->m_version = L"Win 8.1";
-                    }
-                }
-                else if (ver.major == 10)
-                {
-                    // win11 pre-release is less than 22000
-                    if (ver.build > 21900)
-                    {
-                        self->m_version = L"Win 11";
-                    }
-                    else
-                    {
-                        self->m_version = L"Win 10";
-                    }
-                }
-                else if (ver.major == 11)
-                {
-                    self->m_version = L"Win 11";
-                }
-                else
-                {
-                    self->m_version = L"Win Unk";
-                }
-
-                self->m_info_loading = false;
-                RunUITask([self]() {
-                    self->NotifyPropChange(L"Version");
-                    self->NotifyPropChange(L"Selectable");
-                });
-            });
+            PullData();
         }
         return m_version;
     }
 
     hstring ImageViewModel::Edition()
     {
-        if (m_edition.empty())
-        {
-            m_edition = L"Loading";
-            this->m_info_loading = true;
-
-            DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
-                self->m_edition = self->m_model.Edition();
-                self->m_info_loading = false;
-                RunUITask([self]() {
-                    self->NotifyPropChange(L"Edition");
-                    self->NotifyPropChange(L"Selectable");
-                });
-            });
-        }
         return m_edition;
     }
 
@@ -101,65 +90,11 @@ namespace winrt::UFCase::implementation
 
     Media::ImageSource ImageViewModel::Icon()
     {
-        // static auto Icon7 =
-        // Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows7.png")),
-        //     Icon8 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows8.png")),
-        //     Icon10 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows10.png")),
-        //     Icon11 = Media::Imaging::BitmapImage(Uri(L"ms-appx:///EmbedAssets/Windows11.png"));
-
-        static auto Icon7 = Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win7.svg")),
-                    Icon8 =
-                        Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win8or10.svg")),
-                    Icon10 =
-                        Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win8or10.svg")),
-                    Icon11 =
-                        Media::Imaging::SvgImageSource(Uri(L"ms-appx:///EmbedAssets/win11.svg"));
-
-        if (!m_icon)
-        {
-            if (!m_icon_loading)
-            {
-                m_icon_loading = true;
-
-                DispatchTask(GlobalRes::WorkerQueue(), [self = get_strong()]() -> void {
-                    if (!self->m_version.empty())
-                    {
-                        auto &&ver = self->m_model.Version();
-                        if (ver.major == 6)
-                        {
-                            // includes vista
-                            if (ver.minor <= 1)
-                            {
-                                self->m_icon = Icon7;
-                            }
-                            else
-                            {
-                                self->m_icon = Icon8;
-                            }
-                        }
-                        else if (ver.major == 10)
-                        {
-                            // win11 pre-release is less than 22000
-                            if (ver.build <= 21900)
-                            {
-                                self->m_icon = Icon10;
-                            }
-                        }
-                    }
-                    // major >= 11
-                    self->m_icon = Icon11;
-                    RunUITask([self]() {
-                        self->NotifyPropChange(L"Icon");
-                    });
-                });
-            }
-        }
         return m_icon;
     }
 
     void ImageViewModel::Select()
     {
-        // ...
         ::OutputDebugString(
             std::format(L"Select image {} {}", this->Version(), this->Edition()).c_str());
         ImageModel::Current(&m_model);
@@ -173,6 +108,77 @@ namespace winrt::UFCase::implementation
     void ImageViewModel::CloseSession(uint64_t handle)
     {
         m_model.CloseSession(handle);
+    }
+
+    IAsyncAction ImageViewModel::PullData()
+    {
+        apartment_context ui_thread;
+
+        m_state = LoadingState::Loading;
+
+        co_await resume_background();
+
+        this->m_edition = m_model.Edition();
+
+        auto ver = m_model.Version();
+
+        co_await ui_thread;
+
+        switch (ConvertVersion(ver))
+        {
+        case WindowsVersions::Vista:
+            this->m_version = L"Vista";
+            break;
+        case WindowsVersions::Win7:
+            this->m_version = L"Win 7";
+            break;
+        case WindowsVersions::Win8:
+            this->m_version = L"Win 8";
+            break;
+        case WindowsVersions::WinBlue:
+            this->m_version = L"Win 8.1";
+            break;
+        case WindowsVersions::Win10:
+            this->m_version = L"Win 10";
+            break;
+        case WindowsVersions::Win11:
+            this->m_version = L"Win 11";
+            break;
+        default:
+            this->m_version = L"Win Unk";
+            break;
+        }
+
+        auto get_icon = [](hstring name) {
+            return Application::Current()
+                .Resources()
+                .Lookup(box_value(name))
+                .as<Media::Imaging::SvgImageSource>();
+        };
+
+        switch (ConvertVersion(ver))
+        {
+        case WindowsVersions::Vista:
+        case WindowsVersions::Win7:
+            this->m_icon = get_icon(L"WinAeroIcon");
+            break;
+        case WindowsVersions::Win8:
+        case WindowsVersions::WinBlue:
+        case WindowsVersions::Win10:
+            this->m_icon = get_icon(L"WinModernIcon");
+            break;
+        case WindowsVersions::Win11:
+        default:
+            this->m_icon = get_icon(L"WinFluentIcon");
+            break;
+        }
+
+        this->m_state = LoadingState::Loaded;
+
+        NotifyPropChange(L"Version");
+        NotifyPropChange(L"Edition");
+        NotifyPropChange(L"Icon");
+        NotifyPropChange(L"Selectable");
     }
 
 } // namespace winrt::UFCase::implementation

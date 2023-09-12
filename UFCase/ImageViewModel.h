@@ -26,18 +26,27 @@ namespace winrt::UFCase::implementation
 
         bool Selectable()
         {
-            return m_info_loading;
+            return m_state == LoadingState::Loaded;
         }
 
-        uint64_t Store() {
+        uint64_t Store()
+        {
             return m_model.SxsStore()->GetHandle();
         }
 
+        IAsyncAction PullData();
+
       private:
         ImageModel &m_model;
-        hstring m_version, m_edition;
+        hstring m_version{L"Loading"}, m_edition;
         Media::ImageSource m_icon{nullptr};
-        bool m_icon_loading = false, m_info_loading = false;
+
+        enum class LoadingState
+        {
+            Uninitialized,
+            Loading,
+            Loaded,
+        } m_state = LoadingState::Uninitialized;
     };
 
 } // namespace winrt::UFCase::implementation

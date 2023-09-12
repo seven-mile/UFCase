@@ -2,9 +2,11 @@
 #include "ImageSelectorHelper.h"
 
 #include "ImageModel.h"
-#include "ImageViewModel.g.h"
+#include "ImageViewModel.h"
 
 #include "PathUtil.h"
+#include "AsyncUtil.h"
+
 #include <wil/resource.h>
 
 #include <unordered_set>
@@ -19,14 +21,19 @@ namespace winrt::UFCase
     static std::mutex model_set_mutex;
     static list_t result_list;
 
-    IAsyncActionWithProgress<uint32_t> SearchOnlineImage(list_t result)
+    IAsyncActionWithProgress<uint32_t> SearchOnlineImage(ImageViewModel &result)
     {
         auto report_prog = co_await winrt::get_progress_token();
         constexpr int MAX_PROG = 10;
 
         auto image = ImageModel::Create(GetOnlineBootdrive());
-        result.Append(ImageViewModel{image->GetHandle()});
+        result = ImageViewModel{image->GetHandle()};
+        report_prog(MAX_PROG / 2);
+
+        auto inner = get_self<implementation::ImageViewModel>(result);
+        co_await RunUITaskAsync([&]() -> IAsyncAction { co_await inner->PullData(); });
         report_prog(MAX_PROG);
+
         co_return;
     }
 
@@ -129,7 +136,8 @@ namespace winrt::UFCase
         auto report_prog = co_await winrt::get_progress_token();
 
         // Online part
-        auto op_online = SearchOnlineImage(result_list);
+        ImageViewModel online_vm{nullptr};
+        auto op_online = SearchOnlineImage(online_vm);
         auto op_mounted = SearchMountedImage(result_list);
         auto op_offline = SearchOfflineImages(result_list);
         uint32_t prog_online = 0, prog_mounted = 0, prog_offline = 0;
@@ -148,7 +156,10 @@ namespace winrt::UFCase
         });
 
         co_await op_online;
+        result_list.InsertAt(0, online_vm);
+
         co_await op_mounted;
+        co_await op_offline;
 
         report_prog(100);
 

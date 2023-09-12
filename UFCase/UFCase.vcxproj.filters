@@ -227,9 +227,6 @@
     <Filter Include="libraries\servicingapi">
       <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="resources\EmbedAssets">
-      <UniqueIdentifier>{138c5470-b65f-479f-8b89-1b5dbd761e2e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="views">
       <UniqueIdentifier>{50a551d6-b67b-490d-bc0f-42c4822c9620}</UniqueIdentifier>
     </Filter>
@@ -282,17 +279,17 @@
       <Filter>framework</Filter>
     </None>
     <None Include=".editorconfig" />
-    <None Include="EmbedAssets\win7.svg">
-      <Filter>resources\EmbedAssets</Filter>
-    </None>
-    <None Include="EmbedAssets\win8or10.svg">
-      <Filter>resources\EmbedAssets</Filter>
-    </None>
-    <None Include="EmbedAssets\win11.svg">
-      <Filter>resources\EmbedAssets</Filter>
-    </None>
     <None Include="UFCase_TemporaryKey.pfx" />
     <None Include=".clang-format" />
+    <None Include="Assets\winaero.svg">
+      <Filter>resources\Assets</Filter>
+    </None>
+    <None Include="Assets\winfluent.svg">
+      <Filter>resources\Assets</Filter>
+    </None>
+    <None Include="Assets\winmodern.svg">
+      <Filter>resources\Assets</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CbsApi.idl">

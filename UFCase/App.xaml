@@ -11,6 +11,11 @@
                 <!--  Other merged dictionaries here  -->
                 <ResourceDictionary Source="ms-appx:///GlobalStyleResources.xaml" />
                 <ResourceDictionary Source="ms-appx:///SettingsStyleResources.xaml" />
+                <ResourceDictionary>
+                    <SvgImageSource x:Key="WinAeroIcon" UriSource="/Assets/winaero.svg" />
+                    <SvgImageSource x:Key="WinModernIcon" UriSource="/Assets/winmodern.svg" />
+                    <SvgImageSource x:Key="WinFluentIcon" UriSource="/Assets/winfluent.svg" />
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

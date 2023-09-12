@@ -524,14 +524,11 @@
   <ItemGroup>
     <None Include=".clang-format" />
     <None Include=".editorconfig" />
-    <None Include="EmbedAssets\win11.svg" />
-    <None Include="EmbedAssets\win7.svg" />
-    <None Include="EmbedAssets\win8or10.svg" />
+    <Image Include="Assets\winfluent.svg" />
+    <Image Include="Assets\winaero.svg" />
+    <Image Include="Assets\winmodern.svg" />
     <None Include="packages.config" />
     <None Include="UFCase_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <MyEmbeddedItems Include="EmbedAssets\**\*" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LargeTile.scale-100.png" />
@@ -585,23 +582,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
     <Image Include="Assets\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
-  <Target Name="AddMyEmbeddedItems" BeforeTargets="_GenerateProjectPriFileCore" AfterTargets="_CalculateInputsForGenerateProjectPriFileCore">
-    <!--<ItemGroup>
-      <MyXamlEmbededItems Include="@(_LayoutFile)" Condition="'%(Extension)' == '.xbf' or '%(Extension)' == '.xaml'" />
-      <_LayoutFile Remove="@(MyXamlEmbededItems)" />
-    </ItemGroup>-->
-    <Copy SourceFiles="@(MyEmbeddedItems)" DestinationFiles="@(MyEmbeddedItems->'$(IntermediateOutputPath)embed\EmbedAssets\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <!--<Copy SourceFiles="@(MyXamlEmbededItems)" DestinationFiles="@(MyXamlEmbededItems->'$(IntermediateOutputPath)embed\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />-->
-    <ReadLinesFromFile File="$(_EmbedFileResfilePath)">
-      <Output TaskParameter="Lines" ItemName="ItemsFromFile" />
-    </ReadLinesFromFile>
-    <ItemGroup>
-      <MyEmbeddedFileList Include="@(ItemsFromFile)" />
-      <MyEmbeddedFileList Include="@(MyEmbeddedItems)" />
-      <!--<MyEmbeddedFileList Include="@(MyXamlEmbededItems->'%(Filename)%(Extension)')" />-->
-    </ItemGroup>
-    <WriteLinesToFile File="$(_EmbedFileResfilePath)" Lines="@(MyEmbeddedFileList)" Overwrite="true" Encoding="Unicode" />
-  </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />

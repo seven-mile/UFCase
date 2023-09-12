@@ -73,12 +73,6 @@
                             </TeachingTip.IconSource>
                         </TeachingTip>
                     </ComboBox.Resources>
-                    <ComboBox.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultComboBoxItemStyle}" TargetType="ComboBoxItem">
-                            <!--  Todo: Disable when loading  -->
-                            <Setter Property="IsEnabled" Value="True" />
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="local:ImageViewModel">
                             <StackPanel
@@ -90,6 +84,7 @@
                                     Margin="0,7,7,7"
                                     VerticalAlignment="Stretch"
                                     Source="{x:Bind Icon, Mode=OneWay}" />
+
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
                                         <Run Text="{x:Bind Version, Mode=OneWay}" />
