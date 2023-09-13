@@ -9,7 +9,7 @@
   <Identity
     Name="SevenMile.UFCase"
     Publisher="CN=7mile"
-    Version="1.0.7.0" />
+    Version="2.0.9.0" />
 
   <Properties>
     <DisplayName>UFCase</DisplayName>
