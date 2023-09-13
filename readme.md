@@ -1,6 +1,6 @@
 # UFCase - Deep Dive into "Servicing Stack"
 
-> **Info**
+> **Important**
 > 
 > This tool is experimental and requires full control on your PC. Please DO NOT use it under production environment, especially for the mutation functionalities, which are not properly tested for now.
 
