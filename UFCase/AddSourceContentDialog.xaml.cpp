@@ -45,7 +45,13 @@ namespace winrt::UFCase::implementation
         GlobalRes::MainWnd().as<IWindowNative>()->get_WindowHandle(
             reinterpret_cast<HWND *>(&hwndOwner));
 
-        check_hresult(fd->Show(hwndOwner));
+        auto hr = fd->Show(hwndOwner);
+
+        if (hr == HRESULT_FROM_WIN32(ERROR_CANCELLED)) {
+            co_return;
+        } else if (FAILED(hr)) {
+            throw_hresult(hr);
+        }
 
         com_ptr<IShellItem> item;
         check_hresult(fd->GetResult(item.put()));
