@@ -1,0 +1,4 @@
+BasedOnStyle: Microsoft
+ColumnLimit: 100
+NamespaceIndentation: All
+SortIncludes: false

@@ -1,0 +1,11 @@
+namespace UFCaseImageHost
+{
+    [default_interface]
+    runtimeclass Class
+    {
+        Class();
+        Int32 MyProperty;
+
+        Windows.Foundation.Collections.IVector<UFCase.ImageViewModel> GetImages();
+    }
+}
