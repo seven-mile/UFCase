@@ -1,5 +1,5 @@
 ========================================================================
-    C++/WinRT UFCaseImageHostTest Project Overview
+    C++/WinRT UFCase.Host.Test Project Overview
 ========================================================================
 
 This project demonstrates how to get started consuming Windows Runtime 

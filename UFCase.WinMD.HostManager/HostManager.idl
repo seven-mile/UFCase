@@ -1,0 +1,28 @@
+
+namespace UFCase.Isolation
+{
+
+    runtimeclass Host
+    {
+        Guid Id { get; };
+        String Bootdrive { get; };
+
+        void Ping();
+    }
+
+    [default_interface]
+    runtimeclass HostManager
+    {
+        void RegisterHost(Host host);
+        void UnregisterHost(Host host);
+    }
+
+    [default_interface]
+    runtimeclass HostManagerSingleton {
+    
+      HostManagerSingleton();
+
+      HostManager Current();
+    
+    }
+}

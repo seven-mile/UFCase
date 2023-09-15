@@ -1,0 +1,11 @@
+namespace UFCase.Isolation
+{
+    runtimeclass HostManager : [default] IHostManager
+    {
+    }
+
+    runtimeclass HostManagerStatics : [default] IHostManagerStatics
+    {
+        HostManagerStatics
+    }
+}

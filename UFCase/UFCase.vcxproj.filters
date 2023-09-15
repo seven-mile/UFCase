@@ -37,6 +37,7 @@
     <Page Include="ComponentsPage.xaml">
       <Filter>views\pages</Filter>
     </Page>
+    <Page Include="SplashWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -120,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="ComponentModel.cpp">
       <Filter>models</Filter>
+    </ClCompile>
+    <ClCompile Include="HostGuard.cpp">
+      <Filter>hosting</Filter>
+    </ClCompile>
+    <ClCompile Include="HostManager.cpp">
+      <Filter>hosting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +217,12 @@
     <ClInclude Include="GeneratorUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
+    <ClInclude Include="HostGuard.h">
+      <Filter>hosting</Filter>
+    </ClInclude>
+    <ClInclude Include="HostManager.h">
+      <Filter>hosting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">
@@ -263,6 +276,9 @@
     <Filter Include="resources\Assets">
       <UniqueIdentifier>{d3c85fd5-0741-4ef2-b814-bb45d45c746a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hosting">
+      <UniqueIdentifier>{17780e75-e5bf-4917-8398-f16c389c2c55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
@@ -281,15 +297,6 @@
     <None Include=".editorconfig" />
     <None Include="UFCase_TemporaryKey.pfx" />
     <None Include=".clang-format" />
-    <None Include="Assets\winaero.svg">
-      <Filter>resources\Assets</Filter>
-    </None>
-    <None Include="Assets\winfluent.svg">
-      <Filter>resources\Assets</Filter>
-    </None>
-    <None Include="Assets\winmodern.svg">
-      <Filter>resources\Assets</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CbsApi.idl">
@@ -450,6 +457,9 @@
     <Image Include="Assets\Wide310x150Logo.scale-400.png">
       <Filter>resources\Assets</Filter>
     </Image>
+    <Image Include="Assets\winfluent.svg" />
+    <Image Include="Assets\winaero.svg" />
+    <Image Include="Assets\winmodern.svg" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
