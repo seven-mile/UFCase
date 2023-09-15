@@ -24,9 +24,10 @@ namespace winrt::UFCase
         {
             return !h.done();
         }
-        void operator++()
+        GeneratorIter &operator++()
         {
             h();
+            return *this;
         }
         value_type &operator*()
         {
@@ -90,6 +91,14 @@ namespace winrt::UFCase
         explicit Generator(handle_type h) : h_(h)
         {
         }
+
+        Generator(Generator &&g)
+        {
+            h_ = g.h_;
+            begin_ = g.begin_;
+            g.h_ = nullptr;
+        }
+
         ~Generator()
         {
             if (h_)

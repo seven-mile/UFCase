@@ -7,6 +7,8 @@
 
 #include <filesystem>
 
+#pragma comment(lib, "Shell32.lib")
+
 namespace winrt::UFCase
 {
 

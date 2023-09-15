@@ -1,0 +1,13 @@
+namespace UFCase.Host
+{
+
+    runtimeclass GeneratorIterator : [default] Windows.Foundation.Collections.IIterator<Object>
+    {
+        
+    }
+
+    runtimeclass GeneratorIterable : [default] Windows.Foundation.Collections.IIterable<Object>
+    {
+        
+    }
+}

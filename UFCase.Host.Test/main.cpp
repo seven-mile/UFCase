@@ -20,6 +20,7 @@ wil::unique_event _comServerExitEvent;
 // - Called back when COM says there is nothing left for our server to do and we can tear down.
 static void _releaseNotifier() noexcept
 {
+    wprintf(L"No host object left. Test completed. Exiting...\n");
     _comServerExitEvent.SetEvent();
 }
 
@@ -37,10 +38,14 @@ winrt::fire_and_forget StartHosts()
 
     // co_await winrt::resume_background();
 
-    for (int i = 0; i < 4; i++)
+    constexpr LPCWSTR bootdrives[] = {
+        L"C:\\",
+        L"F:\\",
+    };
+
+    for (auto bootdrive : bootdrives)
     {
         auto client_id = winrt::to_hstring(winrt::GuidHelper::CreateNewGuid());
-        auto bootdrive = L"C:";
 
         STARTUPINFO st_info{
             .cb = sizeof(st_info),

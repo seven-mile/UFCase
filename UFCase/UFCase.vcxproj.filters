@@ -37,7 +37,9 @@
     <Page Include="ComponentsPage.xaml">
       <Filter>views\pages</Filter>
     </Page>
-    <Page Include="SplashWindow.xaml" />
+    <Page Include="SplashWindow.xaml">
+      <Filter>views\windows</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -126,6 +128,9 @@
       <Filter>hosting</Filter>
     </ClCompile>
     <ClCompile Include="HostManager.cpp">
+      <Filter>hosting</Filter>
+    </ClCompile>
+    <ClCompile Include="HostManagerSingleton.cpp">
       <Filter>hosting</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,6 +226,9 @@
       <Filter>hosting</Filter>
     </ClInclude>
     <ClInclude Include="HostManager.h">
+      <Filter>hosting</Filter>
+    </ClInclude>
+    <ClInclude Include="HostManagerSingleton.h">
       <Filter>hosting</Filter>
     </ClInclude>
   </ItemGroup>

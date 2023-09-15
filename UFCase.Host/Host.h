@@ -2,6 +2,8 @@
 
 #include "Host.g.h"
 
+#include "ImageModel.h"
+
 #include <filesystem>
 
 namespace winrt::UFCase::Isolation::implementation
@@ -31,6 +33,12 @@ namespace winrt::UFCase::Isolation::implementation
         void Ping()
         {
             wprintf(L"Ping got: OK");
+        }
+
+        Isolation::ImageModel Image()
+        {
+            static Isolation::ImageModel instance = make<implementation::ImageModel>(m_bootdrive);
+            return instance;
         }
 
       private:
