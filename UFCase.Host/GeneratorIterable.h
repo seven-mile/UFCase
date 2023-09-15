@@ -49,12 +49,12 @@ namespace winrt::UFCase::Host::implementation
 
         template <typename T>
         GeneratorIterable(std::shared_ptr<Generator<T>> iter)
-            : g(std::make_shared<Generator<IInspectable>>([iter]() -> Generator<IInspectable> {
+            : g(std::make_shared<Generator<IInspectable>>([](auto iter) -> Generator<IInspectable> {
                   for (auto &&item : *iter)
                   {
                       co_yield box_value(item);
                   }
-              }()))
+              }(iter)))
         {
         }
 

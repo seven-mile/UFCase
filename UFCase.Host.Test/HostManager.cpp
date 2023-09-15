@@ -24,6 +24,7 @@ namespace winrt::UFCase::Isolation::implementation
 
         for (auto obj : img.SxsStore().GetComponentCollection(L"HyperV-Worker-Control")) {
             auto comp = obj.as<Isolation::ComponentModel>();
+            wprintf(winrt::format(L"Component: {}\n\t{}\n", comp.TextForm(), comp.PayloadPath()).c_str());
         }
 
         host.Ping();
