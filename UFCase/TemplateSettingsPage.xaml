@@ -62,7 +62,7 @@
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                     <FontIcon
                         Margin="5,0,15,0"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Glyph="&#xE76D;" />
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
@@ -74,7 +74,7 @@
                 </StackPanel>
                 <FontIcon
                     HorizontalAlignment="Right"
-                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                     Glyph="&#xE76C;" />
             </Grid>
         </Border>
@@ -87,7 +87,7 @@
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                     <FontIcon
                         Margin="5,0,15,0"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Glyph="&#xE76D;" />
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
@@ -100,7 +100,7 @@
 
                 <FontIcon
                     HorizontalAlignment="Right"
-                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                     Glyph="&#xE76C;" />
             </Grid>
         </Button>
@@ -112,7 +112,7 @@
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                     <FontIcon
                         Margin="5,0,15,0"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Glyph="&#xE76D;" />
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Other setting 2" />
@@ -125,7 +125,7 @@
 
                 <FontIcon
                     HorizontalAlignment="Right"
-                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                     Glyph="&#xE76C;" />
             </Grid>
         </Button>

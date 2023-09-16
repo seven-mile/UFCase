@@ -110,7 +110,7 @@
                                     Orientation="Horizontal">
                                     <FontIcon
                                         Margin="5,0,15,0"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Glyph="&#xEC50;" />
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
@@ -124,7 +124,7 @@
                                 <FontIcon
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                                     Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>
@@ -143,7 +143,7 @@
                                     Orientation="Horizontal">
                                     <FontIcon
                                         Margin="5,0,15,0"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         FontSize="22"
                                         Glyph="&#xECAA;" />
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
@@ -158,7 +158,7 @@
                                 <FontIcon
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                                     Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>
@@ -177,7 +177,7 @@
                                     Orientation="Horizontal">
                                     <FontIcon
                                         Margin="5,0,15,0"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Glyph="&#xE897;" />
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open Support Information" />
@@ -191,7 +191,7 @@
                                 <FontIcon
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                                     Glyph="&#xe8a7;" />
                             </Grid>
                         </Button.Content>

@@ -105,7 +105,7 @@
                                     <FontIcon
                                         Grid.Column="2"
                                         HorizontalAlignment="Right"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Glyph="&#xe8a7;" />
                                 </Grid>
                             </Button.Content>

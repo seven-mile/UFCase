@@ -57,7 +57,7 @@ namespace winrt::UFCase::Isolation::implementation
 
         if (m_hosts.count(host.Bootdrive().c_str()))
         {
-            OutputDebugString(L"warning: duplication of host registration, double creation?");
+            OutputDebugString(L"warning: duplication of host registration, double creation?\n");
 
             // dispose the object and the host will exit
             host = nullptr;
@@ -152,12 +152,12 @@ namespace winrt::UFCase::Isolation::implementation
 
             if (proc_info.hProcess)
             {
-                check_bool(TerminateProcess(proc_info.hProcess, 0));
+                TerminateProcess(proc_info.hProcess, 0);
             }
-            OutputDebugString(L"no registration received from host, retrying");
+            OutputDebugString(L"no registration received from host, retrying\n");
         }
 
-        OutputDebugString(L"failed to start host, aborting");
+        OutputDebugString(L"failed to start host, aborting\n");
         THROW_WIN32(ERROR_TIMEOUT);
     }
 } // namespace winrt::UFCase::Isolation::implementation

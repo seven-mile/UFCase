@@ -59,7 +59,7 @@
                             <FontIcon
                                 Margin="10"
                                 VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 FontSize="20"
                                 Glyph="&#xE977;" />
                             <TextBlock
@@ -146,7 +146,7 @@
                             <FontIcon
                                 Margin="10"
                                 VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 FontSize="20"
                                 Glyph="&#xE9F5;" />
                             <TextBlock
@@ -221,7 +221,7 @@
                                 <FontIcon
                                     Margin="10"
                                     VerticalAlignment="Center"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                                     FontSize="20"
                                     Glyph="&#xE9D9;" />
                                 <TextBlock
