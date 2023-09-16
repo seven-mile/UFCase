@@ -32,8 +32,8 @@ namespace winrt::UFCase::implementation
             UFCase::PackageViewModel pkg_vm(pkg);
             if (is_nav && m_nav_ctx && pkg.Identity() == m_nav_ctx.SelectPkgId())
             {
-                assert(!m_selected);
-                m_selected = pkg_vm;
+                if (!m_selected)
+                    m_selected = pkg_vm;
             }
             RunUITask([=] { m_packages.Append(pkg_vm); });
             report_prog(static_cast<uint32_t>(50 + 50 * ++cnt / pkgs.Size()));
