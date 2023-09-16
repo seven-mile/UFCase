@@ -52,11 +52,11 @@ namespace winrt::UFCase
         template <typename RetT> std::optional<RetT> Get(ClassT *cls, RetT((ClassT::*field)()))
         {
             std::shared_lock g{mtx};
-            try
+            if (auto it = caches.find({cls, Conv(field)}); it != caches.end())
             {
-                return std::any_cast<RetT>(caches.at({cls, Conv(field)}));
+                return std::any_cast<RetT>(it->second);
             }
-            catch (std::out_of_range const &)
+            else
             {
                 return std::nullopt;
             }

@@ -91,23 +91,8 @@
     <ClCompile Include="pch.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="CbsApiProxy.c">
-      <Filter>libraries\servicingapi</Filter>
-    </ClCompile>
     <ClCompile Include="AppConfig.cpp">
       <Filter>libraries\appconfig</Filter>
-    </ClCompile>
-    <ClCompile Include="FeatureModel.cpp">
-      <Filter>models</Filter>
-    </ClCompile>
-    <ClCompile Include="PackageModel.cpp">
-      <Filter>models</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageModel.cpp">
-      <Filter>models</Filter>
-    </ClCompile>
-    <ClCompile Include="SessionModel.cpp">
-      <Filter>models</Filter>
     </ClCompile>
     <ClCompile Include="HardwareInfoModel.cpp">
       <Filter>models</Filter>
@@ -117,12 +102,6 @@
     </ClCompile>
     <ClCompile Include="GlobalUtil.cpp">
       <Filter>libraries\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="StoreModel.cpp">
-      <Filter>models</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentModel.cpp">
-      <Filter>models</Filter>
     </ClCompile>
     <ClCompile Include="HostGuard.cpp">
       <Filter>hosting</Filter>
@@ -138,35 +117,8 @@
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="SSShimApi.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
-    <ClInclude Include="MallocUtil.h">
-      <Filter>libraries\utils</Filter>
-    </ClInclude>
     <ClInclude Include="AppConfig.h">
       <Filter>libraries\appconfig</Filter>
-    </ClInclude>
-    <ClInclude Include="CbsUtil.h">
-      <Filter>libraries\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="FeatureModel.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="PackageModel.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageModel.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="SessionModel.h">
-      <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="HardwareInfoModel.h">
       <Filter>models</Filter>
@@ -177,20 +129,11 @@
     <ClInclude Include="PathUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
-    <ClInclude Include="GitObject.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="GitUtil.h">
-      <Filter>libraries\utils</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
     <ClInclude Include="XamlUtil.h">
       <Filter>libraries\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="CCbsUIHandler.h">
-      <Filter>models</Filter>
     </ClInclude>
     <ClInclude Include="AsyncUtil.h">
       <Filter>libraries\utils</Filter>
@@ -198,28 +141,7 @@
     <ClInclude Include="CacheUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
-    <ClInclude Include="isolation.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
-    <ClInclude Include="csiapi.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
-    <ClInclude Include="wcpdef.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
-    <ClInclude Include="cdf_types.h">
-      <Filter>libraries\servicingapi</Filter>
-    </ClInclude>
-    <ClInclude Include="StoreModel.h">
-      <Filter>models</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentModel.h">
-      <Filter>models</Filter>
-    </ClInclude>
     <ClInclude Include="PropChgUtil.h">
-      <Filter>libraries\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratorUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
     <ClInclude Include="HostGuard.h">
@@ -244,9 +166,6 @@
     </Filter>
     <Filter Include="resources">
       <UniqueIdentifier>{2129dccb-97dc-494d-aba6-3c56e4e34a00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libraries\servicingapi">
-      <UniqueIdentifier>{80796b11-1e1a-4abd-a4f1-f86d9614015f}</UniqueIdentifier>
     </Filter>
     <Filter Include="views">
       <UniqueIdentifier>{50a551d6-b67b-490d-bc0f-42c4822c9620}</UniqueIdentifier>
@@ -305,11 +224,6 @@
     <None Include=".editorconfig" />
     <None Include="UFCase_TemporaryKey.pfx" />
     <None Include=".clang-format" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="CbsApi.idl">
-      <Filter>libraries\servicingapi</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
