@@ -5,7 +5,6 @@ on: [push]
 env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: ./UFCase.sln
-  PKG_CONFIG_FILE_PATH: ./UFCase/packages.config
 
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -23,15 +22,40 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.3
-      with:
-        vs-prerelease: true
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.PKG_CONFIG_FILE_PATH}} -SolutionDirectory .
+      run: |
+        nuget restore ./UFCase/packages.config -SolutionDirectory .
+        nuget restore ./UFCase.Host/packages.config -SolutionDirectory .
+        nuget restore ./UFCase.Host.Test/packages.config -SolutionDirectory .
 
-    - name: Build
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
+        $certificatePath = Join-Path -Path ./UFCase -ChildPath UFCase_TemporaryKey.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    # Create the app package by building and packaging the project
+    - name: Create the app package
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ env.BUILD_PLATFORM }} /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=UFCase_TemporaryKey.pfx /p:PackageCertificatePassword="${{ secrets.PFX_KEY }}" /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+      env:
+        Appx_Bundle: Never
+        Appx_Package_Build_Mode: SideloadOnly
+        Appx_Package_Dir: AppPackages\
+        Configuration: ${{ env.BUILD_CONFIGURATION }}
+        Platform: ${{ env.BUILD_PLATFORM }}
+
+    - name: Remove the pfx
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: Remove-Item -path ./UFCase/UFCase_TemporaryKey.pfx
+
+    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    - name: Upload MSIX package
+      uses: actions/upload-artifact@v2
+      with:
+        name: MSIX Package
+        path: UFCase\AppPackages\
