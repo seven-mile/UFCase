@@ -7,7 +7,7 @@
 #include "ComponentModel.h"
 #include "GeneratorIterable.h"
 
-#include "Utils/CbsUtil.h"
+#include "Utils/ComUtil.h"
 #include "ServicingApi/Isolation.h"
 #include "ServicingApi/SSShimApi.h"
 

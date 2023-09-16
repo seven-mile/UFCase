@@ -214,7 +214,7 @@
     <ClInclude Include="ServicingApi\WcpDef.h" />
     <ClInclude Include="SessionModel.h" />
     <ClInclude Include="StoreModel.h" />
-    <ClInclude Include="Utils\CbsUtil.h" />
+    <ClInclude Include="Utils\ComUtil.h" />
     <ClInclude Include="Utils\GeneratorUtil.h" />
     <ClInclude Include="Utils\MallocUtil.h" />
     <ClInclude Include="Utils\PathUtil.h" />

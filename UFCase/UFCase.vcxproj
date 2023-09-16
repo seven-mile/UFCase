@@ -141,10 +141,6 @@
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AsyncUtil.h" />
     <ClInclude Include="CacheUtil.h" />
-    <ClInclude Include="CbsUtil.h" />
-    <ClInclude Include="CCbsUIHandler.h" />
-    <ClInclude Include="cdf_types.h" />
-    <ClInclude Include="ComponentModel.h" />
     <ClInclude Include="ComponentsPage.h">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -157,12 +153,10 @@
       <DependentUpon>ComponentViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="csiapi.h" />
     <ClInclude Include="ErrorDialog.h">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FeatureModel.h" />
     <ClInclude Include="FeaturesPageViewModel.h">
       <DependentUpon>FeaturesPageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -175,15 +169,11 @@
       <DependentUpon>FeatureViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="GeneratorUtil.h" />
-    <ClInclude Include="GitObject.h" />
-    <ClInclude Include="GitUtil.h" />
     <ClInclude Include="GlobalUtil.h" />
     <ClInclude Include="HardwareInfoModel.h" />
     <ClInclude Include="HostGuard.h" />
     <ClInclude Include="HostManager.h" />
     <ClInclude Include="HostManagerSingleton.h" />
-    <ClInclude Include="ImageModel.h" />
     <ClInclude Include="ImageSelectorHelper.h" />
     <ClInclude Include="ImageSelectorViewModel.h">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
@@ -193,7 +183,6 @@
       <DependentUpon>ImageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="isolation.h" />
     <ClInclude Include="MainNavigationService.h">
       <DependentUpon>MainNavigationService.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -202,10 +191,6 @@
       <DependentUpon>MainProgressService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="MallocUtil.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="ModelManager.h" />
-    <ClInclude Include="PackageModel.h" />
     <ClInclude Include="PackagesPage.xaml.h">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -235,7 +220,6 @@
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="SessionModel.h" />
     <ClInclude Include="SettingsPage.xaml.h">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -244,8 +228,6 @@
       <DependentUpon>SplashWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="SSShimApi.h" />
-    <ClInclude Include="StoreModel.h" />
     <ClInclude Include="SysInfoStaticViewModel.h">
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -262,7 +244,6 @@
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="wcpdef.h" />
     <ClInclude Include="XamlUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -311,11 +292,6 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="AppConfig.cpp" />
-    <ClCompile Include="CbsApiProxy.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ComponentModel.cpp" />
     <ClCompile Include="ComponentsPage.cpp">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -332,7 +308,6 @@
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FeatureModel.cpp" />
     <ClCompile Include="FeaturesPageViewModel.cpp">
       <DependentUpon>FeaturesPageViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -350,7 +325,6 @@
     <ClCompile Include="HostGuard.cpp" />
     <ClCompile Include="HostManager.cpp" />
     <ClCompile Include="HostManagerSingleton.cpp" />
-    <ClCompile Include="ImageModel.cpp" />
     <ClCompile Include="ImageSelectorHelper.cpp" />
     <ClCompile Include="ImageSelectorViewModel.cpp">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
@@ -368,7 +342,6 @@
       <DependentUpon>MainProgressService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="PackageModel.cpp" />
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -399,7 +372,6 @@
       <DependentUpon>RootSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="SessionModel.cpp" />
     <ClCompile Include="SettingsPage.xaml.cpp">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -408,7 +380,6 @@
       <DependentUpon>SplashWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="StoreModel.cpp" />
     <ClCompile Include="SysInfoStaticViewModel.cpp">
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -435,40 +406,6 @@
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Midl>
-    <CustomBuild Include="CbsApi.idl">
-      <EnableWindowsRuntime Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableWindowsRuntime>
-      <EnableWindowsRuntime Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</EnableWindowsRuntime>
-      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </MetadataFileName>
-      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi.h</HeaderFileName>
-      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dlldata.c</DllDataFileName>
-      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_p.c</ProxyFileName>
-      <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Stub</GenerateClientFiles>
-      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </MetadataFileName>
-      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi.h</HeaderFileName>
-      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dlldata.c</DllDataFileName>
-      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_p.c</ProxyFileName>
-      <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Stub</GenerateClientFiles>
-      <AdditionalMetadataDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </AdditionalMetadataDirectories>
-      <AdditionalMetadataDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </AdditionalMetadataDirectories>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </AdditionalOptions>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">midl.exe /amd64 /client stub "%(Filename)%(Extension)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">midl.exe /amd64 /client stub "%(Filename)%(Extension)"</Command>
-      <OutputItemType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </OutputItemType>
-      <OutputItemType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </OutputItemType>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CbsApi_i.c; CbsApi_p.c; dlldata.c; CbsApi.h</Outputs>
-    </CustomBuild>
     <Midl Include="ComponentsPage.idl">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
       <SubType>Code</SubType>

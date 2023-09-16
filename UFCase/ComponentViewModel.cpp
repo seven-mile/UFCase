@@ -4,7 +4,7 @@
 #include "ComponentViewModel.g.cpp"
 #endif
 
-#include "csiapi.h"
+#include "../UFCase.Host/ServicingApi/Isolation.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -95,8 +95,7 @@ namespace winrt::UFCase::implementation
 
         for (auto f : m_model.GetFileCollection(ISTORE_ENUM_FILES_FLAG_INCLUDE_INSTALLED_FILES))
         {
-            result.Append(ComponentFileViewModel{.Name = f.Name,
-                                                 .Status = f.Status});
+            result.Append(ComponentFileViewModel{.Name = f.Name, .Status = f.Status});
         }
 
         return result;

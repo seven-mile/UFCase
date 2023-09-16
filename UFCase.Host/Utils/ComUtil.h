@@ -5,27 +5,6 @@
 namespace winrt::UFCase
 {
 
-    inline hstring ParseCbsTimeStampString(const wchar_t *ts_str)
-    {
-        auto timeStamp = std::wcstoull(ts_str, nullptr, 10);
-        LARGE_INTEGER liTmp;
-        liTmp.QuadPart = timeStamp;
-        FILETIME fileTimeTmp, fileLocalTimeTmp;
-        fileTimeTmp.dwLowDateTime = liTmp.LowPart;
-        fileTimeTmp.dwHighDateTime = liTmp.HighPart;
-
-        // Optional
-        FileTimeToLocalFileTime(&fileTimeTmp, &fileLocalTimeTmp);
-
-        SYSTEMTIME sysTimeTmp;
-        FileTimeToSystemTime(&fileLocalTimeTmp, &sysTimeTmp);
-
-        return std::format(L"{}/{:02}/{:02} {}:{:02}:{:02}", sysTimeTmp.wYear, sysTimeTmp.wMonth,
-                           sysTimeTmp.wDay, sysTimeTmp.wHour, sysTimeTmp.wMinute,
-                           sysTimeTmp.wSecond)
-            .c_str();
-    }
-
     template <class T, typename IntT = ULONG, class IEnumT>
     inline std::vector<winrt::com_ptr<T>> GetIEnumComPtrVector(winrt::com_ptr<IEnumT> pEnum)
     {

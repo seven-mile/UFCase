@@ -4,7 +4,6 @@
 #include "ImageViewModel.g.cpp"
 #endif
 
-#include "SessionModel.h"
 #include "AsyncUtil.h"
 
 #include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
@@ -95,7 +94,7 @@ namespace winrt::UFCase::implementation
 
     Isolation::SessionModel ImageViewModel::OpenSession()
     {
-        return m_model.OpenSession(CbsSessionOptionNone);
+        return m_model.OpenSession(0);
     }
 
     IAsyncAction ImageViewModel::PullData()

@@ -5,7 +5,7 @@
 #endif
 
 #include "CCbsUIHandler.h"
-#include "Utils/CbsUtil.h"
+#include "Utils/ComUtil.h"
 #include "Utils/MallocUtil.h"
 
 #include "PackageModel.h"

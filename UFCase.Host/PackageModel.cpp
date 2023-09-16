@@ -6,7 +6,7 @@
 
 #include "FeatureModel.h"
 #include "Utils/MallocUtil.h"
-#include "Utils/CbsUtil.h"
+#include "Utils/ComUtil.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

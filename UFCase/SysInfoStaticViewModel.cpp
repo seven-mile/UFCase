@@ -6,7 +6,6 @@
 
 #include <winrt/Windows.System.Diagnostics.h>
 
-#include "MallocUtil.h"
 #include "AppConfig.h"
 #include "HardwareInfoModel.h"
 

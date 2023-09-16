@@ -10,9 +10,7 @@
 #include <winrt/Windows.Storage.Streams.h>
 
 #include "AsyncUtil.h"
-#include "CbsUtil.h"
 #include "GlobalUtil.h"
-#include "MallocUtil.h"
 
 #include <wil/resource.h>
 
