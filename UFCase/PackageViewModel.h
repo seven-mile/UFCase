@@ -3,7 +3,7 @@
 #include "CbsApi.h"
 #include "PackageViewModel.g.h"
 
-#include "PackageModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 #include "CacheUtil.h"
 
@@ -11,11 +11,9 @@ namespace winrt::UFCase::implementation
 {
     struct PackageViewModel : PackageViewModelT<PackageViewModel>
     {
-        PackageModel &m_model;
+        Isolation::PackageModel m_model;
 
-        PackageViewModel(uint64_t hModel);
-
-        uint64_t Handle();
+        PackageViewModel(Isolation::PackageModel model);
 
         hstring ListNameRaw();
         hstring ListIdentityRaw();

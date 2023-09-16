@@ -15,7 +15,7 @@ namespace UFCase
     [default_interface]
     runtimeclass FeatureViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        FeatureViewModel(UInt64 hModel);
+        FeatureViewModel(UFCase.Isolation.FeatureModel model);
         
         String Name{ get; };
         String Description{ get; };
@@ -29,7 +29,6 @@ namespace UFCase
         String DownloadSize{ get; };
         String SetMembership{ get; };
 
-        PackageViewModel Package{ get; };
         PackageViewModel ContentPackage{ get; };
 
         Windows.Foundation.Collections.IObservableVector<FeatureViewModel> Children{ get; };

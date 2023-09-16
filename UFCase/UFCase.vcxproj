@@ -612,8 +612,10 @@
     <Image Include="Assets\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UFCase.WinMD.HostManager\UFCase.WinMD.HostManager.vcxproj">
-      <Project>{9330649e-061c-4631-97cf-3229574cae57}</Project>
+    <ProjectReference Include="..\UFCase.Host\UFCase.Host.vcxproj">
+      <OutputItemType>Content</OutputItemType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Project>{ADA12D64-FDF8-4915-AED8-A8D41458F689}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

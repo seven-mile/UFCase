@@ -5,7 +5,7 @@ namespace UFCase
     [default_interface]
     runtimeclass ImageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        ImageViewModel(UInt64 hModel);
+        ImageViewModel(UFCase.Isolation.ImageModel model);
 
         String Type{ get; };
         String Version{ get; };
@@ -16,11 +16,9 @@ namespace UFCase
 
         Microsoft.UI.Xaml.Media.ImageSource Icon{ get; };
 
-        void Select();
+        UFCase.Isolation.SessionModel OpenSession();
 
-        UInt64 OpenSession();
-        void CloseSession(UInt64 hModel);
-
-        UInt64 Store{ get; };
+        UFCase.Isolation.ImageModel Model{ get; };
+        UFCase.Isolation.StoreModel Store{ get; };
     }
 }

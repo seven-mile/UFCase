@@ -7,7 +7,7 @@
 #include "SysInfoPage.g.cpp"
 #endif
 
-#include "ImageModel.h"
+#include "GlobalUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -19,7 +19,8 @@ namespace winrt::UFCase::implementation
     {
         SysInfoPageT::InitializeComponent();
 
-        m_static = UFCase::SysInfoStaticViewModel(ImageModel::Current()->GetHandle());
+        auto ivm = GlobalRes::MainWnd().ViewModel();
+        m_static = UFCase::SysInfoStaticViewModel(ivm.SelectedImageModel());
 
         this->AutoRefreshSwitch().IsOn(AppConfig::GetSysinfoAutoRefresh());
     }

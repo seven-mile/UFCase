@@ -104,7 +104,7 @@ namespace UFCase.Isolation
         Windows.Foundation.IAsyncActionWithProgress<UInt32> SaveChanges();
 
         PackageModel OpenPackage(String identity);
-        Windows.Foundation.Collections.IIterable<PackageModel> GetPackageCollection(
+        Windows.Foundation.Collections.IVector<PackageModel> GetPackageCollection(
             UInt32 option
         );
 

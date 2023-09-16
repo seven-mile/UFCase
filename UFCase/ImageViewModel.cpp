@@ -22,32 +22,32 @@ namespace winrt::UFCase::implementation
         Win11,
     };
 
-    WindowsVersions ConvertVersion(FOUR_PART_VERSION raw_ver)
+    WindowsVersions ConvertVersion(Isolation::ImageVersion raw_ver)
     {
-        if (raw_ver.major < 6)
+        if (raw_ver.Major < 6)
         {
             throw hresult_not_implemented{};
         }
 
-        if (raw_ver.major == 6)
+        if (raw_ver.Major == 6)
         {
             // includes vista
-            if (raw_ver.minor <= 1)
+            if (raw_ver.Minor <= 1)
             {
                 return WindowsVersions::Win7;
             }
             else
             {
-                if (raw_ver.minor == 2)
+                if (raw_ver.Minor == 2)
                     return WindowsVersions::Win8;
                 else
                     return WindowsVersions::WinBlue;
             }
         }
-        else if (raw_ver.major == 10)
+        else if (raw_ver.Major == 10)
         {
             // win11 pre-release is less than 22000
-            if (raw_ver.build > 21900)
+            if (raw_ver.Build > 21900)
             {
                 return WindowsVersions::Win11;
             }
@@ -60,13 +60,13 @@ namespace winrt::UFCase::implementation
         return WindowsVersions::Win11;
     }
 
-    ImageViewModel::ImageViewModel(uint64_t hModel) : m_model(ImageModel::GetInstance(hModel))
+    ImageViewModel::ImageViewModel(Isolation::ImageModel model) : m_model(model)
     {
     }
 
     hstring ImageViewModel::Type()
     {
-        return m_model.Type() == ImageType::Offline ? L"Offline" : L"Online";
+        return m_model.Type() == Isolation::ImageType::Offline ? L"Offline" : L"Online";
     }
 
     hstring ImageViewModel::Version()
@@ -93,21 +93,9 @@ namespace winrt::UFCase::implementation
         return m_icon;
     }
 
-    void ImageViewModel::Select()
+    Isolation::SessionModel ImageViewModel::OpenSession()
     {
-        ::OutputDebugString(
-            std::format(L"Select image {} {}", this->Version(), this->Edition()).c_str());
-        ImageModel::Current(&m_model);
-    }
-
-    uint64_t ImageViewModel::OpenSession()
-    {
-        return m_model.OpenSession()->GetHandle();
-    }
-
-    void ImageViewModel::CloseSession(uint64_t handle)
-    {
-        m_model.CloseSession(handle);
+        return m_model.OpenSession(CbsSessionOptionNone);
     }
 
     IAsyncAction ImageViewModel::PullData()

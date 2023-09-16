@@ -14,6 +14,15 @@ namespace winrt::UFCase::Isolation::implementation
             Initialize(option);
         }
 
+        ~SessionModel()
+        {
+            if (m_session)
+            {
+                _CbsRequiredAction ra;
+                check_hresult(m_session->Finalize(&ra));
+            }
+        }
+
         void AddSource(hstring const &source_dir);
         Windows::Foundation::IAsyncActionWithProgress<uint32_t> SaveChanges();
 

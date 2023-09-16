@@ -34,10 +34,9 @@ namespace winrt::UFCase::Isolation::implementation
       public:
         Isolation::ComponentModel OpenComponent(hstring id);
 
-        Windows::Foundation::Collections::IIterable<IInspectable>
-        GetComponentCollection();
-        Windows::Foundation::Collections::IIterable<IInspectable>
-        GetComponentCollection(hstring ref_id);
+        Windows::Foundation::Collections::IIterable<IInspectable> GetComponentCollection();
+        Windows::Foundation::Collections::IIterable<IInspectable> GetComponentCollection(
+            hstring ref_id);
 
         com_ptr<IStore2> m_sxs_store;
         com_ptr<ICSIStore> m_csi_store;

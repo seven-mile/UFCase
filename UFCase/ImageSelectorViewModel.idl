@@ -10,6 +10,8 @@ namespace UFCase
 
         Windows.Foundation.Collections.IObservableVector<ImageViewModel> Images{ get; };
         Int32 SelectedIndex;
+        ImageViewModel SelectedImageViewModel{ get; };
+        UFCase.Isolation.ImageModel SelectedImageModel{ get; };
 
         Windows.Foundation.IAsyncActionWithProgress<String> PullData();
     }

@@ -2,13 +2,13 @@
 
 #include "SysInfoStaticViewModel.g.h"
 
-#include "ImageModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 namespace winrt::UFCase::implementation
 {
     struct SysInfoStaticViewModel : SysInfoStaticViewModelT<SysInfoStaticViewModel>
     {
-        SysInfoStaticViewModel(uint64_t hImgModel);
+        SysInfoStaticViewModel(Isolation::ImageModel model);
 
         // machine-specific online info
         static hstring FirmwareType();
@@ -22,7 +22,7 @@ namespace winrt::UFCase::implementation
         hstring IsWinPE();
 
       private:
-        ImageModel &m_model;
+        Isolation::ImageModel m_model;
     };
 
 } // namespace winrt::UFCase::implementation

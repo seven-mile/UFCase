@@ -39,7 +39,6 @@ namespace winrt::UFCase::implementation
             return;
 
         m_selected_idx = value;
-        image.Select();
 
         RunUITaskAsync([self_lambda = get_strong()]() -> IAsyncAction {
             auto self = self_lambda;

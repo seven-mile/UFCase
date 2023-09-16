@@ -22,9 +22,11 @@ namespace winrt::UFCase::Isolation::implementation
                     .c_str());
         wprintf(winrt::format(L"\t{} {}\n", img.Architecture(), img.IsWinPE()).c_str());
 
-        for (auto obj : img.SxsStore().GetComponentCollection(L"HyperV-Worker-Control")) {
+        for (auto obj : img.SxsStore().GetComponentCollection(L"HyperV-Worker-Control"))
+        {
             auto comp = obj.as<Isolation::ComponentModel>();
-            wprintf(winrt::format(L"Component: {}\n\t{}\n", comp.TextForm(), comp.PayloadPath()).c_str());
+            wprintf(winrt::format(L"Component: {}\n\t{}\n", comp.TextForm(), comp.PayloadPath())
+                        .c_str());
         }
 
         host.Ping();

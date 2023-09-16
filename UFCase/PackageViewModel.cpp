@@ -10,14 +10,9 @@
 
 namespace winrt::UFCase::implementation
 {
-    PackageViewModel::PackageViewModel(uint64_t hModel) : m_model(PackageModel::GetInstance(hModel))
+    PackageViewModel::PackageViewModel(Isolation::PackageModel model) : m_model(model)
     {
         Prefetch();
-    }
-
-    uint64_t PackageViewModel::Handle()
-    {
-        return m_model.GetHandle();
     }
 
     hstring PackageViewModel::ReleaseTypeRaw()
@@ -30,31 +25,31 @@ namespace winrt::UFCase::implementation
         auto state = m_model.State();
         switch (state)
         {
-        case CbsInstallStateAbsent:
+        case Isolation::CbsInstallState::CbsInstallStateAbsent:
             return L"Absent";
-        case CbsInstallStateCancel:
+        case Isolation::CbsInstallState::CbsInstallStateCancel:
             return L"Cancel";
-        case CbsInstallStatePartiallyInstalled:
+        case Isolation::CbsInstallState::CbsInstallStatePartiallyInstalled:
             return L"PartiallyInstalled";
-        case CbsInstallStateUninstallRequested:
+        case Isolation::CbsInstallState::CbsInstallStateUninstallRequested:
             return L"UninstallRequested";
-        case CbsInstallStateInstallRequested:
+        case Isolation::CbsInstallState::CbsInstallStateInstallRequested:
             return L"InstallRequested";
-        case CbsInstallStateSuperseded:
+        case Isolation::CbsInstallState::CbsInstallStateSuperseded:
             return L"Superseded";
-        case CbsInstallStateDefault:
+        case Isolation::CbsInstallState::CbsInstallStateDefault:
             return L"Default";
-        case CbsInstallStatePermanent:
+        case Isolation::CbsInstallState::CbsInstallStatePermanent:
             return L"Permanent";
-        case CbsInstallStateInstalled:
+        case Isolation::CbsInstallState::CbsInstallStateInstalled:
             return L"Installed";
-        case CbsInstallStateStaged:
+        case Isolation::CbsInstallState::CbsInstallStateStaged:
             return L"Staged";
-        case CbsInstallStateStaging:
+        case Isolation::CbsInstallState::CbsInstallStateStaging:
             return L"Staging";
-        case CbsInstallStateResolving:
+        case Isolation::CbsInstallState::CbsInstallStateResolving:
             return L"Resolving";
-        case CbsInstallStateResolved:
+        case Isolation::CbsInstallState::CbsInstallStateResolved:
             return L"Resolved";
         default:
             return L"Unknown";

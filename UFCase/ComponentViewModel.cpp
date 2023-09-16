@@ -8,8 +8,7 @@
 
 namespace winrt::UFCase::implementation
 {
-    ComponentViewModel::ComponentViewModel(uint64_t handle)
-        : m_model(ComponentModel::GetInstance(handle))
+    ComponentViewModel::ComponentViewModel(Isolation::ComponentModel model) : m_model(model)
     {
         Prefetch();
     }
@@ -26,9 +25,12 @@ namespace winrt::UFCase::implementation
 
     hstring ComponentViewModel::NameRaw()
     {
-        if (auto name = m_model.GetAttribute(L"Name"); name.empty()) {
+        if (auto name = m_model.GetAttribute(L"Name"); name.empty())
+        {
             return L"(unnamed)";
-        } else {
+        }
+        else
+        {
             return name;
         }
     }
@@ -67,15 +69,15 @@ namespace winrt::UFCase::implementation
     {
         switch (m_model.Status())
         {
-        case CSI_COMPONENT_STATUS_PRESTAGED:
+        case Isolation::CsiComponentStatus::Prestaged:
             return L"Prestaged";
-        case CSI_COMPONENT_STATUS_STAGED:
+        case Isolation::CsiComponentStatus::Staged:
             return L"Staged";
-        case CSI_COMPONENT_STATUS_PINNED:
+        case Isolation::CsiComponentStatus::Pinned:
             return L"Pinned";
-        case CSI_COMPONENT_STATUS_INSTALLED_MATCH:
+        case Isolation::CsiComponentStatus::Installed:
             return L"Installed";
-        case CSI_COMPONENT_STATUS_INSTALLED_MISMATCH:
+        case Isolation::CsiComponentStatus::InstalledMismatch:
             return L"InstalledMismatch";
         default:
             return L"Unknown";
@@ -91,20 +93,10 @@ namespace winrt::UFCase::implementation
     {
         auto result = multi_threaded_observable_vector<ComponentFileViewModel>();
 
-        auto flag_to_hstring = [](DWORD file_flag) {
-            switch (file_flag)
-            {
-            case STORE_ASSEMBLY_FILE_STATUS_FLAG_PRESENT:
-                return L"Present";
-            default:
-                return L"Unknown";
-            }
-        };
-
-        for (auto &f : m_model.Files())
+        for (auto f : m_model.GetFileCollection(ISTORE_ENUM_FILES_FLAG_INCLUDE_INSTALLED_FILES))
         {
-            result.Append(ComponentFileViewModel{.Name = f.pszFileName,
-                                                 .Status = flag_to_hstring(f.dwFileStatusFlags)});
+            result.Append(ComponentFileViewModel{.Name = f.Name,
+                                                 .Status = f.Status});
         }
 
         return result;

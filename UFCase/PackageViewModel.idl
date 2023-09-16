@@ -22,9 +22,7 @@ namespace UFCase
     [default_interface]
     runtimeclass PackageViewModel
     {
-        PackageViewModel(UInt64 hModel);
-
-        UInt64 Handle{ get; };
+        PackageViewModel(UFCase.Isolation.PackageModel model);
 
         String ListName { get; };
         String ListIdentity { get; };

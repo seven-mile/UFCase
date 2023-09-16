@@ -24,6 +24,18 @@ namespace winrt::UFCase::implementation
         int32_t SelectedIndex();
         void SelectedIndex(int32_t);
 
+        UFCase::ImageViewModel SelectedImageViewModel()
+        {
+            if (m_selected_idx < 0)
+                return nullptr;
+            return m_images.GetAt(m_selected_idx);
+        }
+
+        Isolation::ImageModel SelectedImageModel()
+        {
+            return SelectedImageViewModel().Model();
+        }
+
         IAsyncActionWithProgress<hstring> PullData();
 
       private:

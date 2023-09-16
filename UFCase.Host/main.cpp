@@ -54,7 +54,13 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     host_mgr.RegisterHost(host);
 
-    host_mgr.UnregisterHost(host);
+    // process messages, for long run
+    MSG msg{};
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
 
     return 0;
 }

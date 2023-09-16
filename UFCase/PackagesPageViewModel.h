@@ -5,13 +5,13 @@
 
 #include <winrt/Windows.Storage.h>
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
+#include <winrt/UFCase.Isolation.h>
 
 #include "XamlUtil.h"
 #include "PropChgUtil.h"
 
-#include "ImageModel.h"
-
 #include <fstream>
+#include <filesystem>
 
 namespace winrt::UFCase::implementation
 {
@@ -79,8 +79,9 @@ namespace winrt::UFCase::implementation
         {
             if (!m_selected)
                 co_return;
-            auto manifest_root =
-                ImageModel::Current()->Bootdrive() / L"Windows" / L"servicing" / L"Packages";
+            std::filesystem::path bootdrive_path =
+                GlobalRes::MainWnd().ViewModel().SelectedImageModel().Bootdrive().c_str();
+            auto manifest_root = bootdrive_path / L"Windows" / L"servicing" / L"Packages";
             auto manifest_name = m_selected.DetailIdentity() + L".mum";
             auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync(
                 (manifest_root / manifest_name.c_str()).c_str());

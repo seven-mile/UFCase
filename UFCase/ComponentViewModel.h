@@ -2,7 +2,7 @@
 
 #include "ComponentViewModel.g.h"
 
-#include "ComponentModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 #include "CacheUtil.h"
 #include "PropChgUtil.h"
@@ -12,7 +12,7 @@ namespace winrt::UFCase::implementation
     struct ComponentViewModel : ComponentViewModelT<ComponentViewModel>,
                                 ImplPropertyChangedT<ComponentViewModel>
     {
-        ComponentViewModel(uint64_t handle);
+        ComponentViewModel(Isolation::ComponentModel model);
 
         hstring TextFormRaw();
         hstring KeyFormRaw();
@@ -47,7 +47,7 @@ namespace winrt::UFCase::implementation
         // clang-format on
 
       private:
-        ComponentModel m_model;
+        Isolation::ComponentModel m_model;
 
         void Prefetch()
         {

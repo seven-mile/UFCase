@@ -4,8 +4,7 @@
 #include "ComponentsPageViewModel.g.cpp"
 #endif
 
-#include "StoreModel.h"
-#include "ComponentModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 #include "AsyncUtil.h"
 #include "CbsUtil.h"
@@ -29,18 +28,19 @@ namespace winrt::UFCase::implementation
 
         m_components.Clear();
 
-        auto &store = StoreModel::GetInstance(m_image.Store());
+        auto store = m_image.Store();
 
-        auto comps = store.Components();
+        auto comps = store.GetComponentCollection();
 
         // if no reference restriction, estimate 10000 components
         // if there is reference restriction, this should be fast enough
         // and do not need a progress bar
         SIZE_T comps_count = 10000;
 
-        for (SIZE_T idx = 0; auto *comp : comps)
+        for (SIZE_T idx = 0; auto comp_ : comps)
         {
-            UFCase::ComponentViewModel comp_vm{comp->GetHandle()};
+            auto comp = comp_.as<Isolation::ComponentModel>();
+            UFCase::ComponentViewModel comp_vm{comp};
             RunUITask([=] { m_components.Append(comp_vm); });
 
             ++idx;

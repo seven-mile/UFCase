@@ -3,7 +3,7 @@
 #include "CbsApi.h"
 #include "FeatureViewModel.g.h"
 
-#include "FeatureModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 #include "CacheUtil.h"
 #include "PropChgUtil.h"
@@ -13,14 +13,14 @@ namespace winrt::UFCase::implementation
     struct FeatureViewModel : FeatureViewModelT<FeatureViewModel>,
                               ImplPropertyChangedT<FeatureViewModel>
     {
-        FeatureModel m_model;
+        Isolation::FeatureModel m_model;
 
         using child_t = IObservableVector<UFCase::FeatureViewModel>;
         child_t m_children = multi_threaded_observable_vector<UFCase::FeatureViewModel>();
 
         hstring m_mark = L"";
 
-        FeatureViewModel(uint64_t hModel);
+        FeatureViewModel(Isolation::FeatureModel model);
 
         hstring NameRaw();
         hstring DescriptionRaw();
@@ -34,7 +34,6 @@ namespace winrt::UFCase::implementation
         hstring DownloadSizeRaw();
         hstring SetMembershipRaw();
 
-        UFCase::PackageViewModel Package();
         UFCase::PackageViewModel ContentPackage();
 
         child_t Children();

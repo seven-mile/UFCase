@@ -4,7 +4,7 @@ namespace UFCase
     [default_interface]
     runtimeclass SysInfoStaticViewModel
     {
-        SysInfoStaticViewModel(UInt64 hImgModel);
+        SysInfoStaticViewModel(UFCase.Isolation.ImageModel model);
         
         // machine-specific online info
         static String FirmwareType();

@@ -22,8 +22,7 @@ namespace winrt::UFCase::implementation
 {
     // Static Part
 
-    SysInfoStaticViewModel::SysInfoStaticViewModel(uint64_t hImgModel)
-        : m_model(ImageModel::GetInstance(hImgModel))
+    SysInfoStaticViewModel::SysInfoStaticViewModel(Isolation::ImageModel model) : m_model(model)
     {
     }
 
@@ -40,7 +39,7 @@ namespace winrt::UFCase::implementation
     hstring SysInfoStaticViewModel::OSVersion()
     {
         auto &&ver = m_model.Version();
-        return std::format(L"{}.{}.{}.{} {}", ver.major, ver.minor, ver.build, ver.revision,
+        return std::format(L"{}.{}.{}.{} {}", ver.Major, ver.Minor, ver.Build, ver.Revision,
                            m_model.Edition())
             .c_str();
     }

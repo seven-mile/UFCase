@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "ImageSelectorHelper.h"
 
-#include "ImageModel.h"
+#include "HostManager.h"
+
 #include "ImageViewModel.h"
 
 #include "PathUtil.h"
@@ -17,12 +18,20 @@ namespace winrt::UFCase
 
     using list_t = IObservableVector<ImageViewModel>;
 
-    static std::unordered_set<ImageModel *> model_set;
+    static std::unordered_set<Isolation::ImageModel> model_set;
 
-    IAsyncAction ImagePullData(ImageViewModel vm)
+    static IAsyncAction ImagePullData(ImageViewModel vm)
     {
         auto inner = get_self<implementation::ImageViewModel>(vm);
         co_await RunUITaskAsync([&]() -> IAsyncAction { co_await inner->PullData(); });
+    }
+
+    static Isolation::Host GetOrStartHost(std::filesystem::path const &bootdrive)
+    {
+        Isolation::HostManagerSingleton sg{};
+        auto mgr_ref = sg.Current();
+        auto mgr = get_self<Isolation::implementation::HostManager>(mgr_ref);
+        return mgr->GetOrStartHost(bootdrive);
     }
 
     IAsyncActionWithProgress<hstring> SearchOnlineImage(ImageViewModel &vm)
@@ -32,9 +41,10 @@ namespace winrt::UFCase
         auto bootdrive = GetOnlineBootdrive();
         report_prog(std::format(L"Initializing online image [{}]", bootdrive.c_str()).c_str());
 
-        auto image = ImageModel::Create(bootdrive);
+        auto online_host = GetOrStartHost(bootdrive);
+        auto image = online_host.Image();
         model_set.insert(image);
-        vm = ImageViewModel{image->GetHandle()};
+        vm = UFCase::ImageViewModel{image};
 
         report_prog(L"Loading information of online image");
         co_await ImagePullData(vm);
@@ -78,12 +88,19 @@ namespace winrt::UFCase
             DWORD dwType{}, cbData{};
             winrt::check_win32(::RegGetValue(hkeyImgList.get(), nameGuid, L"Mount Path", NULL,
                                              &dwType, pathMount, &cbData));
-            report_prog(L"");
-            auto image = ImageModel::Create(pathMount);
+            std::filesystem::path bootdrive = pathMount;
+            if (!std::filesystem::exists(bootdrive))
+            {
+                continue;
+            }
+            report_prog(L"Initializing mounted image");
+
+            auto host = GetOrStartHost(bootdrive);
+            auto image = host.Image();
             if (!model_set.count(image))
             {
                 model_set.insert(image);
-                ImageViewModel vm{image->GetHandle()};
+                ImageViewModel vm{image};
                 report_prog(
                     std::format(L"Loading information of mounted image [{}]", pathMount).c_str());
                 co_await ImagePullData(vm);
@@ -101,17 +118,18 @@ namespace winrt::UFCase
             return std::filesystem::exists(path) && std::filesystem::exists(path / L"Windows");
         };
 
-        std::wstring bootdrive = L"A:";
+        std::wstring bootdrive = L"A:\\";
         for (auto &ch = bootdrive[0]; ch <= L'Z'; ch++)
         {
             report_prog(std::format(L"Initializing offline image [{}]", bootdrive).c_str());
             if (ensure_bootdrive(bootdrive))
             {
-                auto image = ImageModel::Create(bootdrive);
+                auto host = GetOrStartHost(bootdrive);
+                auto image = host.Image();
                 if (!model_set.count(image))
                 {
                     model_set.insert(image);
-                    ImageViewModel vm{image->GetHandle()};
+                    ImageViewModel vm{image};
 
                     report_prog(
                         std::format(L"Loading information of offline image [{}]", bootdrive.c_str())

@@ -92,7 +92,7 @@ namespace winrt::UFCase::Isolation::implementation
     {
         com_ptr<ICbsPackage> pPkg;
         check_hresult(GetInterface()->GetPackage(pPkg.put()));
-        if (auto self_pkg = m_package.get())
+        if (auto self_pkg = m_package)
         {
             auto pkg = make<implementation::PackageModel>(self_pkg.Session(), pPkg);
             return pkg;
@@ -113,7 +113,8 @@ namespace winrt::UFCase::Isolation::implementation
     Windows::Foundation::Collections::IVector<Isolation::FeatureModel> FeatureModel::
         GetParentFeatureCollection()
     {
-        constexpr HRESULT CBS_E_ARRAY_MISSING_INDEX = 0x800F0809, CBS_E_UNKNOWN_UPDATE = 0x800F080C;
+        constexpr HRESULT CBS_E_ARRAY_MISSING_INDEX = 0x800F0809, CBS_E_UNKNOWN_UPDATE = 0x800F080C,
+                          CBS_E_DUPLICATE_UPDATENAME = 0x800F0819;
         auto res = single_threaded_vector<Isolation::FeatureModel>();
         for (uint32_t idx = 0;; idx++)
         {
@@ -130,7 +131,7 @@ namespace winrt::UFCase::Isolation::implementation
 
             try
             {
-                res.Append(m_package.get().OpenFeature(ws_parent_name.get()));
+                res.Append(m_package.OpenFeature(ws_parent_name.get()));
             }
             catch (hresult_error const &hr)
             {
@@ -138,6 +139,17 @@ namespace winrt::UFCase::Isolation::implementation
                 {
                     // unknown update, ignore it
                     continue;
+                }
+                else if (hr.code() == CBS_E_DUPLICATE_UPDATENAME)
+                {
+                    // duplicate update name, fallback to enumeration
+                    for (auto upd : m_package.GetFeatureCollection(CbsApplicabilityApplicable,
+                                                         CbsSelectabilityAllClass)) {
+                        if (upd.Name() == ws_parent_name.get()) {
+                            res.Append(upd);
+                            break;
+                        }
+                    }
                 }
                 else
                 {

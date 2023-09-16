@@ -3,9 +3,6 @@
 #include "FeaturesPageViewModel.g.h"
 #include "ImageViewModel.g.h"
 
-#include "SessionModel.h"
-#include "PackageModel.h"
-
 #include "XamlUtil.h"
 #include "PropChgUtil.h"
 
@@ -78,21 +75,15 @@ namespace winrt::UFCase::implementation
 
         HandleCommandAsync(FeatureOpenExplorer, L"Open in explorer", L"\xE8DA")
         {
-            auto target = m_selected.Package().InstallLocation();
-            if (target == L"" || !std::filesystem::exists(target.c_str()))
-            {
-                ContentDialog cd;
-                cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-                cd.Title(box_value(L"Cannot open file"));
-                cd.Content(box_value(L"This package have no valid file path."));
-                cd.PrimaryButtonText(L"OK");
-                cd.DefaultButton(ContentDialogButton::Primary);
-                co_await cd.ShowAsync();
+            ContentDialog cd;
+            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
+            cd.Title(box_value(L"Cannot open file"));
+            cd.Content(box_value(L"This package have no valid file path."));
+            cd.PrimaryButtonText(L"OK");
+            cd.DefaultButton(ContentDialogButton::Primary);
+            co_await cd.ShowAsync();
 
-                co_return;
-            }
-            ShellExecute(nullptr, L"open", L"explorer",
-                         std::format(L"/select, {}", target.c_str()).c_str(), nullptr, SW_SHOW);
+            co_return;
         }
 
         HandleCommandAsync(FeatureOpenRegistry, L"Open in registry", L"")
@@ -150,12 +141,11 @@ namespace winrt::UFCase::implementation
         {
             apartment_context ui_thread;
             // set change flag to save updates
-            Session().FoundationPackage()->Install();
+            Session().FoundationPackage().Install();
             co_await GlobalRes::MainProgServ().InsertTask(Session().SaveChanges(), 200);
 
             // dispose the finalized session
-            m_image.CloseSession(m_session);
-            m_session = 0;
+            m_session = nullptr;
 
             co_await ui_thread;
 
@@ -179,18 +169,15 @@ namespace winrt::UFCase::implementation
         ImageViewModel m_image{nullptr};
         IObservableVector<FeatureViewModel> m_features{nullptr};
         FeatureViewModel m_selected{nullptr};
-        uint64_t m_session = 0;
+        Isolation::SessionModel m_session{nullptr};
 
-        uint64_t SessionHandle()
+        Isolation::SessionModel Session()
         {
             if (m_session)
+            {
                 return m_session;
+            }
             return m_session = m_image.OpenSession();
-        }
-
-        SessionModel &Session()
-        {
-            return SessionModel::GetInstance(SessionHandle());
         }
 
         void NotifyCommandsCanExecuteChanged()

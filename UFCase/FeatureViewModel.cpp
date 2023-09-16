@@ -7,8 +7,6 @@
 #include "FeatureViewModel.g.cpp"
 #endif
 
-#include "PackageModel.h"
-
 #include <winrt/Windows.Storage.Streams.h>
 
 #include "AsyncUtil.h"
@@ -20,7 +18,7 @@
 
 namespace winrt::UFCase::implementation
 {
-    FeatureViewModel::FeatureViewModel(uint64_t hModel) : m_model(FeatureModel::GetInstance(hModel))
+    FeatureViewModel::FeatureViewModel(Isolation::FeatureModel model) : m_model(model)
     {
         m_children.VectorChanged([self = get_strong()](auto const &, IVectorChangedEventArgs args) {
             switch (args.CollectionChange())
@@ -62,9 +60,9 @@ namespace winrt::UFCase::implementation
         auto state = m_model.RequestedState();
         switch (state)
         {
-        case CbsInstallStateInstallRequested:
-        case CbsInstallStateInstalled:
-            // case CbsInstallStatePermanent:
+        case Isolation::CbsInstallState::CbsInstallStateInstallRequested:
+        case Isolation::CbsInstallState::CbsInstallStateInstalled:
+            // case Isolation::CbsInstallState::CbsInstallStatePermanent:
             if (std::optional<bool> opt = this->IsChecked(); opt.has_value())
             {
                 assert(*opt);
@@ -72,11 +70,11 @@ namespace winrt::UFCase::implementation
             }
             else
                 return FeatureState::PartiallyEnabled;
-        case CbsInstallStateUninstallRequested:
-        case CbsInstallStateStaged:
-            // case CbsInstallStateResolved:
+        case Isolation::CbsInstallState::CbsInstallStateUninstallRequested:
+        case Isolation::CbsInstallState::CbsInstallStateStaged:
+            // case Isolation::CbsInstallState::CbsInstallStateResolved:
             return FeatureState::Disabled;
-        case CbsInstallStateAbsent:
+        case Isolation::CbsInstallState::CbsInstallStateAbsent:
             return FeatureState::Unavailable;
         default:
             return FeatureState::Invalid;
@@ -124,14 +122,9 @@ namespace winrt::UFCase::implementation
         return m_model.SetMembership();
     }
 
-    UFCase::PackageViewModel FeatureViewModel::Package()
-    {
-        return UFCase::PackageViewModel(m_model.RawParentPackage()->GetHandle());
-    }
-
     UFCase::PackageViewModel FeatureViewModel::ContentPackage()
     {
-        return UFCase::PackageViewModel(m_model.RawFeaturePackage()->GetHandle());
+        return UFCase::PackageViewModel(m_model.ContentPackage());
     }
 
     FeatureViewModel::child_t FeatureViewModel::Children()
@@ -154,7 +147,7 @@ namespace winrt::UFCase::implementation
         }
         if (cnt < m_children.Size())
             return std::optional<bool>(std::nullopt);
-        if (m_model.RequestedState() >= CbsInstallStateInstallRequested)
+        if (static_cast<DWORD>(m_model.RequestedState()) >= CbsInstallStateInstallRequested)
             return true;
         return false;
     }

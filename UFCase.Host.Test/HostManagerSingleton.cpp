@@ -9,4 +9,4 @@
 namespace winrt::UFCase::Isolation::implementation
 {
     CoCreatableCppWinRtClass(HostManagerSingleton);
-} // namespace winrt::UFCase::implementation
+} // namespace winrt::UFCase::Isolation::implementation

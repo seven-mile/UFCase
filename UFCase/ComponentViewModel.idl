@@ -10,7 +10,7 @@ namespace UFCase
     [default_interface]
     runtimeclass ComponentViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        ComponentViewModel(UInt64 hModel);
+        ComponentViewModel(UFCase.Isolation.ComponentModel model);
 
         String TextForm{ get; };
         String KeyForm{ get; };

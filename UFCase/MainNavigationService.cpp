@@ -4,7 +4,6 @@
 #include "MainNavigationService.g.cpp"
 #endif
 
-#include "ImageModel.h"
 #include "AppConfig.h"
 
 #include "ErrorDialog.g.h"
@@ -73,7 +72,8 @@ namespace winrt::UFCase::implementation
             }
             else if (page_name == L"Features")
             {
-                FeaturesPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()}};
+                auto ivm = GlobalRes::MainWnd().ViewModel();
+                FeaturesPageViewModel vm{ivm.SelectedImageViewModel()};
 
                 frame.Navigate(xaml_typename<FeaturesPage>(), box_value(vm));
 
@@ -85,14 +85,16 @@ namespace winrt::UFCase::implementation
             }
             else if (page_name == L"Packages")
             {
-                PackagesPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()},
+                auto ivm = GlobalRes::MainWnd().ViewModel();
+                PackagesPageViewModel vm{ivm.SelectedImageViewModel(),
                                          navContext.as<UFCase::PackagesPageNavigationContext>()};
                 frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
                 co_return;
             }
             else if (page_name == L"Components")
             {
-                ComponentsPageViewModel vm{ImageViewModel{ImageModel::Current()->GetHandle()}};
+                auto ivm = GlobalRes::MainWnd().ViewModel();
+                ComponentsPageViewModel vm{ivm.SelectedImageViewModel()};
                 frame.Navigate(xaml_typename<ComponentsPage>(), box_value(vm));
                 co_return;
             }

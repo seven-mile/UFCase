@@ -4,9 +4,7 @@
 #include "FeaturesPageViewModel.g.cpp"
 #endif
 
-#include "ImageModel.h"
-#include "SessionModel.h"
-#include "FeatureModel.h"
+#include "CbsApi.h"
 
 #include <functional>
 #include <unordered_map>
@@ -14,7 +12,9 @@
 
 namespace winrt::UFCase::implementation
 {
-    static std::unordered_map<uint64_t, std::vector<uint64_t>> child_ids;
+    // the children of nullptr is the root features
+    static std::unordered_map<hstring, std::vector<hstring>> child_models;
+    static std::unordered_map<hstring, Isolation::FeatureModel> id_to_models;
 
     IAsyncActionWithProgress<uint32_t> FeaturesPageViewModel::PullData()
     {
@@ -22,15 +22,15 @@ namespace winrt::UFCase::implementation
         // switch thread context
         co_await resume_background();
 
-        child_ids.clear();
+        child_models.clear();
 
-        auto &found = *Session().FoundationPackage();
+        auto found = Session().FoundationPackage();
 
         auto report_prog = co_await get_progress_token();
         report_prog(10);
 
-        auto joinUpdates =
-            [](const std::vector<FeatureModel *> &updates) -> IAsyncActionWithProgress<uint32_t> {
+        auto joinUpdates = [](const std::vector<Isolation::FeatureModel> &updates)
+            -> IAsyncActionWithProgress<uint32_t> {
             auto report_prog = co_await get_progress_token();
 
             const uint32_t ENUM_UPDATE_PROG = 30; // 30%
@@ -49,18 +49,25 @@ namespace winrt::UFCase::implementation
                 report_prog(ENUM_UPDATE_PROG +
                             uint32_t(std::floor(1.0 * idx / all * (100 - ENUM_UPDATE_PROG))));
 
-                auto &&parents = update->GetParentFeatureCollection();
-                child_ids[parents.size() ? parents[0]->GetHandle() : 0].push_back(
-                    update->GetHandle());
+                id_to_models.emplace(update.Name(), update);
+                auto parents = update.GetParentFeatureCollection().First();
+                child_models[parents.HasCurrent() ? parents.Current().Name() : L""].push_back(
+                    update.Name());
                 idx++;
             }
             co_return;
         };
 
-        auto op1 = joinUpdates(found.GetPackageFeatureCollection(CbsApplicabilityApplicable,
-                                                                 CbsSelectabilityRootClass)),
-             op2 = joinUpdates(found.GetPackageFeatureCollection(CbsApplicabilityNeedsParent,
-                                                                 CbsSelectabilityAllClass));
+        std::vector<Isolation::FeatureModel> it1, it2;
+        for (auto fm :
+             found.GetFeatureCollection(CbsApplicabilityApplicable, CbsSelectabilityRootClass))
+            it1.push_back(fm);
+
+        for (auto fm :
+             found.GetFeatureCollection(CbsApplicabilityNeedsParent, CbsSelectabilityAllClass))
+            it2.push_back(fm);
+
+        auto op1 = joinUpdates(it1), op2 = joinUpdates(it2);
         uint32_t prog1 = 0, prog2 = 0;
         op1.Progress([&](const auto &, const uint32_t &pr) {
             prog1 = pr;
@@ -74,13 +81,14 @@ namespace winrt::UFCase::implementation
         co_await op1;
         co_await op2;
 
-        std::function<void(IObservableVector<FeatureViewModel>, uint64_t)> dfs;
-        dfs = [&](IObservableVector<FeatureViewModel> child, uint64_t cur) {
+        std::function<void(IObservableVector<FeatureViewModel>, Isolation::FeatureModel)> dfs;
+        dfs = [&](IObservableVector<FeatureViewModel> child, Isolation::FeatureModel cur) {
             child.Clear();
-            for (auto child_id : child_ids[cur])
+            for (auto child_name : child_models[cur ? cur.Name() : L""])
             {
-                FeatureViewModel vm{child_id};
-                dfs(vm.Children(), child_id);
+                auto child_model = id_to_models.at(child_name);
+                FeatureViewModel vm{child_model};
+                dfs(vm.Children(), child_model);
                 child.Append(vm);
             }
         };

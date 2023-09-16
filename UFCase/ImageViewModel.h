@@ -2,8 +2,7 @@
 
 #include "ImageViewModel.g.h"
 
-#include "ImageModel.h"
-#include "StoreModel.h"
+#include <winrt/UFCase.Isolation.h>
 
 #include "PropChgUtil.h"
 
@@ -11,7 +10,7 @@ namespace winrt::UFCase::implementation
 {
     struct ImageViewModel : ImageViewModelT<ImageViewModel>, ImplPropertyChangedT<ImageViewModel>
     {
-        ImageViewModel(uint64_t hModel);
+        ImageViewModel(Isolation::ImageModel model);
 
         hstring Type();
         hstring Version();
@@ -19,25 +18,27 @@ namespace winrt::UFCase::implementation
         hstring Bootdrive();
         Media::ImageSource Icon();
 
-        void Select();
-
-        uint64_t OpenSession();
-        void CloseSession(uint64_t handle);
+        Isolation::SessionModel OpenSession();
 
         bool Selectable()
         {
             return m_state == LoadingState::Loaded;
         }
 
-        uint64_t Store()
+        Isolation::ImageModel Model()
         {
-            return m_model.SxsStore()->GetHandle();
+            return m_model;
+        }
+
+        Isolation::StoreModel Store()
+        {
+            return m_model.SxsStore();
         }
 
         IAsyncAction PullData();
 
       private:
-        ImageModel &m_model;
+        Isolation::ImageModel m_model;
         hstring m_version{L"Loading"}, m_edition;
         Media::ImageSource m_icon{nullptr};
 

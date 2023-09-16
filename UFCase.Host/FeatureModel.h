@@ -8,7 +8,8 @@ namespace winrt::UFCase::Isolation::implementation
 {
     struct FeatureModel : FeatureModelT<FeatureModel>
     {
-        FeatureModel(Isolation::PackageModel pkg, com_ptr<ICbsUpdate> feature) : m_feature(feature)
+        FeatureModel(Isolation::PackageModel pkg, com_ptr<ICbsUpdate> feature)
+            : m_feature(feature), m_package(pkg)
         {
         }
 
@@ -30,7 +31,7 @@ namespace winrt::UFCase::Isolation::implementation
 
       private:
         com_ptr<ICbsUpdate> m_feature;
-        weak_ref<Isolation::PackageModel> m_package;
+        Isolation::PackageModel m_package;
         com_ptr<ICbsUpdate> GetInterface()
         {
             return m_feature;
