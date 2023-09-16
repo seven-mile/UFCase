@@ -81,3 +81,11 @@ Long term:
 * For online images, the payload path of components cannot be fetched. I believe this is caused by an OS bug. See [this repro](https://github.com/seven-mile/BugRepro_PackagedRegOpenKeyEx) for detail.
   * Workaround1: modify UFCase to an unpackaged app, and build from source
   * Workaround2: boot from another OS and access as offline image
+  * Update: after some tests, I found that
+    * Payload path works on
+      * Win11 Canary Build 25947
+      * Win10 Stable Build 19045
+    * Payload path errors on
+      * Win11 Dev Build 23545
+      * Win11 Stable Build 22621
+    * I think it's some kernel regressions that caused the issue of `NtRegOpenKey`, but I don't have time to investigate into kernel internals.
