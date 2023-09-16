@@ -2,7 +2,7 @@
 
 #include "ComponentModel.g.h"
 
-#include "../UFCase/isolation.h"
+#include "ServicingApi/isolation.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

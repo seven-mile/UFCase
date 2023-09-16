@@ -2,7 +2,7 @@
 
 #include "ImageModel.g.h"
 
-#include "../UFCase/CbsApi.h"
+#include "ServicingApi/CbsApi.h"
 
 #include <filesystem>
 

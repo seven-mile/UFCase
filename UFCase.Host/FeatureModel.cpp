@@ -5,7 +5,7 @@
 #endif
 
 #include "PackageModel.h"
-#include "../UFCase/MallocUtil.h"
+#include "Utils/MallocUtil.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

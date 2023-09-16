@@ -4,7 +4,7 @@
 #include "ComponentModel.g.cpp"
 #endif
 
-#include "../UFCase/CbsUtil.h"
+#include "Utils/CbsUtil.h"
 
 #include "StoreModel.h"
 

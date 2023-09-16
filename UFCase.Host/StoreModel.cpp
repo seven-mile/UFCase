@@ -7,9 +7,9 @@
 #include "ComponentModel.h"
 #include "GeneratorIterable.h"
 
-#include "../UFCase/CbsUtil.h"
-#include "../UFCase/isolation.h"
-#include "../UFCase/SSShimApi.h"
+#include "Utils/CbsUtil.h"
+#include "ServicingApi/Isolation.h"
+#include "ServicingApi/SSShimApi.h"
 
 #include <wil/resource.h>
 #include <wil/win32_helpers.h>

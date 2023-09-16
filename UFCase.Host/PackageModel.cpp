@@ -5,8 +5,8 @@
 #endif
 
 #include "FeatureModel.h"
-#include "../UFCase/MallocUtil.h"
-#include "../UFCase/CbsUtil.h"
+#include "Utils/MallocUtil.h"
+#include "Utils/CbsUtil.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

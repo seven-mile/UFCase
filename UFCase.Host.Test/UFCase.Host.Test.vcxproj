@@ -65,16 +65,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)UFCase.WinMD.HostManager/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)UFCase.WinMD.HostManager/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)UFCase.WinMD.HostManager/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)UFCase.WinMD.HostManager/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -152,8 +152,8 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UFCase.WinMD.HostManager\UFCase.WinMD.HostManager.vcxproj">
-      <Project>{9330649e-061c-4631-97cf-3229574cae57}</Project>
+    <ProjectReference Include="..\UFCase.Host\UFCase.Host.vcxproj">
+      <Project>{72710aa5-7cc4-4f1d-9560-89cb778e65f5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

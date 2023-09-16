@@ -3,7 +3,7 @@
 #include "UFCase.Host.GeneratorIterator.g.h"
 #include "UFCase.Host.GeneratorIterable.g.h"
 
-#include "../UFCase/GeneratorUtil.h"
+#include "Utils/GeneratorUtil.h"
 
 namespace winrt::UFCase::Host::implementation
 {

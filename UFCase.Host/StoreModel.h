@@ -2,10 +2,10 @@
 
 #include "StoreModel.g.h"
 
-#include "../UFCase/isolation.h"
-#include "../UFCase/csiapi.h"
+#include "ServicingApi/Isolation.h"
+#include "ServicingApi/CsiApi.h"
 
-#include "../UFCase/GeneratorUtil.h"
+#include "Utils/GeneratorUtil.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

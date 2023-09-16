@@ -4,9 +4,9 @@
 #include "SessionModel.g.cpp"
 #endif
 
-#include "../UFCase/CCbsUIHandler.h"
-#include "../UFCase/CbsUtil.h"
-#include "../UFCase/MallocUtil.h"
+#include "CCbsUIHandler.h"
+#include "Utils/CbsUtil.h"
+#include "Utils/MallocUtil.h"
 
 #include "PackageModel.h"
 

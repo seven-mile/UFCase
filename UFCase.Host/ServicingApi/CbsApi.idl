@@ -1,0 +1,493 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+typedef enum {
+  CbsStateResolvedInvalid = -32,
+  CbsStateStagedInvalid = -64,
+  CbsStateInstalledInvalid = -112,
+  CbsStatePermanentInvalid = -128,
+
+  CbsStateAbsent = 0,
+  CbsStateUninstallPending = 5,
+  CbsStateResolving = 16,
+  CbsStateResolved = 32,
+  CbsStateStaging = 48,
+  CbsStateStaged = 64,
+  CbsStateSuperseded = 80,
+  CbsStateInstallPending = 96,
+  CbsStatePartiallyInstalled = 101,
+  CbsStateInstalled = 112,
+  CbsStatePermanent = 128,
+  CbsStateDefault = 4096,
+  CbsStateDetect = 4100,
+  CbsStateCanceled = 4101
+} CbsState;
+
+typedef enum {
+  UpdateSelectionUnknown = -1,
+  UpdateSelectionOff = 0,
+  UpdateSelectionOn = 1,
+  UpdateSelectionDefault = 255,
+  UpdateSelectionCancel = 999
+} UpdateSelection;
+
+typedef enum {
+  CbsPackageTypeUnknown = -2,
+  CbsPackageTypeExisting = -1,
+  CbsPackageTypeCabinet = 0,
+  CbsPackageTypeExpanded = 1,
+  CbsPackageTypeManifest = 2,
+  CbsPackageTypeXmlString = 3,
+  CbsPackageTypeExpandedWithMum = 4
+} _CbsPackageType;
+
+typedef enum {
+  CbsRequiredActionNone = 0,
+  CbsRequiredActionReboot = 1
+} _CbsRequiredAction;
+
+typedef enum {
+  CbsSessionPropertyRebootRequired = 1,
+  CbsSessionPropertyErrorDetail = 2,
+  CbsSessionPropertyServiceable = 3,
+  CbsSessionPropertyCompressionEnabled = 4,
+  CbsSessionPropertyReport = 5,
+  CbsSessionPropertyCorruptionFlag = 6,
+
+  CbsSessionPropertyVolatileSize = 8,
+  CbsSessionPropertyNonVolatileSize = 9,
+  CbsSessionPropertySharedWithWindowsSize = 10,
+  CbsSessionPropertyAccordingToExplorer = 11,
+  CbsSessionPropertyLastScavengeDatetime = 12,
+  CbsSessionPropertySupersededPackageCount = 13,
+  CbsSessionPropertyComponentCleanupRecommended = 14,
+  CbsSessionPropertySessionCompletionDatatime = 15,
+  CbsSessionPropertyPackageMinSize = 16,
+  // ?
+  CbsSessionPropertyTotalPackageMinSize = 18,
+
+  CbsSessionPropertyRepairNeeded = 22,
+  CbsSessionPropertyReOffer = 23
+} _CbsSessionProperty;
+
+typedef enum {
+  CbsSessionOptionNone = 0,
+  CbsSessionOptionProcessChangesPostReboot = 0x40,
+  CbsSessionOptionLoadPersisted = 0x80,
+  CbsSessionOptionDoScavenge = 0x400,
+  CbsSessionOptionCancelAllPendedTransactions = 0x800,
+  CbsSessionOptionEnableCompression = 0x2000,
+  CbsSessionOptionDisableCompression = 0x4000,
+  CbsSessionOptionDetectAndRepairStoreCorruption = 0xC000,
+  CbsSessionOptionNoPend = 0x10000,
+  CbsSessionOptionUseLocalSourceOnly = 0x20000,
+  CbsSessionOptionUseWindowsUpdate = 0x40000,
+  CbsSessionOptionReportStackInfo = 0x100000,
+  CbsSessionOptionDoSynchronousCleanup = 0x400000,
+  CbsSessionOptionDoAsynchronousCleanup = 0x800000,
+  CbsSessionOptionDelayExecutionIfPendRequired = 0x2000000,
+  CbsSessionOptionAnalyzeComponentStore = 0x8000000,
+  CbsSessionOptionCancelOnlySmartPendedTransactions = 0x80000000
+} _CbsSessionOption;
+
+typedef enum {
+  CbsSessionEnhancedOptionManuallyRepair = 0x800
+} _CbsSessionEnhancedOption;
+
+typedef enum {
+  CbsSessionStateUnknown = 0,
+  CbsSessionStateReady = 16,
+  CbsSessionStateQueued = 32,
+  CbsSessionStateStarted = 48,
+  CbsSessionStatePanned = 64,
+  CbsSessionStateResolved = 80,
+  CbsSessionStateStaged = 96,
+  CbsSessionStateExecutionDelayed = 101,
+  CbsSessionStateInstalled = 112,
+  CbsSessionStateShutdownStart = 144,
+  CbsSessionStateShutdownFinish = 160,
+  CbsSessionStateStartup = 176,
+  CbsSessionStateStartupFinish = 192,
+  CbsSessionStateComplete = 208,
+  CbsSessionStateInterrupted = 224,
+  CbsSessionStateCorrupted = 240,
+  CbsSessionStateMarkedForRetry = 256
+} _CbsSessionState;
+
+
+typedef enum {
+  CbsOperationTypeNone = 0,
+  CbsOperationTypeExportRepository = 1,
+  CbsOperationTypeUpdateImage = 2,
+  CbsOperationTypePerformPrepareServicingOperation = 3,
+  CbsOperationTypePerformLateAcquisitionOperation = 4,
+  CbsOperationTypeInitICSIStore = 8
+} _CbsOperationType;
+
+typedef enum {
+  CbsSessionConfigurablePropertyInvalid
+} _CbsSessionConfigurableProperty;
+
+typedef enum {
+  CbsApplicabilityInvalidValue = -1,
+  CbsApplicabilityNotApplicable = 0,
+  CbsApplicabilityNeedsParent = 2,
+  CbsApplicabilityApplicable = 4
+} _CbsApplicability;
+
+typedef enum {
+  CbsSelectabilityInvalidValue = -1,
+  CbsSelectabilityAllClass = 0,
+  // cannot be removed?
+  CbsSelectabilityFixedClass = 1,
+  CbsSelectabilityRootClass = 2
+} _CbsSelectability;
+
+
+typedef enum {
+  CbsInstallStatePartiallyInstalled = -19,
+  CbsInstallStateCancel = -18,
+  CbsInstallStateSuperseded = -17,
+  CbsInstallStateDefault = -16,
+  CbsInvalidStatePermanent = -8,
+  CbsInvalidStateInstalled = -7,
+  CbsInvalidStateStaged = -4,
+  CbsInvalidStateResolved = -2,
+  CbsInstallStateUnknown = -1,
+
+  CbsInstallStateAbsent = 0,
+
+  CbsInstallStateResolving = 1,
+  CbsInstallStateResolved = 2,
+  CbsInstallStateStaging = 3,
+  CbsInstallStateStaged = 4,
+  CbsInstallStateUninstallRequested = 5,
+  CbsInstallStateInstallRequested = 6,
+  CbsInstallStateInstalled = 7,
+  CbsInstallStatePermanent = 8,
+
+  CbsInstallStateInvalid = 0x7fffffff
+} _CbsInstallState;
+
+typedef enum {
+  CbsPackagePropertyIdentityString = 1,
+  CbsPackagePropertyDisplayName = 2,
+  CbsPackagePropertyDescription = 3,
+  CbsPackagePropertyRestart = 4,
+  CbsPackagePropertyPsfName = 5,
+  CbsPackagePropertyHidden = 6,
+  CbsPackagePropertyKeyword = 7,
+  CbsPackagePropertyReleaseType = 8,
+  CbsPackagePropertyProductName = 9,
+  CbsPackagePropertyProductVersion = 10,
+  CbsPackagePropertyPermenence = 11,
+  CbsPackagePropertyCompany = 12,
+  CbsPackagePropertyCopyright = 13,
+  CbsPackagePropertySupportInformation = 14,
+  CbsPackagePropertyCreationTimeStamp = 15,
+  CbsPackagePropertyLastUpdateTimeStamp = 16,
+  CbsPackagePropertyInstallTimeStamp = 17,
+  CbsPackagePropertyInstallPackageName = 18,
+  CbsPackagePropertyInstallLocation = 19,
+  CbsPackagePropertyInstallClient = 20,
+  CbsPackagePropertyInstallUserName = 21,
+  CbsPackagePropertyExtendedError = 22,
+  CbsPackagePropertyPended = 23,
+  CbsPackagePropertyHotpatch = 24,
+  CbsPackagePropertyExclusive = 25,
+  CbsPackagePropertyAllowedOffline = 26,
+  CbsPackagePropertyCompletelyOfflineCapable = 27,
+  CbsPackagePropertyScavengeSequence = 28,
+  CbsPackagePropertyPackageSize = 29,
+  CbsPackagePropertySupersededTime = 30,
+  CbsPackagePropertyStackUpdate = 31,
+  CbsPackagePropertyReleaseQuality = 32,
+  CbsPackagePropertyTargetPartition = 33,
+  CbsPackagePropertyBinaryPartition = 34,
+  CbsPackagePropertyCapabilityIdentity = 35,
+  CbsPackagePropertyInternalStagingSizeWithExternalStorage = 36,
+  CbsPackagePropertyInternalStagingSizeWithoutExternalStorage = 37,
+  CbsPackagePropertyInstallSizeWithExternalStorage = 38,
+  CbsPackagePropertyInstallSizeWithoutExternalStorage = 39,
+  CbsPackagePropertyExternalStagingSize = 40,
+  CbsPackagePropertyFeatureFMID = 41,
+  CbsPackagePropertyFeatureGroup = 42,
+  CbsPackagePropertyPermanentUntilReset = 43,
+  CbsPackagePropertySatelliteType = 44,
+  CbsPackagePropertyDeclareSatelliteLanguage = 45,
+  CbsPackagePropertyDeclareSatelliteArch = 46,
+  CbsPackagePropertyRequiresPriorReboot = 47,
+  CbsPackagePropertyRemoveOnReset = 51
+} _CbsPackageProperty;
+
+typedef enum {
+  CbsResourceTypeInvalid
+} _CbsResourceType;
+
+typedef enum {
+  CbsCardinalityNone
+} _CbsCardinality;
+
+typedef enum {
+  CbsUpdatePropertyName = 1,
+  CbsUpdatePropertyDisplayName = 2,
+  CbsUpdatePropertyDescription = 3,
+  CbsUpdatePropertyDisplayFile = 4,
+  CbsUpdatePropertyRestart = 5,
+  CbsUpdatePropertyPsfName = 6,
+  CbsUpdatePropertyDownloadSize = 7,
+  CbsUpdatePropertySetMembership = 8
+} _CbsUpdateProperty;
+
+typedef struct {
+  int Data1, Data2;
+} tagCbsPackageDecryptionData;
+
+typedef enum {
+  CbsPackageEncryptionEnumNone
+} tagCbsPackageEncryptionEnum;
+
+typedef enum {
+  CbsDeferChange = 1 << 14,
+  CbsTreatPackageAsPSFX = 1 << 15
+} _CbsPackageChangeOption;
+
+typedef enum {
+  CbsOperationStageWaiting = 1,
+  CbsOperationStagePlanning = 5,
+  CbsOperationStageDownloading = 15,
+  CbsOperationStageExtracting = 20,
+  CbsOperationStageResolving = 25,
+  CbsOperationStageStaging = 30,
+  CbsOperationStageInstalling = 40,
+  CbsOperationStageInstallingEx = 50,
+  CbsOperationStageReservicingLCU = 60
+} _CbsOperationStage;
+
+typedef enum {
+  CbsOnDemandSourceEnumAllowCloud = 0x4,
+  CbsOnDemandSourceEnumTreatLocalSourceAsUUPRepo = 0x22,
+  CbsOnDemandSourceEnumReserveUnavailableFOD = 0x26,
+  CbsOnDemandSourceLanguagePack = 0x40,
+  CbsOnDemandSourceActionList = 0x10,
+  CbsOnDemandSourceWindowsUpdate = 0x100,
+  CbsOnDemandSourceRemovedMarkers = 0x1000,
+} _CbsCapabilitySourceFilter;
+
+interface ICbsUpdate;
+interface ICbsPackage;
+interface ICbsCapability;
+interface ICbsFeaturePackage;
+interface ICbsIdentity;
+interface ICbsUIHandler;
+interface ICbsSessionObserverListener;
+
+
+[uuid(752073A1-23F2-4396-85F0-8FDB879ED0ED)]
+coclass CbsSession
+{
+  interface ICbsSession;
+  interface ICbsSession7;
+  interface ICbsSession8;
+  interface ICbsSession10;
+};
+
+interface IEnumCbsActivity;
+interface IEnumCbsCapability;
+interface IEnumCbsFeaturePackage;
+interface IEnumCbsIdentity;
+interface IEnumCbsSession;
+interface IEnumCbsUpdate;
+
+[uuid(75207396-23F2-4396-85F0-8FDB879ED0ED), object]
+interface ICbsIdentity : IUnknown
+{
+  HRESULT Clear(void);
+  HRESULT IsNull([out, retval] BOOL* pbIsNull);
+  HRESULT IsEqual([in] ICbsIdentity* pIdentComp, [out, retval] BOOL* pbIsEqual);
+  HRESULT LoadFromAttributes([in, string] LPCTSTR szName, [in, string] LPCTSTR szPublicKeyToken, [in, string] LPCTSTR szProcessor, [in, string] LPCTSTR szLanguage, [in, string] LPCTSTR szVersion);
+  HRESULT LoadFromStringId([in, string] LPCTSTR szID);
+  HRESULT GetStringId([out, retval] LPTSTR* pszID);
+  HRESULT SaveAsStringId([out, retval] LPTSTR* pszID);
+  HRESULT InternalIsEqualbyAttribute([in, string] LPCTSTR szName, [in, string] LPCTSTR szPublicKeyToken, [in, string] LPCTSTR szProcessor, [in, string] LPCTSTR szLanguage, [in, string] LPCTSTR szVersion, [out, retval] BOOL* pbIsEqual);
+};
+
+[uuid(B531E34E-A150-4B01-8D77-858E2F6CFE75), object]
+interface ICbsFeaturePackage : IUnknown
+{
+
+};
+
+[uuid(75207393-23F2-4396-85F0-8FDB879ED0ED), object]
+interface ICbsPackage : IUnknown
+{
+  HRESULT GetIdentity([out, retval] ICbsIdentity** pIdentity);
+  HRESULT GetProperty([in] _CbsPackageProperty prop, [out, retval] LPTSTR* pValue);
+  HRESULT EnumerateUpdates([in] _CbsApplicability pApplicability, [in] _CbsSelectability pSelectability, [out, retval] IEnumCbsUpdate** ppUpdateList);
+  HRESULT GetUpdate([in, string] LPCTSTR szUpdName, [out, retval] ICbsUpdate** ppUpdate);
+  HRESULT AddSource([in, string] LPCTSTR basePath);
+  HRESULT RemoveSource([in, string] LPCTSTR basePath);
+  HRESULT EnumerateSources([out, retval] IEnumString** pSourceList);
+  HRESULT EvaluateApplicability(UINT option, [out] _CbsInstallState* pApplicabilityState, [out] _CbsInstallState* pCurrentState);
+  // installOptions: \in 0x1111.1111.1011.1111, targetState \in {Default, Absent, Resolved, Staged, Installed, Permanent}
+  HRESULT InitiateChanges([in] UINT installOptions, [in] _CbsInstallState targetState, [in] ICbsUIHandler* pUIHandler);
+  HRESULT Status([out] _CbsInstallState* pProgressState, [out] DWORD* pLastError);
+  HRESULT ResourcesToCheck([in] _CbsResourceType resType, [out, retval] IEnumString** pResList);
+};
+
+[uuid(75207394-23F2-4396-85F0-8FDB879ED0ED), object]
+interface ICbsUpdate : IUnknown
+{
+  HRESULT GetProperty([in] _CbsUpdateProperty prop, [out, retval] LPTSTR* pValue);
+  HRESULT GetPackage([out, retval] ICbsPackage** ppPackage);
+  HRESULT GetParentUpdate([in] UINT index, [out] LPTSTR* ppParent, [out] LPTSTR* ppSet);
+  HRESULT GetCapability([out] _CbsApplicability* pApplicability, [out] _CbsSelectability* pSelectability);
+  HRESULT GetDeclaredSet([in] UINT unk, [out] LPTSTR* pDeclaredSet, [out] _CbsCardinality* Cardinality);
+  HRESULT GetInstallState([out] _CbsInstallState* pCurrentState, [out] _CbsInstallState* pIntendedState, [out] _CbsInstallState* pRequestState);
+  // requestedState \in { InstallRequested, UninstallRequested, Cancel, Default }
+  HRESULT SetInstallState([in] UINT options, [in] _CbsInstallState requestedState);
+  HRESULT GetRealInstallState([out] CbsState* pCurrentState, [out] CbsState* pIntendedState, [out] UpdateSelection* pRequestState);
+};
+
+[uuid(75207392-23F2-4396-85F0-8FDB879ED0ED), object]
+interface ICbsUIHandler : IUnknown
+{
+  HRESULT Initiate([in] IEnumCbsUpdate* pUpdList, [in] int*);
+  HRESULT Terminate(void);
+  HRESULT Error(HRESULT hr, [in, string] LPCTSTR szUnk, [in] int* unkArg);
+  HRESULT ResolveSource([in] LPCTSTR, [in] ICbsIdentity* pIdent, [in] LPCTSTR, [in, out] LPTSTR*, [out] int*);
+  HRESULT Progress([in] _CbsInstallState stIns, [in] UINT curProg, [in] UINT totProg, [out] int*);
+  HRESULT EnteringStage([in] UINT, [in] _CbsOperationStage, [in] int, [in] int);
+  HRESULT ProgressEx([in] _CbsInstallState stIns, [in] UINT curProg, [in] UINT totProg, [in] UINT, [out] int*);
+};
+
+[uuid(9EEAE39F-E52B-4F18-9C14-F827BB3BAF0F), object]
+interface ICbsCapability : IUnknown
+{
+  HRESULT GetIdentity([out, retval] ICbsIdentity** pIdent);
+  HRESULT GetProperty([in] _CbsPackageProperty, [out, retval] LPTSTR*);
+  HRESULT EnumerateUpdates([in] _CbsApplicability pApplicability, [in] _CbsSelectability pSelectability, [out, retval] IEnumCbsUpdate** ppUpdateList);
+  HRESULT GetUpdate([in, string] LPCTSTR szUpdName, [out, retval] ICbsUpdate** ppUpdate);
+  HRESULT AddSource([in, string] LPCTSTR basePath);
+  HRESULT RemoveSource([in, string] LPCTSTR basePath);
+  HRESULT EnumerateSources([out, retval] IEnumString** pSourceList);
+  HRESULT EvaluateApplicability([in] UINT option, [out] _CbsInstallState* pApplicabilityState, [out] _CbsInstallState* pCurrentState);
+  HRESULT InitiateChanges([in] UINT installOptions, [in] _CbsInstallState targetState, [in] ICbsUIHandler* pUIHandler);
+  HRESULT Status([out] _CbsInstallState* pProgressState, [out] DWORD* pLastError);
+  HRESULT ResourcesToCheck([in] _CbsResourceType resType, [out, retval] IEnumString** pResList);
+  HRESULT GetCapability([out] LPTSTR* pszNamespace, [out] LPTSTR* pszLang, [out] LPTSTR* pszArch, [out] ULONG* dwVerMajor, [out] ULONG* dwVerMinor);
+  HRESULT GetDependencies([out, retval] IEnumCbsCapability** pDependenciesList);
+  HRESULT GetSources([out] UINT*);
+  HRESULT GetDownloadSize([out, retval] ULONG* nBytes);
+  HRESULT GetInstallSize([out, retval] ULONG* nBytes);
+  HRESULT GetInstallState([out, retval] _CbsInstallState* pState);
+  HRESULT GetOwnerInformation([in] UINT reserved, [out] int*, [out] UINT*, [out] LPTSTR*);
+  HRESULT EnumerateFeaturePackages([out, retval] IEnumCbsFeaturePackage** ppFeaturePkgList);
+};
+
+[uuid(75207397-23F2-4396-85F0-8FDB879ED0ED), object]
+interface IEnumCbsIdentity : IUnknown
+{
+  HRESULT Next([in] ULONG celt, [out] ICbsIdentity** rgpCol, [out] ULONG* pbFetched);
+  HRESULT Skip([in] ULONG celt);
+  HRESULT Reset(void);
+  HRESULT Clone([out] IEnumCbsIdentity**);
+};
+
+[uuid(25F05277-E733-4455-80B7-FA9C2DC9E678), object]
+interface IEnumCbsCapability : IUnknown
+{
+  HRESULT Next([in] ULONG celt, [out] ICbsCapability** rgpCol, [out] ULONG* pbFetched);
+  HRESULT Skip([in] ULONG celt);
+  HRESULT Reset(void);
+  HRESULT Clone([out] IEnumCbsCapability**);
+};
+
+[uuid(75207395-23F2-4396-85F0-8FDB879ED0ED), object]
+interface IEnumCbsUpdate : IUnknown
+{
+  HRESULT Next([in] ULONG celt, [out] ICbsUpdate** rgpCol, [out] ULONG* pbFetched);
+  HRESULT Skip([in] ULONG celt);
+  HRESULT Reset(void);
+  HRESULT Clone([out] IEnumCbsUpdate**);
+};
+
+[uuid(A454308D-1FC4-48E4-B6C0-2A9580804686), object]
+interface IEnumCbsActivity : IUnknown { };
+
+[uuid(D2F9F360-5BC7-4B1E-AAD5-DD151733C7C8), object]
+interface IEnumCbsFeaturePackage : IUnknown
+{
+  HRESULT Next([in] ULONG celt, [out] ICbsFeaturePackage** rgpCol, [out] ULONG* pbFetched);
+  HRESULT Skip([in] ULONG celt);
+  HRESULT Reset(void);
+  HRESULT Clone([out] IEnumCbsUpdate**);
+};
+
+[uuid(6943A742-8AE2-4EB1-8A07-747C5CFD3B9E), object]
+interface IEnumCbsSession : IUnknown { };
+
+[uuid(1C8ADB85-982E-47F9-999F-B0C3BF9D0449), object]
+interface ICSIExternalTransformerExecutor : IUnknown
+{
+  HRESULT Commit([in] LPCTSTR, [in] LPCTSTR, [in] LPCTSTR, [in] LPCTSTR);
+  HRESULT Initialize([in] ULONG, [in] UINT64, [in] LPCTSTR, [in] LPCTSTR, [in] LPCTSTR);
+  HRESULT Install([in] LPCTSTR, [in] LPCTSTR);
+};
+
+[uuid(E3AFD5FD-3B03-453D-91CE-EBBDA9B8BEA1), object]
+interface ICbsSessionObserverListener : IUnknown { };
+
+[uuid(75207391-23F2-4396-85F0-8FDB879ED0ED), object]
+interface ICbsSession : IUnknown
+{
+  HRESULT Initialize([in] _CbsSessionOption sessionOptions, [in, string] LPCTSTR clientID, [in, string] LPCTSTR bootDrive, [in] LPCTSTR winDir);
+  HRESULT Finalize([out] _CbsRequiredAction* pRequiredAction);
+  HRESULT CreatePackage([in] UINT options, [in] _CbsPackageType packageType, [in, string] LPCTSTR szPkgPath, [in, string] LPCTSTR szSandboxPath, [out, retval] ICbsPackage** pPackage);
+  // options: 0 and 2 bit (0 | 1 | 4), unkArg will only appear in error log information
+  // [warning] when in COM RPC, the arg pPackage is a IInternalUnknown,
+  // you should QI itself as ICbsPackage to get the internal object.
+  HRESULT OpenPackage([in] UINT options, [in] ICbsIdentity* pPackageIdentity, [in, string] LPCTSTR unkArgAboutLog, [out, retval] ICbsPackage** pPackage);
+  // options: normal: 0x1b0, all: 0x50 or 0x70
+  HRESULT EnumeratePackages([in] UINT options, [out] IEnumCbsIdentity** pPackageList);
+  HRESULT CreateCbsIdentity([out, retval] ICbsIdentity** ppIdentity);
+};
+
+[uuid(DC95A094-EE0E-4974-9600-027D2321C2D4), object]
+interface ICbsSession7 : ICbsSession
+{
+  HRESULT GetStatus([out] UINT* pCurrentPhase, [out] _CbsSessionState* pLastSuccessfulSessionState, [out] BOOL* pbCompleted, [out] HRESULT* phrStatus);
+  HRESULT Resume([in] ICbsUIHandler* pUIHandler);
+  HRESULT GetSessionId([out, retval] LPTSTR* pszIdentity);
+  HRESULT GetProperty([in] _CbsSessionProperty prop, [out, retval] LPTSTR* pValue);
+  HRESULT AddPhaseBreak(void);
+  HRESULT FinalizeEx([in] UINT, [out, retval] _CbsRequiredAction* pRequiredAction);
+};
+
+[uuid(F568C899-AF4F-4EAA-B12A-B8E5F1B219DE), object]
+interface ICbsSession8 : ICbsSession7
+{
+  HRESULT AddSource([in] UINT options, [in, string] LPCTSTR basePath);
+  HRESULT RegisterCbsUIHandler([in] ICbsUIHandler* pUIHandler);
+
+  // ???
+  // HRESULT SetClientToken([in] INT64 token);
+};
+
+[uuid(F112757A-565B-4260-BD05-9FA34417349A), object]
+interface ICbsSession10 : ICbsSession8
+{
+  // HRESULT AddSource([in] UINT options, [in, string] LPCTSTR basePath);
+  // HRESULT RegisterCbsUIHandler([in] ICbsUIHandler* pUIHandler);
+  HRESULT CreateWindowsUpdatePackage([in] UINT, [in, string] LPCTSTR, [in] GUID, [in] UINT, [in] _CbsPackageType, [in, string] LPCTSTR, [in, string] LPCTSTR, [in] UINT, [in] tagCbsPackageDecryptionData const *, [in] tagCbsPackageEncryptionEnum, [out, retval] ICbsPackage**);
+  // sourceFilter: \in 0xFF, 0x40 means LanguagePacks [[[  Use CbsOnDemandSource! ]]]
+  HRESULT EnumerateCapabilities([in] _CbsCapabilitySourceFilter sourceFilter, [in, string] LPCTSTR szNamespace, [in, string] LPCTSTR szLang, [in, string] LPCTSTR szArch, [in] ULONG dwMajor, [in] ULONG dwMinor, [out, retval] IEnumCbsCapability**);
+  HRESULT InitializeEx([in] UINT sessionOptions, [in, string] LPCTSTR sourceName, [in, string] LPCTSTR bootDrive, [in, string] LPCTSTR winDir, [in, string] LPCTSTR externalDir);
+  HRESULT CreateExternalTransformerExecutor([out, retval] ICSIExternalTransformerExecutor** ppCsiExecutor);
+  HRESULT ObserveSessions([in] UINT options, [in] ICbsSessionObserverListener* pListener, [out, retval] IEnumCbsSession**);
+  HRESULT GetActivities([in] INT64 options, [out, retval] IEnumCbsActivity**);
+  HRESULT SetEnhancedOptions([in] _CbsSessionEnhancedOption enhancedOptions);
+  HRESULT SetProperty([in] _CbsSessionConfigurableProperty prop, [in, string] LPCTSTR value);
+  HRESULT PerformOperation([in] UINT reserved, [in] _CbsOperationType type);
+  HRESULT SetClientToken([in] INT64 token);
+};
