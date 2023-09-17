@@ -8,6 +8,7 @@
 #include "GeneratorIterable.h"
 
 #include "Utils/ComUtil.h"
+#include "Utils/StackUtil.h"
 #include "ServicingApi/Isolation.h"
 #include "ServicingApi/SSShimApi.h"
 
@@ -21,122 +22,9 @@ namespace winrt::UFCase::Isolation::implementation
 {
     namespace WcpUtil
     {
-
-        constexpr auto WCP_DLL_FILENAME = L"wcp.dll";
-        constexpr auto SSSHIM_DLL_FILENAME = L"SSShim.dll";
-
-        template <class FuncT>
-            requires requires { requires std::is_function_v<std::remove_pointer_t<FuncT>>; }
-        [[nodiscard]] static FuncT GetFunction(const std::wstring module, const std::string name)
+        WcpGuard::WcpGuard(com_ptr<IMalloc> pMalloc, hstring windir)
         {
-            return reinterpret_cast<FuncT>(GetProcAddress(
-                winrt::check_pointer(GetModuleHandle(module.c_str())), name.c_str()));
-        }
-
-        inline std::wstring_view GetViewFromLUC(LUNICODE_STRING const &luc)
-        {
-            return {luc.Data, luc.Length};
-        }
-
-        std::wstring FindWcpDllOnline()
-        {
-
-            winrt::check_pointer(LoadLibrary(SSSHIM_DLL_FILENAME));
-
-            auto pfnSssBindServicingStack = GetFunction<PSSS_BIND_SERVICING_STACK_FUNCTION>(
-                SSSHIM_DLL_FILENAME, "SssBindServicingStack");
-
-            auto pfnSssGetServicingStackFilePathLength =
-                GetFunction<PSSS_GET_SERVICING_STACK_FILE_PATH_LENGTH_FUNCTION>(
-                    SSSHIM_DLL_FILENAME, "SssGetServicingStackFilePathLength");
-
-            auto pfnSssGetServicingStackFilePath =
-                GetFunction<PSSS_GET_SERVICING_STACK_FILE_PATH_FUNCTION>(
-                    SSSHIM_DLL_FILENAME, "SssGetServicingStackFilePath");
-
-            SSS_BIND_PARAMETERS param{.cbSize = sizeof(param),
-                                      .dwFlags = SSS_BIND_CONDITION_FLAGS_ARCHITECTURE |
-                                                 SSS_BIND_CONDITION_FLAGS_OFFLINE_IMAGE};
-            DWORD arrArchs[] = {
-#ifdef _AMD64_
-                PROCESSOR_ARCHITECTURE_AMD64,
-                PROCESSOR_ARCHITECTURE_INTEL,
-#else
-                PROCESSOR_ARCHITECTURE_INTEL,
-                PROCESSOR_ARCHITECTURE_AMD64,
-#endif
-            };
-            param.cntArchs = _countof(arrArchs);
-            param.arrArchs = arrArchs;
-
-            // Still using online servicing stack
-            auto strOnlineRoot = wil::GetEnvironmentVariableW(L"SystemRoot");
-
-            SSS_OFFLINE_IMAGE offlineImage = {
-                .cbSize = sizeof(*param.pOfflineImage),
-                .dwFlags = 0,
-                .pcwszWindir = strOnlineRoot.get(),
-            };
-
-            param.pOfflineImage = &offlineImage;
-
-            wil::unique_process_heap_ptr<SSS_COOKIE> pCookie;
-
-            DWORD dwDisposition;
-            THROW_IF_FAILED(
-                pfnSssBindServicingStack(&param, wil::out_param(pCookie), &dwDisposition));
-
-            std::wstring_view strvLocation{GetViewFromLUC(pCookie->ucLocation)};
-
-            UINT64 lenPath = 0;
-            winrt::check_hresult(pfnSssGetServicingStackFilePathLength(0, pCookie.get(),
-                                                                       WCP_DLL_FILENAME, &lenPath));
-            assert(lenPath > 0);
-            auto bufPath = std::make_unique<wchar_t[]>(lenPath);
-            UINT64 gotLen = 0;
-            winrt::check_hresult(pfnSssGetServicingStackFilePath(
-                0, pCookie.get(), WCP_DLL_FILENAME, lenPath * 2, bufPath.get(), &gotLen));
-
-            std::wstring result = bufPath.get();
-
-            // verifying file path
-            WIN32_FIND_DATA find_data{};
-            if (FindFirstFile(result.c_str(), &find_data) == INVALID_HANDLE_VALUE)
-                winrt::throw_hresult(HRESULT_FROM_WIN32(ERROR_NOT_FOUND));
-
-            return result;
-        }
-
-        inline void EnsureBackupRestorePrivilege()
-        {
-
-            wil::unique_handle hToken;
-            winrt::check_bool(OpenProcessToken(GetCurrentProcess(),
-                                               TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
-                                               wil::out_param(hToken)));
-
-            TOKEN_PRIVILEGES tp{};
-            tp.PrivilegeCount = 1;
-            tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-            winrt::check_bool(
-                LookupPrivilegeValue(nullptr, SE_BACKUP_NAME, &tp.Privileges[0].Luid));
-
-            winrt::check_bool(
-                AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
-
-            winrt::check_bool(
-                LookupPrivilegeValue(nullptr, SE_RESTORE_NAME, &tp.Privileges[0].Luid));
-
-            winrt::check_bool(
-                AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
-        }
-
-        WcpGuard::WcpGuard(com_ptr<IMalloc> pMalloc)
-        {
-            EnsureBackupRestorePrivilege();
-
-            winrt::check_pointer(LoadLibrary(FindWcpDllOnline().c_str()));
+            winrt::check_pointer(LoadLibrary(FindSStackDll(windir, WCP_DLL_FILENAME).c_str()));
 
             auto pfnWcpInitialize =
                 GetFunction<PWCP_INITIALIZE_FUNCTION>(WCP_DLL_FILENAME, "WcpInitialize");
@@ -149,7 +37,6 @@ namespace winrt::UFCase::Isolation::implementation
 
         WcpGuard::~WcpGuard()
         {
-
             auto pfnWcpShutdown =
                 GetFunction<PWCP_SHUTDOWN_FUNCTION>(WCP_DLL_FILENAME, "WcpShutdown");
             winrt::check_hresult(pfnWcpShutdown(pCookie));
@@ -157,7 +44,7 @@ namespace winrt::UFCase::Isolation::implementation
             FreeLibrary(winrt::check_pointer(GetModuleHandle(WCP_DLL_FILENAME)));
         }
 
-        std::shared_ptr<WcpGuard> WcpGuard::GetStrong()
+        std::shared_ptr<WcpGuard> WcpGuard::GetStrong(hstring windir)
         {
             static std::weak_ptr<WcpGuard> weak;
 
@@ -167,7 +54,7 @@ namespace winrt::UFCase::Isolation::implementation
             // no available, renew
             com_ptr<IMalloc> pMalloc;
             check_hresult(::CoGetMalloc(1, pMalloc.put()));
-            auto strong = std::make_shared<WcpGuard>(pMalloc);
+            auto strong = std::make_shared<WcpGuard>(pMalloc, windir);
             weak = strong;
             return strong;
         }
@@ -322,7 +209,7 @@ namespace winrt::UFCase::Isolation::implementation
 
     void StoreModel::Initialize()
     {
-        wcp_guard = WcpUtil::WcpGuard::GetStrong();
+        wcp_guard = WcpUtil::WcpGuard::GetStrong(m_image.WinDir());
 
         std::tie(m_ident_auth, m_appid_auth) = WcpUtil::GetStoreAuthorities();
 

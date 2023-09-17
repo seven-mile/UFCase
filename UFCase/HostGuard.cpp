@@ -13,6 +13,12 @@ namespace winrt::UFCase
 
     HostGuard::HostGuard()
     {
+
+#ifdef _DEBUG
+        while (!::IsDebuggerPresent())
+            ::Sleep(100); // to avoid 100% CPU load
+#endif
+
         com_ptr<IGlobalOptions> globalOptions;
         THROW_IF_FAILED(CoCreateInstance(CLSID_GlobalOptions, nullptr, CLSCTX_INPROC,
                                          IID_PPV_ARGS(&globalOptions)));

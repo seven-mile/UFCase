@@ -6,10 +6,18 @@
 
 namespace winrt::UFCase::Isolation::implementation
 {
+    struct CbsCoreGuard
+    {
+        com_ptr<IClassFactory> m_factory;
+        CbsCoreGuard(winrt::com_ptr<IMalloc> pMalloc, hstring windir);
+        ~CbsCoreGuard();
+
+        static std::shared_ptr<CbsCoreGuard> GetStrong(hstring windir);
+    };
+
     struct SessionModel : SessionModelT<SessionModel>
     {
-        SessionModel(Isolation::ImageModel image, DWORD option = 0)
-            : m_image(image)
+        SessionModel(Isolation::ImageModel image, DWORD option = 0) : m_image(image)
         {
             Initialize(option);
         }
@@ -18,7 +26,7 @@ namespace winrt::UFCase::Isolation::implementation
         {
             if (m_session)
             {
-                _CbsRequiredAction ra;
+                _CbsRequiredAction ra{};
                 check_hresult(m_session->Finalize(&ra));
             }
         }
@@ -40,6 +48,7 @@ namespace winrt::UFCase::Isolation::implementation
       private:
         Isolation::ImageModel m_image;
         com_ptr<ICbsSession> m_session{nullptr};
+        std::shared_ptr<CbsCoreGuard> m_core{nullptr};
 
         com_ptr<ICbsSession> GetInterface()
         {

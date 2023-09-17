@@ -207,6 +207,7 @@
     <ClInclude Include="PackageModel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServicingApi\CbsApi.h" />
+    <ClInclude Include="ServicingApi\CbsCoreApi.h" />
     <ClInclude Include="ServicingApi\cdf_types.h" />
     <ClInclude Include="ServicingApi\CsiApi.h" />
     <ClInclude Include="ServicingApi\Isolation.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Utils\GeneratorUtil.h" />
     <ClInclude Include="Utils\MallocUtil.h" />
     <ClInclude Include="Utils\PathUtil.h" />
+    <ClInclude Include="Utils\StackUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComponentModel.cpp" />

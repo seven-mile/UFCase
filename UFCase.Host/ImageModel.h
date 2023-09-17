@@ -30,7 +30,7 @@ namespace winrt::UFCase::Isolation::implementation
         bool IsWinPE();
 
       private:
-        std::filesystem::path m_bootdrive;
+        std::filesystem::path m_bootdrive, m_sstack;
         Isolation::SessionModel basic_sess{nullptr};
         Isolation::StoreModel sxs_store{nullptr};
 

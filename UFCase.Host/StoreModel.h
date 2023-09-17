@@ -16,10 +16,10 @@ namespace winrt::UFCase::Isolation::implementation
             PVOID pCookie{nullptr};
 
           public:
-            WcpGuard(winrt::com_ptr<IMalloc> pMalloc);
+            WcpGuard(winrt::com_ptr<IMalloc> pMalloc, hstring windir);
             ~WcpGuard();
 
-            static std::shared_ptr<WcpGuard> GetStrong();
+            static std::shared_ptr<WcpGuard> GetStrong(hstring windir);
         };
 
     } // namespace WcpUtil

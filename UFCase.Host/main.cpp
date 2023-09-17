@@ -16,6 +16,27 @@ namespace winrt
 static const GUID CLSID_HostManagerSingleton = {
     0xef5b65f8, 0x2568, 0x46bf, {0x94, 0x36, 0x65, 0xd3, 0x4, 0xad, 0xf7, 0x19}};
 
+inline void EnsureBackupRestorePrivilege()
+{
+    wil::unique_handle hToken;
+    winrt::check_bool(OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
+                                       wil::out_param(hToken)));
+
+    TOKEN_PRIVILEGES tp{};
+    tp.PrivilegeCount = 1;
+    tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+    winrt::check_bool(LookupPrivilegeValue(nullptr, SE_BACKUP_NAME, &tp.Privileges[0].Luid));
+
+    winrt::check_bool(
+        AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
+
+    winrt::check_bool(LookupPrivilegeValue(nullptr, SE_RESTORE_NAME, &tp.Privileges[0].Luid));
+
+    winrt::check_bool(
+        AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
+}
+
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 // int main()
 {
@@ -50,6 +71,9 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
         winrt::create_instance<winrt::UFCase::Isolation::HostManagerSingleton>(
             CLSID_HostManagerSingleton, CLSCTX_LOCAL_SERVER);
     auto host_mgr = host_mgr_singleton.Current();
+
+    EnsureBackupRestorePrivilege();
+
     auto host = winrt::make<winrt::UFCase::Isolation::implementation::Host>(client_id, bootdrive);
 
     host_mgr.RegisterHost(host);
