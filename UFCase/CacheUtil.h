@@ -73,7 +73,7 @@ namespace winrt::UFCase
         ClassT &self;
         MemberT prop;
 
-        inline static std::shared_ptr<ClassCacheStore<ClassT>> store;
+        std::shared_ptr<ClassCacheStore<ClassT>> store;
 
       public:
         PropertyCache(ClassT &self, MemberT prop) : self(self), prop(prop)
