@@ -25,9 +25,16 @@ namespace winrt::UFCase
         }
 
       public:
-        static ClassCacheStore<ClassT> &Instance()
+        // static ClassCacheStore<ClassT> &Instance()
+        //{
+        //     static ClassCacheStore<ClassT> instance;
+        //     return instance;
+        // }
+
+        static std::shared_ptr<ClassCacheStore<ClassT>> GetStrong()
         {
-            static ClassCacheStore<ClassT> instance;
+            static std::shared_ptr<ClassCacheStore<ClassT>> instance =
+                std::make_shared<ClassCacheStore<ClassT>>();
             return instance;
         }
 
@@ -77,19 +84,19 @@ namespace winrt::UFCase
         }
         ~PropertyCache()
         {
-            ClassCacheStore<ClassT>::Instance().Invalidate(&self, prop);
+            ClassCacheStore<ClassT>::GetStrong()->Invalidate(&self, prop);
         }
 
         RetT operator()()
         {
-            if (auto val = ClassCacheStore<ClassT>::Instance().Get(&self, prop); val.has_value())
+            if (auto val = ClassCacheStore<ClassT>::GetStrong()->Get(&self, prop); val.has_value())
             {
                 return *val;
             }
             else
             {
                 auto new_val = (self.*prop)();
-                ClassCacheStore<ClassT>::Instance().Set(&self, prop, new_val);
+                ClassCacheStore<ClassT>::GetStrong()->Set(&self, prop, new_val);
                 return new_val;
             }
         }
