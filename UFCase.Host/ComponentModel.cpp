@@ -47,7 +47,7 @@ namespace winrt::UFCase::Isolation::implementation
     {
         com_ptr<::IUnknown> pTManifestRaw;
         IDefinitionIdentity *def_idents[] = {m_asm_id.get()};
-        winrt::check_hresult(m_store->m_csi_store->GetComponentManifests(
+        check_hresult(m_store->m_csi_store->GetComponentManifests(
             0, 1, def_idents, __uuidof(IStream), pTManifestRaw.put()));
         auto pStream = pTManifestRaw.as<IStream>();
 
@@ -55,13 +55,13 @@ namespace winrt::UFCase::Isolation::implementation
         LARGE_INTEGER pos;
         ULARGE_INTEGER size;
         pos.QuadPart = 0;
-        winrt::check_hresult(pStream->Seek(pos, STREAM_SEEK_END, &size));
-        winrt::check_hresult(pStream->Seek(pos, STREAM_SEEK_SET, nullptr));
+        check_hresult(pStream->Seek(pos, STREAM_SEEK_END, &size));
+        check_hresult(pStream->Seek(pos, STREAM_SEEK_SET, nullptr));
 
         std::vector<char> buf;
         buf.resize(size.QuadPart);
         ULONG read = 0;
-        winrt::check_hresult(pStream->Read(buf.data(), (ULONG)buf.size(), &read));
+        check_hresult(pStream->Read(buf.data(), (ULONG)buf.size(), &read));
 
         const int cchBuffer =
             MultiByteToWideChar(CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()), nullptr, 0);
@@ -71,7 +71,8 @@ namespace winrt::UFCase::Isolation::implementation
             CP_UTF8, 0, buf.data(), static_cast<int>(buf.size()), bufferw.get(), cchBuffer);
 
         assert(ret == cchBuffer);
-        check_win32(GetLastError());
+        if (!ret)
+            check_win32(GetLastError());
 
         return bufferw.get();
     }

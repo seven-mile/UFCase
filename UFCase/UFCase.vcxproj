@@ -18,13 +18,15 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>false</AppContainerApplication>
-    <AppxPackage>true</AppxPackage>
+    <AppxPackage Condition="'$(AppxPackage)'==''">false</AppxPackage>
+    <WindowsPackageType Condition="'$(WindowsPackageType)'=='' And '$(AppxPackage)'=='false'">None</WindowsPackageType>
+    <WindowsPackageType Condition="'$(WindowsPackageType)'=='' And '$(AppxPackage)'=='true'">Msix</WindowsPackageType>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
-    <EnableMsixTooling>true</EnableMsixTooling>
+    <EnableMsixTooling Condition="'$(AppxPackage)'=='true'">true</EnableMsixTooling>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -493,7 +495,6 @@
     <Image Include="Assets\winaero.svg" />
     <Image Include="Assets\winmodern.svg" />
     <None Include="packages.config" />
-    <None Include="UFCase_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LargeTile.scale-100.png" />
