@@ -14,6 +14,11 @@ namespace winrt::UFCase::implementation
     {
         ComponentsPageViewModel(UFCase::ImageViewModel vm);
 
+        ComponentsPageViewModelState State()
+        {
+            return m_state;
+        }
+
         IAsyncActionWithProgress<uint32_t> PullData();
 
         Collections::IObservableVector<UFCase::ComponentViewModel> Components()
@@ -61,7 +66,9 @@ namespace winrt::UFCase::implementation
         }
 
       private:
-        UFCase::ImageViewModel m_image;
+        ComponentsPageViewModelState m_state{ComponentsPageViewModelState::Uninitialized};
+
+        weak_ref<UFCase::ImageViewModel> m_image;
 
         UFCase::ComponentViewModel m_selected{nullptr};
         Collections::IObservableVector<UFCase::ComponentViewModel> m_components;

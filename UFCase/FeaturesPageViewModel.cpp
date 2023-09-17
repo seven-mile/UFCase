@@ -19,8 +19,17 @@ namespace winrt::UFCase::implementation
     IAsyncActionWithProgress<uint32_t> FeaturesPageViewModel::PullData()
     {
         winrt::apartment_context ui_thread{};
-        // switch thread context
+
         co_await resume_background();
+
+        switch (m_state)
+        {
+        case FeaturesPageViewModelState::Loading:
+            co_return;
+        default:
+            m_state = FeaturesPageViewModelState::Loading;
+            break;
+        }
 
         child_models.clear();
 

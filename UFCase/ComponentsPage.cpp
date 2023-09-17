@@ -12,16 +12,11 @@ namespace winrt::UFCase::implementation
     void ComponentsPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         m_view_model = e.Parameter().as<UFCase::ComponentsPageViewModel>();
-        no_await([self = get_strong()]() -> IAsyncAction {
-            co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
-            RunUITask([self] {
-                if (auto item = self->CompList().SelectedItem())
-                {
-                    self->CompList().ScrollIntoView(item,
-                                                    Controls::ScrollIntoViewAlignment::Leading);
-                }
-            });
-        });
+
+        if (m_view_model.State() == ComponentsPageViewModelState::Uninitialized)
+        {
+            no_await(GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100));
+        }
     }
 
     void ComponentsPage::ListViewItem_RightTapped(IInspectable const &sender,

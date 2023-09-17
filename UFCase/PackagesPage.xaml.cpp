@@ -25,16 +25,24 @@ namespace winrt::UFCase::implementation
 
         m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
-        no_await([self = get_strong()]() -> IAsyncAction {
-            co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
-            RunUITask([self] {
-                if (auto item = self->PkgList().SelectedItem())
-                {
-                    self->PkgList().ScrollIntoView(item,
-                                                   Controls::ScrollIntoViewAlignment::Leading);
-                }
+        auto proc_sel = [self = get_strong()] {
+            if (auto item = self->PkgList().SelectedItem())
+            {
+                self->PkgList().ScrollIntoView(item, Controls::ScrollIntoViewAlignment::Leading);
+            }
+        };
+
+        if (m_view_model.State() == PackagesPageViewModelState::Uninitialized)
+        {
+            no_await([self = get_strong(), proc_sel]() -> IAsyncAction {
+                co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
+                RunUITask(proc_sel);
             });
-        });
+        }
+        else
+        {
+            proc_sel();
+        }
 
         return;
     }

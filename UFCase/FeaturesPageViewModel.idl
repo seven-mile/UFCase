@@ -3,11 +3,21 @@ import "FeatureViewModel.idl";
 
 namespace UFCase
 {
+
+    enum FeaturesPageViewModelState
+    {
+        Uninitialized,
+        Idle,
+        Loading,
+    };
+
     [bindable]
     [default_interface]
     runtimeclass FeaturesPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         FeaturesPageViewModel(ImageViewModel image);
+
+        FeaturesPageViewModelState State{ get; };
 
         ImageViewModel Image{ get; };
         Windows.Foundation.Collections.IObservableVector<FeatureViewModel> RootFeatures{ get; };

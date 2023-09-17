@@ -3,11 +3,20 @@ import "ComponentViewModel.idl";
 
 namespace UFCase
 {
-    [bindable]
+
+    enum ComponentsPageViewModelState
+    {
+        Uninitialized,
+        Idle,
+        Loading,
+    };
+
     [default_interface]
     runtimeclass ComponentsPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         ComponentsPageViewModel(ImageViewModel image);
+
+        ComponentsPageViewModelState State{ get; };
 
         Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
 

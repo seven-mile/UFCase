@@ -97,6 +97,33 @@ namespace winrt::UFCase::implementation
         return m_model.OpenSession(0);
     }
 
+    UFCase::FeaturesPageViewModel ImageViewModel::FeaturesPageViewModel()
+    {
+        if (!m_features_page)
+        {
+            m_features_page = UFCase::FeaturesPageViewModel(*get_strong());
+        }
+        return m_features_page;
+    }
+
+    UFCase::PackagesPageViewModel ImageViewModel::PackagesPageViewModel()
+    {
+        if (!m_packages_page)
+        {
+            m_packages_page = UFCase::PackagesPageViewModel(*get_strong());
+        }
+        return m_packages_page;
+    }
+
+    UFCase::ComponentsPageViewModel ImageViewModel::ComponentsPageViewModel()
+    {
+        if (!m_components_page)
+        {
+            m_components_page = UFCase::ComponentsPageViewModel(*get_strong());
+        }
+        return m_components_page;
+    }
+
     IAsyncAction ImageViewModel::PullData()
     {
         apartment_context ui_thread;

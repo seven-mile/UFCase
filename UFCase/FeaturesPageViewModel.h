@@ -21,9 +21,14 @@ namespace winrt::UFCase::implementation
         {
         }
 
+        FeaturesPageViewModelState State()
+        {
+            return m_state;
+        }
+
         ImageViewModel Image()
         {
-            return m_image;
+            return m_image.get();
         }
         IObservableVector<FeatureViewModel> RootFeatures()
         {
@@ -166,7 +171,9 @@ namespace winrt::UFCase::implementation
         }
 
       private:
-        ImageViewModel m_image{nullptr};
+        FeaturesPageViewModelState m_state{FeaturesPageViewModelState::Uninitialized};
+
+        weak_ref<ImageViewModel> m_image{nullptr};
         IObservableVector<FeatureViewModel> m_features{nullptr};
         FeatureViewModel m_selected{nullptr};
         Isolation::SessionModel m_session{nullptr};
@@ -177,7 +184,7 @@ namespace winrt::UFCase::implementation
             {
                 return m_session;
             }
-            return m_session = m_image.OpenSession();
+            return m_session = m_image.get().OpenSession();
         }
 
         void NotifyCommandsCanExecuteChanged()

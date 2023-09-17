@@ -6,7 +6,6 @@ namespace UFCase
         String Status;
     };
 
-    [bindable]
     [default_interface]
     runtimeclass ComponentViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {

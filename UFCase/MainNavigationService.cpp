@@ -73,9 +73,9 @@ namespace winrt::UFCase::implementation
             else if (page_name == L"Features")
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
-                FeaturesPageViewModel vm{ivm.SelectedImageViewModel()};
+                auto fpvm = ivm.SelectedImageViewModel().FeaturesPageViewModel();
 
-                frame.Navigate(xaml_typename<FeaturesPage>(), box_value(vm));
+                frame.Navigate(xaml_typename<FeaturesPage>(), box_value(fpvm));
 
                 co_return;
             }
@@ -86,16 +86,20 @@ namespace winrt::UFCase::implementation
             else if (page_name == L"Packages")
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
-                PackagesPageViewModel vm{ivm.SelectedImageViewModel(),
-                                         navContext.as<UFCase::PackagesPageNavigationContext>()};
-                frame.Navigate(xaml_typename<PackagesPage>(), box_value(vm));
+                auto ppvm = ivm.SelectedImageViewModel().PackagesPageViewModel();
+                if (auto ctx = navContext.try_as<UFCase::PackagesPageNavigationContext>())
+                {
+                    ppvm.NavContext().SelectPkgId(ctx.SelectPkgId());
+                }
+
+                frame.Navigate(xaml_typename<PackagesPage>(), box_value(ppvm));
                 co_return;
             }
             else if (page_name == L"Components")
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
-                ComponentsPageViewModel vm{ivm.SelectedImageViewModel()};
-                frame.Navigate(xaml_typename<ComponentsPage>(), box_value(vm));
+                auto cpvm = ivm.SelectedImageViewModel().ComponentsPageViewModel();
+                frame.Navigate(xaml_typename<ComponentsPage>(), box_value(cpvm));
                 co_return;
             }
         }

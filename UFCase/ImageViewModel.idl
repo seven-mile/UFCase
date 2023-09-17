@@ -1,3 +1,6 @@
+import "FeaturesPageViewModel.idl";
+import "PackagesPageViewModel.idl";
+import "ComponentsPageViewModel.idl";
 
 namespace UFCase
 {
@@ -20,5 +23,9 @@ namespace UFCase
 
         UFCase.Isolation.ImageModel Model{ get; };
         UFCase.Isolation.StoreModel Store{ get; };
+
+        FeaturesPageViewModel FeaturesPageViewModel{ get; };
+        PackagesPageViewModel PackagesPageViewModel{ get; };
+        ComponentsPageViewModel ComponentsPageViewModel{ get; };
     }
 }

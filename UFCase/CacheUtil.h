@@ -1,17 +1,19 @@
 #pragma once
 
+#include "GlobalUtil.h"
+
 #include <map>
 #include <any>
 #include <shared_mutex>
 #include <optional>
+
+#define ASSERT_UI_THREAD() // assert(Application::Current().Resources())
 
 namespace winrt::UFCase
 {
 
     template <typename ClassT> class ClassCacheStore
     {
-
-        std::shared_mutex mtx;
         std::map<std::pair<ClassT *, void *>, std::any> caches;
 
         template <typename RetT> void *Conv(RetT((ClassT::*field)()))
@@ -25,11 +27,6 @@ namespace winrt::UFCase
         }
 
       public:
-        // static ClassCacheStore<ClassT> &Instance()
-        //{
-        //     static ClassCacheStore<ClassT> instance;
-        //     return instance;
-        // }
 
         static std::shared_ptr<ClassCacheStore<ClassT>> GetStrong()
         {
@@ -40,25 +37,25 @@ namespace winrt::UFCase
 
         template <typename RetT> void Set(ClassT *cls, RetT((ClassT::*field)()), RetT const &value)
         {
-            std::unique_lock g{mtx};
+            ASSERT_UI_THREAD();
             caches[{cls, Conv(field)}] = value;
         }
 
         template <typename RetT> void Invalidate(ClassT *cls, RetT((ClassT::*field)()))
         {
-            std::unique_lock g{mtx};
+            ASSERT_UI_THREAD();
             caches.erase({cls, Conv(field)});
         }
 
         void Invalidate()
         {
-            std::unique_lock g{mtx};
+            ASSERT_UI_THREAD();
             caches.clear();
         }
 
         template <typename RetT> std::optional<RetT> Get(ClassT *cls, RetT((ClassT::*field)()))
         {
-            std::shared_lock g{mtx};
+            ASSERT_UI_THREAD();
             if (auto it = caches.find({cls, Conv(field)}); it != caches.end())
             {
                 return std::any_cast<RetT>(it->second);

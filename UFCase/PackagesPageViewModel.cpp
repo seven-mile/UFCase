@@ -14,13 +14,23 @@ namespace winrt::UFCase::implementation
     IAsyncActionWithProgress<uint32_t> PackagesPageViewModel::PullData(bool is_nav)
     {
         apartment_context ui_thread{};
+
         m_packages = multi_threaded_observable_vector<UFCase::PackageViewModel>();
         m_selected = {nullptr};
 
         co_await resume_background();
 
+        switch (m_state)
+        {
+        case PackagesPageViewModelState::Loading:
+            co_return;
+        default:
+            m_state = PackagesPageViewModelState::Loading;
+            break;
+        }
+
         auto report_prog = co_await get_progress_token();
-        auto session = m_image.OpenSession();
+        auto session = m_image.get().OpenSession();
         report_prog(25);
 
         auto &&pkgs = session.GetPackageCollection(0x50);
@@ -43,6 +53,8 @@ namespace winrt::UFCase::implementation
 
         NotifyPropChange(L"Packages");
         NotifyPropChange(L"SelectedPackage");
+
+        m_state = PackagesPageViewModelState::Idle;
 
         co_return;
     }

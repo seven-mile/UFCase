@@ -23,11 +23,21 @@ namespace winrt::UFCase::implementation
         apartment_context ui_thread{};
 
         co_await resume_background();
+
+        switch (m_state)
+        {
+        case ComponentsPageViewModelState::Loading:
+            co_return;
+        default:
+            m_state = ComponentsPageViewModelState::Loading;
+            break;
+        }
+
         auto report_progress = co_await get_progress_token();
 
         m_components.Clear();
 
-        auto store = m_image.Store();
+        auto store = m_image.get().Store();
 
         auto comps = store.GetComponentCollection();
 

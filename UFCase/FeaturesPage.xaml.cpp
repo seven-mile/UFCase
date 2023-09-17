@@ -17,15 +17,11 @@ namespace winrt::UFCase::implementation
 
     void FeaturesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        if (auto val = e.Parameter().try_as<FeaturesPageViewModel>())
-        {
-            m_view_model = val;
+        m_view_model = e.Parameter().try_as<FeaturesPageViewModel>();
 
-            m_view_model.RefreshCommand().Execute(nullptr);
-        }
-        else
+        if (m_view_model.State() == FeaturesPageViewModelState::Uninitialized)
         {
-            throw winrt::hresult_invalid_argument();
+            m_view_model.RefreshCommand().Execute(nullptr);
         }
         return;
     }

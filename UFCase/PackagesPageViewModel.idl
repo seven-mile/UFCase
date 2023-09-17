@@ -10,6 +10,13 @@ namespace UFCase
         String SelectPkgId;
     }
 
+    enum PackagesPageViewModelState
+    {
+        Uninitialized,
+        Idle,
+        Loading,
+    };
+
     [bindable]
     [default_interface]
     runtimeclass PackagesPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
@@ -17,11 +24,13 @@ namespace UFCase
         PackagesPageViewModel(ImageViewModel image);
         PackagesPageViewModel(ImageViewModel image, PackagesPageNavigationContext ctx);
 
+        PackagesPageViewModelState State{ get; };
+
         ImageViewModel Image{ get; };
         Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
         PackageViewModel SelectedPackage;
 
-        PackagesPageNavigationContext NavContext{ get; };
+        PackagesPageNavigationContext NavContext;
 
         Microsoft.UI.Xaml.Input.XamlUICommand PackageShowManifestCommand{ get; };
         Microsoft.UI.Xaml.Input.XamlUICommand PackageShowInFileExplorerCommand{ get; };

@@ -47,9 +47,14 @@ namespace winrt::UFCase::implementation
         {
         }
 
+        PackagesPageViewModelState State()
+        {
+            return m_state;
+        }
+
         UFCase::ImageViewModel Image()
         {
-            return m_image;
+            return m_image.get();
         }
 
         IObservableVector<UFCase::PackageViewModel> Packages()
@@ -71,6 +76,11 @@ namespace winrt::UFCase::implementation
         UFCase::PackagesPageNavigationContext NavContext()
         {
             return m_nav_ctx;
+        }
+
+        void NavContext(UFCase::PackagesPageNavigationContext value)
+        {
+            m_nav_ctx = value;
         }
 
         IAsyncActionWithProgress<uint32_t> PullData(bool is_nav = true);
@@ -115,7 +125,8 @@ namespace winrt::UFCase::implementation
         }
 
       private:
-        UFCase::ImageViewModel m_image{nullptr};
+        PackagesPageViewModelState m_state{PackagesPageViewModelState::Uninitialized};
+        weak_ref<UFCase::ImageViewModel> m_image{nullptr};
         IObservableVector<UFCase::PackageViewModel> m_packages{nullptr};
         UFCase::PackageViewModel m_selected{nullptr};
         UFCase::PackagesPageNavigationContext m_nav_ctx;

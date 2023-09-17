@@ -35,6 +35,10 @@ namespace winrt::UFCase::implementation
             return m_model.SxsStore();
         }
 
+        UFCase::FeaturesPageViewModel FeaturesPageViewModel();
+        UFCase::PackagesPageViewModel PackagesPageViewModel();
+        UFCase::ComponentsPageViewModel ComponentsPageViewModel();
+
         IAsyncAction PullData();
 
       private:
@@ -48,6 +52,10 @@ namespace winrt::UFCase::implementation
             Loading,
             Loaded,
         } m_state = LoadingState::Uninitialized;
+
+        UFCase::FeaturesPageViewModel m_features_page{nullptr};
+        UFCase::PackagesPageViewModel m_packages_page{nullptr};
+        UFCase::ComponentsPageViewModel m_components_page{nullptr};
     };
 
 } // namespace winrt::UFCase::implementation
