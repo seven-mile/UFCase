@@ -34,11 +34,6 @@ namespace winrt::UFCase::implementation
     /// <param name="e">Details about the launch request and process.</param>
     fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const &)
     {
-        // #ifdef _DEBUG
-        //         while (!::IsDebuggerPresent())
-        //             ::Sleep(100); // to avoid 100% CPU load
-        // #endif
-
         apartment_context ui_thread;
         GlobalRes::UIQueue(Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread());
 
