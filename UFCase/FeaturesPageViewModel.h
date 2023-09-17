@@ -104,8 +104,14 @@ namespace winrt::UFCase::implementation
 
         HandleCommand(FeatureGetPackage, L"Goto package", L"\xE950")
         {
+            if (!m_selected)
+            {
+                return;
+            }
+
             UFCase::PackagesPageNavigationContext ctx;
             ctx.SelectPkgId(m_selected.ContentPackage().DetailIdentity());
+
             GlobalRes::MainNavServ().NavigateTo(L"Packages", ctx);
         }
 
