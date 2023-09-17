@@ -70,6 +70,9 @@ namespace winrt::UFCase::Isolation::implementation
         {
             m_session = create_instance<ICbsSession>(CLSID_CbsSession, CLSCTX_LOCAL_SERVER);
             check_hresult(m_session->Initialize(option, L"UFCase", nullptr, nullptr));
+            THROW_IF_FAILED(CoSetProxyBlanket(m_session.get(), RPC_C_AUTHN_DEFAULT,
+                                              RPC_C_AUTHZ_NONE, nullptr, RPC_C_AUTHN_LEVEL_CALL,
+                                              RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE));
         }
         else
         {
@@ -80,10 +83,6 @@ namespace winrt::UFCase::Isolation::implementation
             check_hresult(m_session->Initialize(option, L"UFCase", m_image.Bootdrive().c_str(),
                                                 m_image.WinDir().c_str()));
         }
-
-        THROW_IF_FAILED(CoSetProxyBlanket(m_session.get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_NONE,
-                                          nullptr, RPC_C_AUTHN_LEVEL_CALL,
-                                          RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE));
     }
 
     Isolation::PackageModel SessionModel::OpenPackage(com_ptr<ICbsIdentity> identity)
