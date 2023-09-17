@@ -76,27 +76,28 @@ namespace winrt::UFCase
         ClassT &self;
         MemberT prop;
 
-        inline static ClassCacheStore<ClassT> store;
+        inline static std::shared_ptr<ClassCacheStore<ClassT>> store;
 
       public:
         PropertyCache(ClassT &self, MemberT prop) : self(self), prop(prop)
         {
+            store = ClassCacheStore<ClassT>::GetStrong();
         }
         ~PropertyCache()
         {
-            ClassCacheStore<ClassT>::GetStrong()->Invalidate(&self, prop);
+            store->Invalidate(&self, prop);
         }
 
         RetT operator()()
         {
-            if (auto val = ClassCacheStore<ClassT>::GetStrong()->Get(&self, prop); val.has_value())
+            if (auto val = store->Get(&self, prop); val.has_value())
             {
                 return *val;
             }
             else
             {
                 auto new_val = (self.*prop)();
-                ClassCacheStore<ClassT>::GetStrong()->Set(&self, prop, new_val);
+                store->Set(&self, prop, new_val);
                 return new_val;
             }
         }
