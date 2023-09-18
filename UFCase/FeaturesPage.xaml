@@ -9,66 +9,66 @@
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
 
-    <Grid Margin="50,20,50,20">
+    <Page.Resources>
+        <XamlUICommand
+            x:Name="FeatureEnableCommand"
+            Command="{x:Bind ViewModel.FeatureEnableRelay}"
+            Label="Enable">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="FeatureDisableCommand"
+            Command="{x:Bind ViewModel.FeatureDisableRelay}"
+            Label="Disable">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="FeatureGotoPackageCommand"
+            Command="{x:Bind ViewModel.FeatureGotoPackageRelay}"
+            Label="Goto packages">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="FeatureSystemUICommand"
+            Command="{x:Bind ViewModel.FeatureSystemRelay}"
+            Label="OptionalFeatures.exe">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72B;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="FeatureAddSourceCommand"
+            Command="{x:Bind ViewModel.FeatureAddSourceRelay}"
+            Label="Add source">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Add" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="CommitCommand"
+            Command="{x:Bind ViewModel.CommitRelay}"
+            Label="Save changes">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Save" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="RefreshCommand"
+            Command="{x:Bind ViewModel.RefreshRelay}"
+            Label="Refresh">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Refresh" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+    </Page.Resources>
 
-        <Grid.Resources>
-            <XamlUICommand
-                x:Name="FeatureEnableCommand"
-                Command="{x:Bind ViewModel.FeatureEnableRelay}"
-                Label="Enable">
-                <XamlUICommand.IconSource>
-                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="FeatureDisableCommand"
-                Command="{x:Bind ViewModel.FeatureDisableRelay}"
-                Label="Disable">
-                <XamlUICommand.IconSource>
-                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="FeatureGotoPackageCommand"
-                Command="{x:Bind ViewModel.FeatureGotoPackageRelay}"
-                Label="Goto packages">
-                <XamlUICommand.IconSource>
-                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="FeatureSystemUICommand"
-                Command="{x:Bind ViewModel.FeatureSystemRelay}"
-                Label="OptionalFeatures.exe">
-                <XamlUICommand.IconSource>
-                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72B;" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="FeatureAddSourceCommand"
-                Command="{x:Bind ViewModel.FeatureAddSourceRelay}"
-                Label="Add source">
-                <XamlUICommand.IconSource>
-                    <SymbolIconSource Symbol="Add" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="CommitCommand"
-                Command="{x:Bind ViewModel.CommitRelay}"
-                Label="Save changes">
-                <XamlUICommand.IconSource>
-                    <SymbolIconSource Symbol="Save" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-            <XamlUICommand
-                x:Name="RefreshCommand"
-                Command="{x:Bind ViewModel.RefreshRelay}"
-                Label="Refresh">
-                <XamlUICommand.IconSource>
-                    <SymbolIconSource Symbol="Refresh" />
-                </XamlUICommand.IconSource>
-            </XamlUICommand>
-        </Grid.Resources>
+    <Grid Margin="50,20,50,20">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

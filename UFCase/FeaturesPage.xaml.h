@@ -28,6 +28,7 @@ namespace winrt::UFCase::implementation
 
         Input::ICommand::CanExecuteChanged_revoker m_feature_enable_revoker;
         Input::ICommand::CanExecuteChanged_revoker m_feature_disable_revoker;
+        Input::ICommand::CanExecuteChanged_revoker m_feature_goto_revoker;
     };
 
 } // namespace winrt::UFCase::implementation

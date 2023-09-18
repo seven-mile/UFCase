@@ -29,6 +29,11 @@ namespace winrt::UFCase::implementation
                 self->FeatureDisableCommand().NotifyCanExecuteChanged();
             });
 
+        m_feature_goto_revoker = m_view_model.FeatureGotoPackageRelay().CanExecuteChanged(
+            auto_revoke, [self = get_strong()](auto &, auto &) {
+                self->FeatureGotoPackageCommand().NotifyCanExecuteChanged();
+            });
+
         if (m_view_model.State() == FeaturesPageViewModelState::Uninitialized)
         {
             m_view_model.RefreshRelay().Execute(nullptr);

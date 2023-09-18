@@ -78,7 +78,7 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommand(FeatureGotoPackage)
+        HandleCommandEx(FeatureGotoPackage, [this](IInspectable) { return !!m_selected; })
         {
             if (!m_selected)
             {
@@ -173,6 +173,7 @@ namespace winrt::UFCase::implementation
         {
             FeatureEnableRelay().NotifyCanExecuteChanged();
             FeatureDisableRelay().NotifyCanExecuteChanged();
+            FeatureGotoPackageRelay().NotifyCanExecuteChanged();
         }
     };
 

@@ -52,7 +52,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel
                         Grid.Row="0"
-                        Padding="20,0,20,0"
+                        Padding="10,0,20,0"
                         HorizontalAlignment="Stretch"
                         Orientation="Vertical">
 

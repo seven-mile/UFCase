@@ -65,7 +65,7 @@
     </Page.Resources>
 
     <Pivot>
-        <PivotItem Header="Installed">
+        <PivotItem Margin="0" Header="Installed">
             <SplitView
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
@@ -92,7 +92,7 @@
                             </Grid.RowDefinitions>
                             <StackPanel
                                 Grid.Row="0"
-                                Padding="20,0,20,0"
+                                Padding="10,0,20,0"
                                 HorizontalAlignment="Stretch"
                                 Orientation="Vertical">
                                 <Border Margin="0,5,0,5" Style="{StaticResource MicaCardBorder}">
@@ -113,9 +113,19 @@
                                             </Paragraph>
                                         </RichTextBlock>
                                         <TextBlock
+                                            Margin="0,5,0,0"
                                             Style="{StaticResource SecondaryTextBlockStyle}"
                                             Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}"
                                             TextWrapping="Wrap" />
+                                        <TextBlock
+                                            Margin="0,5,0,0"
+                                            Style="{StaticResource SecondaryTextBlockStyle}"
+                                            TextWrapping="Wrap">
+                                            <Run Text="Installed at" />
+                                            <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.InstallTime), Mode=OneWay}" />
+                                            <Run Text="by" />
+                                            <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.InstallClient), Mode=OneWay}" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </Border>
                                 <Button Command="{x:Bind PackageShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
@@ -166,7 +176,7 @@
                                                     <TextBlock
                                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                         Style="{StaticResource CaptionTextBlockStyle}"
-                                                        Text="Some package files may be available in your disk" />
+                                                        Text="Some package files may be available in your disk." />
                                                 </StackPanel>
                                             </StackPanel>
 
@@ -196,7 +206,7 @@
                                                     <TextBlock
                                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                         Style="{StaticResource CaptionTextBlockStyle}"
-                                                        Text="Inspect the component key in the registry" />
+                                                        Text="Inspect the component key in the registry." />
                                                 </StackPanel>
                                             </StackPanel>
 
@@ -248,7 +258,8 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        FontSize="{StaticResource SubtitleTextBlockFontSize}"
+                                        FontWeight="SemiBold"
                                         Text="{x:Bind ListName}"
                                         TextTrimming="CharacterEllipsis" />
                                     <TextBlock

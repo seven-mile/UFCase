@@ -116,10 +116,7 @@ namespace winrt::UFCase::implementation
 
     hstring PackageViewModel::DescriptionRaw()
     {
-        auto &&res = m_model.Description();
-        if (res.empty())
-            return L"No description.";
-        return res;
+        return m_model.Description();
     }
 
     hstring PackageViewModel::RestartRequiredRaw()
@@ -179,7 +176,14 @@ namespace winrt::UFCase::implementation
 
     hstring PackageViewModel::InstallClientRaw()
     {
-        return m_model.InstallClient();
+        if (auto client = m_model.InstallClient(); client.empty())
+        {
+            return L"Unknown";
+        }
+        else
+        {
+            return client;
+        }
     }
 
     hstring PackageViewModel::InstallUserNameRaw()
