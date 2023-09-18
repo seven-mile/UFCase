@@ -21,8 +21,8 @@ namespace winrt::UFCase
     }
 
 #define HandleCommand(name)                                                                        \
-    UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
-        [self = get_strong()](IInspectable) { self->GeneratedCommandHandler_##name(); });          \
+    UFCase::RelayCommand name##_cmd =                                                              \
+        CreateRelayCommand([this](IInspectable) { GeneratedCommandHandler_##name(); });            \
     UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
@@ -30,9 +30,8 @@ namespace winrt::UFCase
     void GeneratedCommandHandler_##name()
 
 #define HandleCommandAsync(name)                                                                   \
-    UFCase::RelayCommand name##_cmd = CreateRelayCommand([self = get_strong()](IInspectable) {     \
-        no_await(self->GeneratedCommandHandler_##name());                                          \
-    });                                                                                            \
+    UFCase::RelayCommand name##_cmd =                                                              \
+        CreateRelayCommand([this](IInspectable) { no_await(GeneratedCommandHandler_##name()); });  \
     UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
@@ -41,8 +40,7 @@ namespace winrt::UFCase
 
 #define HandleCommandEx(name, can_exec)                                                            \
     UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
-        [self = get_strong()](IInspectable) { self->GeneratedCommandHandler_##name(); },           \
-        can_exec);                                                                                 \
+        [this](IInspectable) { GeneratedCommandHandler_##name(); }, (can_exec));                   \
     UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
@@ -51,8 +49,7 @@ namespace winrt::UFCase
 
 #define HandleCommandExAsync(name, can_exec)                                                       \
     UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
-        [self = get_strong()](IInspectable) { no_await(self->GeneratedCommandHandler_##name()); }, \
-        can_exec);                                                                                 \
+        [this](IInspectable) { no_await(GeneratedCommandHandler_##name()); }, (can_exec));         \
     UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
