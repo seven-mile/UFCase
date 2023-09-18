@@ -19,6 +19,16 @@ namespace winrt::UFCase::implementation
     {
         m_view_model = e.Parameter().try_as<FeaturesPageViewModel>();
 
+        m_feature_enable_revoker = m_view_model.FeatureEnableRelay().CanExecuteChanged(
+            auto_revoke, [self = get_strong()](auto &, auto &) {
+                self->FeatureEnableCommand().NotifyCanExecuteChanged();
+            });
+
+        m_feature_disable_revoker = m_view_model.FeatureDisableRelay().CanExecuteChanged(
+            auto_revoke, [self = get_strong()](auto &, auto &) {
+                self->FeatureDisableCommand().NotifyCanExecuteChanged();
+            });
+
         if (m_view_model.State() == FeaturesPageViewModelState::Uninitialized)
         {
             m_view_model.RefreshRelay().Execute(nullptr);
