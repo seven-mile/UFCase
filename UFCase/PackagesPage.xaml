@@ -32,7 +32,7 @@
             Command="{x:Bind ViewModel.PackageShowInRegistryRelay}"
             Label="Show in registry">
             <XamlUICommand.IconSource>
-                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;" />
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xECAA;" />
             </XamlUICommand.IconSource>
         </XamlUICommand>
 
