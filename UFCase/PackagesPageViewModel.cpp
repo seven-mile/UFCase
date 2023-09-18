@@ -33,7 +33,7 @@ namespace winrt::UFCase::implementation
         auto session = m_image.get().OpenSession();
         report_prog(25);
 
-        auto &&pkgs = session.GetPackageCollection(0x50);
+        auto &&pkgs = session.GetPackageCollection(0x70);
         report_prog(50);
         uint32_t cnt = 0;
 
