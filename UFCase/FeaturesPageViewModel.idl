@@ -1,6 +1,8 @@
 import "ImageViewModel.idl";
 import "FeatureViewModel.idl";
 
+import "RelayCommand.idl";
+
 namespace UFCase
 {
 
@@ -26,17 +28,14 @@ namespace UFCase
 
         Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
 
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureEnableCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureDisableCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenExplorerCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureOpenRegistryCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureGetPackageCommand{ get; };
+        RelayCommand FeatureEnableRelay{ get; };
+        RelayCommand FeatureDisableRelay{ get; };
+        RelayCommand FeatureGotoPackageRelay{ get; };
 
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureSystemUICommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand FeatureAddSourceUICommand{ get; };
+        RelayCommand FeatureSystemRelay{ get; };
+        RelayCommand FeatureAddSourceRelay{ get; };
 
-        Microsoft.UI.Xaml.Input.XamlUICommand CommitCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand RefreshCommand{ get; };
-
+        RelayCommand CommitRelay{ get; };
+        RelayCommand RefreshRelay{ get; };
     }
 }

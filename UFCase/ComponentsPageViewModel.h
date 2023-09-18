@@ -37,7 +37,7 @@ namespace winrt::UFCase::implementation
             // NotifyPropChange(L"SelectedComponent");
         }
 
-        HandleCommandAsync(ComponentShowManifest, L"Show manifest", L"\xe8a1")
+        HandleCommandAsync(ComponentShowManifest)
         {
             if (!m_selected)
                 co_return;
@@ -60,7 +60,7 @@ namespace winrt::UFCase::implementation
             co_await cd.ShowAsync();
         }
 
-        HandleCommandAsync(ComponentShowInFileExplorer, L"Open in explorer", L"\xE8DA")
+        HandleCommandAsync(ComponentShowInFileExplorer)
         {
             co_return;
         }

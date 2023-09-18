@@ -85,7 +85,7 @@ namespace winrt::UFCase::implementation
 
         IAsyncActionWithProgress<uint32_t> PullData(bool is_nav = true);
 
-        HandleCommandAsync(PackageShowManifest, L"Show manifest", L"\xe8a1")
+        HandleCommandAsync(PackageShowManifest)
         {
             if (!m_selected)
                 co_return;
@@ -114,12 +114,12 @@ namespace winrt::UFCase::implementation
             co_await cd.ShowAsync();
         }
 
-        HandleCommandAsync(PackageShowInFileExplorer, L"Open in explorer", L"\xE8DA")
+        HandleCommandAsync(PackageShowInFileExplorer)
         {
             co_return;
         }
 
-        HandleCommandAsync(PackageShowInRegistry, L"Open in registry", L"")
+        HandleCommandAsync(PackageShowInRegistry)
         {
             co_return;
         }

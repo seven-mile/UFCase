@@ -4,5 +4,6 @@ namespace UFCase
     [default_interface]
     runtimeclass RelayCommand : Microsoft.UI.Xaml.Input.ICommand
     {
+        void NotifyCanExecuteChanged();
     }
 }

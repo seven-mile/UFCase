@@ -50,7 +50,7 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommandEx(FeatureEnable, L"Enable", L"\xE78C", [this](IInspectable) {
+        HandleCommandEx(FeatureEnable, [this](IInspectable) {
             if (!m_selected)
                 return false;
             auto &&state = m_selected.State();
@@ -64,7 +64,7 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommandEx(FeatureDisable, L"Disable", L"\xE74D", [this](IInspectable) {
+        HandleCommandEx(FeatureDisable, [this](IInspectable) {
             if (!m_selected)
                 return false;
             auto &&state = m_selected.State();
@@ -78,31 +78,7 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommandAsync(FeatureOpenExplorer, L"Open in explorer", L"\xE8DA")
-        {
-            ContentDialog cd;
-            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-            cd.Title(box_value(L"Cannot open file"));
-            cd.Content(box_value(L"This package have no valid file path."));
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            co_await cd.ShowAsync();
-
-            co_return;
-        }
-
-        HandleCommandAsync(FeatureOpenRegistry, L"Open in registry", L"")
-        {
-            ContentDialog cd;
-            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-            cd.Title(box_value(L"Not supported"));
-            cd.Content(box_value(L"Cannot find registry entry for this package."));
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            co_await cd.ShowAsync();
-        }
-
-        HandleCommand(FeatureGetPackage, L"Goto package", L"\xE950")
+        HandleCommand(FeatureGotoPackage)
         {
             if (!m_selected)
             {
@@ -115,12 +91,12 @@ namespace winrt::UFCase::implementation
             GlobalRes::MainNavServ().NavigateTo(L"Packages", ctx);
         }
 
-        HandleCommand(FeatureSystemUI, L"OptionalFeatures.exe", L"\xE72B")
+        HandleCommand(FeatureSystem)
         {
             ShellExecute(nullptr, L"open", L"OptionalFeatures.exe", L"", L"", SW_SHOW);
         }
 
-        HandleCommand(FeatureAddSourceUI, L"Add source", Symbol::Add)
+        HandleCommand(FeatureAddSource)
         {
             static AddSourceContentDialog addSrcDlg{};
 
@@ -148,7 +124,7 @@ namespace winrt::UFCase::implementation
             });
         }
 
-        HandleCommandAsync(Commit, L"Save changes", Symbol::Save)
+        HandleCommandAsync(Commit)
         {
             apartment_context ui_thread;
             // set change flag to save updates
@@ -166,7 +142,7 @@ namespace winrt::UFCase::implementation
             co_return;
         }
 
-        HandleCommandAsync(Refresh, L"Refresh", Symbol::Refresh)
+        HandleCommandAsync(Refresh)
         {
             // clear selection
             m_selected = nullptr;
@@ -195,8 +171,8 @@ namespace winrt::UFCase::implementation
 
         void NotifyCommandsCanExecuteChanged()
         {
-            FeatureEnableCommand().NotifyCanExecuteChanged();
-            FeatureDisableCommand().NotifyCanExecuteChanged();
+            FeatureEnableRelay().NotifyCanExecuteChanged();
+            FeatureDisableRelay().NotifyCanExecuteChanged();
         }
     };
 

@@ -8,6 +8,34 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+
+        <XamlUICommand
+            x:Name="PackageShowManifestCommand"
+            Command="{x:Bind ViewModel.PackageShowManifestRelay}"
+            Label="Show manifest">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+
+        <XamlUICommand
+            x:Name="PackageShowInFileExplorerCommand"
+            Command="{x:Bind ViewModel.PackageShowInFileExplorerRelay}"
+            Label="Show in explorer">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+
+        <XamlUICommand
+            x:Name="PackageShowInRegistryCommand"
+            Command="{x:Bind ViewModel.PackageShowInRegistryRelay}"
+            Label="Show in registry">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+
         <MenuFlyout x:Key="PackageItemActionsMenu" ShouldConstrainToRootBounds="False">
             <MenuFlyout.Items>
                 <MenuFlyoutItem Text="Install">
@@ -90,7 +118,7 @@
                                             TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Border>
-                                <Button Command="{x:Bind ViewModel.PackageShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                                <Button Command="{x:Bind PackageShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -102,7 +130,7 @@
                                                 Grid.Column="0"
                                                 HorizontalAlignment="Left"
                                                 Orientation="Horizontal">
-                                                <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.PackageShowManifestCommand.IconSource}" />
+                                                <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind PackageShowManifestCommand.IconSource}" />
                                                 <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
                                                     <TextBlock
@@ -120,7 +148,7 @@
                                         </Grid>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{x:Bind ViewModel.PackageShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                                <Button Command="{x:Bind PackageShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -132,10 +160,7 @@
                                                 Grid.Column="0"
                                                 HorizontalAlignment="Left"
                                                 Orientation="Horizontal">
-                                                <FontIcon
-                                                    Margin="5,0,15,0"
-                                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                    Glyph="&#xEC50;" />
+                                                <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind PackageShowInFileExplorerCommand.IconSource}" />
                                                 <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
                                                     <TextBlock
@@ -153,7 +178,7 @@
                                         </Grid>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{x:Bind ViewModel.PackageShowInRegistryCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                                <Button Command="{x:Bind PackageShowInRegistryCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -165,11 +190,7 @@
                                                 Grid.Column="0"
                                                 HorizontalAlignment="Left"
                                                 Orientation="Horizontal">
-                                                <FontIcon
-                                                    Margin="5,0,15,0"
-                                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                    FontSize="22"
-                                                    Glyph="&#xECAA;" />
+                                                <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind PackageShowInRegistryCommand.IconSource}" />
                                                 <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
                                                     <TextBlock
@@ -320,7 +341,7 @@
                             Margin="0,0,5,0"
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xe723;" />
-                        <TextBlock Text="Drop or Select package" />
+                        <TextBlock Text="Drop or Select package [WIP]" />
                     </StackPanel>
                     <SplitButton.Flyout>
                         <MenuFlyout>

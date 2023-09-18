@@ -13,79 +13,47 @@
 namespace winrt::UFCase
 {
 
-    inline Microsoft::UI::Xaml::Input::XamlUICommand CreateXamlUICommand(
-        hstring const &label, hstring const &icon,
+    inline UFCase::RelayCommand CreateRelayCommand(
         std::function<void(IInspectable)> const &execution,
         std::function<bool(IInspectable)> const &can_exec = [](IInspectable) { return true; })
     {
-
-        Microsoft::UI::Xaml::Input::XamlUICommand cmd{};
-
-        cmd.Label(label);
-        if (!icon.empty())
-        {
-            FontIconSource font_icon{};
-            font_icon.FontFamily(GlobalRes::SymbolThemeFontFamily());
-            font_icon.Glyph(icon);
-            cmd.IconSource(font_icon);
-        }
-
-        cmd.Command(make<implementation::RelayCommand>(execution, can_exec));
-
-        return cmd;
+        return make<implementation::RelayCommand>(execution, can_exec);
     }
 
-    inline Microsoft::UI::Xaml::Input::XamlUICommand CreateXamlUICommand(
-        hstring const &label, Symbol const &icon,
-        std::function<void(IInspectable)> const &execution,
-        std::function<bool(IInspectable)> const &can_exec = [](IInspectable) { return true; })
-    {
-
-        Microsoft::UI::Xaml::Input::XamlUICommand cmd{};
-
-        cmd.Label(label);
-        SymbolIconSource sym_icon{};
-        sym_icon.Symbol(icon);
-
-        cmd.IconSource(sym_icon);
-
-        cmd.Command(make<implementation::RelayCommand>(execution, can_exec));
-
-        return cmd;
-    }
-
-#define HandleCommand(name, label, icon)                                                           \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##_cmd = CreateXamlUICommand(                    \
-        label, icon, [this](IInspectable) { GeneratedCommandHandler_##name(); });                  \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##Command()                                      \
+#define HandleCommand(name)                                                                        \
+    UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
+        [self = get_strong()](IInspectable) { self->GeneratedCommandHandler_##name(); });          \
+    UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
     }                                                                                              \
     void GeneratedCommandHandler_##name()
 
-#define HandleCommandAsync(name, label, icon)                                                      \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##_cmd = CreateXamlUICommand(                    \
-        label, icon, [this](IInspectable) { no_await(GeneratedCommandHandler_##name()); });        \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##Command()                                      \
+#define HandleCommandAsync(name)                                                                   \
+    UFCase::RelayCommand name##_cmd = CreateRelayCommand([self = get_strong()](IInspectable) {     \
+        no_await(self->GeneratedCommandHandler_##name());                                          \
+    });                                                                                            \
+    UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
     }                                                                                              \
     IAsyncAction GeneratedCommandHandler_##name()
 
-#define HandleCommandEx(name, label, icon, can_exec)                                               \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##_cmd = CreateXamlUICommand(                    \
-        label, icon, [this](IInspectable) { GeneratedCommandHandler_##name(); }, can_exec);        \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##Command()                                      \
+#define HandleCommandEx(name, can_exec)                                                            \
+    UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
+        [self = get_strong()](IInspectable) { self->GeneratedCommandHandler_##name(); },           \
+        can_exec);                                                                                 \
+    UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
     }                                                                                              \
     void GeneratedCommandHandler_##name()
 
-#define HandleCommandExAsync(name, label, icon, can_exec)                                          \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##_cmd = CreateXamlUICommand(                    \
-        label, icon, [this](IInspectable) { no_await(GeneratedCommandHandler_##name()); },         \
+#define HandleCommandExAsync(name, can_exec)                                                       \
+    UFCase::RelayCommand name##_cmd = CreateRelayCommand(                                          \
+        [self = get_strong()](IInspectable) { no_await(self->GeneratedCommandHandler_##name()); }, \
         can_exec);                                                                                 \
-    Microsoft::UI::Xaml::Input::XamlUICommand name##Command()                                      \
+    UFCase::RelayCommand name##Relay()                                                             \
     {                                                                                              \
         return name##_cmd;                                                                         \
     }                                                                                              \

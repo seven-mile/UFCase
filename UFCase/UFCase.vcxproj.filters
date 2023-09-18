@@ -222,7 +222,6 @@
       <Filter>framework</Filter>
     </None>
     <None Include=".editorconfig" />
-    <None Include="UFCase_TemporaryKey.pfx" />
     <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
@@ -382,8 +381,5 @@
     <Image Include="Assets\winfluent.svg" />
     <Image Include="Assets\winaero.svg" />
     <Image Include="Assets\winmodern.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
 </Project>

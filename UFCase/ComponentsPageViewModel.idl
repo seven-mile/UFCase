@@ -1,6 +1,8 @@
 import "ImageViewModel.idl";
 import "ComponentViewModel.idl";
 
+import "RelayCommand.idl";
+
 namespace UFCase
 {
 
@@ -24,8 +26,8 @@ namespace UFCase
 
         ComponentViewModel SelectedComponent;
 
-        Microsoft.UI.Xaml.Input.XamlUICommand ComponentShowManifestCommand{ get; };
-        Microsoft.UI.Xaml.Input.XamlUICommand ComponentShowInFileExplorerCommand{ get; };
+        RelayCommand ComponentShowManifestRelay{ get; };
+        RelayCommand ComponentShowInFileExplorerRelay{ get; };
 
     }
 }

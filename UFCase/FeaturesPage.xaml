@@ -10,6 +10,66 @@
     mc:Ignorable="d">
 
     <Grid Margin="50,20,50,20">
+
+        <Grid.Resources>
+            <XamlUICommand
+                x:Name="FeatureEnableCommand"
+                Command="{x:Bind ViewModel.FeatureEnableRelay}"
+                Label="Enable">
+                <XamlUICommand.IconSource>
+                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE78C;" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="FeatureDisableCommand"
+                Command="{x:Bind ViewModel.FeatureDisableRelay}"
+                Label="Disable">
+                <XamlUICommand.IconSource>
+                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="FeatureGotoPackageCommand"
+                Command="{x:Bind ViewModel.FeatureGotoPackageRelay}"
+                Label="Goto packages">
+                <XamlUICommand.IconSource>
+                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE950;" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="FeatureSystemUICommand"
+                Command="{x:Bind ViewModel.FeatureSystemRelay}"
+                Label="OptionalFeatures.exe">
+                <XamlUICommand.IconSource>
+                    <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72B;" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="FeatureAddSourceCommand"
+                Command="{x:Bind ViewModel.FeatureAddSourceRelay}"
+                Label="Add source">
+                <XamlUICommand.IconSource>
+                    <SymbolIconSource Symbol="Add" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="CommitCommand"
+                Command="{x:Bind ViewModel.CommitRelay}"
+                Label="Save changes">
+                <XamlUICommand.IconSource>
+                    <SymbolIconSource Symbol="Save" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+            <XamlUICommand
+                x:Name="RefreshCommand"
+                Command="{x:Bind ViewModel.RefreshRelay}"
+                Label="Refresh">
+                <XamlUICommand.IconSource>
+                    <SymbolIconSource Symbol="Refresh" />
+                </XamlUICommand.IconSource>
+            </XamlUICommand>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -24,16 +84,16 @@
             Grid.ColumnSpan="2"
             HorizontalAlignment="Stretch"
             DefaultLabelPosition="Right">
-            <AppBarButton Command="{x:Bind ViewModel.FeatureEnableCommand}" />
-            <AppBarButton Command="{x:Bind ViewModel.FeatureDisableCommand}" />
+            <AppBarButton Command="{x:Bind FeatureEnableCommand}" />
+            <AppBarButton Command="{x:Bind FeatureDisableCommand}" />
             <AppBarSeparator />
-            <AppBarButton Command="{x:Bind ViewModel.FeatureGetPackageCommand}" />
+            <AppBarButton Command="{x:Bind FeatureGotoPackageCommand}" />
             <AppBarSeparator />
-            <AppBarButton Command="{x:Bind ViewModel.CommitCommand}" />
-            <AppBarButton Command="{x:Bind ViewModel.RefreshCommand}" />
+            <AppBarButton Command="{x:Bind CommitCommand}" />
+            <AppBarButton Command="{x:Bind RefreshCommand}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Command="{x:Bind ViewModel.FeatureSystemUICommand}" />
-                <AppBarButton Command="{x:Bind ViewModel.FeatureAddSourceUICommand}" />
+                <AppBarButton Command="{x:Bind FeatureSystemUICommand}" />
+                <AppBarButton Command="{x:Bind FeatureAddSourceCommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
 
@@ -96,7 +156,7 @@
 
                         </StackPanel>
                     </Border>
-                    <Button Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                    <Button Command="{x:Bind FeatureGotoPackageCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                         <Button.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -108,83 +168,13 @@
                                     Grid.Column="0"
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal">
-                                    <FontIcon
-                                        Margin="5,0,15,0"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        Glyph="&#xEC50;" />
+                                    <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind FeatureGotoPackageCommand.IconSource}" />
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Goto package" />
                                         <TextBlock
                                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                             Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="Some package files may be available in your disk" />
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <FontIcon
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Right"
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    Glyph="&#xe8a7;" />
-                            </Grid>
-                        </Button.Content>
-                    </Button>
-                    <Button Command="{x:Bind ViewModel.FeatureOpenRegistryCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
-                        <Button.Content>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    Orientation="Horizontal">
-                                    <FontIcon
-                                        Margin="5,0,15,0"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        FontSize="22"
-                                        Glyph="&#xECAA;" />
-                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open in Registry" />
-                                        <TextBlock
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="Inspect the component key in the registry" />
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <FontIcon
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Right"
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    Glyph="&#xe8a7;" />
-                            </Grid>
-                        </Button.Content>
-                    </Button>
-                    <Button Command="{x:Bind ViewModel.FeatureOpenExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
-                        <Button.Content>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    Orientation="Horizontal">
-                                    <FontIcon
-                                        Margin="5,0,15,0"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        Glyph="&#xE897;" />
-                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open Support Information" />
-                                        <TextBlock
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="Open the Microsoft KnowledgeBase for this feature" />
+                                            Text="Goto the feature's content package." />
                                     </StackPanel>
                                 </StackPanel>
 
@@ -222,30 +212,20 @@
                 <TreeView.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyout.Items>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureEnableCommand}" Text="{x:Bind ViewModel.FeatureEnableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind FeatureEnableCommand}" Text="{x:Bind FeatureEnableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureEnableCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind FeatureEnableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureDisableCommand}" Text="{x:Bind ViewModel.FeatureDisableCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind FeatureDisableCommand}" Text="{x:Bind FeatureDisableCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureDisableCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind FeatureDisableCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureGetPackageCommand}" Text="{x:Bind ViewModel.FeatureGetPackageCommand.Label}">
+                            <MenuFlyoutItem Command="{x:Bind FeatureGotoPackageCommand}" Text="{x:Bind FeatureGotoPackageCommand.Label}">
                                 <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureGetPackageCommand.IconSource}" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenExplorerCommand}" Text="{x:Bind ViewModel.FeatureOpenExplorerCommand.Label}">
-                                <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenExplorerCommand.IconSource}" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.FeatureOpenRegistryCommand}" Text="{x:Bind ViewModel.FeatureOpenRegistryCommand.Label}">
-                                <MenuFlyoutItem.Icon>
-                                    <IconSourceElement IconSource="{x:Bind ViewModel.FeatureOpenRegistryCommand.IconSource}" />
+                                    <IconSourceElement IconSource="{x:Bind FeatureGotoPackageCommand.IconSource}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout.Items>

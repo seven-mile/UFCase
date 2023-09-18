@@ -21,7 +21,7 @@ namespace winrt::UFCase::implementation
 
         if (m_view_model.State() == FeaturesPageViewModelState::Uninitialized)
         {
-            m_view_model.RefreshCommand().Execute(nullptr);
+            m_view_model.RefreshRelay().Execute(nullptr);
         }
         return;
     }

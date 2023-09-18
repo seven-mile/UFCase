@@ -7,6 +7,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <XamlUICommand
+            x:Name="ComponentShowManifestCommand"
+            Command="{x:Bind ViewModel.ComponentShowManifestRelay}"
+            Label="Show manifest">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="ComponentShowInFileExplorerCommand"
+            Command="{x:Bind ViewModel.ComponentShowInFileExplorerRelay}"
+            Label="Show in explorer">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+    </Page.Resources>
+
     <SplitView
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
@@ -63,13 +82,13 @@
                         </Border>
 
                         <!--  Commands  -->
-                        <Button Command="{x:Bind ViewModel.ComponentShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                        <Button Command="{x:Bind ComponentShowManifestCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                             <Button.Content>
                                 <StackPanel
                                     Grid.Column="0"
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal">
-                                    <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.ComponentShowManifestCommand.IconSource}" />
+                                    <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ComponentShowManifestCommand.IconSource}" />
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Show manifest" />
                                         <TextBlock
@@ -80,7 +99,7 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Button Command="{x:Bind ViewModel.ComponentShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
+                        <Button Command="{x:Bind ComponentShowInFileExplorerCommand.Command}" Style="{StaticResource MicaCardCommandLink}">
                             <Button.Content>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -92,7 +111,7 @@
                                         Grid.Column="0"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
-                                        <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ViewModel.ComponentShowInFileExplorerCommand.IconSource}" />
+                                        <IconSourceElement Margin="5,0,15,0" IconSource="{x:Bind ComponentShowInFileExplorerCommand.IconSource}" />
                                         <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Open File in Explorer" />
                                             <TextBlock

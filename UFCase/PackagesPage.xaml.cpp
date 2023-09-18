@@ -35,8 +35,9 @@ namespace winrt::UFCase::implementation
         if (m_view_model.State() == PackagesPageViewModelState::Uninitialized)
         {
             no_await([self = get_strong(), proc_sel]() -> IAsyncAction {
+                auto proc_sel_ = proc_sel;
                 co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
-                RunUITask(proc_sel);
+                RunUITask(proc_sel_);
             });
         }
         else

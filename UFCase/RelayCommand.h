@@ -36,7 +36,7 @@ namespace winrt::UFCase::implementation
         {
         }
 
-        void RaiseCanExecuteChanged()
+        void NotifyCanExecuteChanged()
         {
             _can_execute_changed(*this, nullptr);
         }
