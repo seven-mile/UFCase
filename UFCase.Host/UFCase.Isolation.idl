@@ -78,6 +78,9 @@ namespace UFCase.Isolation
 
         Boolean IsApplicable{get;};
 
+        String ManifestFilePath{get;};
+        String RegistryPath{get;};
+
         void Install();
         void Remove();
         void Stage();
@@ -100,6 +103,8 @@ namespace UFCase.Isolation
 
     runtimeclass SessionModel
     {
+        ImageModel Image{get;};
+
         void AddSource(String source);
         Windows.Foundation.IAsyncActionWithProgress<UInt32> SaveChanges();
 
@@ -176,6 +181,7 @@ namespace UFCase.Isolation
 
         String Bootdrive();
         String WinDir();
+        String GetRegistryHive(String hive_id);
 
         ImageType Type();
         ImageVersion Version();

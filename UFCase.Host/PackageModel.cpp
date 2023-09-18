@@ -8,6 +8,8 @@
 #include "Utils/MallocUtil.h"
 #include "Utils/ComUtil.h"
 
+#include <filesystem>
+
 namespace winrt::UFCase::Isolation::implementation
 {
     Isolation::SessionModel PackageModel::Session()
@@ -162,6 +164,44 @@ namespace winrt::UFCase::Isolation::implementation
         _CbsInstallState state_applicable{}, state_current{};
         return SUCCEEDED(
             GetInterface()->EvaluateApplicability(0, &state_applicable, &state_current));
+    }
+
+    hstring PackageModel::ManifestFilePath()
+    {
+        std::filesystem::path bootdrive_path = m_session.Image().Bootdrive().c_str();
+        auto manifest_root = bootdrive_path / L"Windows" / L"servicing" / L"Packages";
+        auto manifest_name = Identity() + L".mum";
+        auto mani_path = manifest_root / manifest_name.c_str();
+        if (std::filesystem::exists(mani_path))
+        {
+            return mani_path.c_str();
+        }
+        else
+        {
+            return L"";
+        }
+    }
+
+    hstring PackageModel::RegistryPath()
+    {
+        // SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages;
+        std::wstring reg_path =
+            (m_session.Image().GetRegistryHive(L"SOFTWARE") +
+             LR"(\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\)" +
+             Identity())
+                .c_str();
+
+        if (reg_path.starts_with(L"HKEY_LOCAL_MACHINE\\"))
+        {
+            auto sub_reg_path = reg_path.substr(19);
+            wil::unique_hkey reg_key{};
+            if (ERROR_SUCCESS ==
+                RegOpenKey(HKEY_LOCAL_MACHINE, sub_reg_path.c_str(), wil::out_param(reg_key)))
+            {
+                return reg_path.c_str();
+            }
+        }
+        return L"";
     }
 
     void PackageModel::Install()

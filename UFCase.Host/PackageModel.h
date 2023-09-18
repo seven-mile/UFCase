@@ -26,6 +26,7 @@ namespace winrt::UFCase::Isolation::implementation
         hstring Company();
         hstring Copyright();
         hstring SupportInformation();
+        
         hstring CreationTime();
         hstring LastUpdateTime();
         hstring InstallTime();
@@ -33,7 +34,12 @@ namespace winrt::UFCase::Isolation::implementation
         hstring InstallLocation();
         hstring InstallClient();
         hstring InstallUserName();
+        
         bool IsApplicable();
+
+        hstring ManifestFilePath();
+        hstring RegistryPath();
+
         void Install();
         void Remove();
         void Stage();

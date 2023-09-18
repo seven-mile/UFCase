@@ -195,4 +195,15 @@ namespace winrt::UFCase::implementation
     {
         return m_model.IsApplicable();
     }
+
+    hstring PackageViewModel::ManifestFilePath()
+    {
+        return m_model.ManifestFilePath();
+    }
+
+    hstring PackageViewModel::RegistryPath()
+    {
+        return m_model.RegistryPath();
+    }
+
 } // namespace winrt::UFCase::implementation

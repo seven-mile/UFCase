@@ -31,6 +31,11 @@ namespace winrt::UFCase::Isolation::implementation
             }
         }
 
+        Isolation::ImageModel Image()
+        {
+            return m_image;
+        }
+
         void AddSource(hstring const &source_dir);
         Windows::Foundation::IAsyncActionWithProgress<uint32_t> SaveChanges();
 

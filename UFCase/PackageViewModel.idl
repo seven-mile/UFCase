@@ -48,5 +48,8 @@ namespace UFCase
         String InstallClient { get; };
         String InstallUserName { get; };
         Boolean IsApplicable { get; };
+
+        String ManifestFilePath { get; };
+        String RegistryPath { get; };
     }
 }

@@ -23,6 +23,8 @@ namespace winrt::UFCase::Isolation::implementation
         hstring Bootdrive();
         hstring WinDir();
 
+        hstring GetRegistryHive(hstring hive_id);
+
         ImageType Type();
         ImageVersion Version();
         hstring Edition();
@@ -31,10 +33,14 @@ namespace winrt::UFCase::Isolation::implementation
 
       private:
         std::filesystem::path m_bootdrive, m_sstack;
+        std::unordered_map<std::wstring, std::wstring> m_hive_offregs;
+
         Isolation::SessionModel basic_sess{nullptr};
         Isolation::StoreModel sxs_store{nullptr};
 
         void Initialize();
+        void ConstructOnlineRegistryHives();
+        void ConstructOfflineRegistryHives();
     };
 } // namespace winrt::UFCase::Isolation::implementation
 

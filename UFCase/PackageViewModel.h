@@ -38,6 +38,9 @@ namespace winrt::UFCase::implementation
         hstring InstallUserNameRaw();
         bool IsApplicableRaw();
 
+        hstring ManifestFilePath();
+        hstring RegistryPath();
+
         // clang-format off
         PropertyCache<hstring, PackageViewModel> ListName{ *this, &PackageViewModel::ListNameRaw };
         PropertyCache<hstring, PackageViewModel> ListIdentity{ *this, &PackageViewModel::ListIdentityRaw };

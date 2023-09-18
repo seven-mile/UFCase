@@ -10,8 +10,11 @@
 #include "XamlUtil.h"
 #include "PropChgUtil.h"
 
+#include <ShlObj.h>
+
 #include <fstream>
 #include <filesystem>
+#include <wil/stl.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -89,12 +92,8 @@ namespace winrt::UFCase::implementation
         {
             if (!m_selected)
                 co_return;
-            std::filesystem::path bootdrive_path =
-                GlobalRes::MainWnd().ViewModel().SelectedImageModel().Bootdrive().c_str();
-            auto manifest_root = bootdrive_path / L"Windows" / L"servicing" / L"Packages";
-            auto manifest_name = m_selected.DetailIdentity() + L".mum";
             auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync(
-                (manifest_root / manifest_name.c_str()).c_str());
+                (m_selected.ManifestFilePath()).c_str());
             auto manifest = co_await Windows::Storage::FileIO::ReadTextAsync(file);
             ContentDialog cd;
             cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
@@ -114,14 +113,34 @@ namespace winrt::UFCase::implementation
             co_await cd.ShowAsync();
         }
 
-        HandleCommandAsync(PackageShowInFileExplorer)
+        HandleCommand(PackageShowInFileExplorer)
         {
-            co_return;
+            if (!m_selected)
+            {
+                return;
+            }
+
+            if (ITEMIDLIST *pidl = ILCreateFromPath(m_selected.ManifestFilePath().c_str()))
+            {
+                LOG_IF_FAILED(SHOpenFolderAndSelectItems(pidl, 0, 0, 0));
+                ILFree(pidl);
+            }
         }
 
-        HandleCommandAsync(PackageShowInRegistry)
+        HandleCommand(PackageShowInRegistry)
         {
-            co_return;
+            if (!m_selected)
+            {
+                return;
+            }
+
+            ::RegSetKeyValue(HKEY_CURRENT_USER,
+                             L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
+                             L"LastKey", REG_SZ, m_selected.RegistryPath().c_str(),
+                             (m_selected.RegistryPath().size() + 1) * sizeof(wchar_t));
+
+            ::ShellExecute(nullptr, L"open", L"regedit", L"", L"", SW_SHOW);
+            LOG_IF_FAILED(HRESULT_FROM_WIN32(GetLastError()));
         }
 
       private:
