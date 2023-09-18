@@ -65,6 +65,8 @@ namespace winrt::UFCase::implementation
 
         report_progress(100);
 
+        m_state = ComponentsPageViewModelState::Idle;
+
         co_return;
     }
 } // namespace winrt::UFCase::implementation

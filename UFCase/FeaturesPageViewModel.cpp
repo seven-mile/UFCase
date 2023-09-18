@@ -108,6 +108,7 @@ namespace winrt::UFCase::implementation
 
         co_await ui_thread;
 
+        m_state = FeaturesPageViewModelState::Idle;
         NotifyPropChange(L"RootFeatures");
 
         co_return;
