@@ -24,7 +24,7 @@ namespace winrt::UFCase::implementation
         hstring ProcessorArchitectureRaw();
         hstring VersionScopeRaw();
 
-        hstring ManifestRaw();
+        hstring Manifest();
 
         hstring StatusRaw();
         hstring PayloadPathRaw();
@@ -40,7 +40,6 @@ namespace winrt::UFCase::implementation
         PropertyCache<hstring, ComponentViewModel> PublicKeyToken{*this, &ComponentViewModel::PublicKeyTokenRaw};
         PropertyCache<hstring, ComponentViewModel> ProcessorArchitecture{*this, &ComponentViewModel::ProcessorArchitectureRaw};
         PropertyCache<hstring, ComponentViewModel> VersionScope{*this, &ComponentViewModel::VersionScopeRaw};
-        PropertyCache<hstring, ComponentViewModel> Manifest{*this, &ComponentViewModel::ManifestRaw};
         PropertyCache<hstring, ComponentViewModel> Status{*this, &ComponentViewModel::StatusRaw};
         PropertyCache<hstring, ComponentViewModel> PayloadPath{*this, &ComponentViewModel::PayloadPathRaw};
         PropertyCache<Collections::IObservableVector<ComponentFileViewModel>, ComponentViewModel> Files{*this, &ComponentViewModel::FilesRaw};

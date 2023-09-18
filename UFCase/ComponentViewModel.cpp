@@ -60,7 +60,7 @@ namespace winrt::UFCase::implementation
         return m_model.GetAttribute(L"VersionScope");
     }
 
-    hstring ComponentViewModel::ManifestRaw()
+    hstring ComponentViewModel::Manifest()
     {
         return m_model.Manifest();
     }
