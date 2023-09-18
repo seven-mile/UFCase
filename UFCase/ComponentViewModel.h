@@ -52,7 +52,6 @@ namespace winrt::UFCase::implementation
         {
             TextForm();
             KeyForm();
-            Manifest();
             Status();
             PayloadPath();
             Files();
