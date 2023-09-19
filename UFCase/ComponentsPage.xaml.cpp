@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "ComponentsPage.h"
+#include "ComponentsPage.xaml.h"
 #if __has_include("ComponentsPage.g.cpp")
 #include "ComponentsPage.g.cpp"
 #endif

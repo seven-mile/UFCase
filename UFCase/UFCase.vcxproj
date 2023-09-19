@@ -143,7 +143,7 @@
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AsyncUtil.h" />
     <ClInclude Include="CacheUtil.h" />
-    <ClInclude Include="ComponentsPage.h">
+    <ClInclude Include="ComponentsPage.xaml.h">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
@@ -238,7 +238,7 @@
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="SysInfoPage.h">
+    <ClInclude Include="SysInfoPage.xaml.h">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
@@ -298,7 +298,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="AppConfig.cpp" />
-    <ClCompile Include="ComponentsPage.cpp">
+    <ClCompile Include="ComponentsPage.xaml.cpp">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
@@ -394,7 +394,7 @@
       <DependentUpon>SysInfoStaticViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="SysInfoPage.cpp">
+    <ClCompile Include="SysInfoPage.xaml.cpp">
       <DependentUpon>SysInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
