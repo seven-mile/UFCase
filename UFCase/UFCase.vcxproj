@@ -172,6 +172,10 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="GlobalUtil.h" />
+    <ClInclude Include="GlyphButton.h">
+      <DependentUpon>GlyphButton.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="HardwareInfoModel.h" />
     <ClInclude Include="HostGuard.h" />
     <ClInclude Include="HostManager.h" />
@@ -323,6 +327,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="GlobalUtil.cpp" />
+    <ClCompile Include="GlyphButton.cpp">
+      <DependentUpon>GlyphButton.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="HardwareInfoModel.cpp" />
     <ClCompile Include="HostGuard.cpp" />
     <ClCompile Include="HostManager.cpp" />
@@ -430,6 +438,9 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FeatureViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="GlyphButton.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ImageSelectorViewModel.idl">

@@ -18,6 +18,8 @@ namespace winrt::UFCase::implementation
 
         void ListViewItem_RightTapped(IInspectable const &sender,
                                       Input::RightTappedRoutedEventArgs const &e);
+        void GotoSelectionButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
+        void GotoTopButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
     };
 } // namespace winrt::UFCase::implementation
 

@@ -1,0 +1,12 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass GlyphButton : Microsoft.UI.Xaml.Controls.Button
+    {
+        GlyphButton();
+
+        String Glyph;
+        static Microsoft.UI.Xaml.DependencyProperty GlyphProperty{get;};
+    }
+}

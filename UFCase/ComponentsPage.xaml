@@ -44,7 +44,7 @@
                 VerticalAlignment="Stretch"
                 VerticalScrollBarVisibility="Auto">
                 <Grid
-                    x:Name="FeatureInfoPanel"
+                    x:Name="ComponentInfoPanel"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
@@ -133,137 +133,165 @@
                 </Grid>
             </ScrollViewer>
         </SplitView.Pane>
-        <ListView
-            x:Name="CompList"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            IsItemClickEnabled="False"
-            ItemsSource="{x:Bind ViewModel.Components, Mode=OneWay}"
-            SelectedItem="{x:Bind ViewModel.SelectedComponent, Mode=TwoWay}"
-            SelectionMode="Single">
-            <ListView.Resources>
-                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.Resources>
-            <ListView.ItemContainerTransitions>
-                <TransitionCollection>
-                    <ContentThemeTransition />
-                </TransitionCollection>
-            </ListView.ItemContainerTransitions>
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ComponentViewModel">
-                    <ListViewItem RightTapped="ListViewItem_RightTapped">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="32" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="24" />
-                                <RowDefinition Height="8" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="80" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource SubtitleTextBlockStyle}"
-                                Text="{x:Bind Name}"
-                                TextTrimming="CharacterEllipsis" />
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource SecondaryTextBlockStyle}"
-                                Text="{x:Bind KeyForm}"
-                                TextTrimming="CharacterEllipsis" />
-                            <!--  SecondaryTextFontSize  -->
-                            <Grid Grid.Row="2" Grid.Column="0">
+        <Grid>
+            <ListView
+                x:Name="CompList"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                IsItemClickEnabled="False"
+                ItemsSource="{x:Bind ViewModel.Components, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedComponent, Mode=TwoWay}"
+                SelectionMode="Single">
+                <ListView.Resources>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <ContentThemeTransition />
+                    </TransitionCollection>
+                </ListView.ItemContainerTransitions>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ComponentViewModel">
+                        <ListViewItem RightTapped="ListViewItem_RightTapped">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="32" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="8" />
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Margin="3,0,3,0"
-                                    Padding="2,0,2,0"
-                                    Background="#ce8647"
-                                    CornerRadius="4,4,4,4">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Style="{StaticResource SecondaryTextBlockStyle}"
-                                        Text="{x:Bind Status}"
-                                        TextTrimming="CharacterEllipsis" />
-                                </Border>
-                                <Border
-                                    Grid.Column="1"
-                                    Margin="3,0,3,0"
-                                    Padding="2,0,2,0"
-                                    Background="#428ee4"
-                                    CornerRadius="4,4,4,4">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Style="{StaticResource SecondaryTextBlockStyle}"
-                                        TextTrimming="CharacterEllipsis">
-                                        <Run Text="{x:Bind Version}" />
-                                    </TextBlock>
-                                </Border>
-                                <Border
-                                    Grid.Column="2"
-                                    Margin="3,0,3,0"
-                                    Padding="2,0,2,0"
-                                    Background="#75ab5b"
-                                    CornerRadius="4,4,4,4">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Style="{StaticResource SecondaryTextBlockStyle}"
-                                        Text="{x:Bind ProcessorArchitecture}"
-                                        TextTrimming="CharacterEllipsis" />
-                                </Border>
-                                <Border
-                                    Grid.Column="3"
-                                    Margin="3,0,3,0"
-                                    Padding="2,0,2,0"
-                                    Background="DarkOrchid"
-                                    CornerRadius="4,4,4,4">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Style="{StaticResource SecondaryTextBlockStyle}"
-                                        TextTrimming="CharacterEllipsis">
-                                        <Run Text="{x:Bind Files.Size}" /> <Run Text="Files" />
-                                    </TextBlock>
-                                </Border>
-
                                 <TextBlock
-                                    Grid.Column="4"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextTrimming="CharacterEllipsis" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource SecondaryTextBlockStyle}"
-                                    Text="{x:Bind PayloadPath}"
+                                    Text="{x:Bind KeyForm}"
                                     TextTrimming="CharacterEllipsis" />
+                                <!--  SecondaryTextFontSize  -->
+                                <Grid Grid.Row="2" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Grid.Column="0"
+                                        Margin="3,0,3,0"
+                                        Padding="2,0,2,0"
+                                        Background="#ce8647"
+                                        CornerRadius="4,4,4,4">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="White"
+                                            Style="{StaticResource SecondaryTextBlockStyle}"
+                                            Text="{x:Bind Status}"
+                                            TextTrimming="CharacterEllipsis" />
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        Margin="3,0,3,0"
+                                        Padding="2,0,2,0"
+                                        Background="#428ee4"
+                                        CornerRadius="4,4,4,4">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="White"
+                                            Style="{StaticResource SecondaryTextBlockStyle}"
+                                            TextTrimming="CharacterEllipsis">
+                                            <Run Text="{x:Bind Version}" />
+                                        </TextBlock>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        Margin="3,0,3,0"
+                                        Padding="2,0,2,0"
+                                        Background="#75ab5b"
+                                        CornerRadius="4,4,4,4">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="White"
+                                            Style="{StaticResource SecondaryTextBlockStyle}"
+                                            Text="{x:Bind ProcessorArchitecture}"
+                                            TextTrimming="CharacterEllipsis" />
+                                    </Border>
+                                    <Border
+                                        Grid.Column="3"
+                                        Margin="3,0,3,0"
+                                        Padding="2,0,2,0"
+                                        Background="DarkOrchid"
+                                        CornerRadius="4,4,4,4">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="White"
+                                            Style="{StaticResource SecondaryTextBlockStyle}"
+                                            TextTrimming="CharacterEllipsis">
+                                            <Run Text="{x:Bind Files.Size}" /> <Run Text="Files" />
+                                        </TextBlock>
+                                    </Border>
+
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource SecondaryTextBlockStyle}"
+                                        Text="{x:Bind PayloadPath}"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="1">
+                                    <AppBarButton
+                                        VerticalAlignment="Center"
+                                        Icon="More"
+                                        IsCompact="False"
+                                        Label="More" />
+                                </Border>
                             </Grid>
-                            <Border
-                                Grid.Row="0"
-                                Grid.RowSpan="4"
-                                Grid.Column="1">
-                                <AppBarButton
-                                    VerticalAlignment="Center"
-                                    Icon="More"
-                                    IsCompact="False"
-                                    Label="More" />
-                            </Border>
-                        </Grid>
-                    </ListViewItem>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                        </ListViewItem>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel
+                Margin="30"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+                <local:GlyphButton
+                    x:Name="GotoSelectionButton"
+                    Width="36"
+                    Height="36"
+                    CornerRadius="24"
+                    FontSize="16"
+                    Glyph="&#xE81D;"
+                    Style="{StaticResource RoundGlyphButtonStyle}"
+                    Tapped="GotoSelectionButton_Click"
+                    ToolTipService.ToolTip="Goto selection" />
+                <Border Height="10" />
+                <local:GlyphButton
+                    x:Name="GotoTopButton"
+                    Width="36"
+                    Height="36"
+                    CornerRadius="24"
+                    FontSize="16"
+                    Glyph="&#xE74A;"
+                    Style="{StaticResource RoundGlyphButtonStyle}"
+                    Tapped="GotoTopButton_Click"
+                    ToolTipService.ToolTip="Goto top" />
+            </StackPanel>
+        </Grid>
     </SplitView>
 </Page>

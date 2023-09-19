@@ -83,6 +83,9 @@
     <Midl Include="ComponentsPageViewModel.idl">
       <Filter>view_models</Filter>
     </Midl>
+    <Midl Include="GlyphButton.idl">
+      <Filter>views\controls</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -205,6 +208,9 @@
     </Filter>
     <Filter Include="hosting">
       <UniqueIdentifier>{17780e75-e5bf-4917-8398-f16c389c2c55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="views\controls">
+      <UniqueIdentifier>{0c992c87-62f9-4e0b-8c62-43829543bb78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

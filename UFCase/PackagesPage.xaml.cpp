@@ -28,7 +28,8 @@ namespace winrt::UFCase::implementation
         auto proc_sel = [self = get_strong()] {
             if (auto item = self->PkgList().SelectedItem())
             {
-                self->PkgList().ScrollIntoView(item, Controls::ScrollIntoViewAlignment::Leading);
+                self->PkgList().ScrollIntoView(
+                    item, Microsoft::UI::Xaml::Controls::ScrollIntoViewAlignment::Leading);
             }
         };
 
@@ -57,6 +58,22 @@ namespace winrt::UFCase::implementation
         item.IsSelected(true);
 
         e.Handled(false);
+    }
+
+    void PackagesPage::GotoSelectionButton_Click(IInspectable const &, RoutedEventArgs const &)
+    {
+        if (auto item = PkgList().SelectedItem())
+        {
+            PkgList().ScrollIntoView(item);
+        }
+    }
+
+    void PackagesPage::GotoTopButton_Click(IInspectable const &, RoutedEventArgs const &)
+    {
+        if (auto item = ViewModel().Packages().GetAt(0))
+        {
+            PkgList().ScrollIntoView(item);
+        }
     }
 
 } // namespace winrt::UFCase::implementation

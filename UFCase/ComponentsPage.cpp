@@ -29,4 +29,21 @@ namespace winrt::UFCase::implementation
 
         e.Handled(false);
     }
+
+    void ComponentsPage::GotoSelectionButton_Click(IInspectable const &, RoutedEventArgs const &)
+    {
+        if (auto item = CompList().SelectedItem())
+        {
+            CompList().ScrollIntoView(item);
+        }
+    }
+
+    void ComponentsPage::GotoTopButton_Click(IInspectable const &, RoutedEventArgs const &)
+    {
+        if (auto item = ViewModel().Components().GetAt(0))
+        {
+            CompList().ScrollIntoView(item);
+        }
+    }
+
 } // namespace winrt::UFCase::implementation

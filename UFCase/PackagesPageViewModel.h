@@ -120,11 +120,14 @@ namespace winrt::UFCase::implementation
                 return;
             }
 
+#pragma warning(push)
+#pragma warning(disable : 4090)
             if (ITEMIDLIST *pidl = ILCreateFromPath(m_selected.ManifestFilePath().c_str()))
             {
                 LOG_IF_FAILED(SHOpenFolderAndSelectItems(pidl, 0, 0, 0));
                 ILFree(pidl);
             }
+#pragma warning(pop)
         }
 
         HandleCommand(PackageShowInRegistry)
