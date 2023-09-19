@@ -46,8 +46,8 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    void ComponentsPage::CompList_SelectionChanged(IInspectable const &sender,
-                                                   Controls::SelectionChangedEventArgs const &e)
+    void ComponentsPage::CompList_SelectionChanged(IInspectable const &,
+                                                   Controls::SelectionChangedEventArgs const &)
     {
         if (auto item = CompList().SelectedItem())
         {

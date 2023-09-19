@@ -51,7 +51,7 @@ namespace winrt::UFCase::implementation
     }
 
     void FeaturesPage::FeatureTreeItem_RightTapped(IInspectable const &sender,
-                                                   Input::RightTappedRoutedEventArgs const &e)
+                                                   Input::RightTappedRoutedEventArgs const &)
     {
         auto feature = sender.as<FrameworkElement>().DataContext().as<FeatureViewModel>();
         m_view_model.SelectedFeature(feature);
