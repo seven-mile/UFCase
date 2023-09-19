@@ -36,30 +36,29 @@
             </XamlUICommand.IconSource>
         </XamlUICommand>
 
+        <XamlUICommand x:Name="PackageInstallCommand" Label="Install">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC7A;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+
+        <XamlUICommand x:Name="PackageStageCommand" Label="Stage" />
+
+        <XamlUICommand x:Name="PackageRemoveCommand" Label="Remove">
+            <XamlUICommand.IconSource>
+                <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+
         <MenuFlyout x:Key="PackageItemActionsMenu" ShouldConstrainToRootBounds="False">
             <MenuFlyout.Items>
-                <MenuFlyoutItem Text="Install">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC7A;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Stage">
-                    <!--<MenuFlyoutItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe74d;" />
-                    </MenuFlyoutItem.Icon>-->
-                </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Remove">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                <MenuFlyoutItem Command="{x:Bind PackageShowManifestCommand}" />
+                <MenuFlyoutItem Command="{x:Bind PackageShowInFileExplorerCommand}" />
+                <MenuFlyoutItem Command="{x:Bind PackageShowInRegistryCommand}" />
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="Apply Changes">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE930;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                <MenuFlyoutItem Icon="More" Text="More..." />
+                <MenuFlyoutItem Command="{x:Bind PackageInstallCommand}" />
+                <MenuFlyoutItem Command="{x:Bind PackageStageCommand}" />
+                <MenuFlyoutItem Command="{x:Bind PackageRemoveCommand}" />
             </MenuFlyout.Items>
         </MenuFlyout>
     </Page.Resources>
@@ -227,6 +226,7 @@
                         x:Name="PkgList"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
+                        ContextFlyout="{StaticResource PackageItemActionsMenu}"
                         IsItemClickEnabled="False"
                         ItemsSource="{x:Bind ViewModel.Packages, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectedPackage, Mode=TwoWay}"
@@ -246,13 +246,8 @@
                                             <RowDefinition Height="24" />
                                             <RowDefinition Height="8" />
                                         </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="80" />
-                                        </Grid.ColumnDefinitions>
                                         <TextBlock
                                             Grid.Row="0"
-                                            Grid.Column="0"
                                             VerticalAlignment="Center"
                                             FontSize="{StaticResource SubtitleTextBlockFontSize}"
                                             FontWeight="SemiBold"
@@ -260,14 +255,13 @@
                                             TextTrimming="CharacterEllipsis" />
                                         <TextBlock
                                             Grid.Row="1"
-                                            Grid.Column="0"
                                             VerticalAlignment="Center"
                                             Style="{StaticResource SecondaryTextBlockStyle}"
                                             Text="{x:Bind ListIdentity}"
                                             TextTrimming="CharacterEllipsis"
                                             Visibility="{x:Bind ListIdentityVisibility}" />
                                         <!--  SecondaryTextFontSize  -->
-                                        <Grid Grid.Row="2" Grid.Column="0">
+                                        <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
@@ -306,17 +300,6 @@
                                                 Text="{x:Bind Description}"
                                                 TextTrimming="CharacterEllipsis" />
                                         </Grid>
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.RowSpan="4"
-                                            Grid.Column="1">
-                                            <AppBarButton
-                                                VerticalAlignment="Center"
-                                                Flyout="{StaticResource PackageItemActionsMenu}"
-                                                Icon="More"
-                                                IsCompact="False"
-                                                Label="More" />
-                                        </Border>
                                     </Grid>
                                 </ListViewItem>
                             </DataTemplate>

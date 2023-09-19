@@ -24,6 +24,11 @@
                 <FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
             </XamlUICommand.IconSource>
         </XamlUICommand>
+
+        <MenuFlyout x:Key="ComponentItemActionsMenu">
+            <MenuFlyoutItem Command="{x:Bind ComponentShowManifestCommand}" />
+            <MenuFlyoutItem Command="{x:Bind ComponentShowInFileExplorerCommand}" />
+        </MenuFlyout>
     </Page.Resources>
 
     <SplitView
@@ -138,15 +143,11 @@
                 x:Name="CompList"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
+                ContextFlyout="{StaticResource ComponentItemActionsMenu}"
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Components, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedComponent, Mode=TwoWay}"
                 SelectionMode="Single">
-                <ListView.Resources>
-                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.Resources>
                 <ListView.ItemContainerTransitions>
                     <TransitionCollection>
                         <ContentThemeTransition />
@@ -162,26 +163,21 @@
                                     <RowDefinition Height="24" />
                                     <RowDefinition Height="8" />
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="80" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Grid.Row="0"
-                                    Grid.Column="0"
                                     VerticalAlignment="Center"
-                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                    FontSize="{StaticResource SubtitleTextBlockFontSize}"
+                                    FontWeight="SemiBold"
                                     Text="{x:Bind Name}"
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Grid.Row="1"
-                                    Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource SecondaryTextBlockStyle}"
                                     Text="{x:Bind KeyForm}"
                                     TextTrimming="CharacterEllipsis" />
                                 <!--  SecondaryTextFontSize  -->
-                                <Grid Grid.Row="2" Grid.Column="0">
+                                <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
@@ -190,7 +186,6 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Border
-                                        Grid.Column="0"
                                         Margin="3,0,3,0"
                                         Padding="2,0,2,0"
                                         Background="#ce8647"
@@ -251,16 +246,6 @@
                                         Text="{x:Bind PayloadPath}"
                                         TextTrimming="CharacterEllipsis" />
                                 </Grid>
-                                <Border
-                                    Grid.Row="0"
-                                    Grid.RowSpan="4"
-                                    Grid.Column="1">
-                                    <AppBarButton
-                                        VerticalAlignment="Center"
-                                        Icon="More"
-                                        IsCompact="False"
-                                        Label="More" />
-                                </Border>
                             </Grid>
                         </ListViewItem>
                     </DataTemplate>
