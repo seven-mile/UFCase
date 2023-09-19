@@ -201,7 +201,8 @@
                 CanDragItems="False"
                 CanReorderItems="False"
                 ItemsSource="{x:Bind ViewModel.RootFeatures, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectedFeature, Mode=TwoWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedFeature, Mode=OneWay}"
+                SelectionChanged="FeatureTree_SelectionChanged"
                 SelectionMode="Single">
                 <TreeView.ItemContainerTransitions>
                     <TransitionCollection>

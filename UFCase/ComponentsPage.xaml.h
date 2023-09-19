@@ -22,6 +22,9 @@ namespace winrt::UFCase::implementation
                                       Input::RightTappedRoutedEventArgs const &e);
         void GotoSelectionButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
         void GotoTopButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
+        void CompList_SelectionChanged(
+            IInspectable const &sender,
+            Controls::SelectionChangedEventArgs const &e);
     };
 } // namespace winrt::UFCase::implementation
 

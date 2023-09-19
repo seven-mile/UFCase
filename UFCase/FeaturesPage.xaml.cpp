@@ -55,9 +55,16 @@ namespace winrt::UFCase::implementation
     {
         auto feature = sender.as<FrameworkElement>().DataContext().as<FeatureViewModel>();
         m_view_model.SelectedFeature(feature);
+    }
 
-        // continue to pop up context menu
-        e.Handled(false);
+    void FeaturesPage::FeatureTree_SelectionChanged(
+        IInspectable const &,
+        Microsoft::UI::Xaml::Controls::TreeViewSelectionChangedEventArgs const &)
+    {
+        if (auto item = FeatureTree().SelectedItem())
+        {
+            ViewModel().SelectedFeature(item.as<UFCase::FeatureViewModel>());
+        }
     }
 
 } // namespace winrt::UFCase::implementation

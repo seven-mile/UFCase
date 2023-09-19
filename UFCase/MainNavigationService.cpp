@@ -91,6 +91,10 @@ namespace winrt::UFCase::implementation
                 {
                     ppvm.NavContext().SelectPkgId(ctx.SelectPkgId());
                 }
+                else
+                {
+                    ppvm.NavContext().SelectPkgId(L"");
+                }
 
                 frame.Navigate(xaml_typename<PackagesPage>(), box_value(ppvm));
                 co_return;

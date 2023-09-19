@@ -20,33 +20,46 @@ namespace winrt::UFCase::implementation
     {
     }
 
-    void PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
+    fire_and_forget PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
+        apartment_context ui_thread;
+
+        auto lifetime = get_strong();
 
         m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
-        auto proc_sel = [self = get_strong()] {
-            if (auto item = self->PkgList().SelectedItem())
-            {
-                self->PkgList().ScrollIntoView(
-                    item, Microsoft::UI::Xaml::Controls::ScrollIntoViewAlignment::Leading);
-            }
-        };
-
         if (m_view_model.State() == PackagesPageViewModelState::Uninitialized)
         {
-            no_await([self = get_strong(), proc_sel]() -> IAsyncAction {
-                auto proc_sel_ = proc_sel;
-                co_await GlobalRes::MainProgServ().InsertTask(self->m_view_model.PullData(), 100);
-                RunUITask(proc_sel_);
-            });
+            co_await GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100);
+            co_await ui_thread;
         }
         else
         {
-            proc_sel();
+            co_await resume_background();
+
+            // find the matching package
+            auto pvm = [&]() -> UFCase::PackageViewModel {
+                for (auto pkg : m_view_model.Packages())
+                {
+                    if (pkg.DetailIdentity() == m_view_model.NavContext().SelectPkgId())
+                    {
+                        return pkg;
+                    }
+                }
+                return nullptr;
+            }();
+
+            co_await ui_thread;
+
+            m_view_model.SelectedPackage(pvm);
         }
 
-        return;
+        if (auto item = PkgList().SelectedItem())
+        {
+            PkgList().ScrollIntoView(item, Controls::ScrollIntoViewAlignment::Leading);
+        }
+
+        co_return;
     }
 
     void PackagesPage::ListViewItem_RightTapped(IInspectable const &sender,
@@ -73,6 +86,23 @@ namespace winrt::UFCase::implementation
         if (auto item = ViewModel().Packages().GetAt(0))
         {
             PkgList().ScrollIntoView(item);
+        }
+    }
+
+    void PackagesPage::PkgList_SelectionChanged(
+        IInspectable const &, Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const &)
+    {
+        if (auto item = PkgList().SelectedItem())
+        {
+            ViewModel().SelectedPackage(item.as<UFCase::PackageViewModel>());
+        }
+    }
+
+    void PackagesPage::PkgList_Loaded(IInspectable const &, RoutedEventArgs const &)
+    {
+        if (auto item = PkgList().SelectedItem())
+        {
+            PkgList().ScrollIntoView(item, Controls::ScrollIntoViewAlignment::Leading);
         }
     }
 

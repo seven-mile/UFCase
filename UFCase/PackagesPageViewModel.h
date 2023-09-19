@@ -73,7 +73,7 @@ namespace winrt::UFCase::implementation
         void SelectedPackage(UFCase::PackageViewModel value)
         {
             m_selected = value;
-            // NotifyPropChange(L"SelectedPackage");
+            NotifyPropChange(L"SelectedPackage");
         }
 
         UFCase::PackagesPageNavigationContext NavContext()

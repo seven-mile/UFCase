@@ -8,7 +8,7 @@ namespace winrt::UFCase::implementation
     {
         PackagesPage();
 
-        void OnNavigatedTo(const Navigation::NavigationEventArgs &e);
+        fire_and_forget OnNavigatedTo(const Navigation::NavigationEventArgs &e);
 
         UFCase::PackagesPageViewModel m_view_model{nullptr};
         UFCase::PackagesPageViewModel ViewModel()
@@ -20,6 +20,10 @@ namespace winrt::UFCase::implementation
                                       Input::RightTappedRoutedEventArgs const &e);
         void GotoSelectionButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
         void GotoTopButton_Click(IInspectable const &sender, RoutedEventArgs const &e);
+        void PkgList_SelectionChanged(
+            IInspectable const &sender,
+            Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const &e);
+        void PkgList_Loaded(IInspectable const &sender, RoutedEventArgs const &e);
     };
 } // namespace winrt::UFCase::implementation
 

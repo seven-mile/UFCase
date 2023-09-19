@@ -46,4 +46,12 @@ namespace winrt::UFCase::implementation
         }
     }
 
+    void ComponentsPage::CompList_SelectionChanged(IInspectable const &sender,
+                                                   Controls::SelectionChangedEventArgs const &e)
+    {
+        if (auto item = CompList().SelectedItem())
+        {
+            ViewModel().SelectedComponent(item.as<UFCase::ComponentViewModel>());
+        }
+    }
 } // namespace winrt::UFCase::implementation

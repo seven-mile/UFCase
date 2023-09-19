@@ -34,7 +34,7 @@ namespace winrt::UFCase::implementation
         void SelectedComponent(UFCase::ComponentViewModel value)
         {
             m_selected = value;
-            // NotifyPropChange(L"SelectedComponent");
+            NotifyPropChange(L"SelectedComponent");
         }
 
         HandleCommandAsync(ComponentShowManifest)

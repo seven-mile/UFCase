@@ -229,7 +229,9 @@
                         ContextFlyout="{StaticResource PackageItemActionsMenu}"
                         IsItemClickEnabled="False"
                         ItemsSource="{x:Bind ViewModel.Packages, Mode=OneWay}"
-                        SelectedItem="{x:Bind ViewModel.SelectedPackage, Mode=TwoWay}"
+                        Loaded="PkgList_Loaded"
+                        SelectedItem="{x:Bind ViewModel.SelectedPackage, Mode=OneWay}"
+                        SelectionChanged="PkgList_SelectionChanged"
                         SelectionMode="Single">
                         <ListView.ItemContainerTransitions>
                             <TransitionCollection>
