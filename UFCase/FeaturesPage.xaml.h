@@ -25,13 +25,12 @@ namespace winrt::UFCase::implementation
                                           Input::DoubleTappedRoutedEventArgs const &e);
         void FeatureTreeItem_RightTapped(IInspectable const &sender,
                                          Input::RightTappedRoutedEventArgs const &e);
+        void FeatureTree_SelectionChanged(IInspectable const &sender,
+                                          Controls::TreeViewSelectionChangedEventArgs const &args);
 
         Input::ICommand::CanExecuteChanged_revoker m_feature_enable_revoker;
         Input::ICommand::CanExecuteChanged_revoker m_feature_disable_revoker;
         Input::ICommand::CanExecuteChanged_revoker m_feature_goto_revoker;
-        void FeatureTree_SelectionChanged(
-            IInspectable const &sender,
-            Microsoft::UI::Xaml::Controls::TreeViewSelectionChangedEventArgs const &args);
     };
 
 } // namespace winrt::UFCase::implementation

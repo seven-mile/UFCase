@@ -58,10 +58,14 @@ namespace winrt::UFCase::implementation
     }
 
     void FeaturesPage::FeatureTree_SelectionChanged(
-        IInspectable const &,
-        Microsoft::UI::Xaml::Controls::TreeViewSelectionChangedEventArgs const &)
+        IInspectable const &, Controls::TreeViewSelectionChangedEventArgs const &e)
     {
-        if (auto item = FeatureTree().SelectedItem())
+        if (e.AddedItems().Size() < 1)
+        {
+            return;
+        }
+
+        if (auto item = e.AddedItems().GetAt(0))
         {
             ViewModel().SelectedFeature(item.as<UFCase::FeatureViewModel>());
         }
