@@ -11,6 +11,10 @@ UFCase (Utility Functions Case) provides overall enumeration (and possibly deplo
 The article [Understanding Component-Based Servicing
 ](https://techcommunity.microsoft.com/t5/ask-the-performance-team/understanding-component-based-servicing/ba-p/373012) provides the overview on the Servicing Stack and how it roughly works when an update is installed or removed.
 
+### Releases
+
+I'll publish breaking changes for UFCase in the [GitHub releases](https://github.com/seven-mile/UFCase/releases). And the CI will upload nightly build artifacts of the newest commit. Goto [GitHub actions](https://github.com/seven-mile/UFCase/actions), click the commit you prefer and download `UFCase_portable.zip` from the row `Artifacts`.
+
 ### Glossary
 
 All the descriptions below are woven by my own understanding. For your information only.
@@ -60,6 +64,9 @@ Now let's change our point of view to the upper layers. After the **Updates (Win
 
 Priority undetermined.
 
+- [x] **Host isolation**
+  * Run high-elevated operations like calling CBS APIs in *a seperate process for each image*
+  * See more benefits in the section "Known Issues" below.
 - [ ] Manifest Viewer
   * View XML in new window
   * Jump to some references like package identity or component identity
@@ -75,6 +82,7 @@ Priority undetermined.
 Long term:
 
 - [ ] Optimize object memory management
+  * Partially done for not fetching manifest for every component. But the memory consumption of UI process is still **5x** of the backend process. (Win11 Components 80MB vs 400MB).
 
 ### Known Issues
 
@@ -89,3 +97,13 @@ Long term:
       * Win11 Dev Build 23545
       * Win11 Stable Build 22621
     * I think it's some kernel regressions that caused the issue of `NtRegOpenKey`, but I don't have time to investigate into kernel internals.
+* **Host isolation** means run high-elevated operations like calling CBS APIs in *a seperate process for each image*.
+  * This brings the following benefits:
+    * Reconstruct the threading model - out-of-proc COM objects can be called from any thread context. And we don't need to use anymore arena-based hierarchal memory allocation which is brought by naive implementation of `GITObject`.
+    * Flexible and layered design, the UI can be rewritten freely, and another layer for cache.
+    * Highly controllable image resource lifetime.
+    * Run multiple versions of offline servicing stack in multiple processes. We cannot load wcp.dll for Win10 and Win7 at the same time for one single process.
+  * But for now it also has some limitations:
+    * The isolation host and UI process must be both unpackaged, or both packaged. Because even for full trust packaged apps, their out-of-proc COM registration is isolated in a sandbox. I'm not sure, but I think it's still a mechanism called `PackagedCOM`. The COM objects registered by packaged UI process is NOT visible to elevated processes. See [microsoft/WindowsAppSDK #567](https://github.com/microsoft/WindowsAppSDK/issues/567) for details. I don't know whether DynamicDependency can provide some helps -- I'll give a try in future.
+
+So I decided to leave UFCase an unpackaged app for now. I surely prefer MSIX packaging, and UFCase is still packagable except for having the first payload path bug. If you have need for a msix package of the newest build, please feel free to contact me.
