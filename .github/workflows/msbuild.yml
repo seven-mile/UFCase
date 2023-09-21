@@ -18,10 +18,10 @@ jobs:
     # runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.3
+      uses: microsoft/setup-msbuild@v1.1
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -30,32 +30,31 @@ jobs:
         nuget restore ./UFCase.Host/packages.config -SolutionDirectory .
         nuget restore ./UFCase.Host.Test/packages.config -SolutionDirectory .
 
-    # Decode the base 64 encoded pfx and save the Signing_Certificate
-    - name: Decode the pfx
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
-        $certificatePath = Join-Path -Path ./UFCase -ChildPath UFCase_TemporaryKey.pfx
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
-    # Create the app package by building and packaging the project
-    - name: Create the app package
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ env.BUILD_PLATFORM }} /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=UFCase_TemporaryKey.pfx /p:PackageCertificatePassword="${{ secrets.PFX_KEY }}" /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+    - name: Build the project
+      working-directory: ${{ env.GITHUB_WORKSPACE }}
+      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ env.BUILD_PLATFORM }}
       env:
-        Appx_Bundle: Never
-        Appx_Package_Build_Mode: SideloadOnly
-        Appx_Package_Dir: AppPackages\
         Configuration: ${{ env.BUILD_CONFIGURATION }}
         Platform: ${{ env.BUILD_PLATFORM }}
 
-    - name: Remove the pfx
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: Remove-Item -path ./UFCase/UFCase_TemporaryKey.pfx
+    # Collect the outputs into one folder for packaging
+    - name: Collect output files
+      shell: bash
+      working-directory: ${{ env.BUILD_PLATFORM }}/${{ env.BUILD_CONFIGURATION }}
+      run: |
+        mkdir -p ./Artifact
+        cp ./UFCase/Microsoft.WindowsAppRuntime.Bootstrap.dll ./Artifact
+        cp ./UFCase/UFCase.exe ./Artifact
+        cp ./UFCase/UFCase.pri ./Artifact
+        cp ./UFCase/UFCase.Isolation.winmd ./Artifact
+        cp -r ./UFCase/Assets ./Artifact
+        cp ./UFCase.Host/UFCase.Host.exe ./Artifact
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload MSIX package
-      uses: actions/upload-artifact@v2
+    # Upload the application package: https://github.com/marketplace/actions/upload-a-build-artifact
+    - name: Upload UFCase package
+      uses: actions/upload-artifact@v3
       with:
-        name: MSIX Package
-        path: UFCase\AppPackages\
+        name: UFCase_portable
+        path: |
+          ${{ env.BUILD_PLATFORM }}/${{ env.BUILD_CONFIGURATION }}/Artifact
+
