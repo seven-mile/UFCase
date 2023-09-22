@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved." xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <assemblyIdentity name="Microsoft-Windows-CommandPrompt" version="10.0.22621.1635" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <dependency discoverable="no" resourceType="resources">
+    <dependentAssembly>
+      <assemblyIdentity name="Microsoft-Windows-CommandPrompt.Resources" version="10.0.22621.1635" processorArchitecture="amd64" language="*" buildType="release" publicKeyToken="31bf3856ad364e35" />
+    </dependentAssembly>
+  </dependency>
+  <file name="cmd.exe" destinationPath="$(runtime.system32)\" sourceName="cmd.exe" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Qj4OgQppqs66DlZw5Yr/iYzw6/+rmcy0brs0ZMPS+ss=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <registryKeys>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor">
+      <overridable name="CompletionChar" scope="Microsoft" type="REG_DWORD" />
+      <overridable name="PathCompletionChar" scope="Microsoft" type="REG_DWORD" />
+      <overridable name="DefaultColor" scope="Microsoft" type="REG_DWORD" />
+    </registryKey>
+  </registryKeys>
+  <asmv3:configuration xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+    <asmv3:configurationSchema>
+      <xsd:schema xmlns="Microsoft-Windows-CommandPrompt" targetNamespace="Microsoft-Windows-CommandPrompt">
+        <xsd:element default="9" name="HKLMCompletionChar" type="xsd:unsignedInt" wcm:handler="regkey('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor')" wcm:legacyName="CompletionChar" wcm:perUserVirtualization="enable" wcm:scope="allUsers" wcm:subScope="machineIndependent" />
+        <xsd:element default="9" name="HKLMPathCompletionChar" type="xsd:unsignedInt" wcm:handler="regkey('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor')" wcm:legacyName="PathCompletionChar" wcm:perUserVirtualization="enable" wcm:scope="allUsers" wcm:subScope="machineIndependent" />
+        <xsd:element default="0" name="HKLMDefaultColor" type="xsd:unsignedInt" wcm:handler="regkey('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor')" wcm:legacyName="DefaultColor" wcm:perUserVirtualization="enable" wcm:scope="allUsers" wcm:subScope="machineIndependent" />
+        <xsd:element default="1" name="HKLMEnableExtensions" type="xsd:unsignedInt" wcm:handler="regkey('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor')" wcm:legacyName="EnableExtensions" wcm:perUserVirtualization="enable" wcm:scope="allUsers" wcm:subScope="machineIndependent" />
+        <xsd:element name="HKLMAutorun" type="xsd:string" wcm:handler="regkey('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor')" wcm:legacyName="Autorun" wcm:perUserVirtualization="enable" wcm:scope="allUsers" wcm:subScope="machineIndependent" />
+      </xsd:schema>
+    </asmv3:configurationSchema>
+  </asmv3:configuration>
+  <migration ignoreConfigurationSection="Yes" scope="Upgrade,USMT" settingsVersion="0">
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [Autorun]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [Autorun]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [Autorun]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [Autorun]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [Autorun]</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove('%CSIDL_PROGRAMS%\Accessories','%CSIDL_PROGRAMS%\System Tools')">
+          <objectSet>
+            <pattern type="File">%CSIDL_PROGRAMS%\Accessories [Command Prompt.lnk]</pattern>
+          </objectSet>
+        </locationModify>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [Autorun]</pattern>
+            <pattern type="File">%CSIDL_PROGRAMS%\System Tools [Command Prompt.lnk]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity buildType="release" language="neutral" name="Microsoft-Windows-CommandPrompt" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" settingsVersionRange="0" versionScope="nonSxS" xmlns="urn:schemas-microsoft-com:asm.v3" />
+        <migXml xmlns="">
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [Autorun]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [Autorun]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="User">
+            <locationModify script="MigXmlHelper.RelativeMove('%CSIDL_PROGRAMS%\Accessories','%CSIDL_PROGRAMS%\System Tools')">
+              <objectSet>
+                <pattern type="File">%CSIDL_PROGRAMS%\Accessories [Command Prompt.lnk]</pattern>
+              </objectSet>
+            </locationModify>
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [Autorun]</pattern>
+                <pattern type="File">%CSIDL_PROGRAMS%\System Tools [Command Prompt.lnk]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity language="*" name="Microsoft-Windows-CommandPrompt-DL" processorArchitecture="*" settingsVersionRange="0" xmlns="urn:schemas-microsoft-com:asm.v3" />
+        <migXml xmlns="">
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKU\.DEFAULT\Software\Microsoft\Command Processor [Autorun]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Command Processor [Autorun]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="User">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [CompletionChar]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [PathCompletionChar]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [DefaultColor]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [EnableExtensions]</pattern>
+                <pattern type="Registry">HKCU\Software\Microsoft\Command Processor [Autorun]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Appearance_and_Display\Personalized_Settings</migrationDisplayID>
+  </migration>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_FILE_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;GRGX;;;BA)(A;;GRGX;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)(A;;GRGX;;;S-1-15-2-2)S:(AU;FASA;0x000D0116;;;WD)" operationHint="replace" description="Default SDDL for Windows Resource Protected file" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+</assembly>

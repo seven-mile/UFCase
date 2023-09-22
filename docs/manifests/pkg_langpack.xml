@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-SearchEngine-Client-Package" version="10.0.22621.1485" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="Microsoft-Windows-SearchEngine-Client-zh-CN" releaseType="Language Pack">
+    <parent disposition="detect">
+      <assemblyIdentity name="Microsoft-Windows-SearchEngine-Client-Package" version="10.0.22621.1485" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+    </parent>
+    <update name="SearchEngine-Client-Package" displayName="Windows Search" description="为文件、电子邮件和其他内容提供内容索引、属性缓存和搜索结果。">
+      <package contained="false" integrate="hidden">
+        <assemblyIdentity name="Microsoft-Windows-SearchEngine-Client-Package-onecoreuap-Package" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+      </package>
+    </update>
+    <update name="Microsoft-Windows-SearchEngine-Client-Package-base">
+      <package contained="false" integrate="hidden">
+        <assemblyIdentity name="Microsoft-Windows-SearchEngine-Client-Package-base-Package" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+      </package>
+    </update>
+    <update name="Microsoft-Windows-SearchEngine-Client-Package-shell">
+      <package contained="false" integrate="hidden">
+        <assemblyIdentity name="Microsoft-Windows-SearchEngine-Client-Package-shell-Package" version="10.0.22621.1485" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+      </package>
+    </update>
+  </package>
+</assembly>

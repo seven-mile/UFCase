@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-ServicingStack" version="10.0.22621.2351" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <dependency discoverable="no" resourceType="Resources">
+    <dependentAssembly dependencyType="prerequisite">
+      <assemblyIdentity name="Microsoft-Windows-ServicingStack.Resources" version="10.0.22621.2351" processorArchitecture="amd64" language="*" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+    </dependentAssembly>
+  </dependency>
+  <file name="wdscore.dll" sourceName="wdscore.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PW+rWL2Vmbb+MCnDhQYTqkpWOX4x85JLbYl7rbosiaw=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="drvstore.dll" sourceName="drvstore.dll" importPath="$(build.nttree)\servicingstack\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>drb3qE0ax4cjwGuHoRj57pjduv8HPGDdQDDvv1bsQyM=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="dpx.dll" sourceName="dpx.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qErgDzkyN7YVZvC1fFYZm0Agt9tXdq1hdx4KKVh806A=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="msdelta.dll" sourceName="msdelta.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TallOA61029etKhQ5r9HkuB0SL3G0pnm9FH7m9YPIEE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="mspatcha.dll" sourceName="mspatcha.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MnlZi6Fa6SqzoYsF3ew7N+KkJV85q7/AG350UcBpkUk=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="WcmTypes.xsd" sourceName="WcmTypes.xsd" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zXAbK91xiU0mE97L7gFkRvgmHWy7UUk+7/NyUwsA4fE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="CbsMsg.dll" sourceName="CbsMsg.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zsSWLLwpwPXbaT0gtKYZVZblnRLCZBEF7ocj64ic798=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="CbsCore.dll" sourceName="CbsCore.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rFGp+nX8utDPQa576g4EyQV6aRTytVXz+iUWgeQGgfY=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="turbostack.dll" sourceName="turbostack.dll" importPath="$(build.nttree)\downlevel\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HUPIhGyZglzNio67/bOByN5nmcX8OMrXEt/vvdxRXKE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="TiWorker.exe" sourceName="TiWorker.exe" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/29zACsFb2L2XM6iaMsPC4Cyd4EV5ryI/FA6iCLlGc4=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="TiFileFetcher.exe" sourceName="TiFileFetcher.exe" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ja0oplcznz9yi93H4CQk2e0tn/xBMUpCOv165a2VuxU=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="drupdate.dll" sourceName="drupdate.dll" importPath="$(build.nttree)\servicingstack\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>OLEw/cf6lhMxnD4I/hutthAmv01NqHDTNhZyIXxF06Q=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="wcp.dll" sourceName="wcp.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>7M+eqpzLHSbhQjZtCBgryLDixbtNt5oaAoyX8w9ag4E=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="smiengine.dll" sourceName="smiengine.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q5cumYtioFlTlhSbTZyDVjq9lHW44+t9m/JEizfRbJE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="smipi.dll" sourceName="smipi.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>u1QIoAqSS+iFpP5MJxZPVTxCw+utgyIwbywKkhaqI78=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="poqexec.exe" destinationPath="$(runtime.system32)\" sourceName="poqexec.exe" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>eZstDdf0UeqCk0MV+ks4ph+9c9QvBvZ3QSD6l7NQLgE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="amd64_installed" destinationPath="$(runtime.windows)\Servicing\Version\10.0.22621.2351\" sourceName="amd64_installed" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GEU8n23cOMhqgD0IpgklakSqxX72wee3WuqTtQukZag=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="GlobalInstallOrder.xml" sourceName="GlobalInstallOrder.xml" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>B4j/W/+JS3y6Ft8gV6+XvC/GscHVE2/M9iMc+nN1XsE=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="ReserveManager.dll" sourceName="ReserveManager.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UhvHP4BOMoiJ0cW5zCSI85Gd7DnWMAQ1k3ETeF7R+ug=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="wrpint.dll" sourceName="wrpint.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dOo4xxyQddlU03+6JUYduxsMA+zkKkSbRu551bj+sKA=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="updateagent.dll" sourceName="updateagent.dll" importPath="$(build.nttree)\downlevel\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GtGvW2Kdmg8HTYpJUzvmEY+aMaXDZ57zIqI5SPJk/yg=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="turbocontainer.dll" sourceName="turbocontainer.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9yQ2Tm8v72B/eHDkRfzZESAYUOFiifMzmVr1QglY/Pk=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <directories>
+    <directory destinationPath="$(runtime.system32)\AdvancedInstallers" owner="true">
+      <securityDescriptor name="WRP_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.windows)\Logs\CBS" owner="true">
+      <securityDescriptor name="WRP_ADMIN_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.windows)\Servicing" owner="true">
+      <securityDescriptor name="WRP_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.windows)\Servicing\Packages" owner="true">
+      <securityDescriptor name="WRP_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.windows)\Servicing\SQM" owner="true">
+      <securityDescriptor name="WRP_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.windows)\Servicing\Sessions" owner="true">
+      <securityDescriptor name="WRP_DIR_DEFAULT_SDDL" />
+    </directory>
+  </directories>
+  <registryKeys>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing">
+      <registryValue name="EnableLog" valueType="REG_DWORD" value="0x00000001" />
+      <registryValue name="RepairCategory" valueType="REG_SZ" value="631f8288-2457-41f4-bb81-63df924ba94c" />
+      <registryValue name="FeatureCategory" valueType="REG_SZ" value="e104dd76-2895-41c4-9eb5-c483a61e9427" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Version">
+      <registryValue name="10.0.22621.2351" valueType="REG_EXPAND_SZ" value="%SystemRoot%\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.22621.2351_none_e954da1242d4c911" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Features on Demand">
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Features on Demand\Removed FOD Markers">
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\AppID\TiWorker.exe">
+      <registryValue name="AppID" valueType="REG_SZ" value="{8D15A4F3-1BE5-4120-8A4D-2EF92A5DD58D}" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\AppID\{8D15A4F3-1BE5-4120-8A4D-2EF92A5DD58D}">
+      <registryValue name="" valueType="REG_SZ" value="TiWorker" />
+      <registryValue name="AccessPermission" valueType="REG_BINARY" value="01000480740000008400000000000000140000000200600004000000000014000700000001010000000000050a00000000001400030000000101000000000005120000000000180007000000010200000000000520000000200200000000180003000000010200000000000520000000210200000102000000000005200000002002000001020000000000052000000020020000" />
+      <registryValue name="LaunchPermission" valueType="REG_BINARY" value="01000480700000008c000000000000001400000002005c0004000000000014000b000000010100000000000512000000000018000b00000001020000000000052000000020020000000014000b000000010100000000000504000000000014000b000000010100000000000506000000010500000000000515000000a05f841f5e2e6b49ce120303f4010000010500000000000515000000a05f841f5e2e6b49ce120303f4010000" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\CLSID\{0823B6F8-F499-4d5e-B885-EA9CB4F43B24}">
+      <registryValue name="" valueType="REG_SZ" value="Component Based Servicing Worker" />
+      <registryValue name="AppID" valueType="REG_SZ" value="{8D15A4F3-1BE5-4120-8A4D-2EF92A5DD58D}" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\CLSID\{0823B6F8-F499-4d5e-B885-EA9CB4F43B24}\LocalServer32">
+      <registryValue name="" valueType="REG_EXPAND_SZ" value="%SystemRoot%\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.22621.2351_none_e954da1242d4c911\TiWorker.exe" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\SideBySide">
+      <overridable name="DisableKernelTransactions" scope="Microsoft" type="REG_DWORD" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager">
+      <registryValue name="BaseHardReserveSize" valueType="REG_QWORD" value="0000004001000000" />
+      <registryValue name="BaseSoftReserveSize" valueType="REG_QWORD" value="0000006000000000" />
+      <registryValue name="MinDiskSize" valueType="REG_QWORD" value="0000000005000000" />
+    </registryKey>
+  </registryKeys>
+  <migration offlineApply="No" scope="Upgrade,Data" settingsVersion="5">
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [ShippedWithReserves]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [PassedPolicy]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [MiscPolicyInfo]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [SoftParentingValidated]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [DisableDeletes]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [UserFreeSpaceBuffer]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <conditions>
+          <condition>MigXmlHelper.IsMigrationScope("Upgrade")</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager [UserFreeSpaceMarker]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager\Overrides [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager\CrashControl [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity language="neutral" name="Microsoft-Windows-ServicingStack" processorArchitecture="*" settingsVersionRange="1-5" xmlns="urn:schemas-microsoft-com:asm.v3" />
+      </supportedComponent>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity language="neutral" name="Microsoft-Windows-TrustedInstaller" processorArchitecture="*" settingsVersionRange="1" xmlns="urn:schemas-microsoft-com:asm.v3" />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_REGKEY_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;CI;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CI;GR;;;SY)(A;CI;GR;;;BA)(A;CI;GR;;;BU)(A;CI;GR;;;S-1-15-2-1)(A;CI;GR;;;S-1-15-3-1024-1065365936-1281604716-3511738428-1654721687-432734479-3232135806-4053264122-3456934681)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_DIR_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;CIOI;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIOI;GRGX;;;SY)(A;CIOI;GRGX;;;BA)(A;CIOI;GRGX;;;BU)(A;CIOI;GRGX;;;S-1-15-2-1)(A;CIOI;GRGX;;;S-1-15-2-2)S:(AU;FASA;SDWDWOFW;;;WD)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_REGKEY_WRITE_ADMIN_SYSTEM_READ_USER" sddl="D:P(A;OICI;KA;;;BA)(A;OICI;KA;;;SY)(A;OICI;KR;;;BU)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_ADMIN_DEFAULT_SDDL" sddl="O:BAG:SYD:(A;;GA;;;BA)(A;;GA;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_FILE_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;GRGX;;;BA)(A;;GRGX;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)(A;;GRGX;;;S-1-15-2-2)S:(AU;FASA;0x000D0116;;;WD)" operationHint="replace" description="Default SDDL for Windows Resource Protected file" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+  <memberships>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories" version="1.0.0.0" publicKeyToken="365143bb27e7ac8b" typeName="ServicingStackComponent" />
+    </categoryMembership>
+  </memberships>
+  <imaging>
+    <sysprepInformation>
+      <sysprepProvider stage="specialize">
+        <sysprepOrder order="0x1c00" />
+        <registryActions>
+          <deleteValue name="DecompressOverride" path="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\SideBySide" />
+        </registryActions>
+      </sysprepProvider>
+    </sysprepInformation>
+  </imaging>
+</assembly>

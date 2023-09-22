@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.description" displayName="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.displayName" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-Management-Service-WinRT" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <dependency discoverable="no" resourceType="Resources">
+    <dependentAssembly dependencyType="prerequisite">
+      <assemblyIdentity name="Microsoft-Windows-Management-Service-WinRT.Resources" version="10.0.22621.1" processorArchitecture="amd64" language="*" buildType="release" publicKeyToken="31bf3856ad364e35" />
+    </dependentAssembly>
+  </dependency>
+  <memberships>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories.Services" version="10.0.22621.1" publicKeyToken="31bf3856ad364e35" typeName="Service" />
+      <categoryInstance subcategory="netsvcs">
+        <serviceData name="WManSvc" displayName="@%systemroot%\system32\Windows.Management.Service.dll,-100" errorControl="normal" start="demand" type="win32ShareProcess" description="@%systemroot%\system32\Windows.Management.Service.dll,-101" dependOnService="rpcss" imagePath="%systemroot%\system32\svchost.exe -k netsvcs -p" objectName="LocalSystem" requiredPrivileges="SeImpersonatePrivilege,SeTcbPrivilege,SeIncreaseQuotaPrivilege,SeAssignPrimaryTokenPrivilege,SeBackupPrivilege,SeRestorePrivilege,SeSystemEnvironmentPrivilege,SeTakeOwnershipPrivilege,SeSecurityPrivilege,SeShutdownPrivilege,SeSystemtimePrivilege" sidType="unrestricted">
+          <failureActions resetPeriod="86400">
+            <actions>
+              <action delay="10000" type="restartService" />
+              <action delay="10000" type="restartService" />
+              <action delay="10000" type="restartService" />
+              <action delay="0" type="none" />
+            </actions>
+          </failureActions>
+        </serviceData>
+      </categoryInstance>
+    </categoryMembership>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories" version="1.0.0.0" publicKeyToken="365143bb27e7ac8b" typeName="SvcHost" />
+      <categoryInstance subcategory="netsvcs">
+        <serviceGroup position="last" serviceName="WManSvc" />
+      </categoryInstance>
+    </categoryMembership>
+  </memberships>
+  <registryKeys>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\WManSvc\Parameters">
+      <registryValue name="ServiceDll" valueType="REG_EXPAND_SZ" value="%systemroot%\system32\Windows.Management.Service.dll" />
+      <registryValue name="ServiceDllUnloadOnStop" valueType="REG_DWORD" value="0x00000001" />
+      <registryValue name="ServiceMain" valueType="REG_SZ" value="ServiceMain" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\DiagnosticLogCSP\Autopilot">
+      <registryValue name="4DE9BC9C-B27A-43C9-8994-0915F1A5E24F" valueType="REG_SZ" value="AAD authentication stack" />
+      <registryValue name="23B8D46B-67DD-40A3-B636-D43E50552C6D" valueType="REG_SZ" value="AAD device registration client" />
+      <registryValue name="17BC862C-6DB8-49A7-945D-9F101535416F" valueType="REG_SZ" value="EventProvider_Microsoft.Windows.Management.Service" />
+      <registryValue name="66a216c6-5af9-4487-8010-8f93a1b8b62c" valueType="REG_SZ" value="EventProvider_Microsoft.Windows.Management.InprocObjects" />
+      <registryValue name="D0034F5E-3686-5A74-DC48-5A22DD4F3D5B" valueType="REG_SZ" value="EventProvider_Microsoft.Windows.Shell.CloudExperienceHost" />
+      <registryValue name="AA02D1A4-72D8-5F50-D425-7402EA09253A" valueType="REG_SZ" value="EventProvider_Microsoft.Windows.Shell.CloudDomainJoin.Client" />
+      <registryValue name="99EB7B56-F3C6-558C-B9F6-09A33ABB4C83" valueType="REG_SZ" value="EventProvider_Microsoft.Windows.Shell.CloudExperienceHost.Common" />
+      <registryValue name="EC3CA551-21E9-47D0-9742-1195429831BB" valueType="REG_SZ" value="cloudap" />
+      <registryValue name="82c7d3df-434d-44fc-a7cc-453a8075144e" valueType="REG_SZ" value="idstore" />
+      <registryValue name="5BBB6C18-AA45-49b1-A15F-085F7ED0AA90" valueType="REG_SZ" value="ntlm" />
+      <registryValue name="2A6FAF47-5449-4805-89A3-A504F3E221A6" valueType="REG_SZ" value="pku2u" />
+      <registryValue name="bab3ad92-fb96-5902-450b-b8421bdec7bd" valueType="REG_SZ" value="Microsoft-Windows-ModernDeployment-Diagnostics-Provider" />
+      <registryValue name="ED8B9BD3-F66E-4FF2-B86B-75C7925F72A9" valueType="REG_SZ" value="Microsoft-Windows-Provisioning-Diagnostics-Provider" />
+      <registryValue name="05F02597-FE85-4E67-8542-69567AB8FD4F" valueType="REG_SZ" value="Microsoft-Windows-LiveId" />
+      <registryValue name="16EAA7BB-5B6E-4615-BF44-B8195B5BF873" valueType="REG_SZ" value="Microsoft.Windows.EnterpriseDesktopAppManagement" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\TPM\TracingSessionEntry">
+      <registryValue name="TPM" valueType="REG_DWORD" value="0x000000FF" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\AutopilotPolicy">
+      <registryValue name="AutopilotUpdateTimeout" valueType="REG_DWORD" value="0x001B7740" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\AutopilotTpmEnhancedLogging">
+      <registryValue name="3A8D6942-B034-48e2-B314-F69C2B4655A3" valueType="REG_SZ" value="TPM" />
+      <registryValue name="1D6540CE-A81B-4E74-AD35-EEF8463F97F5" valueType="REG_SZ" value="NGC_PoP" />
+      <registryValue name="9B223F67-67A1-5B53-9126-4593FE81DF25" valueType="REG_SZ" value="NGC_PoP_Key_And_Task" />
+      <registryValue name="6D7051A0-9C83-5E52-CF8F-0ECAF5D5F6FD" valueType="REG_SZ" value="CryptCng" />
+      <registryValue name="3b9dbf69-e9f0-5389-d054-a94bc30e33f7" valueType="REG_SZ" value="Microsoft.Windows.Security.NGC.Local" />
+      <registryValue name="89F392FF-EE7C-56A3-3F61-2D5B31A36935" valueType="REG_SZ" value="Microsoft.Windows.Security.NGC.CS" />
+      <registryValue name="a935c211-645a-5f5a-4527-778da45bbba5" valueType="REG_SZ" value="Microsoft.Tpm.HealthAttestationCertificateTask" />
+      <registryValue name="470baa67-2d7f-4c9c-8bf4-b1b3226f7b17" valueType="REG_SZ" value="TpmProvisioningTask" />
+      <registryValue name="05F02597-FE85-4E67-8542-69567AB8FD4F" valueType="REG_SZ" value="Microsoft-Windows-LiveId" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\AutopilotPolicyManagerOrder">
+      <registryValue name="AnyNonEmptyProfileEnough" valueType="REG_DWORD" value="0x00000001" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\AutopilotSettings">
+      <registryValue name="DdsZtdUri" valueType="REG_SZ" value="https://ztd.dds.microsoft.com/ztd/device/AutopilotDeviceBootstrapPolicies" />
+      <registryValue name="DdsZtdMsaTicketUri" valueType="REG_SZ" value="https://ztd.dds.microsoft.com" />
+      <registryValue name="ConciergeUri" valueType="REG_SZ" value="https://cs.dds.microsoft.com/command/device/PersonalDeviceBootstrapPolicies" />
+      <registryValue name="ConciergeMsaTicketUri" valueType="REG_SZ" value="https://dds.microsoft.com" />
+      <registryValue name="TpmAikTaskMaxTimeoutMilliseconds" valueType="REG_DWORD" value="0x0000EA60" />
+      <registryValue name="TpmNgcWaitDelayMilliseconds" valueType="REG_DWORD" value="0x000003E8" />
+      <registryValue name="ProfileUsingProcMon" valueType="REG_DWORD" value="0x00000000" />
+      <registryValue name="UseRefactoredEsp" valueType="REG_SZ" value="True" />
+      <registryValue name="AllowedTimeDriftDeltaMinutes" valueType="REG_DWORD" value="0x00000005" />
+      <registryValue name="AutopilotDiagnosticsCurrentVersion" valueType="REG_SZ" value="1.0.0" />
+      <registryValue name="AutopilotDiagnosticsOutputMocked" valueType="REG_DWORD" value="0x00000000" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\Autopilot\EventViewerEntry">
+      <registryValue name="Microsoft-Windows-AssignedAccess/Admin" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-AssignedAccess/Operational" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-AssignedAccessBroker/Admin" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-AssignedAccessBroker/Operational" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-AAD/Operational" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-ModernDeployment-Diagnostics-Provider/AutoPilot" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-ModernDeployment-Diagnostics-Provider/ManagementService" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-Shell-Core/Operational" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="Microsoft-Windows-User Device Registration/Admin" valueType="REG_DWORD" value="0x000000FF" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\Autopilot\FileEntry">
+      <registryValue name="%ProgramData%\Microsoft\DiagnosticLogCSP\Collectors\DiagnosticLogCSP_Collector_AutoPilot*.*" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\Provisioning\AutoPilot\AutoPilotConfigurationFile.json" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\Provisioning\AutoPilot\profileOuput.pml" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\panther\unattendgc\setupact.log " valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\ServiceState\autopilot\*" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\ServiceState\wmansvc\*" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%windir%\system32\logfiles\wmi\cloudexperiencehostoobe*" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="%ProgramData%\Microsoft\IntuneManagementExtension\Logs\*.log" valueType="REG_DWORD" value="0x000000FF" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\Autopilot\HkcuRegEntry">
+      <registryValue name="SOFTWARE\Microsoft\Windows\AssignedAccessConfiguration" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows\CurrentVersion\UserOOBE" valueType="REG_DWORD" value="0x000000FF" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\Autopilot\HklmRegEntry">
+      <registryValue name="SOFTWARE\Microsoft\Provisioning" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows\AssignedAccessConfiguration" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows\AssignedAccessCsp" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows\Autopilot" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OOBE" valueType="REG_DWORD" value="0x000000FF" />
+      <registryValue name="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update\TargetingInfo" valueType="REG_DWORD" value="0x000000FF" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmDiagnostics\Area\Autopilot\SubAreaEntry">
+      <registryValue name="DeviceEnrollment" valueType="REG_DWORD" value="0x00000000" />
+      <registryValue name="DeviceProvisioning" valueType="REG_DWORD" value="0x00000000" />
+    </registryKey>
+  </registryKeys>
+  <taskScheduler>
+    <Task xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+      <RegistrationInfo>
+        <URI>\Microsoft\Windows\Management\Autopilot\DetectHardwareChange</URI>
+        <Author>$(@%SystemRoot%\system32\Autopilot.dll,-600)</Author>
+        <Source>$(@%SystemRoot%\system32\Autopilot.dll,-601)</Source>
+        <Description>$(@%SystemRoot%\system32\Autopilot.dll,-602)</Description>
+      </RegistrationInfo>
+      <Principals>
+        <Principal id="LocalSystem">
+          <UserId>S-1-5-18</UserId>
+          <RunLevel>HighestAvailable</RunLevel>
+        </Principal>
+      </Principals>
+      <Triggers>
+        <WnfStateChangeTrigger>
+          <StateName>7534bca3201d8741</StateName>
+        </WnfStateChangeTrigger>
+        <WnfStateChangeTrigger>
+          <StateName>7540bca3201d8741</StateName>
+        </WnfStateChangeTrigger>
+      </Triggers>
+      <Settings>
+        <Enabled>false</Enabled>
+        <UseUnifiedSchedulingEngine>true</UseUnifiedSchedulingEngine>
+        <AllowStartOnDemand>true</AllowStartOnDemand>
+        <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+        <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+        <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+        <Hidden>false</Hidden>
+        <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+      </Settings>
+      <Actions Context="LocalSystem">
+        <ComHandler>
+          <ClassId>{62B2DD2C-F129-42EE-BF59-55D3FD21C215}</ClassId>
+          <Data>DetectHardwareChange</Data>
+        </ComHandler>
+      </Actions>
+    </Task>
+    <Task xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+      <RegistrationInfo>
+        <URI>\Microsoft\Windows\Management\Autopilot\RemediateHardwareChange</URI>
+        <Author>$(@%SystemRoot%\system32\Autopilot.dll,-600)</Author>
+        <Source>$(@%SystemRoot%\system32\Autopilot.dll,-601)</Source>
+        <Description>$(@%SystemRoot%\system32\Autopilot.dll,-603)</Description>
+      </RegistrationInfo>
+      <Principals>
+        <Principal id="LocalSystem">
+          <UserId>S-1-5-18</UserId>
+          <RunLevel>HighestAvailable</RunLevel>
+        </Principal>
+      </Principals>
+      <Triggers>
+        <BootTrigger>
+          <Enabled>true</Enabled>
+          <Delay>PT1M</Delay>
+        </BootTrigger>
+      </Triggers>
+      <Settings>
+        <Enabled>false</Enabled>
+        <UseUnifiedSchedulingEngine>true</UseUnifiedSchedulingEngine>
+        <AllowStartOnDemand>true</AllowStartOnDemand>
+        <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+        <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+        <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+        <Hidden>false</Hidden>
+        <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+      </Settings>
+      <Actions Context="LocalSystem">
+        <ComHandler>
+          <ClassId>{62B2DD2C-F129-42EE-BF59-55D3FD21C215}</ClassId>
+          <Data>RemediateHardwareChange</Data>
+        </ComHandler>
+      </Actions>
+    </Task>
+  </taskScheduler>
+  <imaging>
+    <sysprepInformation>
+      <sysprepProvider stage="generalize">
+        <sysprepOrder order="0x3d00" />
+        <fileActions>
+          <deleteDirectory path="$(runtime.windows)\ServiceState\wmansvc" />
+        </fileActions>
+        <registryActions>
+          <deleteKey path="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\AutopilotPolicy" />
+          <deleteKey path="HKEY_LOCAL_MACHINE\Software\Microsoft\Provisioning\Diagnostics\Autopilot" />
+          <deleteValue name="41871D20A3BC1475" path="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Notifications\Data" />
+        </registryActions>
+      </sysprepProvider>
+    </sysprepInformation>
+  </imaging>
+</assembly>

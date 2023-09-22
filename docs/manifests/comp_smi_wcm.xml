@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved." xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <assemblyIdentity name="Microsoft-Windows-Sidebar" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <file name="settings.ini" destinationPath="$(runtime.userProfile)\AppData\Local\Microsoft\Windows Sidebar\" sourceName="sbsettings.ini" importPath="$(build.nttree)\" sourcePath=".\" writeableType="systemData">
+    <securityDescriptor name="#MutableFileDefaultSecurityDescriptor" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>lJhg9sP9HAPsu4c9B+n13nfj8tEbxtfd/rxfo1kB2eg=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <directories>
+    <directory destinationPath="$(runtime.programFiles)\Windows Sidebar\" owner="true" attributes="hidden system">
+      <securityDescriptor name="WRP_PARENT_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.programFiles)\Windows Sidebar\Gadgets" owner="true">
+      <securityDescriptor name="WRP_PARENT_DIR_DEFAULT_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.programFiles)\Windows Sidebar\Shared Gadgets\">
+      <securityDescriptor name="SHAREDGADGET_FOLDER_SDDL" />
+    </directory>
+    <directory destinationPath="$(runtime.userProfile)\AppData\Local\Microsoft\Windows Sidebar" attributes="hidden system" />
+    <directory destinationPath="$(runtime.userProfile)\AppData\Local\Microsoft\Windows Sidebar\Gadgets" />
+  </directories>
+  <registryKeys>
+    <registryKey keyName="HKEY_CLASSES_ROOT\CLSID\{924ccc1b-6562-4c85-8657-d177925222b6}">
+      <registryValue name="" valueType="REG_SZ" value="Desktop Gadget Helper API" />
+      <securityDescriptor name="WRP_KEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\CLSID\{924ccc1b-6562-4c85-8657-d177925222b6}\InprocServer32">
+      <registryValue name="" valueType="REG_EXPAND_SZ" value="%SystemRoot%\system32\shell32.dll" />
+      <registryValue name="ThreadingModel" valueType="REG_SZ" value="both" />
+    </registryKey>
+  </registryKeys>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_PARENT_DIR_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;CI;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;0x1301bf;;;SY)(A;IOCIOI;GA;;;SY)(A;;0x1301bf;;;BA)(A;IOCIOI;GA;;;BA)(A;CIOI;GRGX;;;BU)(A;OICIIO;GA;;;CO)(A;CIOI;GRGX;;;S-1-15-2-1)(A;CIOI;GRGX;;;S-1-15-2-2)" operationHint="replace" />
+          <securityDescriptorDefinition name="SHAREDGADGET_FOLDER_SDDL" sddl="D:P(A;OICI;GA;;;SY)(A;OICI;GA;;;BA)(A;OICIIO;GA;;;CO)(A;OICI;GXGR;;;BU)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_KEY_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;CI;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CI;GR;;;SY)(A;CI;GR;;;BA)(A;CI;GR;;;BU)(A;CI;GR;;;S-1-15-2-1)(A;CI;GR;;;S-1-15-3-1024-1065365936-1281604716-3511738428-1654721687-432734479-3232135806-4053264122-3456934681)" operationHint="replace" />
+          <securityDescriptorDefinition name="#MutableFileDefaultSecurityDescriptor" sddl="O:SYG:SYD:AIS:" operationHint="replace" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+  <asmv3:configuration xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+    <asmv3:configurationSchema>
+      <xsd:schema targetNamespace="Microsoft-Windows-Bits-Client">
+        <xsd:element default="true" name="SidebarVisible" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.The Sidebar is not available in Windows 8." wcm:displayName="SidebarVisible" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element default="true" name="SidebarOnByDefault" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated and should not be used. By default, the Sidebar is not available in Windows 8." wcm:displayName="SidebarOnByDefault" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element default="Default" name="LayoutPosition" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.Gadgets are not available in Windows 8." wcm:displayName="LayoutPosition" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget1" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="Security Note               This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.             Gadgets are not available in Windows 8." wcm:displayName="Gadget1" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget2" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget2" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget3" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget3" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget4" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget4" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget5" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget5" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+      </xsd:schema>
+    </asmv3:configurationSchema>
+  </asmv3:configuration>
+</assembly>

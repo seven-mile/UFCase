@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved." xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <assemblyIdentity name="Microsoft-Windows-Shell-Setup" version="10.0.22621.900" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <file name="shsetup.dll" destinationPath="$(runtime.system32)\" sourceName="shsetup.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>w9X2B+lfg4e0f53MnBhTtkfPcRYuWkbTu7l05bmM1x8=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <imaging>
+    <sysprepInformation>
+      <sysprepProvider stage="cleanup">
+        <sysprepOrder order="0x0900" />
+        <sysprepModule methodName="Sysprep_Cleanup_Shell" moduleName="$(runtime.system32)\shsetup.dll" />
+      </sysprepProvider>
+      <sysprepProvider stage="generalize">
+        <sysprepOrder order="0x1000" />
+        <sysprepModule methodName="Sysprep_Generalize_Shell" moduleName="$(runtime.system32)\shsetup.dll" />
+      </sysprepProvider>
+    </sysprepInformation>
+  </imaging>
+  <configuration xmlns:app="Microsoft-Windows-Shell-Unattend-Settings-Schema" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+    <configurationSchema>
+      <xsd:schema xmlns="Microsoft-Windows-Shell-Unattend-Settings-Schema" targetNamespace="Microsoft-Windows-Shell-Unattend-Settings-Schema">
+        <xsd:simpleType name="OrderType">
+          <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="1" />
+            <xsd:maxInclusive value="500" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="RegionConfigurationOrderType">
+          <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="1" />
+            <xsd:maxInclusive value="199" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="PathType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="259" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="URLType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2083" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="CommandLineType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="1024" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="DescriptionType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="256" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="NameType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="256" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="AppIdType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="256" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="PasswordType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Value" type="xsd:string" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="PlainText" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="ComputerNameType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="UsernameType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="ProductKeyType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="29" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="AutoLogonType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Enabled" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Username" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Domain" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Password" type="PasswordType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="LogonCount" type="xsd:positiveInteger" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="ClientApplicationsType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Internet" type="PathType" wcm:legacyName="StartMenuInternet" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Mail" type="PathType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Media" type="PathType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="IM" type="PathType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="JavaVM" type="PathType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="WindowsFeaturesType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="ShowInternetExplorer" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ShowWindowsMail" type="xsd:boolean" wcm:deprecated="This setting has been deprecated." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ShowWindowsMediaPlayer" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ShowMediaCenter" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="DPIType">
+          <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="96" />
+            <xsd:maxInclusive value="480" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="DisplayResolutionType">
+          <xsd:sequence>
+            <xsd:element name="HorizontalResolution" type="xsd:positiveInteger" />
+            <xsd:element name="VerticalResolution" type="xsd:positiveInteger" />
+            <xsd:element name="ColorDepth" type="xsd:positiveInteger" />
+            <xsd:element name="RefreshRate" type="xsd:positiveInteger" />
+            <xsd:element name="DPI" type="DPIType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="CommandType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Order" type="OrderType" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="CommandLine" type="CommandLineType" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Description" type="DescriptionType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="RequiresUserInput" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="SynchronousCommandListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="SynchronousCommand" type="CommandType" wcm:key="Order" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="AsynchronousCommandListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="AsynchronousCommand" type="CommandType" wcm:key="Order" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="FolderLocationsType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="ProfilesDirectory" type="PathType" wcm:legacyName="ProfilesDirectory" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ProgramData" type="PathType" wcm:legacyName="ProgramData" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OEMInformationType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Manufacturer" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Model" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Logo" type="PathType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SupportPhone" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SupportProvider" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SupportURL" type="URLType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SupportAppURL" type="URLType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SupportHours" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HelpCustomized" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="TradeInURL" type="URLType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="RecycleURL" type="URLType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartPanelLinksType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link0" type="PathType" wcm:legacyName="OEM0" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link1" type="PathType" wcm:legacyName="OEM1" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link2" type="PathType" wcm:legacyName="OEM2" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link3" type="PathType" wcm:legacyName="OEM3" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link4" type="PathType" wcm:legacyName="OEM4" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartViewImmersiveTileType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="AppId" type="AppIdType" wcm:legacyName="AppId" wcm:legacyType="REG_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="FirstRunTask" type="NameType" wcm:legacyName="FirstRunTask" wcm:legacyType="REG_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartViewDesktopOrSquareTileType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="AppIdOrPath" type="AppIdType" wcm:legacyName="AppIdOrPath" wcm:legacyType="REG_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="FirstRunTask" type="NameType" wcm:legacyName="FirstRunTask" wcm:legacyType="REG_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartViewWideTilesType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile1" type="StartViewImmersiveTileType" wcm:legacyName="WideTile1" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile2" type="StartViewImmersiveTileType" wcm:legacyName="WideTile2" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile3" type="StartViewImmersiveTileType" wcm:legacyName="WideTile3" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile4" type="StartViewImmersiveTileType" wcm:legacyName="WideTile4" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile5" type="StartViewImmersiveTileType" wcm:legacyName="WideTile5" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTile6" type="StartViewImmersiveTileType" wcm:legacyName="WideTile6" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartViewSquareTilesType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile1" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile1" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile2" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile2" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile3" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile3" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile4" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile4" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile5" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile5" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile6" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile6" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile7" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile7" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile8" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile8" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile9" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile9" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile10" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile10" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile11" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile11" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTile12" type="StartViewImmersiveTileType" wcm:legacyName="SquareTile12" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile1" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile1" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile2" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile2" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile3" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile3" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile4" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile4" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile5" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile5" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile6" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile6" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile7" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile7" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile8" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile8" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile9" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile9" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile10" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile10" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile11" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile11" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareOrDesktopTile12" type="StartViewDesktopOrSquareTileType" wcm:legacyName="SquareOrDesktopTile12" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="BadgeType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="AppId" type="AppIdType" wcm:legacyName="AppId" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="LockScreenType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Badge" type="BadgeType" wcm:legacyName="Badge" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="RegionType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Key" type="NameType" wcm:legacyName="Key" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="CountryOrRegionID" type="NameType" wcm:legacyName="CountryOrRegionID" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="RegionListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Region" type="RegionType" wcm:key="Key" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="RegionalStartViewConfigurationType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Order" type="RegionConfigurationOrderType" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="Regions" type="RegionListType" wcm:legacyName="Regions" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="LockScreen" type="LockScreenType" wcm:legacyName="LockScreen" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTiles" type="StartViewWideTilesType" wcm:legacyName="WideTiles" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTiles" type="StartViewSquareTilesType" wcm:legacyName="SquareTiles" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="RegionalStartViewConfigurationsListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="RegionalOverride" type="RegionalStartViewConfigurationType" wcm:key="Order" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="StartViewTilesType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="LockScreen" type="LockScreenType" wcm:legacyName="LockScreen" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WideTiles" type="StartViewWideTilesType" wcm:legacyName="WideTiles" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SquareTiles" type="StartViewSquareTilesType" wcm:legacyName="SquareTiles" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="RegionalOverrides" type="RegionalStartViewConfigurationsListType" wcm:legacyName="RegionalConfigurations" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="PromoteOEMTiles" type="xsd:boolean" wcm:legacyName="PromoteOEMTiles" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="TaskbarLinksType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link0" type="PathType" wcm:legacyName="SBOEM0" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link1" type="PathType" wcm:legacyName="SBOEM1" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link2" type="PathType" wcm:legacyName="SBOEM2" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link3" type="PathType" wcm:legacyName="SBOEM3" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link4" type="PathType" wcm:legacyName="SBOEM4" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link5" type="PathType" wcm:legacyName="SBOEM5" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OEMWelcomeCenterType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="link" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OEMWelcomeCenterLinksType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link0" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM0" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link1" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM1" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link2" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM2" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link3" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM3" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link4" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM4" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link5" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM5" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link6" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM6" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link7" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM7" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link8" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM8" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Link9" type="PathType" wcm:deprecated="This setting has been deprecated and should not be used." wcm:legacyName="WCOEM9" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="ThemesType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="DefaultThemesOff" type="xsd:boolean" wcm:legacyName="NoThemeInstall" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="CustomDefaultThemeFile" type="PathType" wcm:deprecated="This setting is deprecated and should not be used." wcm:legacyName="CustomInstallTheme" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ThemeName" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="DesktopBackground" type="PathType" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="BrandIcon" type="PathType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WindowColor" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ScreenSaver" type="NameType" wcm:deprecated="This setting is deprecated and should not be used." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="UWPAppsUseLightTheme" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SystemUsesLightTheme" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WindowsSpotlight" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="LocalAccountType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Name" type="UsernameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="DisplayName" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Description" type="DescriptionType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Password" type="PasswordType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="Group" type="NameType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="LocalAccountListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="LocalAccount" type="LocalAccountType" wcm:key="Name" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="DomainAccountType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Name" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="Group" type="NameType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="DomainAccountListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Domain" type="NameType" />
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="DomainAccount" type="DomainAccountType" wcm:key="Name" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="DomainListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="DomainAccountList" type="DomainAccountListType" wcm:key="Domain" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OfflineDomainAccountType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="SID" type="NameType" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="Group" type="NameType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OfflineDomainListType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="OfflineDomainAccount" type="OfflineDomainAccountType" wcm:key="SID" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="UserAccountsType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="AdministratorPassword" type="PasswordType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="LocalAccounts" type="LocalAccountListType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="DomainAccounts" type="DomainListType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="OfflineUserAccountsType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="OfflineAdministratorPassword" type="PasswordType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="OfflineLocalAccounts" type="LocalAccountListType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="OfflineDomainAccounts" type="OfflineDomainListType" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="FontSmoothingType">
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Standard" />
+            <xsd:enumeration value="On" />
+            <xsd:enumeration value="Off" />
+            <xsd:enumeration value="ClearType" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="SystemDefaultBackgroundColorType">
+          <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="0" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="VisualEffectsType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="FontSmoothing" type="FontSmoothingType" wcm:deprecated="This setting is deprecated and should not be used." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SystemDefaultBackgroundColor" type="SystemDefaultBackgroundColorType" wcm:deprecated="This setting is deprecated and should not be used." />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="ProtectYourPCType">
+          <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="1" />
+            <xsd:maxInclusive value="3" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:simpleType name="NetworkLocationType">
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Home" />
+            <xsd:enumeration value="Work" />
+            <xsd:enumeration value="Other" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="OOBEType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="SkipMachineOOBE" type="xsd:boolean" wcm:deprecated="SkipMachineOOBE is for testing only. Please see the documentation for important notes." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SkipUserOOBE" type="xsd:boolean" wcm:deprecated="This setting is deprecated and should not be used." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HideEULAPage" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="NetworkLocation" type="NetworkLocationType" wcm:deprecated="This setting has been deprecated and should not be used." />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ProtectYourPC" type="ProtectYourPCType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HideWirelessSetupInOOBE" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HideOnlineAccountScreens" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HideLocalAccountScreen" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="HideOEMRegistrationScreen" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="OEMAppId" type="xsd:string" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="VMModeOptimizations" type="VMModeType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="UnattendEnableRetailDemo" type="xsd:boolean" wcm:description="This setting is for testing only." />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="VMModeType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="SkipAdministratorProfileRemoval" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SkipNotifyUILanguageChange" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="SkipWinREInitialization" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="GUIDType">
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="38" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="NotificationIconType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="Path" type="PathType" wcm:legacyType="REG_EXPAND_SZ" />
+            <xsd:element maxOccurs="1" minOccurs="1" name="GUID" type="GUIDType" wcm:legacyType="REG_EXPAND_SZ" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:simpleType name="OverrideIconFlagsType">
+          <xsd:restriction base="xsd:unsignedInt">
+            <xsd:enumeration value="0" />
+            <xsd:enumeration value="1" />
+            <xsd:enumeration value="2" />
+            <xsd:enumeration value="3" />
+            <xsd:enumeration value="4" />
+            <xsd:enumeration value="5" />
+            <xsd:enumeration value="6" />
+            <xsd:enumeration value="7" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:complexType name="PromotedNotificationIconType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="PromotedIcon1" type="NotificationIconType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="PromotedIcon2" type="NotificationIconType" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="OverrideIconFlags" type="OverrideIconFlagsType" wcm:legacyType="REG_DWORD" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:element name="AutoLogon" type="AutoLogonType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize auditSystem oobeSystem" wcm:visible="true" />
+        <xsd:element name="BluetoothTaskbarIconEnabled" type="xsd:boolean" wcm:dataOnly="true" wcm:description="BluetoothTaskbarIconEnabled specifies whether the Bluetooth taskbar icon should appear in the taskbar." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Control Panel\Settings\Bluetooth')" wcm:legacyName="Notification Area Icon" wcm:passes="offlineServicing generalize specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="ClientApplications" type="ClientApplicationsType" wcm:dataOnly="false" wcm:deprecated="This setting is deprecated. Use the DISM application association commands instead." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="ComputerName" type="ComputerNameType" wcm:dataOnly="false" wcm:description="ComputerName specifies the computer name used to access the computer from the network." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="offlineServicing specialize" wcm:visible="true" />
+        <xsd:element name="CopyProfile" type="xsd:boolean" wcm:dataOnly="false" wcm:description="CopyProfile enables you to customize a user profile and use the customized profile as the default user profile. Windows uses the default user profile as a template to assign a profile to each new user." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize" wcm:visible="true" />
+        <xsd:element name="DisableAutoDaylightTimeSet" type="xsd:boolean" wcm:dataOnly="false" wcm:description="DisableAutoDaylightTimeSet specifies whether to enable the destination computer to automatically change between daylight saving time and standard time." wcm:handler="regkey('HKLM\System\CurrentControlSet\Control\TimeZoneInformation')" wcm:passes="specialize auditSystem oobeSystem" wcm:visible="true" />
+        <xsd:element name="Display" type="DisplayResolutionType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize auditSystem auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="FirstLogonCommands" type="SynchronousCommandListType" wcm:dataOnly="false" wcm:description="FirstLogonCommands specifies commands to run the first time a user logs on to the computer. These commands run only once." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="oobeSystem" wcm:visible="true" />
+        <xsd:element name="FolderLocations" type="FolderLocationsType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="oobeSystem" wcm:visible="true" />
+        <xsd:element name="DoNotCleanTaskBar" type="xsd:boolean" wcm:dataOnly="true" wcm:description="DoNotCleanTaskBar specifies whether Sysprep removes deskbands. A deskband is a customized toolbar that can be added to the taskbar. Deskbands contain shortcuts to frequently performed tasks." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:passes="offlineServicing generalize specialize auditSystem oobeSystem" wcm:visible="true" />
+        <xsd:element name="LogonCommands" type="AsynchronousCommandListType" wcm:dataOnly="false" wcm:description="LogonCommands specifies one or more commands to run the first time a user logs on to the computer." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="oobeSystem" wcm:visible="true" />
+        <xsd:element name="OEMInformation" type="OEMInformationType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion')" wcm:passes="offlineServicing generalize specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="OOBE" type="OOBEType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion')" wcm:passes="oobeSystem" wcm:visible="true" />
+        <xsd:element name="ProductKey" type="ProductKeyType" wcm:dataOnly="false" wcm:description="ProductKey contains settings that specify which edition of Windows to install. The product key that you purchase determines which edition you can install." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize" wcm:visible="true" />
+        <xsd:element name="RegisteredOrganization" type="NameType" wcm:dataOnly="true" wcm:description="RegisteredOrganization specifies the organization name of the end user." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion')" wcm:legacyType="REG_SZ" wcm:passes="offlineServicing generalize specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="RegisteredOwner" type="NameType" wcm:dataOnly="true" wcm:description="RegisteredOwner specifies the name of the end user." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion')" wcm:legacyType="REG_SZ" wcm:passes="offlineServicing generalize specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="StartPanelLinks" type="StartPanelLinksType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion')" wcm:legacyName="SMDEn" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="OEMWelcomeCenter" type="OEMWelcomeCenterType" wcm:dataOnly="true" wcm:deprecated="This setting has been deprecated and should not be used." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="OEMWC" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="TaskbarLinks" type="TaskbarLinksType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="TBDEn" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="OEMWelcomeCenterLinks" type="OEMWelcomeCenterLinksType" wcm:dataOnly="true" wcm:deprecated="This setting has been deprecated and should not be used." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="WCDEn" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="StartTiles" type="StartViewTilesType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="SVDEn" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="OEMName" type="NameType" wcm:dataOnly="false" wcm:description="OEMName specifies the 16-character OEM identifier that can be used to identify the computer manufacturer. This value is included in the HTTP user-agent request header." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\SVDEn')" wcm:legacyName="OEMName" wcm:legacyType="REG_SZ" wcm:passes="specialize" wcm:visible="true" />
+        <xsd:element name="ShowPowerButtonOnStartScreen" type="xsd:boolean" wcm:dataOnly="true" wcm:description="ShowPowerButtonOnStartScreen specifies the name of the end user." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\ImmersiveShell\Launcher')" wcm:legacyName="Launcher_ShowPowerButtonOnStartScreen" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="EnableStartMenu" type="xsd:boolean" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="EnableStartMenu" wcm:passes="specialize auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="StartPanelOff" type="xsd:boolean" wcm:dataOnly="true" wcm:deprecated="This setting has been deprecated and should not be used." wcm:description="StartPanelOff specifies whether the new Start Panel or the classic Start menu appears when the Start button is clicked. When the classic Start menu is used, Computer, Control Panel, User Profile, Internet Explorer, and Network icons are shown on the desktop." wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\StartMenu\StartPanel')" wcm:legacyName="DefaultStartPanelOff" wcm:passes="offlineServicing generalize specialize auditSystem auditUser oobeSystem" />
+        <xsd:element name="Themes" type="ThemesType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion')" wcm:passes="specialize auditSystem auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="TimeZone" type="NameType" wcm:dataOnly="false" wcm:description="TimeZone specifies the time zone of the computer." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize auditSystem oobeSystem" wcm:visible="true" />
+        <xsd:element name="UserAccounts" type="UserAccountsType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="auditSystem oobeSystem" wcm:visible="true" />
+        <xsd:element name="OfflineUserAccounts" type="OfflineUserAccountsType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="offlineServicing" wcm:visible="true" />
+        <xsd:element name="VisualEffects" type="VisualEffectsType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="oobeSystem" wcm:visible="true" />
+        <xsd:element name="WindowsFeatures" type="WindowsFeaturesType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize auditSystem auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="ShowWindowsLive" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated. In Windows 8, the Get Windows® Live Essentials item does not appear in the Start menu." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup\WindowsFeatures')" wcm:passes="specialize auditSystem auditUser oobeSystem" wcm:visible="true" />
+        <xsd:element name="NotificationArea" type="PromotedNotificationIconType" wcm:dataOnly="true" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:legacyName="NotificationArea" wcm:passes="specialize" wcm:visible="true" />
+        <xsd:complexType name="DesktopOptimizationType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="GoToDesktopOnSignIn" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="ShowWindowsStoreAppsOnTaskbar" type="xsd:boolean" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="WindowsSpotlightTheme" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:element name="DesktopOptimization" type="DesktopOptimizationType" wcm:dataOnly="false" wcm:handler="regkey('HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer')" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:simpleType name="SignInModeType">
+          <xsd:restriction base="xsd:unsignedInt">
+            <xsd:enumeration value="0" />
+            <xsd:enumeration value="1" />
+            <xsd:enumeration value="2" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:element name="SignInMode" type="SignInModeType" wcm:dataOnly="true" wcm:description="Specifies whether users switch to tablet mode by default after signing in" wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\ImmersiveShell')" wcm:legacyType="REG_DWORD" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:simpleType name="ConvertibleSlateModePromptPreferenceType">
+          <xsd:restriction base="xsd:unsignedInt">
+            <xsd:enumeration value="0" />
+            <xsd:enumeration value="1" />
+          </xsd:restriction>
+        </xsd:simpleType>
+        <xsd:element name="ConvertibleSlateModePromptPreference" type="ConvertibleSlateModePromptPreferenceType" wcm:dataOnly="true" wcm:description="Sets the default for hardware-based prompts" wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\ImmersiveShell')" wcm:legacyType="REG_DWORD" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:element name="SearchBoxVisibleInTouchImprovement" type="xsd:boolean" wcm:dataOnly="true" wcm:description="SearchBoxVisibleInTouchImprovement specifies whether the search box in the taskbar should be visible when the device has no keyboard attached and not in tablet mode." wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced')" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:element name="AppIconInTouchImprovement" type="xsd:boolean" wcm:dataOnly="true" wcm:description="AppIconInTouchImprovement specifies whether icons in the taskbar for running apps should be bigger when the device has no keyboard attached and not in tablet mode." wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced')" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:element name="FileExplorerInTouchImprovement" type="xsd:boolean" wcm:dataOnly="true" wcm:description="FileExplorerInTouchImprovement specifies whether a more touchable file explorer should be used when the device has no keyboard attached and not in tablet mode." wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced')" wcm:passes="offlineServicing specialize oobeSystem" wcm:visible="true" />
+        <xsd:complexType name="PenFirstRunExperienceType">
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="DefaultAppUri" type="xsd:string" />
+            <xsd:element maxOccurs="1" minOccurs="0" name="DefaultAppAumid" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+        <xsd:element name="PenFirstRunExperience" type="PenFirstRunExperienceType" wcm:dataOnly="true" wcm:description="PenFirstRunExperience specifies the default application invoked by pen first run experience trigger, and DefaultAppAumid will be used if DefaultAppUri was not set, otherwise DefaultAppAumid will be ignored." wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Microsoft-Windows-Shell-Setup')" wcm:passes="specialize" wcm:visible="true" />
+        <xsd:element name="ConfigureChatAutoInstall" type="xsd:boolean" wcm:dataOnly="true" wcm:description="ConfigureChatAutoInstall overrides the default policies controlling auto-install behavior for the Chat feature. When set to false, auto-install will never occur. When set to true, auto-install will always occur." wcm:handler="regkey('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Communications')" wcm:passes="offlineServicing specialize oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+      </xsd:schema>
+    </configurationSchema>
+  </configuration>
+  <unattendActions>
+    <unattendAction arguments="shsetup.dll,SHUnattendedSetup" executableName="$(runtime.system32)\rundll32.exe" passes="specialize auditSystem auditUser oobeSystem" />
+  </unattendActions>
+  <localization>
+    <resources culture="en-US">
+      <stringTable>
+        <string id="description" value="Manifest for shsetup.dll" />
+        <string id="displayName" value="shsetup.dll" />
+      </stringTable>
+    </resources>
+  </localization>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_FILE_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;GRGX;;;BA)(A;;GRGX;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)(A;;GRGX;;;S-1-15-2-2)S:(AU;FASA;0x000D0116;;;WD)" operationHint="replace" description="Default SDDL for Windows Resource Protected file" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+</assembly>

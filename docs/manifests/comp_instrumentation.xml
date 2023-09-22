@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-MediaFoundation-FrameServer" version="10.0.22621.1778" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <dependency discoverable="no" resourceType="Resources">
+    <dependentAssembly dependencyType="prerequisite">
+      <assemblyIdentity name="Microsoft-Windows-MediaFoundation-FrameServer.Resources" version="10.0.22621.1778" processorArchitecture="amd64" language="*" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+    </dependentAssembly>
+  </dependency>
+  <memberships>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories.Services" version="10.0.22621.1778" publicKeyToken="31bf3856ad364e35" typeName="Service" />
+      <categoryInstance subcategory="FrameServer">
+        <serviceData name="FrameServer" displayName="@%systemroot%\system32\FrameServer.dll,-100" errorControl="normal" start="demand" type="win32ShareProcess" description="@%systemroot%\system32\FrameServer.dll,-101" dependOnService="rpcss" imagePath="%SystemRoot%\System32\svchost.exe -k Camera" objectName="NT AUTHORITY\LocalService" sidType="unrestricted">
+          <serviceTrigger action="start" subtype="RPC_INTERFACE_EVENT" type="NetworkEndpointEvent">
+            <triggerData type="string" value="6DDFC7D1-7FCA-44EB-A279-E9988F4DB32B" />
+          </serviceTrigger>
+          <serviceTrigger action="start" subtype="WNF_STATE_CHANGE" type="WnfStateEvent">
+            <triggerData type="binary" value="75B8BCA33D01C641" />
+          </serviceTrigger>
+        </serviceData>
+      </categoryInstance>
+      <categoryInstance subcategory="FrameServerMonitor">
+        <serviceData name="FrameServerMonitor" displayName="@%systemroot%\system32\FrameServerMonitor.dll,-100" errorControl="normal" start="demand" type="win32OwnProcess" description="@%systemroot%\system32\FrameServerMonitor.dll,-101" dependOnService="rpcss" imagePath="%SystemRoot%\System32\svchost.exe -k CameraMonitor" objectName="LocalSystem" sidType="unrestricted">
+          <failureActions resetPeriod="86400">
+            <actions>
+              <action delay="60000" type="restartService" />
+              <action delay="120000" type="restartService" />
+              <action delay="180000" type="restartService" />
+            </actions>
+          </failureActions>
+          <serviceTrigger action="start" subtype="RPC_INTERFACE_EVENT" type="NetworkEndpointEvent">
+            <triggerData type="string" value="BE0D95BA-21A5-4A5F-A1F0-9ADA84AC1144" />
+          </serviceTrigger>
+          <serviceTrigger action="start" subtype="WNF_STATE_CHANGE" type="WnfStateEvent">
+            <triggerData type="binary" value="7510BCA3261D9041" />
+          </serviceTrigger>
+          <serviceTrigger action="start" subtype="WNF_STATE_CHANGE" type="WnfStateEvent">
+            <triggerData type="binary" value="3521BCA32E0F8B41" />
+          </serviceTrigger>
+          <serviceTrigger action="start" subtype="{E5323777-F976-4f5b-9B55-B94699C46E44}" type="DeviceInterfaceArrival" />
+          <serviceTrigger action="start" subtype="{24E552D7-6523-47F7-A647-D3465BF1F5CA}" type="DeviceInterfaceArrival" />
+          <serviceTrigger action="start" subtype="{1D813233-9CDE-42BF-B446-8F47067B4946}" type="DeviceInterfaceArrival" />
+          <serviceTrigger action="start" subtype="WNF_STATE_CHANGE" type="WnfStateEvent">
+            <triggerData type="binary" value="75B8BCA33D01C641" />
+          </serviceTrigger>
+        </serviceData>
+      </categoryInstance>
+    </categoryMembership>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories" version="1.0.0.0" publicKeyToken="365143bb27e7ac8b" typeName="SvcHost" />
+      <categoryInstance subcategory="Camera">
+        <serviceGroup position="last" serviceName="FrameServer" />
+      </categoryInstance>
+      <categoryInstance subcategory="CameraMonitor">
+        <serviceGroup position="last" serviceName="FrameServerMonitor" />
+      </categoryInstance>
+    </categoryMembership>
+  </memberships>
+  <file name="FsIso.exe" destinationPath="$(runtime.system32)\" sourceName="FsIso.exe" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5cFdODXohuUq82fYpgdEwYUZmhGQ0VIO3+/S8LhOGZQ=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="FrameServer.dll" destinationPath="$(runtime.system32)\" sourceName="FrameServer.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ny6JZ5LLiPLHErs93TM2yXLZpUmMUc1e/QlMs+w7sb4=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <file name="FrameServerMonitor.dll" destinationPath="$(runtime.system32)\" sourceName="FrameServerMonitor.dll" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>W8brDg4EHr9ebPrUG9THIOHWiDIFMBp4woTTXtA6WT8=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <registryKeys>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Svchost\Camera">
+      <registryValue name="CoInitializeSecurityParam" valueType="REG_DWORD" value="0x00000001" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Svchost\CameraMonitor">
+      <registryValue name="CoInitializeSecurityParam" valueType="REG_DWORD" value="0x00000001" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\System\CurrentControlSet\services\FrameServer\parameters">
+      <registryValue name="ServiceDll" valueType="REG_EXPAND_SZ" value="%SystemRoot%\system32\FrameServer.dll" />
+      <registryValue name="ServiceDllUnloadOnStop" valueType="REG_DWORD" value="0x00000001" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\System\CurrentControlSet\services\FrameServerMonitor\parameters">
+      <registryValue name="ServiceDll" valueType="REG_EXPAND_SZ" value="%SystemRoot%\system32\FrameServerMonitor.dll" />
+      <registryValue name="ServiceDllUnloadOnStop" valueType="REG_DWORD" value="0x00000001" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Media Foundation\FrameServer">
+      <securityDescriptor name="FRAMESERVER_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Media Foundation\FrameServer\ProviderHost">
+      <registryValue name="Surface" valueType="REG_DWORD" value="0x00000001" />
+      <registryValue name="RsProvider" valueType="REG_DWORD" value="0x00000001" />
+      <securityDescriptor name="FRAMESERVER_SDDL" />
+    </registryKey>
+  </registryKeys>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_REGKEY_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;CI;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CI;GR;;;SY)(A;CI;GR;;;BA)(A;CI;GR;;;BU)(A;CI;GR;;;S-1-15-2-1)(A;CI;GR;;;S-1-15-3-1024-1065365936-1281604716-3511738428-1654721687-432734479-3232135806-4053264122-3456934681)" operationHint="replace" />
+          <securityDescriptorDefinition name="FRAMESERVER_SDDL" sddl="D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;LS)(A;;GRGX;;;IU)(A;;GRGX;;;S-1-15-3-3845273463-1331427702-1186551195-1148109977)" operationHint="replace" />
+          <securityDescriptorDefinition name="WRP_FILE_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;GRGX;;;BA)(A;;GRGX;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)(A;;GRGX;;;S-1-15-2-2)S:(AU;FASA;0x000D0116;;;WD)" operationHint="replace" description="Default SDDL for Windows Resource Protected file" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+  <instrumentation xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events">
+    <events xmlns="http://schemas.microsoft.com/win/2004/08/events">
+      <provider guid="{9E22A3ED-7B32-4B99-B6C2-21DD6ACE01E1}" message="$(string.EventProviderName)" messageFileName="%SystemRoot%\system32\FrameServer.dll" name="Microsoft-Windows-MF-FrameServer" resourceFileName="%SystemRoot%\system32\FrameServer.dll" symbol="Microsoft_Windows_MF_FrameServer">
+        <channels>
+          <channel chid="FrameServer" isolation="Application" message="$(string.FrameServer.ChannelMessage)" name="MF_MediaFoundationFrameServer" symbol="MFFrameServer" type="Analytic" />
+        </channels>
+      </provider>
+      <cmi />
+    </events>
+  </instrumentation>
+  <localization>
+    <resources culture="en-US">
+      <stringTable>
+        <string id="EventProviderName" value="Microsoft-Windows-FrameServer" />
+        <string id="FrameServer.ChannelMessage" value="Media Foundation FrameServer" />
+        <string id="FrameServer_FsProxySetOutputState_Start.EventMessage" value="FrameServer FsProxy SetOutputType Start" />
+        <string id="FrameServer_FsProxySetOutputState_Stop.EventMessage" value="FrameServer FsProxy SetOutputType Stop" />
+        <string id="FrameServer_FsProxySetOutputState.TaskMessage" value="FrameServer FsProxy SetOutputType" />
+        <string id="FrameServer_FsProxySetD3dManager_Start.EventMessage" value="FrameServer FsProxy D3dManager Start" />
+        <string id="FrameServer_FsProxySetD3dManager_Stop.EventMessage" value="FrameServer FsProxy D3dManager Stop" />
+        <string id="FrameServer_FsProxySetD3dManager.TaskMessage" value="FrameServer FsProxy D3dManager" />
+        <string id="FrameServer_FsProxyInitialization.TaskMessage" value="string.FrameServer FsProxy Initialization" />
+        <string id="FrameServer_FsClientCreateSample.TaskMessage" value="string.FrameServer FsClient CreateSample" />
+        <string id="FrameServer_FsProxyInitialization_Start.EventMessage" value="string.FrameServer FsProxy Initialization Start" />
+        <string id="FrameServer_FsProxyInitialization_Stop.EventMessage" value="string.FrameServer FsProxy Initialization Stop" />
+        <string id="FrameServer_FsClientCreateSample_Start.EventMessage" value="FrameServer FsClient CreateSample" />
+        <string id="FrameServer_FsClientCreateSample_Stop.EventMessage" value="FrameServer FsClient CreateSample Stop" />
+        <string id="FrameServer_CaptureStatistics.TaskMessage" value="FrameServer Capture Statistics" />
+        <string id="FrameServer_CaptureStatistics.EventMessage" value="FrameServer Capture Statistics" />
+        <string id="FrameServer_WatchdogTimer.TaskMessage" value="FrameServer WatchdogTimer Task" />
+        <string id="FrameServer_WatchdogTimer_Start.EventMessage" value="FrameServer WatchdogTimer Start Event" />
+        <string id="FrameServer_WatchdogTimer_Stop.EventMessage" value="FrameServer WatchdogTimer Stop Event" />
+        <string id="FrameServer_WatchdogTimer_Trigger.EventMessage" value="FrameServer WatchdogTimer Trigger Event" />
+        <string id="FrameServer_SourceType.master" value="MASTER" />
+        <string id="FrameServer_SourceType.shared" value="SHARED" />
+        <string id="FrameServer_HandleType.NTHANDLE" value="NTHANDLE" />
+        <string id="FrameServer_HandleType.DXHANDLE" value="DXHANDLE" />
+        <string id="FrameServer_HandleType.SYSMEM1D" value="SYSMEM1D" />
+        <string id="FrameServer_HandleType.SYSMEM2D" value="SYSMEM2D" />
+        <string id="FrameServer_HandleType.SECURESECTION" value="SECURE" />
+        <string id="FrameServer_HandleType.VRAM" value="VRAM" />
+        <string id="FrameServer_HandleType.EMPTYFRAME" value="EMPTYFRAME" />
+        <string id="FrameServer_StatSource.KsPin" value="KsPin" />
+        <string id="FrameServer_StatSource.DevStream" value="DeviceStream" />
+        <string id="FrameServer_StatSource.DMFT" value="DMFT" />
+        <string id="FrameServer_StatSource.MFT0" value="MFT0" />
+        <string id="FrameServer_StatSource.XVP" value="XVP" />
+        <string id="FrameServer_StatSource.MJPG" value="MJPGDecoder" />
+        <string id="FrameServer_StatSource.FSStream" value="FSStream" />
+        <string id="FrameServer_StatSource.FSPinInfo" value="FSPinInfo" />
+        <string id="FrameServer_TimerScope.FSService" value="FSService" />
+        <string id="FrameServer_TimerScope.FSSource" value="FSSource" />
+        <string id="FrameServer_TimerScope.FSStream" value="FSStream" />
+        <string id="FrameServer_WatchdogOperation.Initialize" value="Initialize" />
+        <string id="FrameServer_WatchdogOperation.Activate" value="Activate" />
+        <string id="FrameServer_WatchdogOperation.Start" value="Start" />
+        <string id="FrameServer_WatchdogOperation.Stop" value="Stop" />
+      </stringTable>
+    </resources>
+  </localization>
+</assembly>
