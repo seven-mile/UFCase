@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Additional fonts: BIZ UDGothic, BIZ UDMincho Medium, Meiryo, Meiryo UI, MS Gothic, MS PGothic, MS UI Gothic, MS Mincho, MS PMincho, UDDigiKyokashoN, UDDigiKyokashoNK, UDDigiKyokashoNP, Yu Mincho" displayName="Japanese Supplemental Fonts" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
+  <assemblyIdentity name="Microsoft-Windows-LanguageFeatures-Fonts-Jpan-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="KB777778" releaseType="OnDemand Pack">
+    <declareCapability>
+      <capability>
+        <capabilityIdentity name="Language.Fonts.Jpan" version="1.0" language="und-Jpan" />
+      </capability>
+    </declareCapability>
+    <update name="45d82b06855713c606cf90862cb270a7">
+      <component>
+        <assemblyIdentity name="Microsoft-Windows-LanguageFeatures-Fonts-Jpan-Deployment" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+      </component>
+    </update>
+  </package>
+</assembly>

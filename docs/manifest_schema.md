@@ -480,6 +480,24 @@ XPath: `/assembly`
 
 Hint: Documented. This is the root element of an assembly manifest.
 
+### AssemblyIdentity
+
+Type: Any
+
+XPath: any
+
+```xml
+<assemblyIdentity name="Microsoft.Windows.Common-Controls" version="5.82.22621.608" processorArchitecture="amd64" publicKeyToken="6595b64144ccf1df" type="win32" />
+```
+
+```xml
+<assemblyIdentity name="Microsoft-Windows-Ethernet-Client-Intel-E1i68x64-FOD-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+```
+
+```xml
+<assemblyIdentity name="Microsoft-Windows-Security-SPP-Component-SKU-Professional-License-Deployment" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+```
+
 ### AssemblyRequest
 
 Type: Application
@@ -539,7 +557,44 @@ TODO: Unknown.
 
 TODO: Unknown.
 
-### Capabilities
+### Capability (Package)
+
+Type: Package
+
+XPath: `/assembly/package/declareCapability/capability`
+
+```xml
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Additional fonts: BIZ UDGothic, BIZ UDMincho Medium, Meiryo, Meiryo UI, MS Gothic, MS PGothic, MS UI Gothic, MS Mincho, MS PMincho, UDDigiKyokashoN, UDDigiKyokashoNK, UDDigiKyokashoNP, Yu Mincho" displayName="Japanese Supplemental Fonts" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
+  <assemblyIdentity name="Microsoft-Windows-LanguageFeatures-Fonts-Jpan-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="KB777778" releaseType="OnDemand Pack">
+    <declareCapability>
+      <capability>
+        <capabilityIdentity name="Language.Fonts.Jpan" version="1.0" language="und-Jpan" />
+      </capability>
+    </declareCapability>
+  </package>
+</assembly>
+```
+
+Only apply to some lang.
+
+```xml
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Windows PowerShell Integrated Scripting Environment (ISE) is a graphical editor for PowerShell scripts with syntax-coloring, tab completion, and visual debugging." displayName="Windows PowerShell ISE" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
+  <assemblyIdentity name="Microsoft-Windows-PowerShell-ISE-FOD-Package" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="Microsoft-Windows-PowerShell-ISE-FOD-zh-CN" releaseType="OnDemand Pack">
+    <declareCapability>
+      <capability>
+        <capabilityIdentity name="Microsoft.Windows.PowerShell.ISE" version="1.0" language="zh-CN" />
+      </capability>
+      <satelliteInfo>
+        <applyTo type="language" value="zh-CN" />
+      </satelliteInfo>
+    </declareCapability>
+  </package>
+</assembly>
+```
+
+### Capabilities (Application)
 
 Type: Application (?)
 
@@ -595,7 +650,7 @@ XPath: `/assembly/cleanupCache`
 
 TODO: Unknown.
 
-### ComClass & ComInterfaceProxyStub
+### ComClass
 
 Type: Application
 
@@ -604,6 +659,52 @@ XPath: `/assembly/file/comClass`
 Hint: Documented. Like WinRT, the actual COM registration is done by direct registry manipulations. This is for isolation manifest.
 
 Refer to [Assembly Manifests](https://learn.microsoft.com/en-us/windows/win32/sbscs/assembly-manifests).
+
+```xml
+<assembly>
+  <file name="sampleu.dll">
+    <comClass description="Font Property Page"
+      clsid="{0BE35200-8F91-11CE-9DE3-00AA004BB851}"
+      threadingModel = "Both"
+      tlbid = "{44EC0535-400F-11D0-9DCD-00A0C90391D3}"/>
+    <comClass description="Color Property Page"
+      clsid="{0BE35201-8F91-11CE-9DE3-00AA004BB851}" 
+      progid="ABC.Registrar"/>
+  </file>
+</assembly>
+```
+
+### ComInterfaceProxyStub
+
+Type: Application
+
+Hint: Documented.
+
+Refer to [Assembly Manifests](https://learn.microsoft.com/en-us/windows/win32/sbscs/assembly-manifests).
+
+```xml
+<assembly>
+  <comInterfaceProxyStub iid="{B6EA2051-048A-11D1-82B9-00C04FB9942E}" name="IAxWinAmbientDispatch" tlbid="{34EC053A-400F-11D0-9DCD-00A0C90391D3}"/>
+</assembly>
+```
+
+### ComInterfaceExternalProxyStub
+
+Type: Application
+
+Hint: Documented.
+
+Refer to [Assembly Manifests](https://learn.microsoft.com/en-us/windows/win32/sbscs/assembly-manifests).
+
+```xml
+<assembly>
+  <comInterfaceExternalProxyStub 
+    name="IAxWinAmbientDispatch" 
+    iid="{B6EA2051-048A-11D1-82B9-00C04FB9942E}" 
+    numMethods="35" 
+    baseInterface="{00000000-0000-0000-C000-000000000046}"/>
+</assembly>
+```
 
 ### CommandLine
 
@@ -638,7 +739,7 @@ Hint: Documented. This is for ClickOnce.
 
 Type: Component
 
-XPath: under ``
+XPath: under `/assembly/configuration/configurationSchema`
 
 This is a setting type of SMI, which denoting that the element has children.
 
@@ -660,14 +761,14 @@ This is for [SMI](https://learn.microsoft.com/en-us/previous-versions/windows/de
   <asmv3:configuration xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
     <asmv3:configurationSchema>
       <xsd:schema targetNamespace="Microsoft-Windows-Bits-Client">
-        <xsd:element default="true" name="SidebarVisible" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.The Sidebar is not available in Windows 8." wcm:displayName="SidebarVisible" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element default="true" name="SidebarOnByDefault" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated and should not be used. By default, the Sidebar is not available in Windows 8." wcm:displayName="SidebarOnByDefault" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element default="Default" name="LayoutPosition" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.Gadgets are not available in Windows 8." wcm:displayName="LayoutPosition" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element name="Gadget1" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="Security Note               This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.             Gadgets are not available in Windows 8." wcm:displayName="Gadget1" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element name="Gadget2" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget2" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element name="Gadget3" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget3" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element name="Gadget4" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget4" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
-        <xsd:element name="Gadget5" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget5" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element default="true" name="SidebarVisible" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.The Sidebar is not available in Windows 8." wcm:displayName="SidebarVisible" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element default="true" name="SidebarOnByDefault" type="xsd:boolean" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated and should not be used. By default, the Sidebar is not available in Windows 8." wcm:displayName="SidebarOnByDefault" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_DWORD" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element default="Default" name="LayoutPosition" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="This setting is deprecated, do not use this setting.Gadgets are not available in Windows 8." wcm:displayName="LayoutPosition" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget1" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="Security Note               This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.             Gadgets are not available in Windows 8." wcm:displayName="Gadget1" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget2" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget2" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget3" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget3" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget4" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget4" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
+        <xsd:element name="Gadget5" type="xsd:string" wcm:dataOnly="false" wcm:deprecated="This setting has been deprecated." wcm:description="             This setting has been deprecated in Windows® 8. The information about this deprecated setting is provided for reference only.           Gadgets are not available in Windows 8." wcm:displayName="Gadget5" wcm:handler="regkey('HKLM\Software\Microsoft\Windows NT\CurrentVersion\UnattendSettings\Sidebar')" wcm:legacyType="REG_EXPAND_SZ" wcm:passes="oobeSystem" wcm:scope="allUsers" wcm:visible="true" />
       </xsd:schema>
     </asmv3:configurationSchema>
   </asmv3:configuration>
@@ -693,6 +794,58 @@ TODO: Unknown.
 ### CustomHostRequired
 
 TODO: Unknown.
+
+### CustomInformation (Package)
+
+Type: Package
+
+XPath: `/assembly/package/customInformation`
+
+This example is indicated for the detection of settings page "Optional Features".
+
+```xml
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Windows PowerShell Integrated Scripting Environment (ISE) is a graphical editor for PowerShell scripts with syntax-coloring, tab completion, and visual debugging." displayName="Windows PowerShell ISE" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
+  <assemblyIdentity name="Microsoft-Windows-PowerShell-ISE-FOD-Package" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="Microsoft-Windows-PowerShell-ISE-FOD-zh-CN" releaseType="OnDemand Pack">
+    <mum2:customInformation xmlns:mum2="urn:schemas-microsoft-com:asm.v3">
+      <mum2:OptionalFeatures SchemaVersion="1.0">
+        <mum2:SettingsPageOptions Visibility="all" FeatureType="default" />
+      </mum2:OptionalFeatures>
+    </mum2:customInformation>
+    <declareCapability>
+      <capability>
+        <capabilityIdentity name="Microsoft.Windows.PowerShell.ISE" version="1.0" language="zh-CN" />
+      </capability>
+      <satelliteInfo>
+        <applyTo type="language" value="zh-CN" />
+      </satelliteInfo>
+    </declareCapability>
+    <update name="aae126adc919fd5aa61d384c96166bd6">
+      <component>
+        <assemblyIdentity name="Microsoft-Windows-PowerShell-ISE-FOD-Deployment-LanguagePack" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+      </component>
+    </update>
+    <packageExtended packageSize="868521" />
+  </package>
+</assembly>
+```
+
+While this example is for mobile deployment and applicability calculation.
+
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-SenseClient-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="Microsoft-Windows-SenseClient" releaseType="Feature Pack" targetPartition="mainos" binaryPartition="false">
+    <mum2:customInformation xmlns:mum2="urn:schemas-microsoft-com:asm.v3">
+      <mum2:phoneInformation phoneRelease="Production" phoneOwner="Microsoft" phoneOwnerType="Microsoft" phoneComponent="Windows.SenseClient" phoneSubComponent="" phoneGroupingKey="" />
+      <mum2:applicablePartitions>
+        <mum2:partition name="mainos" />
+      </mum2:applicablePartitions>
+    </mum2:customInformation>
+  </package>
+</assembly>
+```
 
 ### CustomUX
 
@@ -1071,9 +1224,49 @@ Type: Unknown
 
 Type: Unknown
 
+### InstallerAssembly
+
+Type: Package
+
+XPath: `/assembly/package/installerAssembly`
+
+The assembly identity of servicing stack.
+
+Is it a version requirement or record? I prefer the latter, because the version of servicing stack is always `6.0.0.0` (seemingly same as the original NT version).
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="" displayName="default" company="Microsoft Corporation" copyright="Microsoft Corporation" supportInformation="https://support.microsoft.com/help/5030310" creationTimeStamp="2023-09-12T17:06:32Z" lastUpdateTimeStamp="2023-09-12T17:06:32Z">
+  <assemblyIdentity name="microsoft-windows-languagefeatures-handwriting-zh-cn-package-Wrapper" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="KB5030310" releaseType="Update" restart="possible">
+    <installerAssembly name="Microsoft-Windows-ServicingStack" version="6.0.0.0" language="neutral" processorArchitecture="amd64" versionScope="nonSxS" publicKeyToken="31bf3856ad364e35" />
+  </package>
+</assembly>
+```
+
 ### Instrumentation
 
-Type: Unknown
+Type: Component
+
+XPath: `/assembly/instrumentation`
+
+This is a embeded Windows Event Log [Instrumentation Manifest](https://learn.microsoft.com/en-us/windows/win32/wes/writing-an-instrumentation-manifest).
+
+```xml
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-MediaFoundation-FrameServer" version="10.0.22621.1778" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <instrumentation xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events">
+    <events xmlns="http://schemas.microsoft.com/win/2004/08/events">
+      <provider guid="{9E22A3ED-7B32-4B99-B6C2-21DD6ACE01E1}" message="$(string.EventProviderName)" messageFileName="%SystemRoot%\system32\FrameServer.dll" name="Microsoft-Windows-MF-FrameServer" resourceFileName="%SystemRoot%\system32\FrameServer.dll" symbol="Microsoft_Windows_MF_FrameServer">
+        <channels>
+          <channel chid="FrameServer" isolation="Application" message="$(string.FrameServer.ChannelMessage)" name="MF_MediaFoundationFrameServer" symbol="MFFrameServer" type="Analytic" />
+        </channels>
+      </provider>
+      <cmi />
+    </events>
+  </instrumentation>
+</assembly>
+```
 
 ### Link
 
@@ -1189,7 +1382,45 @@ Type: Unknown
 
 ### Package
 
-Type: Unknown
+Type: Package
+
+XPath: `/assembly/package`
+
+The element list of package:
+
+```
+parent
+update
+applicable
+detectUpdate
+selectable
+detectNone
+component
+package
+driver
+installerAssembly
+packageExtended
+```
+
+### PackageExtended
+
+Type Package
+
+XPath: `/assembly/package/packageExtended`
+
+Records extra information like the size of the package.
+
+The following size attribute is in bytes.
+
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Windows PowerShell Integrated Scripting Environment (ISE) is a graphical editor for PowerShell scripts with syntax-coloring, tab completion, and visual debugging." displayName="Windows PowerShell ISE" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
+  <assemblyIdentity name="Microsoft-Windows-PowerShell-ISE-FOD-Package" version="10.0.22621.1" processorArchitecture="amd64" language="zh-CN" buildType="release" publicKeyToken="31bf3856ad364e35" />
+  <package identifier="Microsoft-Windows-PowerShell-ISE-FOD-zh-CN" releaseType="OnDemand Pack">
+    <packageExtended packageSize="868521" />
+  </package>
+</assembly>
+```
 
 ### Param
 
@@ -1235,29 +1466,70 @@ Type: Unknown
 
 Type: Unknown
 
-### RegistryKey
+### RegistryKeys & RegistryKey & RegistryValue
 
-Type: Unknown
+Type: Component
 
-### RegistryKeys
+XPath: `/assembly/registryKeys/registryKey/registryValue`
 
-Type: Unknown
+Let's see the installation of COM dll `cmiv2.dll`.
 
-### RegistryValue
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-CMI" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <file name="cmiv2.dll" destinationPath="$(runtime.system32)\AdvancedInstallers\" sourceName="cmiv2.dll" importPath="$(build.nttree)\cmi\" sourcePath=".\">
+    <!-- omitted -->
+  </file>
+  <registryKeys>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Windows\">
+      <registryValue name="ComponentizedBuild" valueType="REG_DWORD" value="0x00000001" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\Interface\{729B9356-1627-4E0D-88E3-28C664F3BEB8}\">
+      <registryValue name="" valueType="REG_SZ" value="IRedirectInformation" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\Interface\{6B8E6B8E-7F56-11D7-B569-505054503030}\ProxyStubClsid\">
+      <registryValue name="" valueType="REG_SZ" value="{00020424-0000-0000-C000-000000000046}" />
+    </registryKey>
+    <!-- omitted -->
+    <registryKey keyName="HKEY_CLASSES_ROOT\Interface\{F3411F40-70A6-11D7-BA56-505054503030}\ProxyStubClsid32\">
+      <registryValue name="" valueType="REG_SZ" value="{00020424-0000-0000-C000-000000000046}" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\Interface\{F31091F9-B0A8-11D6-B6FC-005056C00008}\">
+      <registryValue name="" valueType="REG_SZ" value="IDependency" />
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+    <registryKey keyName="HKEY_CLASSES_ROOT\INTERFACE\{6B8E6B97-7F56-11D7-B569-505054503030}">
+      <securityDescriptor name="WRP_REGKEY_DEFAULT_SDDL" />
+    </registryKey>
+  </registryKeys>
+</assembly>
+```
 
-Type: Unknown
+### RequestedExecutionLevel & RequestedExecutionLevelType & RequestedPrivileges
 
-### RequestedExecutionLevel
+Type: Application
 
-Type: Unknown
+XPath: `/assembly/trustInfo/security/requestedPrivileges/requestedExecutionLevel`
 
-### RequestedExecutionLevelType
+Hint: Documented. It's a well known part of isolation manifest.
 
-Type: Unknown
+The priviledges part of UFCase itself:
 
-### RequestedPrivileges
+```xml
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <assemblyIdentity version="1.5.1.1" name="UFCase.app"/>
 
-Type: Unknown
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
+```
 
 ### Rescache
 
@@ -1482,7 +1754,15 @@ Type: Unknown
 
 ### SimpleType
 
-Type: Unknown
+Type: Component
+
+XPath: under `/assembly/configuration/configurationSchema`
+
+This is a setting type of SMI, which denoting that the element is a scalar.
+
+Refer to [WcmSettingType enumeration (wcmconfig.h)](https://learn.microsoft.com/en-us/windows/win32/api/wcmconfig/ne-wcmconfig-wcmsettingtype) and [WcmDataType enumeration (wcmconfig.h)](https://learn.microsoft.com/en-us/windows/win32/api/wcmconfig/ne-wcmconfig-wcmdatatype).
+
+TODO: Complete the XML instance.
 
 ### SppInstaller
 
@@ -1532,7 +1812,6 @@ XPath: `/assembly/imaging/sysprepInformation`
 Including extra `fileActions` and `registryActions`:
 
 ```xml
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.description" displayName="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.displayName" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
   <assemblyIdentity name="Microsoft-Windows-Management-Service-WinRT" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
   <imaging>
@@ -1695,7 +1974,17 @@ Type: Unknown
 
 Type: Application
 
+XPath: `/assembly/file/typelib`
+
 Hint: Documented. For COM classes.
+
+```xml
+<assembly>
+  <file name="sampleu.dll">
+    <typelib tlbid="{44EC0535-400F-11D0-9DCD-00A0C90391D3}" version="1.0" helpdir=""/>
+  </file>
+</assembly>
+```
 
 ### UnattendAction
 
@@ -1710,6 +1999,8 @@ Type: Unknown
 Type: Package
 
 XPath: `/assembly/package/update`
+
+The `update` element can have **none** or **multiple** children of `component` `package` `driver` elements.
 
 ```xml
 <assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
@@ -1741,7 +2032,6 @@ XPath: `/assembly/package/update`
 ```
 
 ```xml
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="Windows Ethernet Client Intel E1i68x64 Networking Driver" displayName="Intel E1i68x64 Ethernet Networking Driver" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved" supportInformation="http://support.microsoft.com/?kbid=777777">
   <assemblyIdentity name="Microsoft-Windows-Ethernet-Client-Intel-E1i68x64-FOD-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
   <package identifier="KB777778" releaseType="OnDemand Pack">
@@ -1797,7 +2087,6 @@ Type: Component
 XPath: `/assembly/windowClass`
 
 ```xml
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved." xmlns:cmiv2="urn:schemas-microsoft-com:asm.v3" cmiv2:copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
   <noInheritable />
   <assemblyIdentity name="Microsoft.Windows.Common-Controls" version="5.82.22621.608" processorArchitecture="amd64" publicKeyToken="6595b64144ccf1df" type="win32" />
@@ -1858,29 +2147,3 @@ Type: Unknown
 ### WinsockTransportOnlineInstall
 
 Type: Unknown
-
-### assemblyIdentityNode
-
-Type: Any
-
-XPath: any
-
-```xml
-<assemblyIdentity name="Microsoft.Windows.Common-Controls" version="5.82.22621.608" processorArchitecture="amd64" publicKeyToken="6595b64144ccf1df" type="win32" />
-```
-
-```xml
-<assemblyIdentity name="Microsoft-Windows-Ethernet-Client-Intel-E1i68x64-FOD-Package" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" />
-```
-
-```xml
-<assemblyIdentity name="Microsoft-Windows-Security-SPP-Component-SKU-Professional-License-Deployment" version="10.0.22621.2359" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
-```
-
-### comInterfaceExternalProxyStubNode
-
-Type: Application
-
-Hint: Documented.
-
-Refer to the `ComClass` section.
