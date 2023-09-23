@@ -54,6 +54,12 @@ Now let's change our point of view to the upper layers. After the **Updates (Win
   * a `driver` element, which is a driver
 * **Feature (CBS)**, is actually should be called **Optional Feature**, differing from **Feature on Demand**. Features are the updates of the special package `Microsoft-Windows-Foundation-Package`, and can be queried by `Dism /Online /Get-Features`. These features are staged in WinSxS but not usable directly. If you need it you can enable it *without network connection*.
 
+### Manifest Schema
+
+I'm completing an unofficial schema documentation of general isolation manifests. The current progress is under the `./docs` directory. And the main wiki page is [here](./docs/manifest_schema.md).
+
+If you are interested, I'm welcoming contributing! Just use UFCase to inspect manifests of packages and components, and fill in the unknown elements with your inference.
+
 ### Screenshots
 
 ![a766fd23677d1826eaaa042662ec1296](https://github.com/seven-mile/UFCase/assets/56445491/efbbe1d3-b0da-4e2e-a09f-e7cf33961b37)
