@@ -73,8 +73,15 @@ namespace winrt::UFCase::Isolation::implementation
         case UFCase::Host::Manifest::RegistryValueType::RegExpandSz:
         case UFCase::Host::Manifest::RegistryValueType::RegLink:
             return unbox_value_or<hstring>(val.Data(), L"type error");
-        case UFCase::Host::Manifest::RegistryValueType::RegBinary:
-            return L"Binary data";
+        case UFCase::Host::Manifest::RegistryValueType::RegBinary: {
+            std::wstring hex;
+            auto list = unbox_value<com_array<uint8_t>>(val.Data());
+            for (auto &&b : list)
+            {
+                hex += winrt::format(L"{:02X} ", b).c_str();
+            }
+            return hex.c_str();
+        }
         case UFCase::Host::Manifest::RegistryValueType::RegDword:
         case UFCase::Host::Manifest::RegistryValueType::RegDwordBigEndian:
             return winrt::to_hstring(unbox_value<int32_t>(val.Data()));
@@ -101,7 +108,8 @@ namespace winrt::UFCase::Isolation::implementation
     void TestManifest(UFCase::Host::Manifest::Assembly assembly)
     {
         wprintf(L"%s",
-                winrt::format(L"{} v{}\n", assembly.Name(), assembly.Version().Value()).c_str());
+                winrt::format(L"{} v{}\n", assembly.Identity().Name(), assembly.Version().Value())
+                    .c_str());
 
         for (auto &file : assembly.Files())
         {
@@ -145,8 +153,7 @@ namespace winrt::UFCase::Isolation::implementation
                     .c_str());
         wprintf(winrt::format(L"\t{} {}\n", img.Architecture(), img.IsWinPE()).c_str());
 
-        for (auto obj :
-             img.SxsStore().GetComponentCollection(L"Microsoft-Windows-Services-TargetedContent"))
+        for (auto obj : img.SxsStore().GetComponentCollection(L"dual_c_fscopyprotection.inf"))
         {
             auto comp = obj.as<Isolation::ComponentModel>();
             wprintf(winrt::format(L"Component: {}\n\t{}\n", comp.TextForm(), comp.PayloadPath())

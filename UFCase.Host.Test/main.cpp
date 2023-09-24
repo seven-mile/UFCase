@@ -61,7 +61,7 @@ winrt::fire_and_forget StartHosts()
     winrt::check_win32(GetLastError());
 
     std::filesystem::path mainExePath{szPath};
-    auto hostExeDir = mainExePath.parent_path().parent_path() / L"UFCase.Host";
+    auto hostExeDir = mainExePath.parent_path();
     auto hostExePath = hostExeDir / L"UFCase.Host.exe";
 
     // co_await winrt::resume_background();

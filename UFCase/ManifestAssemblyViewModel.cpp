@@ -76,8 +76,15 @@ namespace winrt::UFCase::implementation
         case UFCase::Host::Manifest::RegistryValueType::RegExpandSz:
         case UFCase::Host::Manifest::RegistryValueType::RegLink:
             return unbox_value_or<hstring>(val.Data(), L"type error");
-        case UFCase::Host::Manifest::RegistryValueType::RegBinary:
-            return L"Binary data";
+        case UFCase::Host::Manifest::RegistryValueType::RegBinary: {
+            std::wstring hex;
+            auto list = unbox_value<com_array<uint8_t>>(val.Data());
+            for (auto &&b : list)
+            {
+                hex += winrt::format(L"{:02X} ", b).c_str();
+            }
+            return hex.c_str();
+        }
         case UFCase::Host::Manifest::RegistryValueType::RegDword:
         case UFCase::Host::Manifest::RegistryValueType::RegDwordBigEndian:
             return winrt::to_hstring(unbox_value<int32_t>(val.Data()));

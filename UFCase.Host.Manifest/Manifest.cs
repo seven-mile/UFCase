@@ -104,15 +104,15 @@ namespace UFCase.Host.Manifest
                 {
                     RegistryValueType.RegNone => null,
                     RegistryValueType.RegSz or RegistryValueType.RegExpandSz => CmiValue.Data as string,
-                    RegistryValueType.RegBinary => CmiValue.Data as byte[],
+                    RegistryValueType.RegBinary => ((object[])CmiValue.Data).Select(i => (byte)i).ToArray(),
                     RegistryValueType.RegDword => CmiValue.Data as int?,
                     RegistryValueType.RegDwordBigEndian => throw new NotImplementedException(),
                     RegistryValueType.RegLink => CmiValue.Data as string,
-                    RegistryValueType.RegMultiSz => CmiValue.Data as string[],
+                    RegistryValueType.RegMultiSz => ((object[])CmiValue.Data).Select(i => (string)i).ToArray(),
                     RegistryValueType.RegResourceList => null,
                     RegistryValueType.RegFullResourceDescriptor => null,
                     RegistryValueType.RegResourceRequirementsList => null,
-                    RegistryValueType.RegQword => CmiValue.Data as long?,
+                    RegistryValueType.RegQword => BitConverter.ToInt64(((object[])CmiValue.Data).Select(i => (byte)i).ToArray()),
                     _ => null,
                 };
             }

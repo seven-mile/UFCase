@@ -172,4 +172,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.230706.1\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.230706.1\build\native\Microsoft.Windows.CppWinRT.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.230706.1\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.230706.1\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
+
+  <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
+    <Message Text="Copying $(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe to $(OutDir)UFCase.Host.exe" Importance="High" />
+    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.exe" />
+    <!-- todo: other arch support -->
+  </Target>
 </Project>
