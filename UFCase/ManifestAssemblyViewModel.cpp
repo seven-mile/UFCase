@@ -129,6 +129,7 @@ namespace winrt::UFCase::implementation
         }
 
         m_asm = m_model.CookedManifest();
+        m_name = to_hstring(m_asm.Identity());
         m_manifest_text = m_model.Manifest();
 
         report_progress(50);
