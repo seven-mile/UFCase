@@ -24,6 +24,34 @@ static void _releaseNotifier() noexcept
     _comServerExitEvent.SetEvent();
 }
 
+static BOOL CreateProcessInJob(HANDLE hJob, LPCTSTR lpApplicationName, LPTSTR lpCommandLine,
+                               LPSECURITY_ATTRIBUTES lpProcessAttributes,
+                               LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles,
+                               DWORD dwCreationFlags, LPVOID lpEnvironment,
+                               LPCTSTR lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo,
+                               LPPROCESS_INFORMATION ppi)
+{
+    BOOL fRc = CreateProcess(
+        lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles,
+        dwCreationFlags | CREATE_SUSPENDED, lpEnvironment, lpCurrentDirectory, lpStartupInfo, ppi);
+    if (fRc)
+    {
+        fRc = AssignProcessToJobObject(hJob, ppi->hProcess);
+        if (fRc && !(dwCreationFlags & CREATE_SUSPENDED))
+        {
+            fRc = ResumeThread(ppi->hThread) != (DWORD)-1;
+        }
+        if (!fRc)
+        {
+            TerminateProcess(ppi->hProcess, 0);
+            CloseHandle(ppi->hProcess);
+            CloseHandle(ppi->hThread);
+            ppi->hProcess = ppi->hThread = nullptr;
+        }
+    }
+    return fRc;
+}
+
 winrt::fire_and_forget StartHosts()
 {
 
@@ -43,6 +71,12 @@ winrt::fire_and_forget StartHosts()
         L"F:\\",
     };
 
+    auto host_job = CreateJobObject(nullptr, nullptr);
+    JOBOBJECT_EXTENDED_LIMIT_INFORMATION info = {};
+    info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+    winrt::check_bool(
+        SetInformationJobObject(host_job, JobObjectExtendedLimitInformation, &info, sizeof(info)));
+
     for (auto bootdrive : bootdrives)
     {
         auto client_id = winrt::to_hstring(winrt::GuidHelper::CreateNewGuid());
@@ -51,11 +85,20 @@ winrt::fire_and_forget StartHosts()
             .cb = sizeof(st_info),
         };
         PROCESS_INFORMATION proc_info{};
-        if (!CreateProcess(
-                hostExePath.c_str(),
+        if (!CreateProcessInJob(
+                host_job, hostExePath.c_str(),
                 const_cast<LPWSTR>(winrt::format(L"{} {}", client_id, bootdrive).c_str()), NULL,
                 NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info, &proc_info))
         {
+            if (proc_info.hProcess)
+            {
+                CloseHandle(proc_info.hProcess);
+            }
+            if (proc_info.hThread)
+            {
+                CloseHandle(proc_info.hThread);
+            }
+
             winrt::check_hresult(HRESULT_FROM_WIN32(GetLastError()));
         }
     }
