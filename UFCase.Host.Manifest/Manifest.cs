@@ -171,8 +171,8 @@ namespace UFCase.Host.Manifest
             CmiAssembly = assembly;
         }
 
-        public string Name => CmiAssembly?.Id?.Name ?? "";
-        public string Version => $"{CmiAssembly?.Id.Version.Major}.{CmiAssembly?.Id.Version.Minor}.{CmiAssembly?.Id.Version.Build}.{CmiAssembly?.Id.Version.Revision}";
+        public string Name => CmiAssembly.Id.Name;
+        public Version Version => new(CmiAssembly.Id.Version);
 
         public File[] Files =>
             CmiAssembly.Files
