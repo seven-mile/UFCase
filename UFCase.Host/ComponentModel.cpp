@@ -20,7 +20,13 @@ namespace winrt::UFCase::Isolation::implementation
     hstring ComponentModel::GetAttribute(hstring ns, hstring attr)
     {
         wil::unique_cotaskmem_string result;
-        check_hresult(m_asm_id->GetAttribute(ns.c_str(), attr.c_str(), result.put()));
+        auto hr = m_asm_id->GetAttribute(ns.c_str(), attr.c_str(), result.put());
+
+        if (FAILED(hr) || !result)
+        {
+            return L"";
+        }
+
         return result.get();
     }
 

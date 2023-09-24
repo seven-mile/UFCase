@@ -52,6 +52,12 @@ namespace winrt::UFCase::implementation
         {
             TextForm();
             KeyForm();
+            Name();
+            Culture();
+            Version();
+            PublicKeyToken();
+            ProcessorArchitecture();
+            VersionScope();
             Status();
             PayloadPath();
             Files();
