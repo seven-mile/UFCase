@@ -328,6 +328,23 @@ Hint: Partially documented. `/assembly/trustInfo/security/requestedPrivileges` i
 </assembly>
 ```
 
+And reference the sd definitions using `securityDescriptor` element.
+
+```xml
+<assembly>
+  <registryKey keyName="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\InboxApplications\Microsoft.Windows.StartMenuExperienceHost_10.0.22621.1928_neutral_neutral_cw5n1h2txyewy">
+    <registryValue name="Path" valueType="REG_SZ" value="$(runtime.windows)\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\AppxManifest.xml" />
+    <securityDescriptor name="REGKEY_APPXALLUSERSTORE_SDDL" />
+  </registryKey>
+  <directories>
+    <directory destinationPath="$(runtime.system32)\spp\tokens\skus\ProfessionalSingleLanguage" owner="true">
+      <securityDescriptor name="WRP_PARENT_DIR_DEFAULT_SDDL" />
+      <systemProtection behavior="notProtected" />
+    </directory>
+  </directories>
+</assembly>
+```
+
 ### Actions & Action
 
 Type: Component
@@ -1840,6 +1857,8 @@ Type: Component
 
 XPath: `/assembly/taskScheduler`
 
+A embeded [Task Scheduler Schema](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-schema).
+
 ```xml
 <assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" description="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.description" displayName="d__os_obj_amd64fre_temp_0a21e64d1a11fcc43088299e422825b2_z9j6llmdtk_microsoft-windows-management-service-windowsruntime.man.temp1.missingResource.displayName" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
   <assemblyIdentity name="Microsoft-Windows-Management-Service-WinRT" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
@@ -2147,3 +2166,408 @@ Type: Unknown
 ### WinsockTransportOnlineInstall
 
 Type: Unknown
+
+# Appendix
+
+### Macro expansion
+
+This is from `%Windows_Kits%\10\Tools\bin\i386\pkggen.cfg.xml`
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Macros xmlns="urn:Microsoft.WindowsPhone/PackageSchema.v8.00">
+<!--
+    This file owned by BaseOS UNP and Security team. If you need to add
+    or update the macro, please send code review to osseccr and unpcr.
+-->
+<!-- device side macros -->
+    <!-- global macros for file path under system partition on device -->
+    <Macro Id="runtime.root"                Value=""/>
+    <Macro Id="runtime.windows"             Value="$(runtime.root)\windows"/>
+    <Macro Id="runtime.system32"            Value="$(runtime.windows)\System32"/>
+    <Macro Id="runtime.programFiles"        Value="$(runtime.root)\Program Files"/>
+    <Macro Id="runtime.programData"         Value="$(runtime.root)\ProgramData"/>
+    <Macro Id="runtime.services"            Value="$(runtime.windows)\system32"/>
+    <Macro Id="runtime.drivers"             Value="$(runtime.system32)\drivers"/>
+    <Macro Id="runtime.apps"                Value="$(runtime.root)\Programs"/>
+    <Macro Id="runtime.data"                Value="$(runtime.root)\Data"/>
+    <Macro Id="runtime.shareddata"          Value="$(runtime.data)\SharedData"/>
+    <Macro Id="runtime.commonfiles"         Value="$(runtime.apps)\CommonFiles"/>
+    <Macro Id="runtime.shareddlls"          Value="$(runtime.commonfiles)\System"/>
+    <Macro Id="runtime.etw"                 Value="$(runtime.data)\SystemData\ETW"/>
+    <Macro Id="runtime.coldBootProvxmlMS"   Value="$(runtime.apps)\PhoneProvisioner\Microsoft"/>
+    <Macro Id="runtime.coldBootProvxmlOEM"  Value="$(runtime.apps)\PhoneProvisioner_OEM\OEM"/>
+    <Macro Id="runtime.updateProvxmlMS"     Value="$(runtime.windows)\Migrators\DuMigrationProvisionerMicrosoft\provxml"/>
+    <Macro Id="runtime.updateProvxmlOEM"    Value="$(runtime.windows)\Migrators\DuMigrationProvisionerOEM\provxml"/>
+    <Macro Id="runtime.appProvxmlMS"        Value="$(runtime.system32)\Provisioning\Microsoft"/>
+    <Macro Id="runtime.appProvxmlTest"      Value="$(runtime.system32)\Provisioning\Test"/>
+    <Macro Id="runtime.appProvxmlOEM"       Value="$(runtime.commonfiles)\Provisioning\OEM"/>
+    <Macro Id="runtime.provisioning"        Value="$(runtime.programData)\Microsoft\Provisioning"/>
+
+    <Macro Id="runtime.defaultSvcHost"          Value="$(env.system32)\svchost.exe"/>
+    <Macro Id="runtime.clipAppLicenseInstall"   Value="$(runtime.programData)\Microsoft\Windows\ClipSVC\Install\Apps"/>
+
+    <!-- global macros for file path on device using environment variables, can only be used in registry values with type REG_EXPAND_SZ -->
+    <Macro Id="env.sysDrive"            Value="%SystemDrive%"/>
+    <Macro Id="env.windows"             Value="%SystemRoot%"/>
+    <Macro Id="env.system32"            Value="$(env.windows)\System32"/>
+    <Macro Id="env.drivers"             Value="$(env.system32)\drivers"/>
+    <Macro Id="env.services"            Value="$(env.system32)"/>
+
+    <!-- global macros for file path under data partition on device -->
+    <Macro Id="data.root"               Value=""/>
+    <Macro Id="data.public"             Value="$(data.root)\Users\Public"/>
+    <Macro Id="data.shared"             Value="$(data.root)\SharedData"/>
+    <Macro Id="data.tempXaps"           Value="$(data.shared)\Provisioning\tempXaps"/>
+
+    <!-- global macros for registry key paths -->
+    <Macro Id="hklm.system"             Value="HKEY_LOCAL_MACHINE\SYSTEM"/>
+    <Macro Id="hklm.software"           Value="HKEY_LOCAL_MACHINE\Software"/>
+    <Macro Id="hklm.hardware"           Value="HKEY_LOCAL_MACHINE\Hardware"/>
+    <Macro Id="hklm.sam"                Value="HKEY_LOCAL_MACHINE\SAM"/>
+    <Macro Id="hklm.security"           Value="HKEY_LOCAL_MACHINE\Security"/>
+    <Macro Id="hklm.bcd"                 Value="HKEY_LOCAL_MACHINE\BCD"/>
+    <Macro Id="hklm.drivers"             Value="HKEY_LOCAL_MACHINE\Drivers"/>
+    <Macro Id="hkuser.default"          Value="HKEY_USERS\.Default"/>
+    <Macro Id="hkcu.root"               Value="HKEY_CURRENT_USER"/>
+    <Macro Id="hkcr.root"               Value="$(hklm.software)\Classes"/>
+    <Macro Id="hklm.svchost"            Value="$(hklm.software)\Microsoft\Windows NT\CurrentVersion\SvcHost"/>
+    <Macro Id="hklm.policies"           Value="$(hklm.software)\Policies" />
+    <Macro Id="hklm.microsoft"          Value="$(hklm.software)\Microsoft" />
+    <Macro Id="hklm.windows"            Value="$(hklm.microsoft)\Windows" />
+    <Macro Id="hklm.windowsnt"          Value="$(hklm.microsoft)\Windows NT\CurrentVersion" />
+    <Macro Id="hklm.currentcontrolset"  Value="$(hklm.system)\ControlSet001" />
+    <Macro Id="hklm.services"           Value="$(hklm.currentcontrolset)\services" />
+    <Macro Id="hklm.control"            Value="$(hklm.currentcontrolset)\Control" />
+    <Macro Id="hklm.autologger"         Value="$(hklm.control)\WMI\Autologger" />
+
+    <Macro Id="hklm.enum"               Value="$(hklm.currentcontrolset)\Enum" />
+
+    <!-- This one is going away soon, please use "hkcr.root" instead if you need to add some registry content under HKCR directly -->
+    <Macro Id="hkcr.classes"            Value="$(hklm.software)\Classes"/>
+
+    <!-- global macros for Appx framework packages and their versions. Used in app preinstall scenarios. -->
+    <Macro Id="appxframework.Microsoft.VCLibs.110.00"                Value="11.0.51106.1" />
+    <Macro Id="appxframework.Microsoft.VCLibs.120.00"                Value="12.0.20708.0" />
+    <Macro Id="appxframework.Microsoft.VCLibs.120.00.Phone"          Value="12.0.30113.0" />
+    <Macro Id="appxframework.Microsoft.Media.PlayReadyClient.2"      Value="2.10.2077.1" />
+
+    <!-- global macros for DirectX feature level(9.3). Used in APPX install scenarios. -->
+    <Macro Id="DirectX.MaxFeatureLevel"  Value="37632" />
+    <Macro Id="DirectX.MinFeatureLevel"  Value="37632" />
+    <!--
+        Generic access rights
+    -->
+    <Macro Id="EMPTY_ACCESS" Value="" />
+    <!-- 0x111FFFFF = STANDARD_RIGHTS_ALL | SPECIFIC_RIGHTS_ALL | ACCESS_SYSTEM_SECURITY | GENERIC_ALL -->
+    <Macro Id="ALL_ACCESS" Value="0x111FFFFF" />
+    <Macro Id="GENERIC_ALL" Value="GA" />
+    <Macro Id="GENERIC_READ" Value="GR" />
+    <Macro Id="GENERIC_EXECUTE" Value="GX" />
+    <Macro Id="GENERIC_WRITE" Value="GW" />
+
+    <!--
+        For following object, generic access rights should be used.
+        Generic Mapping table
+
+        1) Event
+        GENERIC_READ    = STANDARD_RIGHTS_READ | EVENT_QUERY_STATE
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE | EVENT_MODIFY_STATE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = EVENT_ALL_ACCESS
+
+        2) ETW
+        Generic permissions can't be used for ETW, please check
+        the specific ETW access right macros below.
+
+        3) Mutex
+        GENERIC_READ    = STANDARD_RIGHTS_READ | MUTANT_QUERY_STATE
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = MUTANT_ALL_ACCESS
+
+        4) Event
+        GENERIC_READ    = STANDARD_RIGHTS_READ | EVENT_QUERY_STATE
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE | EVENT_MODIFY_STATE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = EVENT_ALL_ACCESS
+
+        5) Timer
+        GENERIC_READ    = STANDARD_RIGHTS_READ | TIMER_QUERY_STATE
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE | TIMER_MODIFY_STATE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = TIMER_ALL_ACCESS
+
+        6) Semphore
+        GENERIC_READ    = STANDARD_RIGHTS_READ | SEMAPHORE_QUERY_STATE
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE | SEMAPHORE_MODIFY_STATE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = SEMAPHORE_ALL_ACCESS
+
+        7) WNF (Windows Notification Framework)
+        GENERIC_READ    = SYNCHRONIZE | READ_CONTROL | WNF_STATE_SUBSCRIBE
+        GENERIC_WRITE   = WNF_STATE_PUBLISH
+        GENERIC_EXECUTE = STANDARD_RIGHTS_ALL
+        GENERIC_ALL     = STANDARD_RIGHTS_ALL | WNF_STATE_SUBSCRIBE | WNF_STATE_PUBLISH
+
+        8) Alpc Port
+        GENERIC_READ    = READ_CONTROL | PORT_CONNECT
+        GENERIC_WRITE   = DELETE | PORT_CONNECt
+        GENERIC_EXECUTE = 0
+        GENERIC_ALL     = PORT_ALL_ACCESS
+
+        9) Job
+        GENERIC_READ    = STANDARD_RIGHTS_READ | JOB_OBJECT_QUERY
+        GENERIC_WRITE   = STANDARD_RIGHTS_WRITE | JOB_OBJECT_ASSIGN_PROCESS | JOB_OBJECT_SET_ATTRIBUTES | JOB_OBJECT_TERMINATE
+        GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE | SYNCHRONIZE
+        GENERIC_ALL     = JOB_OBJECT_ALL_ACCESS
+
+        10) NamedPipe
+
+        11) RPC
+    -->
+
+    <!--
+        Standard access rights
+    -->
+    <Macro Id="STANDARD_DELETE" Value="SD" />
+    <Macro Id="STANDARD_RIGHTS_READ" Value="RC" />
+    <Macro Id="STANDARD_RIGHTS_WRITE" Value="RC" />
+    <Macro Id="STANDARD_RIGHTS_EXECUTE" Value="RC" />
+    <Macro Id="STANDARD_READ_CONTROL" Value="RC" />
+    <Macro Id="STANDARD_WRITE_DAC" Value="WD" />
+    <Macro Id="STANDARD_WRITE_OWNER" Value="WO" />
+
+    <!--
+        File and Directory access rights
+        http://msdn.microsoft.com/en-us/library/aa822867(VS.85).aspx
+        #define FILE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0x1FF)
+
+        #define FILE_GENERIC_READ         (STANDARD_RIGHTS_READ     |\
+                                           FILE_READ_DATA           |\
+                                           FILE_READ_ATTRIBUTES     |\
+                                           FILE_READ_EA             |\
+                                           SYNCHRONIZE)
+
+
+        #define FILE_GENERIC_WRITE        (STANDARD_RIGHTS_WRITE    |\
+                                           FILE_WRITE_DATA          |\
+                                           FILE_WRITE_ATTRIBUTES    |\
+                                           FILE_WRITE_EA            |\
+                                           FILE_APPEND_DATA         |\
+                                           SYNCHRONIZE)
+
+
+        #define FILE_GENERIC_EXECUTE      (STANDARD_RIGHTS_EXECUTE  |\
+                                           FILE_READ_ATTRIBUTES     |\
+                                           FILE_EXECUTE             |\
+                                           SYNCHRONIZE)
+    -->
+    <Macro Id="FILE_ALL_ACCESS" Value="FA" />
+    <Macro Id="FILE_GENERIC_READ" Value="FR" />
+    <Macro Id="FILE_GENERIC_WRITE" Value="FW" />
+    <Macro Id="FILE_GENERIC_EXECUTE" Value="FX" />
+    <Macro Id="FILE_LIST_DIRECTORY" Value="CC" />
+    <Macro Id="FILE_DELETE_CHILD" Value="DT" />
+
+    <!--
+        Registry access rights
+        http://msdn.microsoft.com/en-us/library/ms724878%28v=VS.85%29.aspx
+        #define KEY_READ                ((STANDARD_RIGHTS_READ       |\
+                                          KEY_QUERY_VALUE            |\
+                                          KEY_ENUMERATE_SUB_KEYS     |\
+                                          KEY_NOTIFY)                 \
+                                          &                           \
+                                         (~SYNCHRONIZE))
+
+
+        #define KEY_WRITE               ((STANDARD_RIGHTS_WRITE      |\
+                                          KEY_SET_VALUE              |\
+                                          KEY_CREATE_SUB_KEY)         \
+                                          &                           \
+                                         (~SYNCHRONIZE))
+
+        #define KEY_EXECUTE             ((KEY_READ)                   \
+                                          &                           \
+                                         (~SYNCHRONIZE))
+
+        #define KEY_ALL_ACCESS          ((STANDARD_RIGHTS_ALL        |\
+                                          KEY_QUERY_VALUE            |\
+                                          KEY_SET_VALUE              |\
+                                          KEY_CREATE_SUB_KEY         |\
+                                          KEY_ENUMERATE_SUB_KEYS     |\
+                                          KEY_NOTIFY                 |\
+                                          KEY_CREATE_LINK)            \
+                                          &                           \
+                                         (~SYNCHRONIZE))
+    -->
+    <Macro Id="KEY_ALL_ACCESS" Value="KA" />
+    <Macro Id="KEY_READ" Value="KR" />
+    <Macro Id="KEY_WRITE" Value="KW" />
+    <Macro Id="KEY_EXECUTE" Value="KX" />
+
+    <!--
+        Service access rights
+        http://msdn.microsoft.com/en-us/library/ms685981(VS.85).aspx
+        SERVICE_CHANGE_CONFIG should not be used, it will cause
+        elevation attack
+    -->
+    <Macro Id="SERVICE_ALL_ACCESS" Value="CCLCSWRPWPDTLOCR" />
+    <Macro Id="SERVICE_QUERY_CONFIG" Value="CC" />
+    <Macro Id="SERVICE_QUERY_STATUS" Value="LC" />
+    <Macro Id="SERVICE_ENUMERATE_DEPENDENTS" Value="SW" />
+    <Macro Id="SERVICE_START" Value="RP" />
+    <Macro Id="SERVICE_STOP" Value="WP" />
+    <Macro Id="SERVICE_PAUSE_CONTINUE" Value="DT" />
+    <Macro Id="SERVICE_INTERROGATE" Value="LO" />
+    <Macro Id="SERVICE_USER_DEFINED_CONTROL" Value="CR" />
+    <!--
+        Used only by PrivateResource in PolicyCompiler.
+    -->
+    <Macro Id="SERVICE_PRIVATE_RESOURCE_ACCESS" Value="CCLCSWRPLO" />
+
+    <!--
+        COM access rights
+        http://msdn.microsoft.com/en-us/library/ms693364(VS.85).aspx
+        COM_LOCAL_ACCESS = COM_RIGHTS_EXECUTE | COM_RIGHTS_EXECUTE_LOCAL
+        COM_LOCAL_LAUNCH = COM_RIGHTS_EXECUTE | COM_RIGHTS_EXECUTE_LOCAL | COM_RIGHTS_ACTIVATE_LOCAL
+    -->
+    <Macro Id="COM_LOCAL_ACCESS" Value="CCDC" />
+    <Macro Id="COM_LOCAL_LAUNCH" Value="CCDCSW" />
+
+    <!--
+        Device object access rights
+    -->
+    <Macro Id="DEVICE_ALL" Value="GA" />
+    <Macro Id="DEVICE_READ" Value="GR" />
+    <Macro Id="DEVICE_EXECUTE" Value="GX" />
+    <Macro Id="DEVICE_WRITE" Value="GW" />
+
+    <!--
+        File Mapping access rights
+        http://msdn.microsoft.com/en-us/library/aa366559(v=VS.85).aspx
+    -->
+    <Macro Id="FILE_MAP_QUERY" Value="CC" />
+    <Macro Id="FILE_MAP_WRITE" Value="DC" />
+    <Macro Id="FILE_MAP_READ" Value="LC" />
+    <Macro Id="FILE_MAP_EXECUTE" Value="WP" />
+    <!-- FILE_MAP_ALL_ACCESS Includes all access rights to a file mapping object except FILE_MAP_EXECUTE -->
+    <Macro Id="FILE_MAP_ALL_ACCESS" Value="CCDCLCSWSDRCWDWO" />
+
+    <!--
+        ETW Access Permission
+        http://msdn.microsoft.com/en-us/library/windows/desktop/aa363717(v=vs.85).aspx
+
+        A GUID security descriptor contains the following specific rights:
+            WMIGUID_QUERY                 0x0001                CC
+            WMIGUID_SET                   0x0002                DC
+            WMIGUID_NOTIFICATION          0x0004                LC
+            WMIGUID_READ_DESCRIPTION      0x0008                SW
+            WMIGUID_EXECUTE               0x0010                RP
+            TRACELOG_CREATE_REALTIME      0x0020                WP
+            TRACELOG_CREATE_ONDISK        0x0040                DT
+            TRACELOG_GUID_ENABLE          0x0080                LO
+            TRACELOG_ACCESS_KERNEL_LOGGER 0x0100 // unused
+            TRACELOG_LOG_EVENT            0x0200
+            TRACELOG_ACCESS_REALTIME      0x0400
+            TRACELOG_REGISTER_GUIDS       0x0800
+
+        ETW_QUERY_SESSION = STANDARD_RIGHTS_READ | WMIGUID_QUERY | WMIGUID_READ_DESCRIPTION | WMIGUID_NOTIFICATION
+
+        ETW_CONTROL_SESSION = STANDARD_RIGHTS_WRITE | WMIGUID_SET | TRACELOG_CREATE_REALTIME | TRACELOG_CREATE_ONDISK | TRACELOG_GUID_ENABLE
+
+        ETW_LOG_EVENT = STANDARD_RIGHTS_EXECUTE | WMIGUID_EXECUTE | TRACELOG_LOG_EVENT | TRACELOG_REGISTER_GUIDS
+
+        ETWLOG_ALL = STANDARD_RIGHTS_READ | STANDARD_RIGHTS_WRITE | STANDARD_RIGHTS_EXECUTE | WMIGUID_QUERY | WMIGUID_READ_DESCRIPTION | WMIGUID_NOTIFICATION | WMIGUID_SET | TRACELOG_CREATE_REALTIME | TRACELOG_CREATE_ONDISK | TRACELOG_LOG_EVENT | WMIGUID_EXECUTE | TRACELOG_GUID_ENABLE | TRACELOG_ACCESS_REALTIME | TRACELOG_REGISTER_GUIDS
+
+    -->
+    <!-- Support ControlTrace() with EVENT_TRACE_CONTROL_QUERY, NtQuerySystemInformation() -->
+    <Macro Id="ETW_QUERY_SESSION" Value="RCCCSWLC" />
+
+    <!-- Support StartTrace(), ControlTrace() with EVENT_TRACE_CONTROL_STOP, EVENT_TRACE_CONTROL_FLUSH and EVENT_TRACE_CONTROL_UPDATE -->
+    <Macro Id="ETW_CONTROL_SESSION" Value="RCDCWPDTLO" />
+
+    <!--
+        Log to sessions. Support NtTraceEvent()
+        A session becomes secure when it is started with EVENT_TRACE_SECURE_MODE in LogFileMode. TRACELOG_LOG_EVENT is access right for
+        logging into secure session.
+        Since we cannot do authenticate providers using old logging APIs (because they use session handle directly),
+        legacy ETW/WPP providers cannot log to secure sessions.
+        Since the value is a hex code, it can't be used with other ETW access macro in Rights attribute in the same capability rule.
+    -->
+    <Macro Id="ETW_LOG_EVENT" Value="0x020A10" />
+
+    <!--
+        Full Access,
+        Since the value is a hex code, it can't be used with other ETW access macro in Rights attribute in the same capability rule.
+    -->
+    <Macro Id="ETW_ALL" Value="0x120FFF" />
+
+    <!--
+        Transient object type macros
+    -->
+    <Macro Id="OBJECT_MUTEX" Value="Mutex" />
+    <Macro Id="OBJECT_EVENT" Value="Event" />
+    <Macro Id="OBJECT_SEMAPHORE" Value="Semaphore" />
+    <Macro Id="OBJECT_WAITABLETIMER" Value="WaitableTimer" />
+    <Macro Id="OBJECT_JOB" Value="JobObject" />
+    <Macro Id="OBJECT_FILEMAPPING" Value="FileMapping" />
+    <Macro Id="OBJECT_NAMEDPIPE" Value="NamedPipe" />
+    <Macro Id="OBJECT_MAILSLOT" Value="MailSlot" />
+    <Macro Id="OBJECT_ALPCPORT" Value="AlpcPort" />
+    <Macro Id="OBJECT_RPC" Value="Rpc" />
+    <Macro Id="OBJECT_WNF" Value="Wnf" />
+    <Macro Id="OBJECT_PRIVATE" Value="Private" />
+    <Macro Id="OBJECT_TEMPLATE" Value="Template" />
+
+    <!--
+        Service control access
+    -->
+    <Macro Id="SERVICE_CONFIG" Value="[ServiceConfig]" />
+    <Macro Id="OBJECT_SERVICE_CONFIG" Value="Private" />
+    <Macro Id="SERVICE_CONFIG_CHANGE_STARTUP" Value="0x00000001" />
+
+    <!--
+        Windows Capability
+        http://msdn.microsoft.com/en-us/library/hh448474(v=VS.85).aspx
+    -->
+    <Macro Id="WINCAP_INTERNET_CLIENT" Value="S-1-15-3-1" />
+    <Macro Id="WINCAP_INTERNET_CLIENT_SERVER" Value="S-1-15-3-2" />
+    <Macro Id="WINCAP_PRIVATE_NETWORK_CLIENT_SERVER" Value="S-1-15-3-3" />
+    <Macro Id="WINCAP_PICTURES_LIBRARY" Value="S-1-15-3-4" />
+    <Macro Id="WINCAP_VIDEOS_LIBRARY" Value="S-1-15-3-5" />
+    <Macro Id="WINCAP_MUSIC_LIBRARY" Value="S-1-15-3-6" />
+    <Macro Id="WINCAP_DOCUMENTS_LIBRARY" Value="S-1-15-3-7" />
+    <Macro Id="WINCAP_ENTERPRISE_AUTHENTICATION" Value="S-1-15-3-8" />
+    <Macro Id="WINCAP_SHARED_USER_CERTIFICATES" Value="S-1-15-3-9" />
+    <Macro Id="WINCAP_REMOVABLE_STORAGE" Value="S-1-15-3-10" />
+    <Macro Id="WINCAP_APPOINTMENTS" Value="S-1-15-3-11"/>
+    <Macro Id="WINCAP_CONTACTS" Value="S-1-15-3-12"/>
+    <Macro Id="WINCAP_NETWORKING_PROXIMITY" Value="S-1-15-3-4214768333-1334025770-122408079-3919188833"/>
+    <Macro Id="WINCAP_APPCONTAINER_PACKAGE_CERTIFICATES" Value="S-1-15-3-395236244-1315033739-1586777234-200431208"/>
+    <Macro Id="WINCAP_LOCATION" Value="S-1-15-3-3215430884-1339816292-89257616-1145831019"/>
+    <Macro Id="WINCAP_MICROPHONE" Value="S-1-15-3-787448254-1207972858-3558633622-1059886964"/>
+    <Macro Id="WINCAP_CAMERA" Value="S-1-15-3-3845273463-1331427702-1186551195-1148109977"/>  
+  
+    <Macro Id="WINCAP_APPLICATION_VIEW_ACTIVATION" Value="S-1-15-3-1024-2898197306-3300330394-3003314763-2509405055-2905551251-1957103989-1590147722-3620397556"/>
+    <Macro Id="WINCAP_ACCESSORY_MANAGER_UAP" Value="S-1-15-3-1024-1069651245-2375841711-1570187833-1826699927-1726783584-1420246439-936999711-2864509111"/>
+    <Macro Id="WINCAP_CELLULAR_DEVICE_CONTROL" Value="S-1-15-3-1024-3523901360-1745872541-794127107-675934034-1867954868-1951917511-1111796624-2052600462"/>
+    <Macro Id="WINCAP_CELLULAR_DEVICE_IDENTITY" Value="S-1-15-3-1024-11742800-2107441976-3443185924-4134956905-3840447964-3749968454-3843513199-670971053"/>
+    <Macro Id="WINCAP_CELLULAR_MESSAGING" Value="S-1-15-3-1024-3659434007-2290108278-1125199667-3679670526-1293081662-2164323352-1777701501-2595986263"/>
+    <Macro Id="WINCAP_CELLULAR_TELEPHONY" Value="S-1-15-3-1024-3865473686-2149625755-1853498847-3881918434-2635008397-546295353-2007576859-3570151403"/>
+    <Macro Id="WINCAP_CELLULAR_ADMIN" Value="S-1-15-3-1024-967904557-2583589594-4037535010-1468047438-3991165506-1813039402-1264849695-2178032989"/>
+    <Macro Id="WINCAP_CELLULAR_MODEMLOGGING" Value="S-1-15-3-1024-3229654978-3658809704-3046875103-3436347169-1607416195-2302426341-3817229838-2612905111"/>
+    <Macro Id="WINCAP_CORTANA_SETTINGS" Value="S-1-15-3-1024-1216833578-114521899-3977640588-1343180512-2505059295-473916851-3379430393-3088591068"/>
+    <Macro Id="WINCAP_DEVICE_UNLOCK" Value="S-1-15-3-1024-3090417596-1177152433-709977159-3759866339-3648116925-1194977332-3459169701-1652573254"/>
+    <Macro Id="WINCAP_ENTERPRISE_DEVICE_LOCKDOWN" Value="S-1-15-3-1024-1720708008-676358685-3694961389-3536049837-28312851-1003502039-653286243-2922628565"/>
+    <Macro Id="WINCAP_NETWORK_CONNECTION_MANAGER_PROVISIONING" Value="S-1-15-3-1024-1904668343-1122143141-2896894936-1757704438-2225457261-1832870532-4083204921-4111087458"/>
+    <Macro Id="WINCAP_NETWORK_DATA_PLAN_PROVISIONING" Value="S-1-15-3-1024-4214965917-3375290950-3857009211-4120063080-3741332808-2868847822-1843154671-4148511555"/>
+    <Macro Id="WINCAP_PACKAGE_MANAGEMENT" Value="S-1-15-3-1024-734518492-402359323-2580938124-1419864735-4212787651-2727913556-228323224-564805089"/>
+    <Macro Id="WINCAP_PACKAGE_POLICY_SYSTEM" Value="S-1-15-3-1024-1572800732-1164253991-2733652370-1720403341-3570188209-547973490-1048710288-340345592"/>
+    <Macro Id="WINCAP_USER_SIGNIN_SUPPORT" Value="S-1-15-3-1024-1730716382-2949791265-2036182297-688374192-553408039-4133924312-4201181712-267922143"/>
+    <Macro Id="WINCAP_VISUALELEMENT_SYSTEM" Value="S-1-15-3-1024-3299255270-1847605585-2201808924-710406709-3613095291-873286183-3101090833-2655911836"/>
+    <Macro Id="WINCAP_WINDOWS_HELLO_CREDENTIAL_ACCESS" Value="S-1-15-3-1024-1902118268-936929782-3474333872-803346623-1872623265-3899080591-2872335817-3963487957"/>
+    <Macro Id="WINCAP_INPUT_INJECTION" Value="S-1-15-3-1024-918685303-2392273179-1242551144-2277013827-3453391213-358261840-2217007564-611397587"/>
+
+</Macros>
+```
