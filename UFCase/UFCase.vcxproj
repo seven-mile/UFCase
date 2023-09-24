@@ -635,4 +635,13 @@
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.targets'))" />
   </Target>
+
+  <!-- Custom Build Targets -->
+
+  <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
+    <Message Text="Copying $(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe to $(OutDir)UFCase.Host.amd64.exe" Importance="High" />
+    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
+    <!-- todo: other arch support -->
+  </Target>
+
 </Project>

@@ -81,26 +81,19 @@ namespace winrt::UFCase::Isolation::implementation
         m_hosts.erase(host.Bootdrive().c_str());
     }
 
-    inline static std::filesystem::path GetHostExePath()
+    inline static std::filesystem::path GetHostExePath(std::wstring const &arch)
     {
         WCHAR szPath[MAX_PATH];
         ::GetModuleFileName(::GetModuleHandle(NULL), szPath, MAX_PATH);
 
         winrt::check_win32(GetLastError());
 
+        auto exeName = std::format(L"UFCase.Host.{}.exe", arch);
+
         std::filesystem::path mainExePath{szPath};
         {
-            auto hostExeDir = mainExePath.parent_path().parent_path() / L"UFCase.Host";
-            auto hostExePath = hostExeDir / L"UFCase.Host.exe";
-            if (std::filesystem::exists(hostExePath))
-            {
-                return hostExePath;
-            }
-        }
-
-        {
             auto hostExeDir = mainExePath.parent_path();
-            auto hostExePath = hostExeDir / L"UFCase.Host.exe";
+            auto hostExePath = hostExeDir / exeName;
             if (std::filesystem::exists(hostExePath))
             {
                 return hostExePath;
@@ -121,7 +114,10 @@ namespace winrt::UFCase::Isolation::implementation
             }
         }
 
-        auto hostExePath = GetHostExePath();
+        // todo: detect host architecture
+        auto hostArch = L"amd64";
+
+        auto hostExePath = GetHostExePath(hostArch);
         auto hostExeDir = hostExePath.parent_path();
 
         auto client_id = winrt::to_hstring(winrt::GuidHelper::CreateNewGuid());
