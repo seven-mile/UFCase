@@ -61,7 +61,7 @@ void TestManifestWinRT()
 
     auto assembly = winrt::UFCase::Host::Manifest::ManifestParser::ParseFromStream(straem_wrapper);
 
-    OutputDebugString(winrt::format(L"{} v{}\n", assembly.Name(), assembly.Version()).c_str());
+    OutputDebugString(winrt::format(L"{} v{}\n", assembly.Name(), assembly.Version().Value()).c_str());
 
     for (auto &file : assembly.Files())
     {

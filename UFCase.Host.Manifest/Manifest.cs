@@ -49,6 +49,7 @@ namespace UFCase.Host.Manifest
         }
 
         public string DestinationName => CmiFile.DestinationName;
+        public string DestinationPath => CmiFile.DestinationPath;
         public string SourcePath => CmiFile.SourcePath;
         public string SourceName => CmiFile.SourceName;
         public string ImportPath => CmiFile.ImportPath;
@@ -87,22 +88,35 @@ namespace UFCase.Host.Manifest
 
         public string Name => CmiValue.Name;
         public RegistryValueType Type => (RegistryValueType)CmiValue.Type;
-        public object? Data => Type switch
+        public object? Data
         {
-            RegistryValueType.RegNone => null,
-            RegistryValueType.RegSz or RegistryValueType.RegExpandSz => CmiValue.Data as string,
-            RegistryValueType.RegBinary => CmiValue.Data as byte[],
-            RegistryValueType.RegDword => CmiValue.Data as int?,
-            RegistryValueType.RegDwordBigEndian => throw new NotImplementedException(),
-            RegistryValueType.RegLink => CmiValue.Data as string,
-            RegistryValueType.RegMultiSz => CmiValue.Data as string[],
-            RegistryValueType.RegResourceList => CmiValue.Data as string,
-            RegistryValueType.RegFullResourceDescriptor => CmiValue.Data as string,
-            RegistryValueType.RegResourceRequirementsList => CmiValue.Data as string,
-            RegistryValueType.RegQword => CmiValue.Data as long?,
-            _ => null,
-        };
+            get
+            {
+                var obj = CmiValue.Data as object;
+                System.Diagnostics.Debug.Print(obj?.GetType().ToString() ?? "null");
 
+                if (CmiValue.Data is null)
+                {
+                    return null;
+                }
+
+                return Type switch
+                {
+                    RegistryValueType.RegNone => null,
+                    RegistryValueType.RegSz or RegistryValueType.RegExpandSz => CmiValue.Data as string,
+                    RegistryValueType.RegBinary => CmiValue.Data as byte[],
+                    RegistryValueType.RegDword => CmiValue.Data as int?,
+                    RegistryValueType.RegDwordBigEndian => throw new NotImplementedException(),
+                    RegistryValueType.RegLink => CmiValue.Data as string,
+                    RegistryValueType.RegMultiSz => CmiValue.Data as string[],
+                    RegistryValueType.RegResourceList => null,
+                    RegistryValueType.RegFullResourceDescriptor => null,
+                    RegistryValueType.RegResourceRequirementsList => null,
+                    RegistryValueType.RegQword => CmiValue.Data as long?,
+                    _ => null,
+                };
+            }
+        }
     }
 
     public sealed class RegistryKey
