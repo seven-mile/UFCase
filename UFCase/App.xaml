@@ -16,6 +16,9 @@
                     <SvgImageSource x:Key="WinModernIcon" UriSource="/Assets/winmodern.svg" />
                     <SvgImageSource x:Key="WinFluentIcon" UriSource="/Assets/winfluent.svg" />
                 </ResourceDictionary>
+                <ResourceDictionary>
+                    <local:WindowService x:Name="WindowService" />
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

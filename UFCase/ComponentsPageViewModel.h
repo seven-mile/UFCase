@@ -41,23 +41,19 @@ namespace winrt::UFCase::implementation
         {
             if (!m_selected)
                 co_return;
-            auto manifest = m_selected.Manifest();
-            ContentDialog cd;
-            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-            cd.Title(box_value(L"Manifest content"));
-            RichTextBlock txt;
-            Documents::Run run;
-            run.Text(manifest);
-            Documents::Paragraph para;
-            para.Inlines().Append(run);
-            txt.Blocks().Append(para);
-            ScrollViewer sv;
-            sv.Content(txt);
-            cd.Content(sv);
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            cd.MaxHeight(600);
-            co_await cd.ShowAsync();
+            auto model = m_selected.Model();
+
+            if (!GlobalRes::WindowServ().TryActivateWindow(model))
+            {
+                UFCase::ManifestViewerWindowViewModel wnd_vm{model};
+                UFCase::ManifestViewerWindow viewer_wnd{wnd_vm};
+                GlobalRes::WindowServ().RegisterWindow(model, viewer_wnd);
+
+                viewer_wnd.Closed(
+                    [model](auto &&, auto &&) { GlobalRes::WindowServ().UnregisterWindow(model); });
+
+                viewer_wnd.Activate();
+            }
         }
 
         HandleCommandAsync(ComponentShowInFileExplorer)

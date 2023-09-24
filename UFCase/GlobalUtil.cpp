@@ -11,6 +11,7 @@ namespace winrt::UFCase::GlobalRes
     static MainWindow refMainWnd{nullptr};
     static MainNavigationService refMainNav{nullptr};
     static MainProgressService refMainProg{nullptr};
+    static WindowService refWndServ{nullptr};
     static Microsoft::UI::Dispatching::DispatcherQueue refUIQueue{nullptr};
 
     void MainWnd(MainWindow mainWnd)
@@ -44,6 +45,17 @@ namespace winrt::UFCase::GlobalRes
     {
         assert(refMainProg);
         return refMainProg;
+    }
+
+    void WindowServ(WindowService wndServ)
+    {
+        refWndServ = wndServ;
+    }
+
+    WindowService WindowServ()
+    {
+        assert(refWndServ);
+        return refWndServ;
     }
 
     Media::FontFamily SymbolThemeFontFamily()

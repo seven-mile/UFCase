@@ -1,0 +1,37 @@
+namespace UFCase
+{
+
+    struct FileItem
+    {
+        String DestinationName;
+        String DestinationPath;
+        String Hash;
+        String HashAlgorithm;
+    };
+
+    struct RegItem
+    {
+        String Name;
+        String Type;
+        String Value;
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass ManifestAssemblyViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ManifestAssemblyViewModel(UFCase.Isolation.ComponentModel model);
+
+        String Name{ get; };
+
+        String ManifestText{ get; };
+
+        Windows.Foundation.Collections.IObservableVector<FileItem> FileItems{ get; };
+        Windows.Foundation.Collections.IObservableVector<RegItem> RegItems{ get; };
+
+        Windows.Foundation.Collections.IObservableVector<String> DependentAssemblies{ get; };
+
+        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
+        void LocateDependentAssembly(Int32 index);
+    }
+}

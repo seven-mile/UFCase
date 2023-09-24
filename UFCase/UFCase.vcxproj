@@ -25,6 +25,8 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
+    <CppWinRTNamespaceMergeDepth>
+    </CppWinRTNamespaceMergeDepth>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -194,6 +196,18 @@
       <DependentUpon>MainProgressService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="ManifestAssemblyViewModel.h">
+      <DependentUpon>ManifestAssemblyViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ManifestViewerWindow.xaml.h">
+      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ManifestViewerWindowViewModel.h">
+      <DependentUpon>ManifestViewerWindowViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="PackagesPage.xaml.h">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -247,6 +261,10 @@
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="WindowService.h">
+      <DependentUpon>WindowService.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="XamlUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +285,9 @@
       <DeploymentContent>true</DeploymentContent>
     </Page>
     <Page Include="MainWindow.xaml" />
+    <Page Include="ManifestViewerWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PackagesPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -349,6 +370,18 @@
       <DependentUpon>MainProgressService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="ManifestAssemblyViewModel.cpp">
+      <DependentUpon>ManifestAssemblyViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ManifestViewerWindow.xaml.cpp">
+      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ManifestViewerWindowViewModel.cpp">
+      <DependentUpon>ManifestViewerWindowViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="PackagesPage.xaml.cpp">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -401,6 +434,10 @@
     </ClCompile>
     <ClCompile Include="TemplateSettingsPage.xaml.cpp">
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="WindowService.cpp">
+      <DependentUpon>WindowService.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
   </ItemGroup>
@@ -456,6 +493,16 @@
     <Midl Include="MainNavigationService.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="ManifestAssemblyViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ManifestViewerWindow.idl">
+      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="ManifestViewerWindowViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="PackagesPage.idl">
       <DependentUpon>PackagesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -494,6 +541,9 @@
     <Midl Include="TemplateSettingsPage.idl">
       <DependentUpon>TemplateSettingsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="WindowService.idl">
+      <SubType>Designer</SubType>
     </Midl>
   </ItemGroup>
   <ItemGroup>

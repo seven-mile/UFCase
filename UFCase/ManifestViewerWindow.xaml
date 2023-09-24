@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="UFCase.ManifestViewerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:UFCase"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <PivotItem Padding="0" Header="Parsed">
+                <ScrollViewer>
+                    <Grid Padding="12,0,12,0">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Files" />
+                            <ListView ItemsSource="{x:Bind ViewModel.Assembly.FileItems, Mode=OneWay}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:FileItem">
+                                        <ListViewItem>
+                                            <TextBlock>
+                                                <Run Text="{x:Bind DestinationName}" />
+                                                <Run Text="{x:Bind DestinationPath}" />
+                                                <Run Text="{x:Bind HashAlgorithm}" />
+                                                <Run Text="{x:Bind Hash}" />
+                                            </TextBlock>
+                                        </ListViewItem>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <TextBlock Text="Registry Keys" />
+                            <ListView ItemsSource="{x:Bind ViewModel.Assembly.RegItems, Mode=OneWay}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:RegItem">
+                                        <ListViewItem>
+                                            <TextBlock>
+                                                <Run Text="{x:Bind Name}" />
+                                                <Run Text="{x:Bind Type}" />
+                                                <Run Text="{x:Bind Value}" />
+                                            </TextBlock>
+                                        </ListViewItem>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <TextBlock Text="Dependencies" />
+                            <ListView ItemsSource="{x:Bind ViewModel.Assembly.DependentAssemblies, Mode=OneWay}" />
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Padding="0" Header="Raw">
+                <ScrollViewer>
+                    <Grid Padding="12,0,12,0">
+                        <RichTextBlock>
+                            <Paragraph>
+                                <Run FontFamily="Consolas" Text="{x:Bind ViewModel.Assembly.ManifestText, Mode=OneWay}" />
+                            </Paragraph>
+                        </RichTextBlock>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Window>

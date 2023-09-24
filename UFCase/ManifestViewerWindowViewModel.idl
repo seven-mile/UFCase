@@ -1,0 +1,13 @@
+import "ManifestAssemblyViewModel.idl";
+
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass ManifestViewerWindowViewModel 
+    {
+        ManifestViewerWindowViewModel(UFCase.Isolation.ComponentModel model);
+
+        ManifestAssemblyViewModel Assembly{ get; };
+    }
+}

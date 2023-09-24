@@ -11,6 +11,8 @@ namespace UFCase
     {
         ComponentViewModel(UFCase.Isolation.ComponentModel model);
 
+        UFCase.Isolation.ComponentModel Model{ get; };
+
         String TextForm{ get; };
         String KeyForm{ get; };
 

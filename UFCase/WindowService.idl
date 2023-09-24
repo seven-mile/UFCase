@@ -1,0 +1,13 @@
+namespace UFCase
+{
+    [bindable]
+    [default_interface]
+    runtimeclass WindowService 
+    {
+        WindowService();
+
+        Boolean TryActivateWindow(Object view_model);
+        void RegisterWindow(Object view_model, Microsoft.UI.Xaml.Window window);
+        void UnregisterWindow(Object view_model);
+    }
+}

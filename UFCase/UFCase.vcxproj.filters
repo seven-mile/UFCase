@@ -40,34 +40,13 @@
     <Page Include="SplashWindow.xaml">
       <Filter>views\windows</Filter>
     </Page>
+    <Page Include="ManifestViewerWindow.xaml">
+      <Filter>views\windows</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
     <Midl Include="MainWindow.idl" />
-    <Midl Include="FeatureViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="PackageViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="ImageSelectorViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="SysInfoRealtimeProvider.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="SysInfoStaticViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="ImageViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="FeaturesPageViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="PackagesPageViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
     <Midl Include="MainNavigationService.idl">
       <Filter>view_models\services</Filter>
     </Midl>
@@ -77,14 +56,44 @@
     <Midl Include="RelayCommand.idl">
       <Filter>libraries\mvvm</Filter>
     </Midl>
-    <Midl Include="ComponentViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
-    <Midl Include="ComponentsPageViewModel.idl">
-      <Filter>view_models</Filter>
-    </Midl>
     <Midl Include="GlyphButton.idl">
       <Filter>views\controls</Filter>
+    </Midl>
+    <Midl Include="ComponentViewModel.idl">
+      <Filter>view_models\objects</Filter>
+    </Midl>
+    <Midl Include="FeatureViewModel.idl">
+      <Filter>view_models\objects</Filter>
+    </Midl>
+    <Midl Include="ImageViewModel.idl">
+      <Filter>view_models\objects</Filter>
+    </Midl>
+    <Midl Include="PackageViewModel.idl">
+      <Filter>view_models\objects</Filter>
+    </Midl>
+    <Midl Include="ComponentsPageViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="FeaturesPageViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="ImageSelectorViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="PackagesPageViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="SysInfoRealtimeProvider.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="SysInfoStaticViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="ManifestViewerWindowViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="ManifestAssemblyViewModel.idl">
+      <Filter>view_models\objects\manifest</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +220,15 @@
     </Filter>
     <Filter Include="views\controls">
       <UniqueIdentifier>{0c992c87-62f9-4e0b-8c62-43829543bb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view_models\objects">
+      <UniqueIdentifier>{805961a1-5c08-4ba8-8c5d-0a3b58e81120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view_models\views">
+      <UniqueIdentifier>{00faa0d5-1878-46f3-bc50-f4dd8c38bee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view_models\objects\manifest">
+      <UniqueIdentifier>{0a06d636-f8ca-4103-85d4-99e0c62a7af7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

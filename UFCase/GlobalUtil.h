@@ -15,6 +15,9 @@ namespace winrt::UFCase
         void MainProgServ(MainProgressService mainProgServ);
         MainProgressService MainProgServ();
 
+        void WindowServ(WindowService wndServ);
+        WindowService WindowServ();
+
         Media::FontFamily SymbolThemeFontFamily();
 
         void UIQueue(Microsoft::UI::Dispatching::DispatcherQueue uiQueue);

@@ -14,6 +14,11 @@ namespace winrt::UFCase::implementation
     {
         ComponentViewModel(Isolation::ComponentModel model);
 
+        Isolation::ComponentModel Model()
+        {
+            return m_model;
+        }
+
         hstring TextFormRaw();
         hstring KeyFormRaw();
 
