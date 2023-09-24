@@ -4,6 +4,8 @@
 
 #include "ServicingApi/isolation.h"
 
+#include <winrt/UFCase.Host.Manifest.h>
+
 namespace winrt::UFCase::Isolation::implementation
 {
     struct StoreModel;
@@ -19,6 +21,7 @@ namespace winrt::UFCase::Isolation::implementation
         hstring KeyForm();
 
         hstring Manifest();
+        UFCase::Host::Manifest::Assembly CookedManifest();
 
         CsiComponentStatus Status();
         hstring PayloadPath();

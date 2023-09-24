@@ -60,7 +60,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0'">v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <GenerateManifest>false</GenerateManifest>
+    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -220,6 +220,7 @@
     <ClInclude Include="Utils\MallocUtil.h" />
     <ClInclude Include="Utils\PathUtil.h" />
     <ClInclude Include="Utils\StackUtil.h" />
+    <ClInclude Include="Utils\StreamUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComponentModel.cpp" />
@@ -296,6 +297,14 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)CbsApi_i.c; %(RelativeDir)CbsApi_p.c; %(RelativeDir)dlldata.c; %(RelativeDir)CbsApi.h</Outputs>
     </CustomBuild>
     <Midl Include="UFCase.Isolation.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UFCase.Host.Manifest\UFCase.Host.Manifest.csproj">
+      <Project>{731603da-8257-4e50-a9a9-c47d3c9f8233}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

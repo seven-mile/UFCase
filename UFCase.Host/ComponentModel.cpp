@@ -5,6 +5,7 @@
 #endif
 
 #include "Utils/ComUtil.h"
+#include "Utils/StreamUtil.h"
 
 #include "StoreModel.h"
 
@@ -75,6 +76,19 @@ namespace winrt::UFCase::Isolation::implementation
             check_win32(GetLastError());
 
         return bufferw.get();
+    }
+
+    UFCase::Host::Manifest::Assembly ComponentModel::CookedManifest()
+    {
+        com_ptr<::IUnknown> pTManifestRaw;
+        IDefinitionIdentity *def_idents[] = {m_asm_id.get()};
+        check_hresult(m_store->m_csi_store->GetComponentManifests(
+            0, 1, def_idents, __uuidof(IStream), pTManifestRaw.put()));
+        auto pStream = pTManifestRaw.as<IStream>();
+
+        auto wrapper = make<UFCase::Host::Manifest::implementation::ComStreamWrapper>(pStream);
+
+        return UFCase::Host::Manifest::ManifestParser::ParseFromStream(wrapper);
     }
 
     CsiComponentStatus ComponentModel::Status()

@@ -7,6 +7,14 @@
 #include <chrono>
 #include <filesystem>
 
+#ifdef _DEBUG
+#include <winrt/UFCase.Host.Manifest.h>
+#include "Utils/StreamUtil.h"
+#endif
+
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
+
 namespace winrt
 {
     using namespace Windows::Foundation;
@@ -36,6 +44,53 @@ inline void EnsureBackupRestorePrivilege()
     winrt::check_bool(
         AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
 }
+
+#ifdef _DEBUG
+void TestManifestWinRT()
+{
+    winrt::com_ptr<::IStream> stream;
+    winrt::check_hresult(SHCreateStreamOnFileEx(
+        LR"(C:\Users\7mile\source\repos\UFCase\docs\manifests\comp_dependency.xml)", STGM_READ,
+        FILE_ATTRIBUTE_NORMAL, FALSE, nullptr, stream.put()));
+
+    // auto assembly = winrt::UFCase::Host::Manifest::ManifestParser::ParseFromPath(
+    //     LR"(C:\Users\7mile\source\repos\UFCase\docs\manifests\comp_dependency.xml)");
+
+    auto straem_wrapper =
+        winrt::make<winrt::UFCase::Host::Manifest::implementation::ComStreamWrapper>(stream);
+
+    auto assembly = winrt::UFCase::Host::Manifest::ManifestParser::ParseFromStream(straem_wrapper);
+
+    OutputDebugString(winrt::format(L"{} v{}\n", assembly.Name(), assembly.Version()).c_str());
+
+    for (auto &file : assembly.Files())
+    {
+        OutputDebugString(winrt::format(L"file: [{}] {} {}\n", file.DestinationName(), file.Hash(),
+                                        file.SizeInByte())
+                              .c_str());
+    }
+
+    for (auto &key : assembly.Keys())
+    {
+        OutputDebugString(
+            winrt::format(L"key: [{}] {} values\n", key.Name(), key.Values().size()).c_str());
+
+        for (auto &value : key.Values())
+        {
+            OutputDebugString(
+                winrt::format(L"key value: [{}] {} {}\n", value.Name(), (int)value.Type(),
+                              winrt::unbox_value_or<winrt::hstring>(value.Data(), L"unsupported"))
+                    .c_str());
+        }
+    }
+
+    for (auto &dep : assembly.Dependencies())
+    {
+        OutputDebugString(
+            winrt::format(L"dep: [{}] {}\n", dep.Identity().KeyForm(), dep.Type()).c_str());
+    }
+}
+#endif
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 // int main()

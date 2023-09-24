@@ -143,6 +143,7 @@ namespace UFCase.Isolation
         String KeyForm{get;};
 
         String Manifest{get;};
+        UFCase.Host.Manifest.Assembly CookedManifest{get;};
 
         CsiComponentStatus Status{get;};
         String PayloadPath{get;};

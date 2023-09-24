@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UFCase.Host.Manifest": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

@@ -152,6 +152,9 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UFCase.Host.Manifest\UFCase.Host.Manifest.csproj">
+      <Project>{731603da-8257-4e50-a9a9-c47d3c9f8233}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\UFCase.Host\UFCase.Host.vcxproj">
       <Project>{72710aa5-7cc4-4f1d-9560-89cb778e65f5}</Project>
     </ProjectReference>
