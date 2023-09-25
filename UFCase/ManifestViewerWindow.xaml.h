@@ -11,6 +11,8 @@ namespace winrt::UFCase::implementation
     {
         ManifestViewerWindow(UFCase::ManifestViewerWindowViewModel view_model);
 
+        void InitializeComponent();
+
         UFCase::ManifestViewerWindowViewModel ViewModel()
         {
             return m_view_model;

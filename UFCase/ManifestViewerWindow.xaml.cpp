@@ -9,8 +9,7 @@
 
 #include "AsyncUtil.h"
 
-using namespace winrt;
-using namespace Microsoft::UI::Xaml;
+#include <winrt/Microsoft.UI.Windowing.h>
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,5 +20,11 @@ namespace winrt::UFCase::implementation
         : m_view_model(view_model)
     {
         no_await(m_view_model.Assembly().PullData());
+    }
+    void ManifestViewerWindow::InitializeComponent()
+    {
+        ManifestViewerWindowT::InitializeComponent();
+
+        AppWindow().Resize({1080, 768});
     }
 } // namespace winrt::UFCase::implementation
