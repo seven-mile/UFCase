@@ -3,6 +3,12 @@
 #include "ComponentsPageViewModel.g.h"
 
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.System.h>
+
+#include <winrt/UFCase.Isolation.h>
+
+#include <filesystem>
 
 #include "PropChgUtil.h"
 #include "XamlUtil.h"
@@ -58,6 +64,22 @@ namespace winrt::UFCase::implementation
 
         HandleCommandAsync(ComponentShowInFileExplorer)
         {
+            if (!m_selected)
+                co_return;
+
+            auto model = m_selected.Model();
+
+            std::filesystem::path path = model.PayloadPath().c_str();
+            if (!std::filesystem::exists(path))
+            {
+                co_return;
+            }
+
+            auto folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(
+                path.c_str());
+
+            co_await winrt::Windows::System::Launcher::LaunchFolderAsync(folder);
+
             co_return;
         }
 
