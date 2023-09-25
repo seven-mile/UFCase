@@ -11,7 +11,7 @@
 
     <Grid>
         <Pivot HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <PivotItem Padding="0" Header="Parsed">
+            <PivotItem Margin="0" Header="Parsed">
                 <ScrollViewer>
                     <Grid Padding="12,0,12,0">
                         <StackPanel Orientation="Vertical">
@@ -50,7 +50,7 @@
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
-            <PivotItem Padding="0" Header="Raw">
+            <PivotItem Margin="0" Header="Raw">
                 <ScrollViewer>
                     <Grid Padding="12,0,12,0">
                         <RichTextBlock>
