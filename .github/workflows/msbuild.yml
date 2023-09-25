@@ -29,6 +29,7 @@ jobs:
         nuget restore ./UFCase/packages.config -SolutionDirectory .
         nuget restore ./UFCase.Host/packages.config -SolutionDirectory .
         nuget restore ./UFCase.Host.Test/packages.config -SolutionDirectory .
+        msbuild -t:restore ./UFCase.Host.Manifest
 
     - name: Build the project
       working-directory: ${{ env.GITHUB_WORKSPACE }}
@@ -43,12 +44,19 @@ jobs:
       working-directory: ${{ env.BUILD_PLATFORM }}/${{ env.BUILD_CONFIGURATION }}
       run: |
         mkdir -p ./Artifact
+        cp -r ./UFCase/Assets ./Artifact
         cp ./UFCase/Microsoft.WindowsAppRuntime.Bootstrap.dll ./Artifact
         cp ./UFCase/UFCase.exe ./Artifact
         cp ./UFCase/UFCase.pri ./Artifact
         cp ./UFCase/UFCase.Isolation.winmd ./Artifact
-        cp -r ./UFCase/Assets ./Artifact
-        cp ./UFCase.Host/UFCase.Host.exe ./Artifact
+        cp ./UFCase/UFCase.Host.amd64.exe ./Artifact
+        cp ./UFCase/UFCase.Host.Manifest.dll ./Artifact
+        cp ./UFCase/UFCase.Host.Manifest.winmd ./Artifact
+        cp ./UFCase/WinRT.Host.dll ./Artifact
+        cp ./UFCase/WinRT.Host.dll.mui ./Artifact
+        cp ./UFCase/WinRT.Host.runtimeconfig.json ./Artifact
+        cp ./UFCase/WinRT.Host.Shim.dll ./Artifact
+        cp ./UFCase/WinRT.Runtime.dll ./Artifact
 
     # Upload the application package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload UFCase package
