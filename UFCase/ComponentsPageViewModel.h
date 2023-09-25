@@ -51,8 +51,8 @@ namespace winrt::UFCase::implementation
 
             if (!GlobalRes::WindowServ().TryActivateWindow(model))
             {
-                UFCase::ManifestViewerWindowViewModel wnd_vm{model};
-                UFCase::ManifestViewerWindow viewer_wnd{wnd_vm};
+                UFCase::AssemblyManifestViewerWindowViewModel wnd_vm{model};
+                UFCase::AssemblyManifestViewerWindow viewer_wnd{wnd_vm};
                 GlobalRes::WindowServ().RegisterWindow(model, viewer_wnd);
 
                 viewer_wnd.Closed(

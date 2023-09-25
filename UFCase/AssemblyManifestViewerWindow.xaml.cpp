@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 #include "pch.h"
-#include "ManifestViewerWindow.xaml.h"
-#if __has_include("ManifestViewerWindow.g.cpp")
-#include "ManifestViewerWindow.g.cpp"
+#include "AssemblyManifestViewerWindow.xaml.h"
+#if __has_include("AssemblyManifestViewerWindow.g.cpp")
+#include "AssemblyManifestViewerWindow.g.cpp"
 #endif
 
 #include "AsyncUtil.h"
@@ -16,14 +16,14 @@
 
 namespace winrt::UFCase::implementation
 {
-    ManifestViewerWindow::ManifestViewerWindow(UFCase::ManifestViewerWindowViewModel view_model)
+    AssemblyManifestViewerWindow::AssemblyManifestViewerWindow(UFCase::AssemblyManifestViewerWindowViewModel view_model)
         : m_view_model(view_model)
     {
         no_await(m_view_model.Assembly().PullData());
     }
-    void ManifestViewerWindow::InitializeComponent()
+    void AssemblyManifestViewerWindow::InitializeComponent()
     {
-        ManifestViewerWindowT::InitializeComponent();
+        AssemblyManifestViewerWindowT::InitializeComponent();
 
         AppWindow().Resize({1080, 768});
     }

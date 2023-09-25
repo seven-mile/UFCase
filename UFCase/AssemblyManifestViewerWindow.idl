@@ -1,0 +1,12 @@
+import "AssemblyManifestViewerWindowViewModel.idl";
+
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass AssemblyManifestViewerWindow : Microsoft.UI.Xaml.Window
+    {
+        AssemblyManifestViewerWindow(AssemblyManifestViewerWindowViewModel view_model);
+
+        AssemblyManifestViewerWindowViewModel ViewModel{ get; };
+    }
+}

@@ -1,14 +1,14 @@
 ﻿#include "pch.h"
-#include "ManifestViewerWindowViewModel.h"
-#if __has_include("ManifestViewerWindowViewModel.g.cpp")
-#include "ManifestViewerWindowViewModel.g.cpp"
+#include "AssemblyManifestViewerWindowViewModel.h"
+#if __has_include("AssemblyManifestViewerWindowViewModel.g.cpp")
+#include "AssemblyManifestViewerWindowViewModel.g.cpp"
 #endif
 
 namespace winrt::UFCase::implementation
 {
     using namespace Windows::Data::Xml::Dom;
 
-    ManifestViewerWindowViewModel::ManifestViewerWindowViewModel(
+    AssemblyManifestViewerWindowViewModel::AssemblyManifestViewerWindowViewModel(
         UFCase::Isolation::ComponentModel model)
         : m_asm(UFCase::ManifestAssemblyViewModel(model)), m_model(model)
     {

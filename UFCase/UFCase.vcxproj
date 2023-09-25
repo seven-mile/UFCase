@@ -200,12 +200,12 @@
       <DependentUpon>ManifestAssemblyViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="ManifestViewerWindow.xaml.h">
-      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+    <ClInclude Include="AssemblyManifestViewerWindow.xaml.h">
+      <DependentUpon>AssemblyManifestViewerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="ManifestViewerWindowViewModel.h">
-      <DependentUpon>ManifestViewerWindowViewModel.idl</DependentUpon>
+    <ClInclude Include="AssemblyManifestViewerWindowViewModel.h">
+      <DependentUpon>AssemblyManifestViewerWindowViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="PackagesPage.xaml.h">
@@ -285,7 +285,7 @@
       <DeploymentContent>true</DeploymentContent>
     </Page>
     <Page Include="MainWindow.xaml" />
-    <Page Include="ManifestViewerWindow.xaml">
+    <Page Include="AssemblyManifestViewerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="PackagesPage.xaml">
@@ -374,12 +374,12 @@
       <DependentUpon>ManifestAssemblyViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="ManifestViewerWindow.xaml.cpp">
-      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+    <ClCompile Include="AssemblyManifestViewerWindow.xaml.cpp">
+      <DependentUpon>AssemblyManifestViewerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="ManifestViewerWindowViewModel.cpp">
-      <DependentUpon>ManifestViewerWindowViewModel.idl</DependentUpon>
+    <ClCompile Include="AssemblyManifestViewerWindowViewModel.cpp">
+      <DependentUpon>AssemblyManifestViewerWindowViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackagesPage.xaml.cpp">
@@ -496,11 +496,11 @@
     <Midl Include="ManifestAssemblyViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
-    <Midl Include="ManifestViewerWindow.idl">
-      <DependentUpon>ManifestViewerWindow.xaml</DependentUpon>
+    <Midl Include="AssemblyManifestViewerWindow.idl">
+      <DependentUpon>AssemblyManifestViewerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="ManifestViewerWindowViewModel.idl">
+    <Midl Include="AssemblyManifestViewerWindowViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PackagesPage.idl">
@@ -635,13 +635,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.4.230913002\build\native\Microsoft.WindowsAppSDK.targets'))" />
   </Target>
-
   <!-- Custom Build Targets -->
-
   <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
     <Message Text="Copying $(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe to $(OutDir)UFCase.Host.amd64.exe" Importance="High" />
     <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
     <!-- todo: other arch support -->
   </Target>
-
 </Project>

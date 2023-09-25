@@ -1,15 +1,15 @@
 ﻿#pragma once
 
-#include "ManifestViewerWindowViewModel.g.h"
+#include "AssemblyManifestViewerWindowViewModel.g.h"
 
 #include <winrt/Windows.Data.Xml.Dom.h>
 
 namespace winrt::UFCase::implementation
 {
-    struct ManifestViewerWindowViewModel
-        : ManifestViewerWindowViewModelT<ManifestViewerWindowViewModel>
+    struct AssemblyManifestViewerWindowViewModel
+        : AssemblyManifestViewerWindowViewModelT<AssemblyManifestViewerWindowViewModel>
     {
-        ManifestViewerWindowViewModel(UFCase::Isolation::ComponentModel model);
+        AssemblyManifestViewerWindowViewModel(UFCase::Isolation::ComponentModel model);
 
         UFCase::ManifestAssemblyViewModel Assembly()
         {
@@ -29,9 +29,9 @@ namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
-    struct ManifestViewerWindowViewModel
-        : ManifestViewerWindowViewModelT<ManifestViewerWindowViewModel,
-                                         implementation::ManifestViewerWindowViewModel>
+    struct AssemblyManifestViewerWindowViewModel
+        : AssemblyManifestViewerWindowViewModelT<AssemblyManifestViewerWindowViewModel,
+                                         implementation::AssemblyManifestViewerWindowViewModel>
     {
     };
 } // namespace winrt::UFCase::factory_implementation

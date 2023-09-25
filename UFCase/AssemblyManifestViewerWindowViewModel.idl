@@ -4,9 +4,9 @@ namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass ManifestViewerWindowViewModel 
+    runtimeclass AssemblyManifestViewerWindowViewModel 
     {
-        ManifestViewerWindowViewModel(UFCase.Isolation.ComponentModel model);
+        AssemblyManifestViewerWindowViewModel(UFCase.Isolation.ComponentModel model);
 
         ManifestAssemblyViewModel Assembly{ get; };
     }
