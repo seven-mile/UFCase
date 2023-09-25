@@ -1,0 +1,30 @@
+namespace UFCase
+{
+    enum IdentityType
+    {
+        Component,
+        Package,
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass Identity 
+    {
+        Identity();
+
+        IdentityType Type;
+
+        String ImageRoot;
+
+        String Name;
+        String Version;
+        String Culture;
+        String PublicKeyToken;
+        String ProcessorArchitecture;
+        String VersionScope;
+
+        UInt64 GetHashCode();
+
+        String GetDisplayForm();
+    }
+}

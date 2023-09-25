@@ -1,0 +1,22 @@
+import "Identity.idl";
+
+namespace UFCase
+{
+
+    [bindable]
+    [default_interface]
+    runtimeclass PackageManifestViewerWindowViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        PackageManifestViewerWindowViewModel(UFCase.Isolation.PackageModel model);
+
+        String Title{ get; };
+        String ManifestText{ get; };
+
+        Windows.Foundation.Collections.IVector<Identity> Components{ get; };
+        Windows.Foundation.Collections.IVector<Identity> Packages{ get; };
+        Windows.Foundation.Collections.IVector<Identity> Drivers{ get; };
+        Windows.Foundation.Collections.IVector<Identity> Parents{ get; };
+
+        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
+    }
+}

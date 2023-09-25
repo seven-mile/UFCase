@@ -179,6 +179,10 @@
     <ClInclude Include="HostGuard.h" />
     <ClInclude Include="HostManager.h" />
     <ClInclude Include="HostManagerSingleton.h" />
+    <ClInclude Include="Identity.h">
+      <DependentUpon>Identity.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="ImageSelectorHelper.h" />
     <ClInclude Include="ImageSelectorViewModel.h">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
@@ -206,6 +210,14 @@
     </ClInclude>
     <ClInclude Include="AssemblyManifestViewerWindowViewModel.h">
       <DependentUpon>AssemblyManifestViewerWindowViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PackageManifestViewerWindow.xaml.h">
+      <DependentUpon>PackageManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PackageManifestViewerWindowViewModel.h">
+      <DependentUpon>PackageManifestViewerWindowViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="PackagesPage.xaml.h">
@@ -288,6 +300,9 @@
     <Page Include="AssemblyManifestViewerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PackageManifestViewerWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PackagesPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -353,6 +368,10 @@
     <ClCompile Include="HostGuard.cpp" />
     <ClCompile Include="HostManager.cpp" />
     <ClCompile Include="HostManagerSingleton.cpp" />
+    <ClCompile Include="Identity.cpp">
+      <DependentUpon>Identity.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ImageSelectorHelper.cpp" />
     <ClCompile Include="ImageSelectorViewModel.cpp">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
@@ -380,6 +399,14 @@
     </ClCompile>
     <ClCompile Include="AssemblyManifestViewerWindowViewModel.cpp">
       <DependentUpon>AssemblyManifestViewerWindowViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PackageManifestViewerWindow.xaml.cpp">
+      <DependentUpon>PackageManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PackageManifestViewerWindowViewModel.cpp">
+      <DependentUpon>PackageManifestViewerWindowViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PackagesPage.xaml.cpp">
@@ -477,6 +504,9 @@
     <Midl Include="GlyphButton.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="Identity.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="ImageSelectorViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -501,6 +531,13 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="AssemblyManifestViewerWindowViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="PackageManifestViewerWindow.idl">
+      <DependentUpon>PackageManifestViewerWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="PackageManifestViewerWindowViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PackagesPage.idl">

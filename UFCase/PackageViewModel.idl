@@ -24,6 +24,8 @@ namespace UFCase
     {
         PackageViewModel(UFCase.Isolation.PackageModel model);
 
+        UFCase.Isolation.PackageModel Model { get; };
+
         String ListName { get; };
         String ListIdentity { get; };
         Microsoft.UI.Xaml.Visibility ListIdentityVisibility { get; };

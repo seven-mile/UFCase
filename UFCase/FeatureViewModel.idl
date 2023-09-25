@@ -16,7 +16,9 @@ namespace UFCase
     runtimeclass FeatureViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         FeatureViewModel(UFCase.Isolation.FeatureModel model);
-        
+
+        UFCase.Isolation.FeatureModel Model{ get; };
+
         String Name{ get; };
         String Description{ get; };
         String Identity{ get; };

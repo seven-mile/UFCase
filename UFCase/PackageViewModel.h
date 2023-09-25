@@ -15,6 +15,11 @@ namespace winrt::UFCase::implementation
 
         PackageViewModel(Isolation::PackageModel model);
 
+        Isolation::PackageModel Model()
+        {
+            return m_model;
+        }
+
         hstring ListNameRaw();
         hstring ListIdentityRaw();
         Visibility ListIdentityVisibilityRaw();

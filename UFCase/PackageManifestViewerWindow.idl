@@ -1,0 +1,12 @@
+import "PackageManifestViewerWindowViewModel.idl";
+
+namespace UFCase
+{
+    [default_interface]
+    runtimeclass PackageManifestViewerWindow : Microsoft.UI.Xaml.Window
+    {
+        PackageManifestViewerWindow(PackageManifestViewerWindowViewModel view_model);
+
+        PackageManifestViewerWindowViewModel ViewModel{ get; };
+    }
+}

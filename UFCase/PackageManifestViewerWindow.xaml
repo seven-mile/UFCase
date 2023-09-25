@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="UFCase.PackageManifestViewerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:UFCase"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="{x:Bind ViewModel.Title, Mode=OneWay}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <PivotItem Margin="0" Header="Parsed">
+                <ScrollViewer>
+                    <Grid Padding="12,0,12,0">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <DataTemplate x:Key="IdentityDataTemplate" x:DataType="local:Identity">
+                                    <TextBlock Text="{x:Bind GetDisplayForm()}" />
+                                </DataTemplate>
+                            </StackPanel.Resources>
+
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Parent Packages" />
+                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Parents}" />
+
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Updates" />
+
+                            <TextBlock Text="Packages" />
+                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Packages}" />
+
+                            <TextBlock Text="Components" />
+                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Components}" />
+
+                            <TextBlock Text="Drivers" />
+                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Drivers}" />
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Margin="0" Header="Raw">
+                <ScrollViewer>
+                    <Grid Padding="12,0,12,0">
+                        <RichTextBlock>
+                            <Paragraph>
+                                <Run FontFamily="Consolas" Text="{x:Bind ViewModel.ManifestText, Mode=OneWay}" />
+                            </Paragraph>
+                        </RichTextBlock>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Window>

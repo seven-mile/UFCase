@@ -92,25 +92,21 @@ namespace winrt::UFCase::implementation
         {
             if (!m_selected)
                 co_return;
-            auto file = co_await Windows::Storage::StorageFile::GetFileFromPathAsync(
-                (m_selected.ManifestFilePath()).c_str());
-            auto manifest = co_await Windows::Storage::FileIO::ReadTextAsync(file);
-            ContentDialog cd;
-            cd.XamlRoot(GlobalRes::MainWnd().Content().XamlRoot());
-            cd.Title(box_value(L"Manifest content"));
-            RichTextBlock txt;
-            Documents::Run run;
-            run.Text(manifest);
-            Documents::Paragraph para;
-            para.Inlines().Append(run);
-            txt.Blocks().Append(para);
-            ScrollViewer sv;
-            sv.Content(txt);
-            cd.Content(sv);
-            cd.PrimaryButtonText(L"OK");
-            cd.DefaultButton(ContentDialogButton::Primary);
-            cd.MaxHeight(600);
-            co_await cd.ShowAsync();
+
+            auto m_model = m_selected.Model();
+
+            if (!GlobalRes::WindowServ().TryActivateWindow(m_model))
+            {
+                UFCase::PackageManifestViewerWindowViewModel vm{m_model};
+                UFCase::PackageManifestViewerWindow wnd{vm};
+
+                GlobalRes::WindowServ().RegisterWindow(m_model, wnd);
+
+                wnd.Closed(
+                    [=](auto &&, auto &&) { GlobalRes::WindowServ().UnregisterWindow(m_model); });
+                
+                wnd.Activate();
+            }
         }
 
         HandleCommand(PackageShowInFileExplorer)

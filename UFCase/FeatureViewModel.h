@@ -22,6 +22,11 @@ namespace winrt::UFCase::implementation
 
         FeatureViewModel(Isolation::FeatureModel model);
 
+        Isolation::FeatureModel Model()
+        {
+            return m_model;
+        }
+
         hstring NameRaw();
         hstring DescriptionRaw();
         hstring IdentityRaw();
