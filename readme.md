@@ -66,6 +66,12 @@ If you are interested, I'm welcoming contributing! Just use UFCase to inspect ma
 
 ![fe2fbb78bdd175ccd9c5aa3b5655d942](https://github.com/seven-mile/UFCase/assets/56445491/e51b00a4-69b4-403b-b326-e30074c6c819)
 
+![Component Manifest Viewer](https://github.com/seven-mile/UFCase/assets/56445491/c76e17df-ff7c-4442-898a-b51a51ff9177)
+
+![Package Manifest Viewer](https://github.com/seven-mile/UFCase/assets/56445491/31e5f654-12b1-4eef-af03-b78d461740db)
+
+![Package Manifest Viewer (Raw)](https://github.com/seven-mile/UFCase/assets/56445491/b31f5633-036f-4e44-baf5-b7d8399dd556)
+
 ### Future Todo
 
 Priority undetermined.
