@@ -1,5 +1,11 @@
 # Basic analysis of `urn:schemas-microsoft-com:asm.v3`
 
+### Attension
+
+For the exact definition of `asm.v3`(component manifest only), please refer to the type library of [CMIv2.dll].
+
+This documentation is written before I found that CMIv2 provides a data structure definition and a parser implementation of it. Now it is for the rest, like package manifest and application manifest.
+
 ### TOC: Element List
 
 ```

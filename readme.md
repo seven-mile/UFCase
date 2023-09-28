@@ -73,9 +73,9 @@ Priority undetermined.
 - [x] **Host isolation**
   * Run high-elevated operations like calling CBS APIs in *a seperate process for each image*
   * See more benefits in the section "Known Issues" below.
-- [ ] Manifest Viewer
+- [x] Manifest Viewer
   * View XML in new window
-  * Jump to some references like package identity or component identity
+  * Long term: Jump to some references like package identity or component identity
 - [ ] Component reference querying
   * The isolation support a default keyword querying, we should implement it using a search box
   * Bonus: a proper `IReferenceIdentity` input box
