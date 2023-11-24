@@ -40,7 +40,10 @@
     <Page Include="SplashWindow.xaml">
       <Filter>views\windows</Filter>
     </Page>
-    <Page Include="ManifestViewerWindow.xaml">
+    <Page Include="AssemblyManifestViewerWindow.xaml">
+      <Filter>views\windows</Filter>
+    </Page>
+    <Page Include="PackageManifestViewerWindow.xaml">
       <Filter>views\windows</Filter>
     </Page>
   </ItemGroup>
@@ -89,11 +92,20 @@
     <Midl Include="SysInfoStaticViewModel.idl">
       <Filter>view_models\views</Filter>
     </Midl>
-    <Midl Include="ManifestViewerWindowViewModel.idl">
-      <Filter>view_models\views</Filter>
-    </Midl>
     <Midl Include="ManifestAssemblyViewModel.idl">
       <Filter>view_models\objects\manifest</Filter>
+    </Midl>
+    <Midl Include="Identity.idl">
+      <Filter>models</Filter>
+    </Midl>
+    <Midl Include="AssemblyManifestViewerWindowViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="PackageManifestViewerWindowViewModel.idl">
+      <Filter>view_models\views</Filter>
+    </Midl>
+    <Midl Include="WindowService.idl">
+      <Filter>view_models\services</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -402,8 +414,14 @@
     <Image Include="Assets\Wide310x150Logo.scale-400.png">
       <Filter>resources\Assets</Filter>
     </Image>
-    <Image Include="Assets\winfluent.svg" />
-    <Image Include="Assets\winaero.svg" />
-    <Image Include="Assets\winmodern.svg" />
+    <Image Include="Assets\winaero.svg">
+      <Filter>resources\Assets</Filter>
+    </Image>
+    <Image Include="Assets\winfluent.svg">
+      <Filter>resources\Assets</Filter>
+    </Image>
+    <Image Include="Assets\winmodern.svg">
+      <Filter>resources\Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

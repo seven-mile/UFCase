@@ -3,6 +3,7 @@
 #include "WindowService.g.h"
 
 #include <unordered_map>
+#include <mutex>
 
 namespace winrt::UFCase::implementation
 {

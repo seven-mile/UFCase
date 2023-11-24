@@ -68,7 +68,7 @@ winrt::fire_and_forget StartHosts()
 
     constexpr LPCWSTR bootdrives[] = {
         L"C:\\",
-        L"F:\\",
+        // L"F:\\",
     };
 
     auto host_job = CreateJobObject(nullptr, nullptr);

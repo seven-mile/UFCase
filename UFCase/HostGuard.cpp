@@ -22,11 +22,11 @@ namespace winrt::UFCase
         // Create WRL OOP module manager. Callback will be called when
         // all objects have disconnected.
 #pragma warning(disable : 4324)
-        auto &module = ModuleType::Create();
+        auto &mod = ModuleType::Create();
 
         // Register all WRL objects with COM. At this point COM will start connecting
         // CoCreateInstance requests.
-        check_hresult(module.RegisterObjects());
+        check_hresult(mod.RegisterObjects());
     }
 
     HostGuard::~HostGuard()
