@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "ComponentsPageNavigationContext.g.h"
 #include "ComponentsPageViewModel.g.h"
 
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
@@ -8,6 +9,8 @@
 
 #include <winrt/UFCase.Isolation.h>
 
+#include <winrt/UFCase.h>
+
 #include <filesystem>
 
 #include "PropChgUtil.h"
@@ -15,6 +18,59 @@
 
 namespace winrt::UFCase::implementation
 {
+
+    struct ComponentsPageNavigationContext
+        : ComponentsPageNavigationContextT<ComponentsPageNavigationContext>
+    {
+        ComponentsPageNavigationContext() = default;
+        static UFCase::ComponentsPageNavigationContext GetFromId(hstring const &val)
+        {
+            auto res = UFCase::ComponentsPageNavigationContext();
+            res.Type(ComponentsPageNavigationContextType::SelectCompId);
+            res.SelectCompId(val);
+            return res;
+        }
+        static UFCase::ComponentsPageNavigationContext GetFromIdentity(UFCase::Identity const &val)
+        {
+            auto res = UFCase::ComponentsPageNavigationContext();
+            res.Type(ComponentsPageNavigationContextType::SelectCompIdentity);
+            res.SelectCompIdentity(val);
+            return res;
+        }
+
+        ComponentsPageNavigationContextType Type()
+        {
+            return m_type;
+        }
+        void Type(ComponentsPageNavigationContextType const &value)
+        {
+            m_type = value;
+        }
+
+        hstring SelectCompId()
+        {
+            return m_select_comp_id;
+        }
+        void SelectCompId(hstring const &value)
+        {
+            m_select_comp_id = value;
+        }
+
+        UFCase::Identity SelectCompIdentity()
+        {
+            return m_select_comp_identity;
+        }
+        void SelectCompIdentity(UFCase::Identity const &value)
+        {
+            m_select_comp_identity = value;
+        }
+
+      private:
+        ComponentsPageNavigationContextType m_type = ComponentsPageNavigationContextType::None;
+        hstring m_select_comp_id;
+        UFCase::Identity m_select_comp_identity;
+    };
+
     struct ComponentsPageViewModel : ComponentsPageViewModelT<ComponentsPageViewModel>,
                                      ImplPropertyChangedT<ComponentsPageViewModel>
     {
@@ -41,6 +97,16 @@ namespace winrt::UFCase::implementation
         {
             m_selected = value;
             NotifyPropChange(L"SelectedComponent");
+        }
+
+        UFCase::ComponentsPageNavigationContext NavContext()
+        {
+            return m_nav_context;
+        }
+
+        void NavContext(UFCase::ComponentsPageNavigationContext const &value)
+        {
+            m_nav_context = value;
         }
 
         HandleCommandAsync(ComponentShowManifest)
@@ -90,11 +156,18 @@ namespace winrt::UFCase::implementation
 
         UFCase::ComponentViewModel m_selected{nullptr};
         Collections::IObservableVector<UFCase::ComponentViewModel> m_components;
+        UFCase::ComponentsPageNavigationContext m_nav_context;
     };
 } // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation
 {
+    struct ComponentsPageNavigationContext
+        : ComponentsPageNavigationContextT<ComponentsPageNavigationContext,
+                                           implementation::ComponentsPageNavigationContext>
+    {
+    };
+
     struct ComponentsPageViewModel
         : ComponentsPageViewModelT<ComponentsPageViewModel, implementation::ComponentsPageViewModel>
     {

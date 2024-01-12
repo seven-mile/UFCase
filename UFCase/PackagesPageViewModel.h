@@ -24,17 +24,55 @@ namespace winrt::UFCase::implementation
     {
         PackagesPageNavigationContext() = default;
 
-        hstring SelectPkgId()
+        static UFCase::PackagesPageNavigationContext GetFromId(hstring const &val)
+        {
+            auto res = UFCase::PackagesPageNavigationContext();
+            res.Type(PackagesPageNavigationContextType::SelectPkgStringId);
+            res.SelectPkgStringId(val);
+            return res;
+        }
+
+        static UFCase::PackagesPageNavigationContext GetFromIdentity(UFCase::Identity const &val)
+        {
+            auto res = UFCase::PackagesPageNavigationContext();
+            res.Type(PackagesPageNavigationContextType::SelectPkgIdentity);
+            res.SelectPkgIdentity(val);
+            return res;
+        }
+
+        PackagesPageNavigationContextType Type()
+        {
+            return m_type;
+        }
+
+        void Type(PackagesPageNavigationContextType const &value)
+        {
+            m_type = value;
+        }
+
+        hstring SelectPkgStringId()
         {
             return m_sel_pkg;
         }
 
-        void SelectPkgId(hstring value)
+        void SelectPkgStringId(hstring value)
         {
             m_sel_pkg = value;
         }
 
+        UFCase::Identity SelectPkgIdentity()
+        {
+            return m_sel_pkg_identity;
+        }
+
+        void SelectPkgIdentity(UFCase::Identity value)
+        {
+            m_sel_pkg_identity = value;
+        }
+
         hstring m_sel_pkg;
+        UFCase::Identity m_sel_pkg_identity;
+        PackagesPageNavigationContextType m_type = PackagesPageNavigationContextType::None;
     };
 
     struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel>,
@@ -104,7 +142,7 @@ namespace winrt::UFCase::implementation
 
                 wnd.Closed(
                     [=](auto &&, auto &&) { GlobalRes::WindowServ().UnregisterWindow(m_model); });
-                
+
                 wnd.Activate();
             }
         }

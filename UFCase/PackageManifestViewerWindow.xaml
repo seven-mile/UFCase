@@ -22,7 +22,10 @@
                             </StackPanel.Resources>
 
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Parent Packages" />
-                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Parents}" />
+                            <ListView
+                                ItemClick="ListView_ItemClick"
+                                ItemTemplate="{StaticResource IdentityDataTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Parents}" />
 
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Updates" />
 

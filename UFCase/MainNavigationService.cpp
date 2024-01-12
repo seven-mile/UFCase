@@ -89,11 +89,11 @@ namespace winrt::UFCase::implementation
                 auto ppvm = ivm.SelectedImageViewModel().PackagesPageViewModel();
                 if (auto ctx = navContext.try_as<UFCase::PackagesPageNavigationContext>())
                 {
-                    ppvm.NavContext().SelectPkgId(ctx.SelectPkgId());
+                    ppvm.NavContext(ctx);
                 }
                 else
                 {
-                    ppvm.NavContext().SelectPkgId(L"");
+                    ppvm.NavContext(UFCase::PackagesPageNavigationContext());
                 }
 
                 frame.Navigate(xaml_typename<PackagesPage>(), box_value(ppvm));
@@ -103,6 +103,14 @@ namespace winrt::UFCase::implementation
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
                 auto cpvm = ivm.SelectedImageViewModel().ComponentsPageViewModel();
+                if (auto ctx = navContext.try_as<UFCase::ComponentsPageNavigationContext>())
+                {
+                    cpvm.NavContext(ctx);
+                }
+                else
+                {
+                    cpvm.NavContext(UFCase::ComponentsPageNavigationContext());
+                }
                 frame.Navigate(xaml_typename<ComponentsPage>(), box_value(cpvm));
                 co_return;
             }

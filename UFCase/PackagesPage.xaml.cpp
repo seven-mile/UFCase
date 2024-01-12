@@ -9,9 +9,7 @@
 #include "GlobalUtil.h"
 
 #include <winrt/Microsoft.UI.Xaml.Input.h>
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+#include <winrt/UFCase.Isolation.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -39,9 +37,28 @@ namespace winrt::UFCase::implementation
 
             // find the matching package
             auto pvm = [&]() -> UFCase::PackageViewModel {
+                auto is_pkg_match = [&](UFCase::PackageViewModel pkg) {
+                    if (m_view_model.NavContext().Type() ==
+                        UFCase::PackagesPageNavigationContextType::SelectPkgStringId)
+                    {
+                        return pkg.DetailIdentity() == m_view_model.NavContext().SelectPkgStringId();
+                    }
+                    else if (m_view_model.NavContext().Type() ==
+                             UFCase::PackagesPageNavigationContextType::SelectPkgIdentity)
+                    {
+                        OutputDebugString(
+                            std::format(L"Package :: {}; {}; {}", pkg.Model().Identity(),
+                                        pkg.Model().ProductName(), pkg.Model().ProductVersion())
+                                .c_str());
+                        return pkg.Model().Identity() ==
+                               m_view_model.NavContext().SelectPkgIdentity().GetDisplayForm();
+                    }
+                    return false;
+                };
+
                 for (auto pkg : m_view_model.Packages())
                 {
-                    if (pkg.DetailIdentity() == m_view_model.NavContext().SelectPkgId())
+                    if (is_pkg_match(pkg))
                     {
                         return pkg;
                     }

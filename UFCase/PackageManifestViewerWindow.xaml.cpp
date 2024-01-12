@@ -10,6 +10,7 @@
 #include <winrt/Microsoft.UI.Windowing.h>
 
 #include "AsyncUtil.h"
+#include "GlobalUtil.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -25,5 +26,13 @@ namespace winrt::UFCase::implementation
         PackageManifestViewerWindowT::InitializeComponent();
 
         AppWindow().Resize({1080, 768});
+    }
+
+    fire_and_forget PackageManifestViewerWindow::ListView_ItemClick(IInspectable const &sender,
+                                                         ItemClickEventArgs const &e)
+    {
+        auto item = e.ClickedItem().as<UFCase::Identity>();
+        
+        co_await GlobalRes::MainNavServ().NavigateTo(L"Packages", PackagesPageNavigationContext::GetFromIdentity(item));
     }
 } // namespace winrt::UFCase::implementation

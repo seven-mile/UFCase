@@ -5,11 +5,24 @@ import "RelayCommand.idl";
 
 namespace UFCase
 {
+    enum PackagesPageNavigationContextType
+    {
+        None,
+        SelectPkgStringId,
+        SelectPkgIdentity,
+    };
+
     runtimeclass PackagesPageNavigationContext
     {
         PackagesPageNavigationContext();
+        static PackagesPageNavigationContext GetFromId(String select_pkg_id);
+        static PackagesPageNavigationContext GetFromIdentity(Identity select_pkg_identity);
 
-        String SelectPkgId;
+        PackagesPageNavigationContextType Type;
+
+        String SelectPkgStringId;
+
+        Identity SelectPkgIdentity;
     }
 
     enum PackagesPageViewModelState

@@ -3,8 +3,29 @@ import "ComponentViewModel.idl";
 
 import "RelayCommand.idl";
 
+import "Identity.idl";
+
 namespace UFCase
 {
+    enum ComponentsPageNavigationContextType
+    {
+        None,
+        SelectCompId,
+        SelectCompIdentity,
+    };
+
+    runtimeclass ComponentsPageNavigationContext
+    {
+        ComponentsPageNavigationContext();
+        static ComponentsPageNavigationContext GetFromId(String select_comp_id);
+        static ComponentsPageNavigationContext GetFromIdentity(Identity select_comp_identity);
+
+        ComponentsPageNavigationContextType Type;
+
+        String SelectCompId;
+
+        Identity SelectCompIdentity;
+    }
 
     enum ComponentsPageViewModelState
     {
@@ -29,5 +50,6 @@ namespace UFCase
         RelayCommand ComponentShowManifestRelay{ get; };
         RelayCommand ComponentShowInFileExplorerRelay{ get; };
 
+        ComponentsPageNavigationContext NavContext;
     }
 }

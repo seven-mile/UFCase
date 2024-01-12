@@ -40,7 +40,7 @@ namespace winrt::UFCase::implementation
         for (auto pkg : pkgs)
         {
             UFCase::PackageViewModel pkg_vm(pkg);
-            if (is_nav && m_nav_ctx && pkg.Identity() == m_nav_ctx.SelectPkgId())
+            if (is_nav && m_nav_ctx && pkg.Identity() == m_nav_ctx.SelectPkgStringId())
             {
                 if (!m_selected)
                     m_selected = pkg_vm;

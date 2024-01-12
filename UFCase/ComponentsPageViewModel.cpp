@@ -1,5 +1,8 @@
 ﻿#include "pch.h"
 #include "ComponentsPageViewModel.h"
+#if __has_include("ComponentsPageNavigationContext.g.cpp")
+#include "ComponentsPageNavigationContext.g.cpp"
+#endif
 #if __has_include("ComponentsPageViewModel.g.cpp")
 #include "ComponentsPageViewModel.g.cpp"
 #endif

@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0628 */
 /* at Tue Jan 19 11:14:07 2038
  */
-/* Compiler settings for C:\Users\7mile\source\repos\UFCase\UFCase.Host\ServicingApi\CbsApi.idl:
+/* Compiler settings for Z:\repos\UFCase\UFCase.Host\ServicingApi\CbsApi.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 

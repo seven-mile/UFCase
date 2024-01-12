@@ -88,10 +88,9 @@ namespace winrt::UFCase::implementation
             auto ppvm = m_image.get().PackagesPageViewModel();
             ppvm.SelectedPackage(m_selected.ContentPackage());
 
-            UFCase::PackagesPageNavigationContext ctx;
-            ctx.SelectPkgId(m_selected.ContentPackage().DetailIdentity());
-
-            GlobalRes::MainNavServ().NavigateTo(L"Packages", ctx);
+            auto nav_ctx = PackagesPageNavigationContext::GetFromId(
+                m_selected.ContentPackage().DetailIdentity());
+            GlobalRes::MainNavServ().NavigateTo(L"Packages", nav_ctx);
         }
 
         HandleCommand(FeatureSystem)

@@ -18,6 +18,9 @@ namespace winrt::UFCase::implementation
             return m_view_model;
         }
 
+        fire_and_forget ListView_ItemClick(IInspectable const &sender,
+                                ItemClickEventArgs const &e);
+
       private:
         UFCase::PackageManifestViewerWindowViewModel m_view_model;
     };
