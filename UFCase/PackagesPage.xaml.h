@@ -6,7 +6,9 @@ namespace winrt::UFCase::implementation
 {
     struct PackagesPage : PackagesPageT<PackagesPage>
     {
-        PackagesPage();
+        PackagesPage()
+        {
+        }
 
         fire_and_forget OnNavigatedTo(const Navigation::NavigationEventArgs &e);
 
@@ -25,7 +27,7 @@ namespace winrt::UFCase::implementation
             Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const &e);
         void PkgList_Loaded(IInspectable const &sender, RoutedEventArgs const &e);
 
-    private:
+      private:
         UFCase::PackagesPageViewModel::Navigated_revoker m_navigated_revoker;
     };
 } // namespace winrt::UFCase::implementation

@@ -14,10 +14,6 @@
 namespace winrt::UFCase::implementation
 {
 
-    PackagesPage::PackagesPage()
-    {
-    }
-
     fire_and_forget PackagesPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
         apartment_context ui_thread;
@@ -27,10 +23,10 @@ namespace winrt::UFCase::implementation
         auto view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
         // subscribe for scrolling
-        m_navigated_revoker = view_model.Navigated(
-            auto_revoke, [this, lifetime](auto &&, auto &&) -> void {
-                // should be safe for ui thread though
-                RunUITask([=]() {
+        m_navigated_revoker =
+            view_model.Navigated(auto_revoke, [this, lifetime](auto &&, auto &&) -> void {
+                // enqueue to the end for the listview to update
+                RunUITask([=] {
                     if (auto item = lifetime->PkgList().SelectedItem())
                     {
                         lifetime->PkgList().ScrollIntoView(

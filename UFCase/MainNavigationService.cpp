@@ -47,7 +47,7 @@ namespace winrt::UFCase::implementation
     }
 
     IAsyncAction MainNavigationService::NavigateTo(hstring const &page_name,
-                                                   IInspectable navContext)
+                                                   IInspectable nav_ctx)
     {
         _isNavigating = true;
         auto $scope{wil::scope_exit([this]() { _isNavigating = false; })};
@@ -87,7 +87,7 @@ namespace winrt::UFCase::implementation
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
                 auto ppvm = ivm.SelectedImageViewModel().PackagesPageViewModel();
-                if (auto ctx = navContext.try_as<UFCase::PackagesPageNavigationContext>())
+                if (auto ctx = nav_ctx.try_as<UFCase::PackagesPageNavigationContext>())
                 {
                     ppvm.Navigate(ctx);
                 }
@@ -103,13 +103,13 @@ namespace winrt::UFCase::implementation
             {
                 auto ivm = GlobalRes::MainWnd().ViewModel();
                 auto cpvm = ivm.SelectedImageViewModel().ComponentsPageViewModel();
-                if (auto ctx = navContext.try_as<UFCase::ComponentsPageNavigationContext>())
+                if (auto ctx = nav_ctx.try_as<UFCase::ComponentsPageNavigationContext>())
                 {
-                    cpvm.NavContext(ctx);
+                    cpvm.Navigate(ctx);
                 }
                 else
                 {
-                    cpvm.NavContext(UFCase::ComponentsPageNavigationContext());
+                    cpvm.Navigate(UFCase::ComponentsPageNavigationContext());
                 }
                 frame.Navigate(xaml_typename<ComponentsPage>(), box_value(cpvm));
                 co_return;

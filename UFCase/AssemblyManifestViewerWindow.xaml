@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:UFCase"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="{x:Bind ViewModel.Assembly.Name, Mode=OneWay}"
+    Title="{x:Bind ViewModel.Title, Mode=OneWay}"
     mc:Ignorable="d">
 
     <Grid>
@@ -45,7 +45,10 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                             <TextBlock Text="Dependencies" />
-                            <ListView ItemsSource="{x:Bind ViewModel.Assembly.DependentAssemblies, Mode=OneWay}" />
+                            <ListView
+                                IsItemClickEnabled="True"
+                                ItemClick="ListView_ItemClick_Component"
+                                ItemsSource="{x:Bind ViewModel.Assembly.DependentAssemblies, Mode=OneWay}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

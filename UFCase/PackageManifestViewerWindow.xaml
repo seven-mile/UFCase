@@ -38,10 +38,18 @@
                                 ItemsSource="{x:Bind ViewModel.Packages}" />
 
                             <TextBlock Text="Components" />
-                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Components}" />
+                            <ListView
+                                IsItemClickEnabled="True"
+                                ItemClick="ListView_ItemClick_Component"
+                                ItemTemplate="{StaticResource IdentityDataTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Components}" />
 
                             <TextBlock Text="Drivers" />
-                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Drivers}" />
+                            <ListView
+                                IsItemClickEnabled="True"
+                                ItemClick="ListView_ItemClick_Component"
+                                ItemTemplate="{StaticResource IdentityDataTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Drivers}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

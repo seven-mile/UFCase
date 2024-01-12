@@ -28,16 +28,32 @@ namespace winrt::UFCase::implementation
         AppWindow().Resize({1080, 768});
     }
 
-    fire_and_forget PackageManifestViewerWindow::ListView_ItemClick_Package(IInspectable const &sender,
-                                                         ItemClickEventArgs const &e)
+    fire_and_forget PackageManifestViewerWindow::ListView_ItemClick_Package(
+        IInspectable const &sender, ItemClickEventArgs const &e)
     {
         apartment_context ui_thread;
         auto item = e.ClickedItem().as<UFCase::Identity>();
-        
-        co_await GlobalRes::MainNavServ().NavigateTo(L"Packages", PackagesPageNavigationContext::GetFromIdentity(item));
+
+        co_await GlobalRes::MainNavServ().NavigateTo(
+            L"Packages", PackagesPageNavigationContext::GetFromIdentity(item));
 
         co_await ui_thread;
 
         GlobalRes::MainWnd().Activate();
     }
+
+    fire_and_forget PackageManifestViewerWindow::ListView_ItemClick_Component(
+        IInspectable const &sender, ItemClickEventArgs const &e)
+    {
+        apartment_context ui_thread;
+        auto item = e.ClickedItem().as<UFCase::Identity>();
+
+        co_await GlobalRes::MainNavServ().NavigateTo(
+            L"Components", ComponentsPageNavigationContext::GetFromIdentity(item));
+
+        co_await ui_thread;
+
+        GlobalRes::MainWnd().Activate();
+    }
+
 } // namespace winrt::UFCase::implementation

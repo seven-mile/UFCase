@@ -183,29 +183,39 @@ namespace winrt::UFCase::implementation
 
         co_return;
     }
-    void ManifestAssemblyViewModel::LocateDependentAssembly(int32_t index)
+    fire_and_forget ManifestAssemblyViewModel::LocateDependentAssembly(int32_t index)
     {
         if (m_state != ManifestAssemblyViewModelState::Idle)
         {
-            return;
+            co_return;
         }
 
         if (index < 0 || (uint32_t)index >= m_deps.Size())
         {
-            return;
+            co_return;
         }
 
         auto deps = m_asm.Dependencies();
         auto &dep = deps[index];
 
-        // todo: communicate with main window, and show the results
-        // POC:
-        //   MainNavigationService().NavigateTo(L"Components", NavContext { query: {
-        //   ...dep.Identity() } }); MainWindow().Activate();
+        auto dep_asm_ident = dep.Identity();
+        UFCase::Identity dep_ident;
+        dep_ident.Name(dep_asm_ident.Name());
+        dep_ident.Version(dep_asm_ident.Version());
+        dep_ident.PublicKeyToken(dep_asm_ident.PublicKeyToken());
+        dep_ident.ProcessorArchitecture(dep_asm_ident.ProcessorArchitecture());
+        dep_ident.Culture(dep_asm_ident.Language());
 
-        OutputDebugString(winrt::format(L"Locating assembly: {} {}    //{}\n",
-                                        dep.Identity().Name(), dep.Identity().Version(),
-                                        dep.Identity().KeyForm())
+        OutputDebugString(winrt::format(L"Locating assembly: {} {}\n", dep.Identity().KeyForm(),
+                                        dep_ident.GetKeyForm())
                               .c_str());
+
+        auto nav_ctx = ComponentsPageNavigationContext::GetFromIdentity(dep_ident);
+
+        co_await GlobalRes::MainNavServ().NavigateTo(L"Components", nav_ctx);
+
+        GlobalRes::MainWnd().Activate();
+
+        co_return;
     }
 } // namespace winrt::UFCase::implementation

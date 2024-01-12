@@ -41,8 +41,6 @@ namespace UFCase
 
         ComponentsPageViewModelState State{ get; };
 
-        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
-
         Windows.Foundation.Collections.IObservableVector<ComponentViewModel> Components{ get; };
 
         ComponentViewModel SelectedComponent;
@@ -50,6 +48,7 @@ namespace UFCase
         RelayCommand ComponentShowManifestRelay{ get; };
         RelayCommand ComponentShowInFileExplorerRelay{ get; };
 
-        ComponentsPageNavigationContext NavContext;
+        void Navigate(ComponentsPageNavigationContext context);
+        event Windows.Foundation.TypedEventHandler<ComponentsPageViewModel, ComponentsPageNavigationContext> Navigated;
     }
 }

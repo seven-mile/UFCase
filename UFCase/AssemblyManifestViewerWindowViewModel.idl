@@ -4,10 +4,11 @@ namespace UFCase
 {
     [bindable]
     [default_interface]
-    runtimeclass AssemblyManifestViewerWindowViewModel 
+    runtimeclass AssemblyManifestViewerWindowViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         AssemblyManifestViewerWindowViewModel(UFCase.Isolation.ComponentModel model);
 
+        String Title{ get; };
         ManifestAssemblyViewModel Assembly{ get; };
     }
 }

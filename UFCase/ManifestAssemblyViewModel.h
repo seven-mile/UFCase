@@ -47,7 +47,7 @@ namespace winrt::UFCase::implementation
 
         IAsyncActionWithProgress<uint32_t> PullData();
 
-        void LocateDependentAssembly(int32_t index);
+        fire_and_forget LocateDependentAssembly(int32_t index);
 
       private:
         UFCase::Isolation::ComponentModel m_model;

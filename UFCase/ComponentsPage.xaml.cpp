@@ -11,12 +11,22 @@ namespace winrt::UFCase::implementation
 {
     void ComponentsPage::OnNavigatedTo(const Navigation::NavigationEventArgs &e)
     {
-        m_view_model = e.Parameter().as<UFCase::ComponentsPageViewModel>();
+        auto view_model = e.Parameter().as<UFCase::ComponentsPageViewModel>();
+        auto lifetime = get_strong();
 
-        if (m_view_model.State() == ComponentsPageViewModelState::Uninitialized)
-        {
-            no_await(GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100));
-        }
+        m_navigated_revoker =
+            view_model.Navigated(auto_revoke, [this, lifetime](auto &&, auto &&) -> void {
+                // enqueue to the end for the listview to update
+                RunUITask([=] {
+                    if (auto item = lifetime->CompList().SelectedItem())
+                    {
+                        lifetime->CompList().ScrollIntoView(
+                            item, Controls::ScrollIntoViewAlignment::Leading);
+                    }
+                });
+            });
+
+        m_view_model = view_model;
     }
 
     void ComponentsPage::ListViewItem_RightTapped(IInspectable const &sender,

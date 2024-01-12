@@ -16,6 +16,8 @@
 #include "PropChgUtil.h"
 #include "XamlUtil.h"
 
+#include <wil/cppwinrt_authoring.h>
+
 namespace winrt::UFCase::implementation
 {
 
@@ -38,37 +40,10 @@ namespace winrt::UFCase::implementation
             return res;
         }
 
-        ComponentsPageNavigationContextType Type()
-        {
-            return m_type;
-        }
-        void Type(ComponentsPageNavigationContextType const &value)
-        {
-            m_type = value;
-        }
-
-        hstring SelectCompId()
-        {
-            return m_select_comp_id;
-        }
-        void SelectCompId(hstring const &value)
-        {
-            m_select_comp_id = value;
-        }
-
-        UFCase::Identity SelectCompIdentity()
-        {
-            return m_select_comp_identity;
-        }
-        void SelectCompIdentity(UFCase::Identity const &value)
-        {
-            m_select_comp_identity = value;
-        }
-
-      private:
-        ComponentsPageNavigationContextType m_type = ComponentsPageNavigationContextType::None;
-        hstring m_select_comp_id;
-        UFCase::Identity m_select_comp_identity;
+        wil::single_threaded_rw_property<ComponentsPageNavigationContextType> Type =
+            ComponentsPageNavigationContextType::None;
+        wil::single_threaded_rw_property<hstring> SelectCompId;
+        wil::single_threaded_rw_property<UFCase::Identity> SelectCompIdentity;
     };
 
     struct ComponentsPageViewModel : ComponentsPageViewModelT<ComponentsPageViewModel>,
@@ -80,8 +55,6 @@ namespace winrt::UFCase::implementation
         {
             return m_state;
         }
-
-        IAsyncActionWithProgress<uint32_t> PullData();
 
         Collections::IObservableVector<UFCase::ComponentViewModel> Components()
         {
@@ -99,15 +72,7 @@ namespace winrt::UFCase::implementation
             NotifyPropChange(L"SelectedComponent");
         }
 
-        UFCase::ComponentsPageNavigationContext NavContext()
-        {
-            return m_nav_context;
-        }
-
-        void NavContext(UFCase::ComponentsPageNavigationContext const &value)
-        {
-            m_nav_context = value;
-        }
+        fire_and_forget Navigate(UFCase::ComponentsPageNavigationContext const &nav_ctx);
 
         HandleCommandAsync(ComponentShowManifest)
         {
@@ -149,6 +114,9 @@ namespace winrt::UFCase::implementation
             co_return;
         }
 
+        wil::typed_event<UFCase::ComponentsPageViewModel, UFCase::ComponentsPageNavigationContext>
+            Navigated;
+
       private:
         ComponentsPageViewModelState m_state{ComponentsPageViewModelState::Uninitialized};
 
@@ -156,7 +124,10 @@ namespace winrt::UFCase::implementation
 
         UFCase::ComponentViewModel m_selected{nullptr};
         Collections::IObservableVector<UFCase::ComponentViewModel> m_components;
-        UFCase::ComponentsPageNavigationContext m_nav_context;
+        UFCase::ComponentsPageNavigationContext m_nav_ctx;
+
+        bool MatchingComponent(UFCase::ComponentViewModel const &vm);
+        IAsyncActionWithProgress<uint32_t> PullData(apartment_context);
     };
 } // namespace winrt::UFCase::implementation
 
