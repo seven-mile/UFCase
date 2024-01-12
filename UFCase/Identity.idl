@@ -12,6 +12,10 @@ namespace UFCase
     {
         Identity();
 
+        // Name~PublicKeyToken~Architecture~Culture~Version
+        // Containers-ApplicationGuard-Package~31bf3856ad364e35~amd64~~10.0.22621.2792
+        static Identity ParsePackageFromTildeForm(String tilde_form);
+
         IdentityType Type;
 
         String ImageRoot;
@@ -26,5 +30,9 @@ namespace UFCase
         UInt64 GetHashCode();
 
         String GetDisplayForm();
+        String GetKeyForm();
+        String GetTildeForm();
+
+        static Boolean RoughMatch(Identity a, Identity b);
     }
 }

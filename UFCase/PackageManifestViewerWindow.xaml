@@ -23,14 +23,19 @@
 
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Parent Packages" />
                             <ListView
-                                ItemClick="ListView_ItemClick"
+                                IsItemClickEnabled="True"
+                                ItemClick="ListView_ItemClick_Package"
                                 ItemTemplate="{StaticResource IdentityDataTemplate}"
                                 ItemsSource="{x:Bind ViewModel.Parents}" />
 
                             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Updates" />
 
                             <TextBlock Text="Packages" />
-                            <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Packages}" />
+                            <ListView
+                                IsItemClickEnabled="True"
+                                ItemClick="ListView_ItemClick_Package"
+                                ItemTemplate="{StaticResource IdentityDataTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Packages}" />
 
                             <TextBlock Text="Components" />
                             <ListView ItemTemplate="{StaticResource IdentityDataTemplate}" ItemsSource="{x:Bind ViewModel.Components}" />

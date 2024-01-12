@@ -4,6 +4,22 @@
 
 namespace winrt::UFCase::implementation
 {
+
+    struct FOUR_PART_VERSION {
+        uint16_t Major;
+        uint16_t Minor;
+        uint16_t Build;
+        uint16_t Revision;
+
+        FOUR_PART_VERSION() = default;
+        FOUR_PART_VERSION(std::wstring const &version_string)
+        {
+            std::wstringstream ss(version_string);
+            wchar_t ch;
+            ss >> Major >> ch >> Minor >> ch >> Build >> ch >> Revision;
+        }
+    };
+
     struct Identity : IdentityT<Identity>
     {
         Identity() = default;
@@ -106,9 +122,16 @@ namespace winrt::UFCase::implementation
         }
 
         hstring GetDisplayForm();
+        hstring GetKeyForm();
+        hstring GetTildeForm();
+
+
+        static UFCase::Identity ParsePackageFromTildeForm(hstring const &tilde_form);
+
+        static bool RoughMatch(UFCase::Identity lhs, UFCase::Identity rhs);
 
       private:
-        IdentityType m_type;
+        IdentityType m_type = IdentityType::Component;
         hstring m_name;
         hstring m_version;
         hstring m_public_key_token;

@@ -37,7 +37,6 @@ namespace UFCase
     runtimeclass PackagesPageViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         PackagesPageViewModel(ImageViewModel image);
-        PackagesPageViewModel(ImageViewModel image, PackagesPageNavigationContext ctx);
 
         PackagesPageViewModelState State{ get; };
 
@@ -45,13 +44,11 @@ namespace UFCase
         Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
         PackageViewModel SelectedPackage;
 
-        PackagesPageNavigationContext NavContext;
-
         RelayCommand PackageShowManifestRelay{ get; };
         RelayCommand PackageShowInFileExplorerRelay{ get; };
         RelayCommand PackageShowInRegistryRelay{ get; };
 
-        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
-        Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData(Boolean is_navigation);
+        void Navigate(PackagesPageNavigationContext context);
+        event Windows.Foundation.TypedEventHandler<PackagesPageViewModel, PackagesPageNavigationContext> Navigated;
     }
 }

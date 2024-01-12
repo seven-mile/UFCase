@@ -15,6 +15,7 @@
 #include <fstream>
 #include <filesystem>
 #include <wil/stl.h>
+#include <wil/cppwinrt_authoring.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -40,41 +41,12 @@ namespace winrt::UFCase::implementation
             return res;
         }
 
-        PackagesPageNavigationContextType Type()
-        {
-            return m_type;
-        }
-
-        void Type(PackagesPageNavigationContextType const &value)
-        {
-            m_type = value;
-        }
-
-        hstring SelectPkgStringId()
-        {
-            return m_sel_pkg;
-        }
-
-        void SelectPkgStringId(hstring value)
-        {
-            m_sel_pkg = value;
-        }
-
-        UFCase::Identity SelectPkgIdentity()
-        {
-            return m_sel_pkg_identity;
-        }
-
-        void SelectPkgIdentity(UFCase::Identity value)
-        {
-            m_sel_pkg_identity = value;
-        }
-
-        hstring m_sel_pkg;
-        UFCase::Identity m_sel_pkg_identity;
-        PackagesPageNavigationContextType m_type = PackagesPageNavigationContextType::None;
+        wil::single_threaded_rw_property<PackagesPageNavigationContextType> Type = PackagesPageNavigationContextType::None;
+        wil::single_threaded_rw_property<hstring> SelectPkgStringId;
+        wil::single_threaded_rw_property<UFCase::Identity> SelectPkgIdentity;
     };
 
+    // Stateful: change the state by Self::Navigate
     struct PackagesPageViewModel : PackagesPageViewModelT<PackagesPageViewModel>,
                                    ImplPropertyChangedT<PackagesPageViewModel>
     {
@@ -114,17 +86,9 @@ namespace winrt::UFCase::implementation
             NotifyPropChange(L"SelectedPackage");
         }
 
-        UFCase::PackagesPageNavigationContext NavContext()
-        {
-            return m_nav_ctx;
-        }
+        fire_and_forget Navigate(UFCase::PackagesPageNavigationContext const &nav_ctx);
 
-        void NavContext(UFCase::PackagesPageNavigationContext value)
-        {
-            m_nav_ctx = value;
-        }
-
-        IAsyncActionWithProgress<uint32_t> PullData(bool is_nav = true);
+        wil::typed_event<UFCase::PackagesPageViewModel, UFCase::PackagesPageNavigationContext> Navigated;
 
         HandleCommandAsync(PackageShowManifest)
         {
@@ -186,6 +150,9 @@ namespace winrt::UFCase::implementation
         IObservableVector<UFCase::PackageViewModel> m_packages{nullptr};
         UFCase::PackageViewModel m_selected{nullptr};
         UFCase::PackagesPageNavigationContext m_nav_ctx;
+
+        bool MatchingPackage(UFCase::PackageViewModel pkg);
+        IAsyncActionWithProgress<uint32_t> PullData(apartment_context ui_thread);
     };
 
 } // namespace winrt::UFCase::implementation

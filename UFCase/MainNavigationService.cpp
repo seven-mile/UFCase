@@ -89,11 +89,11 @@ namespace winrt::UFCase::implementation
                 auto ppvm = ivm.SelectedImageViewModel().PackagesPageViewModel();
                 if (auto ctx = navContext.try_as<UFCase::PackagesPageNavigationContext>())
                 {
-                    ppvm.NavContext(ctx);
+                    ppvm.Navigate(ctx);
                 }
                 else
                 {
-                    ppvm.NavContext(UFCase::PackagesPageNavigationContext());
+                    ppvm.Navigate(UFCase::PackagesPageNavigationContext());
                 }
 
                 frame.Navigate(xaml_typename<PackagesPage>(), box_value(ppvm));

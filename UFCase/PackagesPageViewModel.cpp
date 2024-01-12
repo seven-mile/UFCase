@@ -11,10 +11,26 @@
 
 namespace winrt::UFCase::implementation
 {
-    IAsyncActionWithProgress<uint32_t> PackagesPageViewModel::PullData(bool is_nav)
-    {
-        apartment_context ui_thread{};
 
+    bool PackagesPageViewModel::MatchingPackage(UFCase::PackageViewModel pkg)
+    {
+        if (!m_nav_ctx)
+            return false;
+
+        if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgStringId)
+        {
+            return pkg.DetailIdentity() == m_nav_ctx.SelectPkgStringId();
+        }
+        else if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgIdentity)
+        {
+            auto pkg_ident = UFCase::Identity::ParsePackageFromTildeForm(pkg.Model().Identity());
+            return UFCase::Identity::RoughMatch(pkg_ident, m_nav_ctx.SelectPkgIdentity());
+        }
+        return false;
+    }
+
+    IAsyncActionWithProgress<uint32_t> PackagesPageViewModel::PullData(apartment_context ui_thread)
+    {
         m_packages = multi_threaded_observable_vector<UFCase::PackageViewModel>();
         m_selected = {nullptr};
 
@@ -37,14 +53,10 @@ namespace winrt::UFCase::implementation
         report_prog(50);
         uint32_t cnt = 0;
 
+        // todo: batching task submissions for better performance
         for (auto pkg : pkgs)
         {
             UFCase::PackageViewModel pkg_vm(pkg);
-            if (is_nav && m_nav_ctx && pkg.Identity() == m_nav_ctx.SelectPkgStringId())
-            {
-                if (!m_selected)
-                    m_selected = pkg_vm;
-            }
             RunUITask([=] { m_packages.Append(pkg_vm); });
             report_prog(static_cast<uint32_t>(50 + 50 * ++cnt / pkgs.Size()));
         }
@@ -58,4 +70,40 @@ namespace winrt::UFCase::implementation
 
         co_return;
     }
+
+    fire_and_forget PackagesPageViewModel::Navigate(
+        UFCase::PackagesPageNavigationContext const &nav_ctx)
+    {
+        apartment_context ui_thread{};
+
+        m_nav_ctx = nav_ctx;
+
+        co_await resume_background();
+
+        if (m_state == PackagesPageViewModelState::Uninitialized)
+        {
+            co_await GlobalRes::MainProgServ().InsertTask(PullData(ui_thread), 100);
+        }
+
+        // find the package and select it
+        if (m_nav_ctx && m_nav_ctx.Type() != UFCase::PackagesPageNavigationContextType::None)
+        {
+            m_selected = nullptr;
+            for (auto pkg : m_packages)
+            {
+                if (MatchingPackage(pkg))
+                {
+                    m_selected = pkg;
+                    break;
+                }
+            }
+            co_await ui_thread;
+            NotifyPropChange(L"SelectedPackage");
+        }
+
+        Navigated.invoke(*this, m_nav_ctx);
+
+        co_return;
+    }
+
 } // namespace winrt::UFCase::implementation

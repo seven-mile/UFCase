@@ -24,6 +24,9 @@ namespace winrt::UFCase::implementation
             IInspectable const &sender,
             Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const &e);
         void PkgList_Loaded(IInspectable const &sender, RoutedEventArgs const &e);
+
+    private:
+        UFCase::PackagesPageViewModel::Navigated_revoker m_navigated_revoker;
     };
 } // namespace winrt::UFCase::implementation
 

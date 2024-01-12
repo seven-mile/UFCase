@@ -24,57 +24,22 @@ namespace winrt::UFCase::implementation
 
         auto lifetime = get_strong();
 
-        m_view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
+        auto view_model = e.Parameter().as<UFCase::PackagesPageViewModel>();
 
-        if (m_view_model.State() == PackagesPageViewModelState::Uninitialized)
-        {
-            co_await GlobalRes::MainProgServ().InsertTask(m_view_model.PullData(), 100);
-            co_await ui_thread;
-        }
-        else
-        {
-            co_await resume_background();
-
-            // find the matching package
-            auto pvm = [&]() -> UFCase::PackageViewModel {
-                auto is_pkg_match = [&](UFCase::PackageViewModel pkg) {
-                    if (m_view_model.NavContext().Type() ==
-                        UFCase::PackagesPageNavigationContextType::SelectPkgStringId)
+        // subscribe for scrolling
+        m_navigated_revoker = view_model.Navigated(
+            auto_revoke, [this, lifetime](auto &&, auto &&) -> void {
+                // should be safe for ui thread though
+                RunUITask([=]() {
+                    if (auto item = lifetime->PkgList().SelectedItem())
                     {
-                        return pkg.DetailIdentity() == m_view_model.NavContext().SelectPkgStringId();
+                        lifetime->PkgList().ScrollIntoView(
+                            item, Controls::ScrollIntoViewAlignment::Leading);
                     }
-                    else if (m_view_model.NavContext().Type() ==
-                             UFCase::PackagesPageNavigationContextType::SelectPkgIdentity)
-                    {
-                        OutputDebugString(
-                            std::format(L"Package :: {}; {}; {}", pkg.Model().Identity(),
-                                        pkg.Model().ProductName(), pkg.Model().ProductVersion())
-                                .c_str());
-                        return pkg.Model().Identity() ==
-                               m_view_model.NavContext().SelectPkgIdentity().GetDisplayForm();
-                    }
-                    return false;
-                };
+                });
+            });
 
-                for (auto pkg : m_view_model.Packages())
-                {
-                    if (is_pkg_match(pkg))
-                    {
-                        return pkg;
-                    }
-                }
-                return nullptr;
-            }();
-
-            co_await ui_thread;
-
-            m_view_model.SelectedPackage(pvm);
-        }
-
-        if (auto item = PkgList().SelectedItem())
-        {
-            PkgList().ScrollIntoView(item, Controls::ScrollIntoViewAlignment::Leading);
-        }
+        m_view_model = view_model;
 
         co_return;
     }
