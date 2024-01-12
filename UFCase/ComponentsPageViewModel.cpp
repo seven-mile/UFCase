@@ -77,6 +77,9 @@ namespace winrt::UFCase::implementation
             if (MatchingComponent(comp_vm))
             {
                 RunUITask([=, lifetime = lifetime] {
+                    // todo: fix the selection bug
+                    // reference: https://stackoverflow.com/questions/12108464/let-listview-scroll-to-selected-item
+                    // also: oneway / twoway binding bizarre
                     m_selected = comp_vm;
                     NotifyPropChange(L"SelectedComponent");
                     Navigated.invoke(*this, m_nav_ctx);
