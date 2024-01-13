@@ -4,6 +4,8 @@
 #include "Identity.g.cpp"
 #endif
 
+#include "IdentityUtil.h"
+
 #include <ranges>
 
 namespace winrt::UFCase::implementation
@@ -66,83 +68,4 @@ namespace winrt::UFCase::implementation
         }
     }
 
-    UFCase::Identity Identity::ParsePackageFromTildeForm(hstring const &tilde_form)
-    {
-        UFCase::Identity res;
-
-        auto tokens = tilde_form | std::views::split('~') | std::views::transform([](auto &&range) {
-                          return hstring(std::wstring(range.begin(), range.end()));
-                      }) |
-                      std::views::common;
-
-        auto it = tokens.begin();
-
-        auto emit = [&]<class T, class R>(R (T::*field)(param::hstring const &) const) {
-            if (it != tokens.end())
-            {
-                (res.*field)(*it++);
-            }
-            else
-            {
-                throw std::logic_error("Invalid tilde form");
-            }
-        };
-
-        emit(&UFCase::Identity::Name);
-        emit(&UFCase::Identity::PublicKeyToken);
-        emit(&UFCase::Identity::ProcessorArchitecture);
-        emit(&UFCase::Identity::Culture);
-        emit(&UFCase::Identity::Version);
-
-        if (res.Culture().empty())
-        {
-            res.Culture(L"neutral");
-        }
-
-        return res;
-    }
-
-    bool Identity::RoughMatch(UFCase::Identity lhs, UFCase::Identity rhs)
-    {
-        if (lhs.Name() != rhs.Name())
-        {
-            return false;
-        }
-
-        auto lhs_culture = lhs.Culture();
-        if (lhs_culture == L"neutral")
-        {
-            lhs_culture = L"";
-        }
-        auto rhs_culture = rhs.Culture();
-        if (rhs_culture == L"neutral")
-        {
-            rhs_culture = L"";
-        }
-
-        if (lhs_culture != rhs_culture)
-        {
-            return false;
-        }
-
-        if (lhs.PublicKeyToken() != rhs.PublicKeyToken())
-        {
-            return false;
-        }
-
-        if (lhs.ProcessorArchitecture() != rhs.ProcessorArchitecture())
-        {
-            return false;
-        }
-
-        // exclude revision number from comparison
-        FOUR_PART_VERSION lhs_version{lhs.Version().c_str()}, rhs_version{rhs.Version().c_str()};
-        if (lhs_version.Major != rhs_version.Major || lhs_version.Minor != rhs_version.Minor ||
-            lhs_version.Build != rhs_version.Build)
-        {
-            return false;
-        }
-
-        return true;
-    }
 } // namespace winrt::UFCase::implementation

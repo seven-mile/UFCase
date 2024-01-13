@@ -9,6 +9,8 @@
 
 #include "PackageViewModel.g.h"
 
+#include "IdentityUtil.h"
+
 namespace winrt::UFCase::implementation
 {
 
@@ -23,8 +25,8 @@ namespace winrt::UFCase::implementation
         }
         else if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgIdentity)
         {
-            auto pkg_ident = UFCase::Identity::ParsePackageFromTildeForm(pkg.Model().Identity());
-            return UFCase::Identity::RoughMatch(pkg_ident, m_nav_ctx.SelectPkgIdentity());
+            auto pkg_ident = IdentityUtil::GetIdentityFromPkgKeyForm(pkg.Model().Identity());
+            return IdentityUtil::RoughMatch(pkg_ident, m_nav_ctx.SelectPkgIdentity());
         }
         return false;
     }

@@ -9,6 +9,7 @@
 #include <wil/resource.h>
 
 #include "AsyncUtil.h"
+#include "IdentityUtil.h"
 
 #include <numeric>
 
@@ -196,19 +197,7 @@ namespace winrt::UFCase::implementation
         }
 
         auto deps = m_asm.Dependencies();
-        auto &dep = deps[index];
-
-        auto dep_asm_ident = dep.Identity();
-        UFCase::Identity dep_ident;
-        dep_ident.Name(dep_asm_ident.Name());
-        dep_ident.Version(dep_asm_ident.Version());
-        dep_ident.PublicKeyToken(dep_asm_ident.PublicKeyToken());
-        dep_ident.ProcessorArchitecture(dep_asm_ident.ProcessorArchitecture());
-        dep_ident.Culture(dep_asm_ident.Language());
-
-        OutputDebugString(winrt::format(L"Locating assembly: {} {}\n", dep.Identity().KeyForm(),
-                                        dep_ident.GetKeyForm())
-                              .c_str());
+        auto dep_ident = IdentityUtil::GetIdentityFromAsmDep(deps[index]);
 
         auto nav_ctx = ComponentsPageNavigationContext::GetFromIdentity(dep_ident);
 

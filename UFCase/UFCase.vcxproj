@@ -183,6 +183,7 @@
       <DependentUpon>Identity.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="IdentityUtil.h" />
     <ClInclude Include="ImageSelectorHelper.h" />
     <ClInclude Include="ImageSelectorViewModel.h">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>
@@ -372,6 +373,7 @@
       <DependentUpon>Identity.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="IdentityUtil.cpp" />
     <ClCompile Include="ImageSelectorHelper.cpp" />
     <ClCompile Include="ImageSelectorViewModel.cpp">
       <DependentUpon>ImageSelectorViewModel.idl</DependentUpon>

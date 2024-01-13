@@ -10,6 +10,7 @@
 #include <winrt/UFCase.Isolation.h>
 
 #include "AsyncUtil.h"
+#include "IdentityUtil.h"
 
 #include <ranges>
 
@@ -28,13 +29,8 @@ namespace winrt::UFCase::implementation
         }
         else if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompIdentity)
         {
-            UFCase::Identity comp_ident;
-            comp_ident.Name(comp.Name());
-            comp_ident.Version(comp.Version());
-            comp_ident.PublicKeyToken(comp.PublicKeyToken());
-            comp_ident.ProcessorArchitecture(comp.ProcessorArchitecture());
-            comp_ident.Culture(comp.Culture());
-            return UFCase::Identity::RoughMatch(comp_ident, m_nav_ctx.SelectCompIdentity());
+            auto comp_ident = IdentityUtil::GetIdentityFromComponent(comp);
+            return IdentityUtil::RoughMatch(comp_ident, m_nav_ctx.SelectCompIdentity());
         }
         return false;
     }

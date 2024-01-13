@@ -136,6 +136,9 @@
     <ClCompile Include="HostManagerSingleton.cpp">
       <Filter>hosting</Filter>
     </ClCompile>
+    <ClCompile Include="IdentityUtil.cpp">
+      <Filter>libraries\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="HostManagerSingleton.h">
       <Filter>hosting</Filter>
+    </ClInclude>
+    <ClInclude Include="IdentityUtil.h">
+      <Filter>libraries\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
