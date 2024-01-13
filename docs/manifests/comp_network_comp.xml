@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved." xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <assemblyIdentity name="Microsoft-Windows-Hyper-V-VfpFilter" version="10.0.22621.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <memberships>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories.Services" version="10.0.22621.1" publicKeyToken="31bf3856ad364e35" typeName="Service" />
+      <categoryInstance>
+        <serviceData name="VfpExt" displayName="Microsoft Azure VFP Switch Filter Extension" errorControl="normal" start="system" type="kernelDriver" group="NDIS" imagePath="system32\drivers\vfpext.sys" />
+      </categoryInstance>
+    </categoryMembership>
+  </memberships>
+  <networkComponents>
+    <filterDriver bindGuid="{F74F241B-440F-4433-BB28-00F89EAD20D8}" displayDescription="Microsoft Azure VFP Switch Filter Extension" displayName="Microsoft Azure VFP Switch Filter Extension" filterClass="ms_switch_filter" hidden="true" identifier="ms_winvfp" mandatory="false" nonUserRemovable="true" type="modifying" unbindOnAttach="false" unbindOnDetach="false">
+      <bind keyword="vmnetextension" ruleType="bottom" />
+      <property name="NETSETUPPKEY_INF_Name" type="string" value="vfpfilter.inf" />
+      <property name="NETSETUPPKEY_INF_Section" type="string" value="Install" />
+    </filterDriver>
+  </networkComponents>
+</assembly>

@@ -1373,7 +1373,13 @@ Type: Unknown
 
 ### NetworkComponents
 
-Type: Unknown
+Type: Component
+
+XPath: `/assembly/networkComponents`
+
+This can be used to install [NDSI drivers](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/ndis-drivers).
+
+For more information, check [this xml sample](./manifests/comp_network_comp.xml).
 
 ### Ngen
 
