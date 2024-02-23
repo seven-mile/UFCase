@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-SmbDirect" version="10.0.22621.2506" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <firewallRule Action="Allow" Active="FALSE" Binary="System" Desc="@FirewallAPI.dll,-28606" Dir="In" LPort="5445" Name="@FirewallAPI.dll,-28603" Profile="Domain, Private, Public" Protocol="6" group="@FirewallAPI.dll,-28602" internalName="FPSSMBD-iWARP-In-TCP" />
+  <dependency discoverable="no" resourceType="Resources">
+    <dependentAssembly dependencyType="prerequisite">
+      <assemblyIdentity name="Microsoft-Windows-SmbDirect.Resources" version="10.0.22621.2506" processorArchitecture="amd64" language="*" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+    </dependentAssembly>
+  </dependency>
+  <file name="smbdirect.sys" destinationPath="$(runtime.drivers)\" sourceName="smbdirect.sys" importPath="$(build.nttree)\" sourcePath=".\">
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL" />
+    <asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Y/rvmIajoA9o6ulNUblQTiC/locJSDjM0RjoWuIedN8=</dsig:DigestValue>
+    </asmv2:hash>
+  </file>
+  <memberships>
+    <categoryMembership>
+      <id name="Microsoft.Windows.Categories.Services" version="10.0.22621.2506" publicKeyToken="31bf3856ad364e35" typeName="Service" />
+      <categoryInstance subcategory="smbdirect">
+        <serviceData name="smbdirect" errorControl="normal" start="demand" type="fileSystemDriver" group="Network" imagePath="System32\DRIVERS\smbdirect.sys" />
+      </categoryInstance>
+    </categoryMembership>
+  </memberships>
+  <instrumentation xmlns:ut="http://manifests.microsoft.com/win/2004/08/windows/networkevents" xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <events xmlns="http://schemas.microsoft.com/win/2004/08/events">
+      <provider guid="{DB66EA65-B7BB-4CA9-8748-334CB5C32400}" messageFileName="%SystemRoot%\system32\drivers\smbdirect.sys" name="Microsoft-Windows-SMBDirect" resourceFileName="%SystemRoot%\system32\drivers\smbdirect.sys" symbol="EVENT_PROVIDER_SMBDIRECT">
+        <channels>
+          <channel chid="CHID_ADMIN" enabled="true" isolation="System" message="$(string.Channel.Admin)" name="Microsoft-Windows-SMBDirect/Admin" type="Admin" />
+          <channel chid="CHID_DEBUG" enabled="false" isolation="System" message="$(string.Channel.Debug)" name="Microsoft-Windows-SMBDirect/Debug" type="Debug">
+            <logging>
+              <retention>false</retention>
+              <maxSize>104857600</maxSize>
+            </logging>
+            <publishing>
+              <level>4</level>
+              <bufferSize>65536</bufferSize>
+              <clockType>QPC</clockType>
+            </publishing>
+          </channel>
+          <channel chid="CHID_NETMON" enabled="false" isolation="System" message="$(string.Channel.Netmon)" name="Microsoft-Windows-SMBDirect/Netmon" type="Analytic">
+            <logging>
+              <retention>false</retention>
+              <maxSize>104857600</maxSize>
+            </logging>
+            <publishing>
+              <level>0xFF</level>
+              <bufferSize>65536</bufferSize>
+              <clockType>QPC</clockType>
+            </publishing>
+          </channel>
+        </channels>
+      </provider>
+      <cmi />
+    </events>
+    <counters xmlns="http://schemas.microsoft.com/win/2005/12/counters" schemaVersion="2.0">
+      <provider applicationIdentity="%SystemRoot%\system32\drivers\smbdirect.sys" providerGuid="{B9FCF33D-BA8F-4654-A5F2-BF58A5866CA8}" providerType="kernelMode">
+        <counterSet description="The SMB Direct Connection performance counter set consists of counters that measure connection activity. A computer can have multiple SMB Direct connections. The SMB Direct Connection counter set represents each connection as a pair of IP addresses and ports, where the first IP address/port represents the connection's local endpoint and the second IP address/port represents the connection's remote endpoint." descriptionID="3" guid="{BD4B1F37-D1F0-4FC5-996D-D4A21290F212}" instances="multipleAggregate" name="SMB Direct Connection" nameID="1" symbol="ConnectionCounterSet" uri="Microsoft.Windows.SMBDirect.Connection">
+          <structs>
+            <struct name="Socket" type="SMBD_SOCKET" />
+          </structs>
+          <counter aggregate="sum" description="Stalls (Send Credit)/sec is the rate at which transmission of SMB Direct packets stalled due to an insufficient number of send credits. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="7" detailLevel="standard" field="SendCreditStallsPerfCounter" id="1" name="Stalls (Send Credit)/sec" nameID="5" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.SendCreditStalls" />
+          <counter aggregate="sum" description="Stalls (Send Queue Capacity)/sec is the rate at which RDMA network interface requests stalled due to insufficient send queue capacity. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="11" detailLevel="standard" field="SendQueueStallsPerfCounter" id="2" name="Stalls (Send Queue)/sec" nameID="9" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.SendQueueCapacityStalls" />
+          <counter aggregate="sum" description="Stalls (RDMA Registrations Resources/sec) is the rate of memory registration stalls due to insufficient RDMA registration resources. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="15" detailLevel="standard" field="RegistrationStallsPerfCounter" id="3" name="Stalls (RDMA Registrations)/sec" nameID="13" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.RdmaRegistrationStalls" />
+          <counter aggregate="sum" description="Sends/sec is the rate at which SMB Direct data packets are being sent to the peer. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="19" detailLevel="standard" field="SendsPerfCounter" id="4" name="Sends/sec" nameID="17" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.Sends" />
+          <counter aggregate="sum" description="Remote Invalidations/sec is the rate at which local RDMA registrations are being remotely invalidated by the peer. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="23" detailLevel="standard" field="RemoteInvalidationsPerfCounter" id="5" name="Remote Invalidations/sec" nameID="21" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.RemoteInvalidations" />
+          <counter aggregate="sum" description="Memory Regions is the number of memory regions that are currently allocated to this connection from the RDMA network adapter." descriptionID="27" detailLevel="standard" field="TotalFrmrCount" id="6" name="Memory Regions" nameID="25" struct="Socket" type="perf_counter_rawcount" uri="Microsoft.Windows.SMBDirect.Connection.MemoryRegions" />
+          <counter aggregate="sum" description="Bytes Received/sec is the rate at which data is being received from the peer. Data that is directly read from the peer via RDMA read operations is not counted. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="35" detailLevel="standard" field="BytesReceivedPerfCounter" id="8" name="Bytes Received/sec" nameID="33" struct="Socket" type="perf_counter_bulk_count" uri="Microsoft.Windows.SMBDirect.Connection.BytesReceived" />
+          <counter aggregate="sum" description="Bytes Sent/sec is the rate at which data is being sent to the peer. Data that is directly written to the peer via RDMA write operations is not counted. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="39" detailLevel="standard" field="BytesSentPerfCounter" id="9" name="Bytes Sent/sec" nameID="37" struct="Socket" type="perf_counter_bulk_count" uri="Microsoft.Windows.SMBDirect.Connection.BytesSent" />
+          <counter aggregate="sum" description="Bytes RDMA Read/sec is the rate at which bytes are being transferred by RDMA read operations. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="43" detailLevel="standard" field="BytesReadPerfCounter" id="10" name="Bytes RDMA Read/sec" nameID="41" struct="Socket" type="perf_counter_bulk_count" uri="Microsoft.Windows.SMBDirect.Connection.BytesRead" />
+          <counter aggregate="sum" description="Bytes RDMA Written/sec is the rate at which bytes are being transferred by RDMA write operations. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="47" detailLevel="standard" field="BytesWrittenPerfCounter" id="11" name="Bytes RDMA Written/sec" nameID="45" struct="Socket" type="perf_counter_bulk_count" uri="Microsoft.Windows.SMBDirect.Connection.BytesWritten" />
+          <counter aggregate="sum" description="Stalls (RDMA Read)/sec is the rate at which RDMA reads stalled due to a limit on the number of simultaneous RDMA read operations per connection. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="51" detailLevel="standard" field="RdmaReadStallsPerfCounter" id="12" name="Stalls (RDMA Read)/sec" nameID="49" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.RdmaReadStalls" />
+          <counter aggregate="sum" description="Receives/sec is the rate at which SMB Direct data packets are being received from the peer. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="59" detailLevel="standard" field="ReceivesPerfCounter" id="14" name="Receives/sec" nameID="57" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.Receives" />
+          <counter aggregate="sum" description="RDMA Registrations/sec is the rate at which memory is being registered as the source or destination for an RDMA data transfer. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="75" detailLevel="standard" field="RegistrationsPerfCounter" id="18" name="RDMA Registrations/sec" nameID="73" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.RdmaRegistrations" />
+          <counter aggregate="sum" description="SCQ Notification Events/sec is the rate at which SMB Direct is being notified that SQ work requests have completed to the SCQ. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="79" detailLevel="standard" field="ScqNotificationEventsPerfCounter" id="19" name="SCQ Notification Events/sec" nameID="77" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.ScqNotificationEvents" />
+          <counter aggregate="sum" description="RCQ Notification Events/sec is the rate at which SMB Direct is being notified that RQ work requests have completed to the RCQ. This counter displays the difference between the values observed in the last two sample intervals, divided by the duration of the sample interval." descriptionID="83" detailLevel="standard" field="RcqNotificationEventsPerfCounter" id="20" name="RCQ Notification Events/sec" nameID="81" struct="Socket" type="perf_counter_counter" uri="Microsoft.Windows.SMBDirect.Connection.RcqNotificationEvents" />
+          <counter aggregate="sum" description="Spurious RCQ Notification Events is the number of times SMB Direct has been notified that RQ work requests have completed to the socket's RCQ but found no CQEs to process. A non-zero count indicates a bug in the NDK provider." descriptionID="87" detailLevel="standard" field="SpuriousRcqNotifications" id="21" name="Spurious RCQ Notification Events" nameID="85" struct="Socket" type="perf_counter_large_rawcount" uri="Microsoft.Windows.SMBDirect.Connection.SpuriousRcqNotificationEvents" />
+          <counter aggregate="sum" description="Spurious SCQ Notification Events is the number of times SMB Direct has been notified that SQ work requests have completed to the socket's SCQ but found no CQEs to process. A non-zero count indicates a bug in the NDK provider." descriptionID="91" detailLevel="standard" field="SpuriousScqNotifications" id="22" name="Spurious SCQ Notification Events" nameID="89" struct="Socket" type="perf_counter_large_rawcount" uri="Microsoft.Windows.SMBDirect.Connection.SpuriousScqNotificationEvents" />
+        </counterSet>
+      </provider>
+    </counters>
+  </instrumentation>
+  <localization>
+    <resources culture="en-US">
+      <stringTable>
+        <string id="Channel.Admin" value="Microsoft-Windows-SMBDirect/Admin" />
+        <string id="Channel.Debug" value="Microsoft-Windows-SMBDirect/Debug" />
+        <string id="Channel.Netmon" value="Microsoft-Windows-SMBDirect/Netmon" />
+        <string id="REG_DWORD.Message" value="DWORD" />
+        <string id="REG_QWORD.Message" value="QWORD" />
+        <string id="INITIALIZING.Message" value="Initializing" />
+        <string id="INITIALIZED.Message" value="Initialized" />
+        <string id="CONNECTING.Message" value="Connecting" />
+        <string id="CONNECTED.Message" value="Connected" />
+        <string id="DISCONNECTING.Message" value="Disconnecting" />
+        <string id="DISCONNECTED.Message" value="Disconnected" />
+        <string id="SEND_SQ_WR.Message" value="Send" />
+        <string id="REGISTER_SQ_WR.Message" value="Register" />
+        <string id="INVALIDATE_SQ_WR.Message" value="Invalidate" />
+        <string id="READ_SQ_WR.Message" value="Read" />
+        <string id="WRITE_SQ_WR.Message" value="Write" />
+        <string id="SEND_OPERATION.Message" value="Send" />
+        <string id="REGISTER_OPERATION.Message" value="Register" />
+        <string id="INVALIDATE_OPERATION.Message" value="Invalidate" />
+        <string id="READ_OPERATION.Message" value="Read" />
+        <string id="WRITE_OPERATION.Message" value="Write" />
+        <string id="Event.AdapterUnsupportedCustomDwordSetting" value="The network adapter '%1' does not support a value of %4 for setting %2\%3. The closest adapter supported value of %5 will be used." />
+        <string id="Event.UnsupportedAdapterRqSgeLimit" value="The network adapter '%1' is incompatible with SMB Direct. Compatible network adapters are required to support at least %2 SGE(s) per receive queue work request. This adapter supports a maximum of %3 SGE(s) per receive queue work request." />
+        <string id="Event.UnsupportedAdapterSqSgeLimit" value="The network adapter '%1' is incompatible with SMB Direct. Compatible network adapters are required to support at least %2 SGE(s) per send queue work request. This adapter supports a maximum of %3 SGE(s) per send queue work request." />
+        <string id="Event.UnsupportedAdapterReadSgeLimit" value="The network adapter '%1' is incompatible with SMB Direct. Compatible network adapters are required to support at least %2 SGE(s) per RDMA read request. This adapter supports a maximum of %3 SGE(s) per RDMA read request." />
+        <string id="Event.UnsupportedAdapterFrmrPageCount" value="The network adapter's FRMR page count is incompatible with SMB Direct.%n%nAdapterAlias: %1%n%nGuidance:%n%nThis network adapter reported an FRMR page count of zero, indicating that it does not support Fast Register Memory Regions (FRMRs). Compatible network adapters are required to support FRMRs. SMB Direct cannot be used with this network adapter." />
+        <string id="Event.AffinityProcessorInfo" value="Found an interrupt processor.%n%nNumaNode=%1%nProcessorGroup=%2%nProcessorMask=%3%nProcessorIndex=%4%n%nGuidance:%n%nThis event indicates that SMB Direct found a processor it can use to process interrupts. This event is informational. No action is required." />
+        <string id="Event.TooFewAffinityProcessorsInNode" value="A NUMA node has only one processor that may be used to process interrupts.%n%nNumaNode=%1%nProcessorGroup=%2%n%nGuidance:%n%nThis event indicates that SMB Direct found a NUMA node with only one processor that may be used to process interrupts. This configuration will degrade the performance of any SMB Direct connections that are affinitized to this NUMA node. It is recommended to increase the number of available processors in this NUMA node by changing the BaseAffinityProcessor and/or MaxAffinityProcessor configuration parameters." />
+        <string id="Event.InvalidCustomDwordSetting" value="Setting %1\%2 is invalid. Verify that %2 is a DWORD (32-bit) value in the range %3 to %4 (inclusive). The default value of %5 will be used for this setting until the error is corrected." />
+        <string id="Event.NoSqForwardProgress" value="A connection has been terminated because no pending requests to network adapter '%6' have completed in the last %7 milliseconds. Verify that the network is operational and that the peer is responsive. This event may also indicate that there are insufficient send credits to support the workload. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.NoActiveProcessorsInAffinityNodeRange" value="Settings BaseAffinityNode and MaxAffinityNode (\Registry\Machine\System\CurrentControlSet\Services\SMBDirect\Parameters) must specify a set of NUMA nodes that contain active processors. All of the system's processors will be eligible to perform SMB Direct processing until the error is corrected." />
+        <string id="Event.NoAffinityProcessors" value="Settings BaseAffinityNode, MaxAffinityNode, BaseAffinityProcessor and MaxAffinityProcessor (\Registry\Machine\System\CurrentControlSet\Services\SMBDirect\Parameters) must specify a set of processors that contain at least one active processor. All of the system's processors will be eligible to process SMB Direct interrupts until the error is corrected." />
+        <string id="Event.InvalidRegistryConfigParam" value="A registry configuration parameter is invalid.%n%nRegistryKey: %1%nParamName: %2%nParamType: %3%nMinValue: %4%nMaxValue: %5%nDefaultValue: %6%n%nGuidance:%n%nThis event indicates that an administrator set an invalid configuration parameter value in the registry. Verify that the registry value is of the specified type and is in the range [MinValue, MaxValue]. The parameter's default value will be used until this issue is corrected. The SMB Direct driver must be restarted for the correction to take effect." />
+        <string id="Event.LoadedRegistryConfigParam" value="Loaded a registry configuration parameter value.%n%nRegistryKey: %1%nParamName: %2%nParamValue: %3%n%nGuidance:%n%nThis event indicates that an administrator has overridden SMB Direct's default value for this configuration parameter." />
+        <string id="Event.ConnectStarted" value="Starting connect. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.ConnectSucceeded" value="Connect succeeded. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.ConnectFailed" value="Connect failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.ConnectTimerExpired" value="Timed out while waiting for connection establishment to complete - cancelling connect. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.NdkConnectFailed" value="NdkConnect failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.NdkCompleteConnectFailed" value="NdkCompleteConnect failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.NoCompatibleSmbDirectVersion" value="Failed to negotiate a common SMB Direct version with the peer. Socket = %1 Local = %3 Remote = %5 MinVersion = %6 MaxVersion = %7 PeerMinVersion = %8 PeerMaxVersion = %9" />
+        <string id="Event.NdkConnectEvent" value="Received connect request. ListenSocket = %1 Local = %3 Remote = %5" />
+        <string id="Event.RejectedConnectRequestBacklog" value="Rejected connect request - connect backlog limit exceeded. ListenSocket = %1 Local = %3 Remote = %5" />
+        <string id="Event.RejectedConnectRequestLowMemory" value="Rejected connect request - not enough memory. ListenSocket = %1 Local = %3 Remote = %5" />
+        <string id="Event.AcceptTimerExpired" value="Timed-out while waiting to receive a negotiate request - cancelling accept. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.NdkAcceptFailed" value="NdkAccept failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.AcceptStarted" value="Accept started. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.AcceptSucceeded" value="Accept succeeded. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.AcceptFailed" value="Accept failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.UpperDriverRejectedConnection" value="Upper-level driver rejected the connection. Socket = %1 Status = %2" />
+        <string id="Event.NdkDisconnectEvent" value="NDK disconnect event. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.DisconnectStarted" value="Disconnect started. Socket = %1 Local = %3 Remote = %5 State = %6" />
+        <string id="Event.DisconnectCompleted" value="Disconnect completed. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.CloseStarted" value="Close started. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.CloseCompleted" value="Close completed. Socket = %1" />
+        <string id="Event.CreditsExhausted" value="Out of send credits - starting credit grant timer. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.PeerCreditsExhausted" value="Peer used their last send credit. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.UsingLastCredit" value="Using last send credit. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.CreditGrantTimerExpired" value="Timed-out while waiting to receive send credits. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.PeerSentPacketWithoutCredit" value="Protocol violation - the peer sent a packet but does not have a send credit. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.PeerUsedLastCreditAndGrantedNone" value="Protocol violation - the peer used their last send credit but did not grant a send credit. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.GrantedSendCredits" value="Granted the peer %6 additional send credits. Socket %1 Local = %3 Remote = %5 PeerSendCredits = %7" />
+        <string id="Event.ReceivedSendCredits" value="Received a grant of %6 credits. Socket = %1 Local = %3 Remote = %5 SendCreditsAccepted = %7 SendCredits = %8" />
+        <string id="Event.FailedToPostSqWorkRequest" value="Failed to post a %6 SQ work request. Socket = %1 Local = %3 Remote = %5 Status = %7" />
+        <string id="Event.SqWorkRequestFailed" value="%6 SQ work request failed. Socket = %1 Local = %3 Remote = %5 Status = %7" />
+        <string id="Event.FailedToPostReceiveWorkRequest" value="Failed to post a Receive work request. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.ReceiveWorkRequestFailed" value="Receive work request failed. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.KeepaliveResponseTimerExpired" value="Timed-out out while waiting to receive a keepalive response. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.ReceivedInvalidPacket" value="Protocol violation - received packet is too small or contains at least one invalid value. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.FragmentTooLarge" value="Protocol violation - total fragmented payload is larger than indicated by first fragment. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.LastFragmentTooSmall" value="Protocol violation - total fragmented payload is smaller than indicated by first fragment. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.FailedToAllocateFragmentReassemblyBuffer" value="Failed to allocate a fragment reassembly buffer. Socket = %1 Local = %3 Remote = %5" />
+        <string id="Event.OperationFailed" value="%6 operation failed. Socket = %1 Local = %3 Remote = %5 Status = %7" />
+        <string id="Event.CreateSocketSucceeded" value="Created socket. Socket = %1" />
+        <string id="Event.CreateSocketFailed" value="Failed to create socket. Socket = %1 Status = %2" />
+        <string id="Event.ConnectionProperties" value="Finished negotiating connection properties. Socket = %1 Local = %3 Remote = %5 ProtocolVersion = %6 MaxReadWriteSize = %7 MaxReceiveSize = %8 MaxFragmentedReceiveSize = %9 MaxSendSize = %10 MaxFragmentedSendSize = %11 IRD = %12 ORD = %13" />
+        <string id="Event.CompletionQueueFailed" value="A completion queue has failed and is no longer indicating completions. Socket = %1 Local = %3 Remote = %5 Status = %6" />
+        <string id="Event.UpdatedRcqInterruptModeration" value="Updated RCQ interrupt moderation parameters. Socket = %1 Count = %2 IntervalInMicroSeconds = %3" />
+        <string id="Event.UpdatedScqInterruptModeration" value="Updated SCQ interrupt moderation parameters. Socket = %1 Count = %2 IntervalInMicroSeconds = %3" />
+        <string id="Event.AffinitizedConnection" value="Affinitized socket CQs. Socket = %1 NumaNode=%2 RcqProcessorGroup=%3 RcqProcessorMask=%4 RcqProcessorIndex=%5 ScqProcessorGroup=%6 ScqProcessorMask=%7 ScqProcessorIndex=%8" />
+        <string id="Event.CqProcessorInfo" value="CQ processor. NumaNode=%1 ProcessorGroup=%2 ProcessorMask=%3 ProcessorIndex=%4" />
+        <string id="Event.IncompatibleSocketConfigParamValue" value="A socket configuration parameter value is not suppored by the socket's network adapter or is incompatible with one or more of the socket's other configuration parameter values.%n%nSocket: %1%nAdapterAlias: %2%nParamName: %3%nConfiguredValue: %4%nMinSupportedValue: %5%nMaxSupportedValue: %6%nSelectedValue: %7%n%nGuidance:%n%nSMB Direct will use the selected value in place of the configured value." />
+        <string id="Event.OpenedAdapter" value="Opened network adapter '%1'. NdkMajorVer = %2 NdkMinorVer = %3 VendorId = %4 DeviceId = %5 MaxRegistrationSize = %6 MaxWindowSize = %7 FrmrPageCount = %8 MaxInitiatorRequestSge = %9 MaxReceiveRequestSge = %10 MaxReadRequestSge = %11 MaxTransferLength = %12 MaxInlineDataSize = %13 MaxInboundReadLimit = %14 MaxOutboundReadLimit = %15 MaxReceiveQueueDepth = %16 MaxInitiatorQueueDepth = %17 MaxSrqDepth = %18 MaxCqDepth = %19 LargeRequestThreshold = %20 MaxCallerData = %21 MaxCalleeData = %22 AdapterFlags = %23" />
+        <string id="Event.ReceivedNegotiateRequest" value="Received negotiate request. Socket = %1 Local = %3 Remote = %5 MinVersion = %6 MaxVersion = %7 Reserved = %8 CreditsRequested = %9 PreferredSendSize = %10 MaxReceiveSize = %11 MaxFragmentReassemblyBufferSize = %12" />
+        <string id="Event.SendingNegotiateRequest" value="Sending negotiate request. Socket = %1 Local = %3 Remote = %5 MinVersion = %6 MaxVersion = %7 Reserved = %8 CreditsRequested = %9 PreferredSendSize = %10 MaxReceiveSize = %11 MaxFragmentReassemblyBufferSize = %12" />
+        <string id="Event.ReceivedNegotiateResponse" value="Received negotiate response. Socket = %1 Local = %3 Remote = %5 MinVersion = %6 MaxVersion = %7 NegotiatedVersion = %8 Reserved = %9 CreditsRequested = %10 CreditsGranted = %11 Status = %12 MaxReadWriteSize = %13 PreferredSendSize = %14 MaxReceiveSize = %15 MaxFragmentReassemblyBufferSize = %16" />
+        <string id="Event.SendingNegotiateResponse" value="Sending negotiate response. Socket = %1 Local = %3 Remote = %5 MinVersion = %6 MaxVersion = %7 NegotiatedVersion = %8 Reserved = %9 CreditsRequested = %10 CreditsGranted = %11 Status = %12 MaxReadWriteSize = %13 PreferredSendSize = %14 MaxReceiveSize = %15 MaxFragmentReassemblyBufferSize = %16" />
+        <string id="Event.ReceivedData" value="Received data. Socket = %1 Local = %3 Remote = %5 CreditsRequested = %6 CreditsGranted = %7 Flags = %8 Reserved = %9 RemainingDataLength = %10 DataOffset = %11 DataLength = %12" />
+        <string id="Event.SendingData" value="Sending data. Socket = %1 Local = %3 Remote = %5 CreditsRequested = %6 CreditsGranted = %7 Flags = %8 Reserved = %9 RemainingDataLength = %10 DataOffset = %11 DataLength = %12" />
+      </stringTable>
+    </resources>
+  </localization>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition name="WRP_FILE_DEFAULT_SDDL" sddl="O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;GRGX;;;BA)(A;;GRGX;;;SY)(A;;GRGX;;;BU)(A;;GRGX;;;S-1-15-2-1)(A;;GRGX;;;S-1-15-2-2)S:(AU;FASA;0x000D0116;;;WD)" operationHint="replace" description="Default SDDL for Windows Resource Protected file" />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+</assembly>
