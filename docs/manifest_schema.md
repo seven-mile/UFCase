@@ -1178,11 +1178,89 @@ Type: Unknown
 
 ### GenericCommand
 
-Type: Unknown
+Type: Component
+
+XPath: `/assembly/genericCommands/genericCommand`
+
+Refer to the section `GenericCommands`.
 
 ### GenericCommands
 
-Type: Unknown
+Type: Component
+
+XPath: `/assembly/genericCommands`
+
+Seemingly able to specify a command to execute on installation / uninstallation of the component (by providing `install="${boolean}"`).
+
+There is an interface in CMIv2 (AdvancedInstaller) corresponding to it:
+
+```midl
+typedef [helpstring("Various success codes")]
+enum {
+    cmiZero = 1,
+    cmiLessThanZero = 2,
+    cmiGreaterThanZero = 3,
+    cmiZeroOrLessThanZero = 4,
+    cmiZeroOrGreaterThanZero = 5
+} GenericCommandSuccessCodeConsts;
+
+typedef [helpstring("Possible passes in an installation")]
+enum {
+    cmiStagePass = 1,
+    cmiBootstrapPass = 2,
+    cmiOnlinePass = 4,
+    cmiConfigurationPass = 8,
+    cmiGeneralizePass = 16,
+    cmiSpecializePass = 32,
+    cmiCleanupPass = 64,
+    cmiReconfigurationPass = 128,
+    cmiStage2Pass = 256
+} InstallationPass;
+
+[
+  odl,
+  uuid(5AB33CB2-4DF6-447E-8610-A4BB311CFAF6),
+  helpstring("Describes a generic command which needs to be executed as part of the installation."),
+  hidden,
+  dual,
+  nonextensible,
+  oleautomation
+]
+interface IGenericCommand : ICmiExtension {
+    [id(0x701b0000), propget, helpstring("Returns the fully qualified path to the execuable relative to component's root.")]
+    HRESULT ExecutableName([out, retval] BSTR* pVal);
+    [id(0x701b0000), propput, helpstring("Returns the fully qualified path to the execuable relative to component's root.")]
+    HRESULT ExecutableName([in] BSTR pVal);
+    [id(0x701b0001), propget, helpstring("Returns the arguments for the executable.")]
+    HRESULT Arguments([out, retval] BSTR* pVal);
+    [id(0x701b0001), propput, helpstring("Returns the arguments for the executable.")]
+    HRESULT Arguments([in] BSTR pVal);
+    [id(0x701b0002), propget, helpstring("Returns the flag that specifies if this command must run during install.")]
+    HRESULT Install([out, retval] VARIANT_BOOL* pVal);
+    [id(0x701b0002), propput, helpstring("Returns the flag that specifies if this command must run during install.")]
+    HRESULT Install([in] VARIANT_BOOL pVal);
+    [id(0x701b0003), propget, helpstring("Returns the installation passes during which this command must run.")]
+    HRESULT Passes([out, retval] long* pVal);
+    [id(0x701b0003), propput, helpstring("Returns the installation passes during which this command must run.")]
+    HRESULT Passes([in] long pVal);
+    [id(0x701b0004), propget, helpstring("Returns the success code for the generic command to.")]
+    HRESULT SuccessCode([out, retval] GenericCommandSuccessCodeConsts* pVal);
+    [id(0x701b0004), propput, helpstring("Returns the success code for the generic command to.")]
+    HRESULT SuccessCode([in] GenericCommandSuccessCodeConsts pVal);
+};
+
+```
+
+Probably we can also set something like `passes="bootstrap | stage2"`.
+
+```xml
+<assembly>
+  <genericCommands>
+    <genericCommand arguments="/install WASConfigurationAPI" executableName="$(runtime.system32)\inetsrv\iissetup.exe" />
+    <genericCommand arguments="/uninstall WASConfigurationAPI" executableName="$(dependentAssembly.SharedLibraries.path)\iissetup.exe" install="false" />
+  </genericCommands>
+</assembly>
+```
 
 ### GroupTrustee
 
@@ -1199,6 +1277,27 @@ v45 = "privileges";
 v49 = "members";
 v53 = "capabilities";
 ```
+
+In CMIv2, there's an enumeration type:
+
+```midl
+typedef [helpstring("Possible types of trustee, defined in ntseapi.h SID_NAME_USE")]
+enum {
+    cmiTrusteeUser = 1,
+    cmiTrusteeGroup = 2,
+    cmiTrusteeDomain = 3,
+    cmiTrusteeAlias = 4,
+    cmiTrusteeWellKnownGroup = 5,
+    cmiTrusteeDeletedAccount = 6,
+    cmiTrusteeInvalid = 7,
+    cmiTrusteeUnknown = 8,
+    cmiTrusteeComputer = 9,
+    cmiTrusteeAccount = 10,
+    cmiTrusteeVirtualAccount = 11
+} TrusteeType;
+```
+
+The mentioned header file `ntseapi.h` is not officially public, but included in so-called Windows Research Kernel.
 
 ### HTTPAI
 
