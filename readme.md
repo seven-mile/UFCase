@@ -34,7 +34,7 @@ Firstly, let's take a look at the underlying mechanisms, which interact with our
 * **Deployment**, is a special component that defines a bunch of deployable contents by its assembly dependencies.
 * **WinSxS**, or **Component Store**, is a strong naming, dependency-aware, version-controlled, digitally-signed, corruption-detectable, transactional and hark linking component store organized by assemblies. Popularly speaking, a private package manager for windows itself.
   * `SxS` expands to `Side by Side`, denoting the components with multiple versions can live within your system side by side.
-  * Built on the filesystem and registry directly. So compared with databases, its behaves like a turtle.
+  * Built on the filesystem and registry directly. Therefore, compared with a typical database, it behaves like a turtle.
   * The directory `%WINDIR%\WinSxS`
   * The registry hive `HKEY_LOCAL_MACHINE\COMPONENTS` from `%WINDIR%\System32\config`
   * The registry key `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\SideBySide`
@@ -46,18 +46,18 @@ Now let's change our point of view to the upper layers. After the **Updates (Win
 * **Package (CBS)**, is a high-level assembly. They can be queried using `Dism /Online /Get-Packages`. The package has many available formats. Some well known technologies like msdelta a delta package format are used on it. But again and again... all of them have two parts: manifest and payload. The manifest of packages ends with `.mum`, describing:
   * which updates (CBS) are included, this is the payload descriptor
   * which packages are its parents, some pack has lang packs as their children
-* **Capability (CBS)**, also known as **Feature on Demand**. They canbe queried with `Dism /Online /Get-Capabilities`. Capabilities are generally a bunch of packages. They are not present in your disk at the first time, and can be downloaded from Windows Update Server.
+* **Capability (CBS)**, also known as **Feature on Demand**. They can be queried with `Dism /Online /Get-Capabilities`. Capabilities are generally a bunch of packages. They are not present in your disk at the first time, and can be downloaded from Windows Update Server.
 * **Update (CBS)**, is a logical concept that only exists in the manifest of packages. It reference to an assembly, wrappered by
   * a `component` element, which is an ordinary WinSxS assembly component
   * a `package` element, which refer to another package
   * a `driver` element, which is a driver
-* **Feature (CBS)**, is actually should be called **Optional Feature**, differing from **Feature on Demand**. Features are the updates of the special package `Microsoft-Windows-Foundation-Package`, and can be queried by `Dism /Online /Get-Features`. These features are staged in WinSxS but not usable directly. If you need it you can enable it *without network connection*.
+* **Feature (CBS)**, actually should be called **Optional Feature**, differing from **Feature on Demand**. Features are the updates of the special package `Microsoft-Windows-Foundation-Package`, and can be queried by `Dism /Online /Get-Features`. These features are staged in WinSxS but not usable directly. If you need it you can enable it *without network connection*.
 
 ### Manifest Schema
 
-I'm completing an unofficial schema documentation of general isolation manifests. The current progress is under the `./docs` directory. And the main wiki page is [here](./docs/manifest_schema.md).
+I'm completing an unofficial schema documentation of general isolation manifests. The current progress is under the directory `./docs`. And the main page is [here](./docs/manifest_schema.md).
 
-If you are interested, I'm welcoming contributing! Just use UFCase to inspect manifests of packages and components, and fill in the unknown elements with your inference.
+If you are interested, contributions are welcomed. Just use UFCase to inspect manifests of packages and components, and fill in the unknown elements with your inference. It would be better if you can attach full-text xml manifests.
 
 ### Screenshots
 
