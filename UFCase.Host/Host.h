@@ -17,7 +17,7 @@ namespace winrt::UFCase::Isolation::implementation
 
         ~Host()
         {
-            ExitProcess(0);
+            PostQuitMessage(0);
         }
 
         guid Id()
