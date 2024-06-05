@@ -101,7 +101,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     int argc{-1};
     auto argv = CommandLineToArgvW(cmd_line, &argc);
 
-    if (argc != 2)
+    if (argc != 3)
     {
         return E_INVALIDARG;
     }
@@ -109,14 +109,14 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     winrt::guid client_id{};
     try
     {
-        client_id = winrt::guid{argv[0]};
+        client_id = winrt::guid{argv[1]};
     }
     catch (std::exception const &)
     {
         return E_INVALIDARG;
     }
 
-    std::filesystem::path bootdrive{argv[1]};
+    std::filesystem::path bootdrive{argv[2]};
     if (!std::filesystem::exists(bootdrive))
     {
         return E_INVALIDARG;

@@ -130,8 +130,9 @@ namespace winrt::UFCase::Isolation::implementation
             PROCESS_INFORMATION proc_info{};
             if (!CreateProcessInJob(
                     m_host_job, hostExePath.c_str(),
-                    const_cast<LPWSTR>(
-                        winrt::format(L"{} {}", client_id, bootdrive.c_str()).c_str()),
+                    const_cast<LPWSTR>(winrt::format(L"{} {} {}", hostExePath.wstring(), client_id,
+                                                     bootdrive.c_str())
+                                           .c_str()),
                     NULL, NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info, &proc_info))
             {
                 winrt::check_hresult(HRESULT_FROM_WIN32(GetLastError()));
