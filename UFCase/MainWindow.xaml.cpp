@@ -48,30 +48,13 @@ namespace winrt::UFCase::implementation
                 if (auto &&appt = appw.TitleBar())
                 {
                     appt.ExtendsContentIntoTitleBar(true);
+                    appt.PreferredHeightOption(Windowing::TitleBarHeightOption::Tall);
 
                     appt.BackgroundColor(Colors::Transparent());
                     appt.ButtonBackgroundColor(Colors::Transparent());
                     appt.ButtonInactiveBackgroundColor(Colors::Transparent());
                     appt.ButtonHoverBackgroundColor(ColorHelper::FromArgb(48, 150, 150, 150));
                     appt.ButtonPressedBackgroundColor(ColorHelper::FromArgb(96, 150, 150, 150));
-
-                    this->AppTitleBar().Height(appt.Height());
-
-                    // clang-format off
-                    {
-                        // pre-set drag rect
-                        const int NavBarHeight = 48, NavBarWidth = IsDebuggerPresent() ? 948 : 48;
-                        appt.SetDragRectangles({{
-                            NavBarWidth, 0, std::max(0, static_cast<int>(appw.Size().Width) - NavBarWidth), NavBarHeight
-                        },});
-
-                        this->SizeChanged([appt, NavBarWidth](auto&, WindowSizeChangedEventArgs const& e) {
-                            appt.SetDragRectangles({{
-                                NavBarWidth, 0, std::max(0, static_cast<int>(e.Size().Width) - NavBarWidth), NavBarHeight
-                            },});
-                        });
-                    }
-                    // clang-format on
                 }
                 else
                     throw hresult_illegal_method_call{};
