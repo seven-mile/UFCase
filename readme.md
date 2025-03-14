@@ -18,7 +18,9 @@ I'll publish breaking changes for UFCase in the [GitHub releases](https://github
 
 Core dependencies:
 
-* Windows 10 1809 or later (a WinAppSDK requirement)
+* Windows 10 1809 or later
+* Windows App Runtime (WinAppSDK)
+  * Generally latest stable channel. Note that some old releases may unexpectedly build with preview or experimental channel, please use the recent releases.
 * Microsoft Visual C++ 2015-2022 Redistributable
   * `UFCase.Host` requires it. 
 
