@@ -14,6 +14,19 @@ The article [Understanding Component-Based Servicing
 
 I'll publish breaking changes for UFCase in the [GitHub releases](https://github.com/seven-mile/UFCase/releases). And the CI will upload nightly build artifacts of the newest commit. Goto [GitHub actions](https://github.com/seven-mile/UFCase/actions), click the commit you prefer and download `UFCase_portable.zip` from the row `Artifacts`.
 
+### Runtime Dependencies
+
+Core dependencies:
+
+* Windows 10 1809 or later (a WinAppSDK requirement)
+* Microsoft Visual C++ 2015-2022 Redistributable
+  * `UFCase.Host` requires it. 
+
+Optional dependencies:
+
+* .Net 6.0 Desktop Runtime
+  * The C# module `UFCase.Host.Manifest` requires it. Without the runtime, you may encounter crash when opening the manifest viewer.
+
 ### Glossary
 
 All the descriptions below are woven by my own understanding. For your information only.
