@@ -87,8 +87,10 @@ winrt::fire_and_forget StartHosts()
         PROCESS_INFORMATION proc_info{};
         if (!CreateProcessInJob(
                 host_job, hostExePath.c_str(),
-                const_cast<LPWSTR>(winrt::format(L"{} {}", client_id, bootdrive).c_str()), NULL,
-                NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info, &proc_info))
+                const_cast<LPWSTR>(
+                    winrt::format(L"{} {} {}", hostExePath.wstring(), client_id, bootdrive).c_str()),
+                NULL, NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info,
+                &proc_info))
         {
             if (proc_info.hProcess)
             {
