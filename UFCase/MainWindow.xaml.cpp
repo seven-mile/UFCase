@@ -32,17 +32,12 @@ namespace winrt::UFCase::implementation
 
         // other ui config
         this->ConfigWindowTitlebar();
-
-        this->SystemBackdrop(Media::MicaBackdrop());
     }
 
     void MainWindow::ConfigWindowTitlebar()
     {
         try
         {
-            AppTitle().Text(L"UFCase");
-            this->Title(L"UFCase");
-
             if (auto appw = AppWindow())
             {
                 if (auto &&appt = appw.TitleBar())
