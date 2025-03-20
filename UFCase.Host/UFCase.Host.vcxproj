@@ -127,9 +127,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
+    <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
+    <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
