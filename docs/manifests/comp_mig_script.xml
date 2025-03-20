@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0" copyright="Copyright (c) Microsoft Corporation. All Rights Reserved.">
+  <assemblyIdentity name="Microsoft-Windows-WAB" version="10.0.26100.1" processorArchitecture="amd64" language="neutral" buildType="release" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" />
+  <feature />
+  <migration scope="Upgrade,MigWiz,USMT" settingsVersion="0">
+    <migXml xmlns="">
+      <environment context="System">
+        <variable name="WabExePath" remap="TRUE">
+          <script>MigXmlHelper.GetStringContent("Registry","HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\wab.exe []")</script>
+        </variable>
+      </environment>
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="File">%APPDATA%\Microsoft\Address Book [*.wab]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [WAB Migrate]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\WAB\* [*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\WAB\* [*]</pattern>
+          </objectSet>
+        </merge>
+        <addObjects>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [WAB Migrate]</location>
+            <attributes>ExpandString</attributes>
+            <bytes>2500500072006F006700720061006D00460069006C006500730025005C00570069006E0064006F007700730020004D00610069006C005C007700610062002E0065007800650020002F0055007000670072006100640065000000</bytes>
+          </object>
+        </addObjects>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity buildType="release" language="*" name="Microsoft-Windows-WAB" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" settingsVersionRange="0" versionScope="nonSxS" xmlns="urn:schemas-microsoft-com:asm.v3" />
+        <migXml xmlns="">
+          <rules context="User">
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\Microsoft\WAB\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <supportedComponent>
+        <assemblyIdentity name="_" version="1.0.0.0" />
+        <supportedComponentIdentity buildType="release" language="*" name="Microsoft-Windows-WAB-DL" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" settingsVersionRange="0" versionScope="nonSxS" xmlns="urn:schemas-microsoft-com:asm.v3" />
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Communications_and_Sync\Windows_Mail</migrationDisplayID>
+  </migration>
+  <localization>
+    <resources culture="en-US">
+      <stringTable>
+        <string id="description" value="Windows Contacts is used in Windows Mail and can also be used to manage contact data." />
+        <string id="displayName" value="Windows Contacts" />
+      </stringTable>
+    </resources>
+  </localization>
+</assembly>
