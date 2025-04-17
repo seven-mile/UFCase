@@ -81,5 +81,39 @@
         name="IStoreModel"
         iid="{FE3C8E81-A790-528D-A986-80E6A9722BAA}"
         threadingModel="Both" />
+
+    <comInterfaceProxyStub
+        name="IIterable[IComponentFileModel]"
+        iid="{ABE0626B-7B6F-55E0-BDB5-477C4B37A8EF}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IIterable[IFeatureModel]"
+        iid="{AC8FECA1-7324-5AB9-BB20-9B3EEB2D3E13}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IIterable[IPackageModel]"
+        iid="{74190D90-0318-5822-887E-647D3E14A48B}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IIterator[IComponentFileModel]"
+        iid="{3C2F62E6-CEEF-59C0-9E0F-0266EB1744CA}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IIterator[IFeatureModel]"
+        iid="{FDAE1372-766B-5F3C-BC67-7B204817278A}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IIterator[IPackageModel]"
+        iid="{42F6EDEF-E12B-5DC0-A465-71EB9A214348}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IVectorView[IPackageModel]"
+        iid="{EBC2DEC9-269F-5E42-87DA-327F66AA61B6}"
+        threadingModel="Both" />
+    <comInterfaceProxyStub
+        name="IVector[IPackageModel]"
+        iid="{88B85353-1699-5FA2-8B7C-21C66DBA1F4A}"
+        threadingModel="Both" />
+
   </file>
 </assembly>

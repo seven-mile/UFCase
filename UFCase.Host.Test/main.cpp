@@ -115,9 +115,31 @@ winrt::fire_and_forget StartHosts()
     co_return;
 }
 
+
+// Print all guid of generic interfaces. This is used in the setup of proxy stubs.
+void PrintGenericInterfaces() {
+    winrt::guid guids[] = {
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterable<winrt::UFCase::Isolation::ComponentFileModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterable<winrt::UFCase::Isolation::FeatureModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterable<winrt::UFCase::Isolation::PackageModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterator<winrt::UFCase::Isolation::ComponentFileModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterator<winrt::UFCase::Isolation::FeatureModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IIterator<winrt::UFCase::Isolation::PackageModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IVectorView<winrt::UFCase::Isolation::PackageModel>>(),
+        winrt::guid_of<winrt::Windows::Foundation::Collections::IVector<winrt::UFCase::Isolation::PackageModel>>(),
+    };
+
+    for (auto guid : guids)
+    {
+        wprintf(L"%s\n", winrt::to_hstring(guid).c_str());
+    }
+}
+
 int main()
 {
     winrt::init_apartment();
+
+    PrintGenericInterfaces();
 
     {
         winrt::com_ptr<IGlobalOptions> globalOptions;
