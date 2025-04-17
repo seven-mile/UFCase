@@ -6,6 +6,14 @@
 #include <filesystem>
 #include <winrt/UFCase.Isolation.h>
 
+#include <WindowsAppSDK-VersionInfo.h>
+#include <MddBootstrap.h>
+
+namespace MddBootstrap
+{
+    using namespace ::Microsoft::Windows::ApplicationModel::DynamicDependency::Bootstrap;
+}
+
 namespace winrt
 {
     using namespace Windows::Foundation;
@@ -85,12 +93,12 @@ winrt::fire_and_forget StartHosts()
             .cb = sizeof(st_info),
         };
         PROCESS_INFORMATION proc_info{};
-        if (!CreateProcessInJob(
-                host_job, hostExePath.c_str(),
-                const_cast<LPWSTR>(
-                    winrt::format(L"{} {} {}", hostExePath.wstring(), client_id, bootdrive).c_str()),
-                NULL, NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info,
-                &proc_info))
+        if (!CreateProcessInJob(host_job, hostExePath.c_str(),
+                                const_cast<LPWSTR>(winrt::format(L"{} {} {}", hostExePath.wstring(),
+                                                                 client_id, bootdrive)
+                                                       .c_str()),
+                                NULL, NULL, FALSE, NULL, NULL, hostExeDir.c_str(), &st_info,
+                                &proc_info))
         {
             if (proc_info.hProcess)
             {
@@ -117,6 +125,9 @@ int main()
                                               IID_PPV_ARGS(&globalOptions)));
         winrt::check_hresult(globalOptions->Set(COMGLB_RO_SETTINGS, COMGLB_FAST_RUNDOWN));
     }
+
+    // Comment it and everything works fine.
+    auto winappsdkGuard{MddBootstrap::InitializeFailFast()};
 
     _comServerExitEvent.create();
 #pragma warning(disable : 4324)
