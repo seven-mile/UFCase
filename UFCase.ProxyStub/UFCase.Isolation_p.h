@@ -3835,13 +3835,13 @@ EXTERN_C const IID IID___x_ABI_CUFCase_CIsolation_CIStoreModel;
         DECLSPEC_XFGVIRT(__x_ABI_CUFCase_CIsolation_CIStoreModel, GetComponentCollection)
         HRESULT ( STDMETHODCALLTYPE *GetComponentCollection )( 
             __x_ABI_CUFCase_CIsolation_CIStoreModel * This,
-            /* [out][retval] */ __FIIterable_1_IInspectable **result);
+            /* [out][retval] */ IInspectable **result);
         
         DECLSPEC_XFGVIRT(__x_ABI_CUFCase_CIsolation_CIStoreModel, GetComponentCollection2)
         HRESULT ( STDMETHODCALLTYPE *GetComponentCollection2 )( 
             __x_ABI_CUFCase_CIsolation_CIStoreModel * This,
             /* [in] */ HSTRING reference,
-            /* [out][retval] */ __FIIterable_1_IInspectable **result);
+            /* [out][retval] */ IInspectable **result);
         
         END_INTERFACE
     } __x_ABI_CUFCase_CIsolation_CIStoreModelVtbl;
