@@ -115,7 +115,17 @@ namespace winrt::UFCase::Isolation::implementation
         }
 
         // todo: detect host architecture
+#if defined(_M_ARM64)
+        auto hostArch = L"arm64";
+#elif defined(_M_ARM)
+        auto hostArch = L"arm32";
+#elif defined(_M_X64)
         auto hostArch = L"amd64";
+#elif defined(_M_X86)
+        auto hostArch = L"x86";
+#else
+#error "Unknown architecture"
+#endif
 
         auto hostExePath = GetHostExePath(hostArch);
         auto hostExeDir = hostExePath.parent_path();

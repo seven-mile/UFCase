@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -26,7 +34,20 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
@@ -41,11 +62,33 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;UFCASEPROXYSTUB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>Source.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
@@ -81,6 +124,26 @@
       <ModuleDefinitionFile>Source.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;UFCASEPROXYSTUB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding Condition="'$(UseDynamicDebugging)' != 'true'">true</EnableCOMDATFolding>
+      <OptimizeReferences Condition="'$(UseDynamicDebugging)' != 'true'">true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>Source.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -90,7 +153,9 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,12 +185,11 @@
   </ItemGroup>
   <Target Name="CheckPython" BeforeTargets="ProcessWinMD">
     <Exec Command="python --version" IgnoreExitCode="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ExitCode" PropertyName="PythonExitCode"/>
-      <Output TaskParameter="ConsoleOutput" PropertyName="PythonVersionOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="PythonExitCode" />
+      <Output TaskParameter="ConsoleOutput" PropertyName="PythonVersionOutput" />
     </Exec>
-    
     <Error Condition="'$(PythonExitCode)' != '0'" Text="Python is not installed or not found in PATH" />
-    <Message Importance="high" Text="Found Python: $(PythonVersionOutput)"/>
+    <Message Importance="high" Text="Found Python: $(PythonVersionOutput)" />
   </Target>
   <!-- Main target for processing WinMD files -->
   <Target Name="ProcessWinMD" BeforeTargets="ClCompile" Inputs="@(_WinMDPaths)" Outputs="@(_GeneratedFiles)">
@@ -155,10 +219,15 @@
     <!-- Validate input files exist -->
     <Error Condition="!Exists('%(WinMDFiles.Identity)')" Text="Required WinMD file not found: %(WinMDFiles.Identity)" />
     <!-- Process each WinMD file -->
+    <PropertyGroup>
+      <PlatformEnv Condition="'$(Platform)'=='x64'">x64</PlatformEnv>
+      <PlatformEnv Condition="'$(Platform)'=='ARM64'">arm64</PlatformEnv>
+    </PropertyGroup>
+    <Error Condition="'$(PlatformEnv)'==''" Text="Unsupported client platform." />
     <ItemGroup>
       <_ProcessItem Include="@(WinMDFiles)">
         <Command1>WinMdIdl.exe /outdir:"$(_ProxyStubWorkspace)" "%(Identity)"</Command1>
-        <Command2>MIdl.exe /env $(Platform) /winrt /ns_prefix /dlldata "%(DllDataFile)" /metadata_dir "$(WindowsSDK_UnionMetadataPath)" /I "$(_ProxyStubWorkspace)" /out "$(MSBuildProjectDirectory)" "$(_ProxyStubWorkspace)\%(IdlFileName)"</Command2>
+        <Command2>MIdl.exe /env $(PlatformEnv) /winrt /ns_prefix /dlldata "%(DllDataFile)" /metadata_dir "$(WindowsSDK_UnionMetadataPath)" /I "$(_ProxyStubWorkspace)" /out "$(MSBuildProjectDirectory)" "$(_ProxyStubWorkspace)\%(IdlFileName)"</Command2>
       </_ProcessItem>
     </ItemGroup>
     <!-- Execute the generation commands -->

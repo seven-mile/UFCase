@@ -30,9 +30,17 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -79,7 +87,19 @@
     <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <MultiProcMIDL>true</MultiProcMIDL>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <MultiProcMIDL>true</MultiProcMIDL>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
@@ -89,7 +109,14 @@
     <VcpkgUseStatic>true</VcpkgUseStatic>
     <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
+  </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgTriplet>x64-windows</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Vcpkg">
     <VcpkgTriplet>x64-windows</VcpkgTriplet>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -105,29 +132,38 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp20</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">stdcpp20</LanguageStandard>
       <BuildStlModules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</BuildStlModules>
+      <BuildStlModules Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</BuildStlModules>
     </ClCompile>
     <Link>
       <UACExecutionLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RequireAdministrator</UACExecutionLevel>
+      <UACExecutionLevel Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">RequireAdministrator</UACExecutionLevel>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkLibraryDependencies>
+      <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">stdcpp20</LanguageStandard>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">MultiThreaded</RuntimeLibrary>
       <BuildStlModules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</BuildStlModules>
+      <BuildStlModules Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</BuildStlModules>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <UACExecutionLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RequireAdministrator</UACExecutionLevel>
+      <UACExecutionLevel Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">RequireAdministrator</UACExecutionLevel>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkLibraryDependencies>
+      <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -680,8 +716,8 @@
   </Target>
   <!-- Custom Build Targets -->
   <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
-    <Message Text="Copying $(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe to $(OutDir)UFCase.Host.amd64.exe" Importance="High" />
     <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
+    <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.arm64.exe" />
     <!-- todo: other arch support -->
   </Target>
 </Project>
