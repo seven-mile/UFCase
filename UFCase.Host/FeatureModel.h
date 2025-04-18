@@ -2,7 +2,7 @@
 
 #include "FeatureModel.g.h"
 
-#include "ServicingApi/CbsApi.h"
+#include "CbsApi.h"
 
 namespace winrt::UFCase::Isolation::implementation
 {

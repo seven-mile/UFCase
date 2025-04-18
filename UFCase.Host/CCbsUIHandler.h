@@ -1,5 +1,5 @@
 #pragma once
-#include "ServicingApi/CbsApi.h"
+#include "CbsApi.h"
 
 #include <functional>
 
