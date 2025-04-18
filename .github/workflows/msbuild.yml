@@ -10,12 +10,18 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  BUILD_PLATFORM: x64
 
 jobs:
   build:
     runs-on: windows-2022
     # runs-on: windows-latest
+
+    strategy:
+      matrix:
+        # Define the platforms of UFCase client. Note that the host always covers all platforms.
+        platform:
+        - x64
+        - ARM64
 
     steps:
     - uses: actions/checkout@v4
@@ -31,27 +37,33 @@ jobs:
         nuget restore ./UFCase.Host.Test/packages.config -SolutionDirectory .
         msbuild -t:restore ./UFCase.Host.Manifest
 
-    - name: Build the project
+    - name: Build UFCase - isolation host part
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ env.BUILD_PLATFORM }}
+      run: |
+        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:./UFCase.Host/UFCase.Host.vcxproj /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=x64
+        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:./UFCase.Host/UFCase.Host.vcxproj /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=ARM64
+
+    - name: Build UFCase - client part
+      working-directory: ${{ env.GITHUB_WORKSPACE }}
+      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }}
       env:
         Configuration: ${{ env.BUILD_CONFIGURATION }}
-        Platform: ${{ env.BUILD_PLATFORM }}
+        Platform: ${{ matrix.platform }}
 
     # Collect the outputs into one folder for packaging
     - name: Collect output files
       shell: bash
-      working-directory: ${{ env.BUILD_PLATFORM }}/${{ env.BUILD_CONFIGURATION }}
+      working-directory: ${{ matrix.platform }}/${{ env.BUILD_CONFIGURATION }}
       run: |
         mkdir -p ./Artifact
         cp -r ./UFCase/Assets ./Artifact
         cp ./UFCase/Microsoft.WindowsAppRuntime.Bootstrap.dll ./Artifact
         cp ./UFCase/UFCase.exe ./Artifact
         cp ./UFCase/UFCase.pri ./Artifact
-        cp ./UFCase/UFCase.Isolation.winmd ./Artifact
+        cp ./UFCase/UFCase.ProxyStub.dll ./Artifact
         cp ./UFCase/UFCase.Host.amd64.exe ./Artifact
+        cp ./UFCase/UFCase.Host.arm64.exe ./Artifact
         cp ./UFCase/UFCase.Host.Manifest.dll ./Artifact
-        cp ./UFCase/UFCase.Host.Manifest.winmd ./Artifact
         cp ./UFCase/WinRT.Host.dll ./Artifact
         cp ./UFCase/WinRT.Host.dll.mui ./Artifact
         cp ./UFCase/WinRT.Host.runtimeconfig.json ./Artifact
@@ -62,7 +74,6 @@ jobs:
     - name: Upload UFCase package
       uses: actions/upload-artifact@v4
       with:
-        name: UFCase_portable
+        name: UFCase_portable_${{ github.sha }}
         path: |
-          ${{ env.BUILD_PLATFORM }}/${{ env.BUILD_CONFIGURATION }}/Artifact
-
+          ${{ matrix.platform }}/${{ env.BUILD_CONFIGURATION }}/Artifact
