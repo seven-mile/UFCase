@@ -40,15 +40,12 @@ jobs:
     - name: Build UFCase - isolation host part
       working-directory: ${{ env.GITHUB_WORKSPACE }}
       run: |
-        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:./UFCase.Host/UFCase.Host.vcxproj /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=x64
-        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:./UFCase.Host/UFCase.Host.vcxproj /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=ARM64
+        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:UFCase_Host /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=x64
+        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:UFCase_Host /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=ARM64
 
     - name: Build UFCase - client part
       working-directory: ${{ env.GITHUB_WORKSPACE }}
       run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }}
-      env:
-        Configuration: ${{ env.BUILD_CONFIGURATION }}
-        Platform: ${{ matrix.platform }}
 
     # Collect the outputs into one folder for packaging
     - name: Collect output files
