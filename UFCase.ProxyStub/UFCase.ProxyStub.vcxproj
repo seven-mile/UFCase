@@ -165,7 +165,7 @@
     <Exec Command="%(_ProcessItem.Command1)" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="$(_ProxyStubWorkspace)\%(_ProcessItem.IdlFileName)" />
     <Exec Command="%(_ProcessItem.Command2)" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="%(_ProcessItem.HeaderFile);%(_ProcessItem.ProxyHeaderFile);%(_ProcessItem.IFile);%(_ProcessItem.ProxyFile);%(_ProcessItem.DllDataFile)" />
     <!-- Merge DllData files -->
-    <Exec Command="python merge_dlldata.py %(_ProcessItem.DllDataFile) > $(ProjectDir)dlldata.c" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="dlldata.c" />
+    <Exec Command="python merge_dlldata.py %(_ProcessItem.DllDataFile) &gt; $(ProjectDir)dlldata.c" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="dlldata.c" />
     <!-- Patch IIterable<IInspectable> type -->
     <Exec Command="powershell -Command &quot;(Get-Content '$(ProjectDir)UFCase.Isolation_p.h').Replace('__FIIterable_1_IInspectable **result);', 'IInspectable **result);') | Set-Content '$(ProjectDir)UFCase.Isolation_p.h'&quot;" />
     <!-- Add generated files to compilation -->
