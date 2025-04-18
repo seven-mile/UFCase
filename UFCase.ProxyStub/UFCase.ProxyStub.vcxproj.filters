@@ -21,18 +21,6 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="UFCase.Host.Manifest.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UFCase.Host.Manifest_p.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UFCase.Isolation.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UFCase.Isolation_p.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -42,18 +30,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dlldata.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UFCase.Host.Manifest_i.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UFCase.Host.Manifest_p.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UFCase.Isolation_i.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UFCase.Isolation_p.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
