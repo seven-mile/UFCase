@@ -72,6 +72,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -235,7 +247,7 @@
     <Exec Command="%(_ProcessItem.Command2)" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="%(_ProcessItem.HeaderFile);%(_ProcessItem.ProxyHeaderFile);%(_ProcessItem.IFile);%(_ProcessItem.ProxyFile);%(_ProcessItem.DllDataFile)" />
     <!-- Merge DllData files -->
     <Message Text="Merging DllData files... Cmd: python merge_dlldata.py @(WinMDFiles->'%(DllDataFile)', ' ')" Importance="high" />
-    <Exec Command="python merge_dlldata.py @(WinMDFiles->'%(DllDataFile)', ' ') > $(ProjectDir)dlldata.c" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="dlldata.c" />
+    <Exec Command="python merge_dlldata.py @(WinMDFiles->'%(DllDataFile)', ' ') &gt; $(ProjectDir)dlldata.c" WorkingDirectory="$(MSBuildProjectDirectory)" Outputs="dlldata.c" />
     <!-- Patch IIterable<IInspectable> type -->
     <Exec Command="powershell -Command &quot;(Get-Content '$(ProjectDir)UFCase.Isolation_p.h').Replace('__FIIterable_1_IInspectable **result);', 'IInspectable **result);') | Set-Content '$(ProjectDir)UFCase.Isolation_p.h'&quot;" />
     <!-- Add generated files to compilation -->

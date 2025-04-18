@@ -108,29 +108,29 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -208,7 +208,7 @@
     <ClInclude Include="ImageModel.h" />
     <ClInclude Include="PackageModel.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="rpcproxy_arm64.h" />
+    <ClInclude Include="RpcProxyPolyfill\rpcproxy.h" />
     <ClInclude Include="ServicingApi\CbsApi.h" />
     <ClInclude Include="ServicingApi\CbsCoreApi.h" />
     <ClInclude Include="ServicingApi\cdf_types.h" />
