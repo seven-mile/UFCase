@@ -18,7 +18,7 @@ namespace winrt::UFCase::Isolation::implementation
 
     inline std::wstring_view GetViewFromLUC(LUNICODE_STRING const &luc)
     {
-        return {luc.Data, luc.Length};
+        return {luc.Data, static_cast<size_t>(luc.Length)};
     }
 
     inline std::filesystem::path FindSStackDll(hstring windir, hstring dll)
@@ -42,10 +42,12 @@ namespace winrt::UFCase::Isolation::implementation
         DWORD arrArchs[] = {
 #ifdef _M_AMD64
             PROCESSOR_ARCHITECTURE_AMD64,
-#elif _M_X86
+#elif _WIN32
             PROCESSOR_ARCHITECTURE_INTEL,
 #elif _M_ARM64
             PROCESSOR_ARCHITECTURE_ARM64,
+#elif _M_ARM
+            PROCESSOR_ARCHITECTURE_ARM,
 #endif
         };
         param.cntArchs = _countof(arrArchs);
@@ -73,7 +75,7 @@ namespace winrt::UFCase::Isolation::implementation
         winrt::check_hresult(
             pfnSssGetServicingStackFilePathLength(0, pCookie.get(), dll.c_str(), &lenPath));
         assert(lenPath > 0);
-        auto bufPath = std::make_unique<wchar_t[]>(lenPath);
+        auto bufPath = std::make_unique<wchar_t[]>(static_cast<size_t>(lenPath));
         UINT64 gotLen = 0;
         winrt::check_hresult(pfnSssGetServicingStackFilePath(0, pCookie.get(), dll.c_str(),
                                                              lenPath * 2, bufPath.get(), &gotLen));

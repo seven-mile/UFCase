@@ -95,7 +95,7 @@ Compiler switches:
 #endif
 
 
-#if defined(WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
 //We need to define REFIID, REFCLSID, REFGUID, & REFFMTID here so that the
 //proxy code won't get the const GUID *const definition.

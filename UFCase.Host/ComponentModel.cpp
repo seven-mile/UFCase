@@ -66,7 +66,7 @@ namespace winrt::UFCase::Isolation::implementation
         check_hresult(pStream->Seek(pos, STREAM_SEEK_SET, nullptr));
 
         std::vector<char> buf;
-        buf.resize(size.QuadPart);
+        buf.resize(static_cast<size_t>(size.QuadPart));
         ULONG read = 0;
         check_hresult(pStream->Read(buf.data(), (ULONG)buf.size(), &read));
 

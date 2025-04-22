@@ -355,10 +355,6 @@ struct CDF_APPID_TABLE_ITEM{
 DEFINE_IENUM_STRUCT(CDF_APPID_TABLE_ITEM, "8a05ee56-3615-46ce-acf8-f34dc46e3b78");
 
 struct __declspec(uuid("E19364F9-E580-4867-936C-F2D4FB7A49DC")) ICDF : IUnknown {
-  virtual HRESULT QueryInterface(_GUID const &, void **) = 0;
-  virtual ULONG AddRef(void) = 0;
-  virtual ULONG Release(void) = 0;
-
   virtual HRESULT GetTableOfContents(CDF_BLOBID *) = 0;
   virtual HRESULT GetString(CDF_STRINGID, wchar_t **) = 0;
   virtual HRESULT GetGUID(CDF_GUIDID, _GUID *) = 0;
@@ -403,11 +399,6 @@ struct __declspec(uuid("E19364F9-E580-4867-936C-F2D4FB7A49DC")) ICDF : IUnknown 
 
 struct __declspec(uuid("2BE3FEBD-98B4-462E-AA3F-E9F6C76CB421"))
 ICDF_Internal : IUnknown {
-
-  virtual HRESULT QueryInterface(_GUID const &, void **) = 0;
-  virtual ULONG AddRef(void) = 0;
-  virtual ULONG Release(void) = 0;
-
   virtual struct WcpManifest *GetManifest() = 0;
   virtual HRESULT Disown() = 0;
 };
