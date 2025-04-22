@@ -84,25 +84,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Interface\Generated Files;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Interface\Generated Files;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Interface\Generated Files;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)UFCase.Host/Generated Files/;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Interface\Generated Files;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -687,10 +687,8 @@
     <ProjectReference Include="..\UFCase.Host.Manifest\UFCase.Host.Manifest.csproj">
       <Project>{731603da-8257-4e50-a9a9-c47d3c9f8233}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\UFCase.Host\UFCase.Host.vcxproj">
-      <Project>{72710aa5-7cc4-4f1d-9560-89cb778e65f5}</Project>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
+      <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

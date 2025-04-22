@@ -1,0 +1,234 @@
+
+namespace UFCase.Isolation
+{
+    enum CbsInstallState
+    {
+        CbsInstallStatePartiallyInstalled = -19,
+        CbsInstallStateCancel = -18,
+        CbsInstallStateSuperseded = -17,
+        CbsInstallStateDefault = -16,
+        CbsInvalidStatePermanent = -8,
+        CbsInvalidStateInstalled = -7,
+        CbsInvalidStateStaged = -4,
+        CbsInvalidStateResolved = -2,
+        CbsInstallStateUnknown = -1,
+
+        CbsInstallStateAbsent = 0,
+
+        CbsInstallStateResolving = 1,
+        CbsInstallStateResolved = 2,
+        CbsInstallStateStaging = 3,
+        CbsInstallStateStaged = 4,
+        CbsInstallStateUninstallRequested = 5,
+        CbsInstallStateInstallRequested = 6,
+        CbsInstallStateInstalled = 7,
+        CbsInstallStatePermanent = 8,
+
+        CbsInstallStateInvalid = 0x7fffffff,
+    };
+
+    [default_interface]
+    runtimeclass FeatureModel
+    {
+        CbsInstallState CurrentState{get;};
+        CbsInstallState RequestedState{get;};
+
+        String Name{get;};
+        String DisplayName{get;};
+        String Description{get;};
+        String DisplayFile{get;};
+        String Restart{get;};
+        String PsfName{get;};
+        String DownloadSize{get;};
+        String SetMembership{get;};
+
+        PackageModel ContentPackage{get;};
+
+        void Enable();
+        void Disable();
+
+        Windows.Foundation.Collections.IIterable<FeatureModel> GetParentFeatureCollection();
+    }
+
+    [default_interface]
+    runtimeclass PackageModel
+    {
+        SessionModel Session{get;};
+
+        CbsInstallState State{get;};
+
+        String Name{get;};
+        String Description{get;};
+        String Identity{get;};
+        String ReleaseType{get;};
+        String RestartRequired{get;};
+        String ProductName{get;};
+        String ProductVersion{get;};
+        String Company{get;};
+        String Copyright{get;};
+        String SupportInformation{get;};
+
+        String CreationTime{get;};
+        String LastUpdateTime{get;};
+        String InstallTime{get;};
+        String InstallPackageName{get;};
+        String InstallLocation{get;};
+        String InstallClient{get;};
+        String InstallUserName{get;};
+
+        Boolean IsApplicable{get;};
+
+        String ManifestFilePath{get;};
+        String RegistryPath{get;};
+
+        void Install();
+        void Remove();
+        void Stage();
+
+        FeatureModel OpenFeature(String name);
+        Windows.Foundation.Collections.IIterable<FeatureModel> GetFeatureCollection(
+            UInt32 applicability,
+            UInt32 selectability
+        );
+    }
+
+    enum CbsOperationType
+    {
+        ExportRepository = 1,
+        UpdateImage = 2,
+        PerformPrepareServicingOperation = 3,
+        PerformLateAcquisitionOperation = 4,
+        InitICSIStore = 8,
+    };
+
+    runtimeclass SessionModel
+    {
+        ImageModel Image{get;};
+
+        void AddSource(String source);
+        Windows.Foundation.IAsyncActionWithProgress<UInt32> SaveChanges();
+
+        PackageModel OpenPackage(String identity);
+        Windows.Foundation.Collections.IVector<PackageModel> GetPackageCollection(
+            UInt32 option
+        );
+
+        PackageModel FoundationPackage{get;};
+        PackageModel ProductPackage{get;};
+
+        void PerformOperation(CbsOperationType op);
+    }
+
+    enum CsiComponentStatus
+    {
+        Prestaged = 1,
+        Staged = 2,
+        Pinned = 3,
+        Installed = 4,
+        InstalledMismatch = 5,
+    };
+
+    struct ComponentFileModel
+    {
+        String Name;
+        String Status;
+    };
+
+    runtimeclass ComponentModel
+    {
+        String GetAttribute(String name);
+        String GetAttribute(String name_space, String name);
+
+        String TextForm{get;};
+        String KeyForm{get;};
+
+        String Manifest{get;};
+        UFCase.Host.Manifest.Assembly CookedManifest{get;};
+
+        CsiComponentStatus Status{get;};
+        String PayloadPath{get;};
+
+        Windows.Foundation.Collections.IIterable<ComponentFileModel> GetFileCollection(UInt32 dwFlags);
+    }
+
+    runtimeclass StoreModel
+    {
+        ComponentModel OpenComponent(String definition);
+
+        // Windows.Foundation.Collections.IIterable<ComponentModel>
+        Windows.Foundation.Collections.IIterable<Object> GetComponentCollection();
+        Windows.Foundation.Collections.IIterable<Object> GetComponentCollection(String reference);
+    }
+
+    enum ImageType
+    {
+        Online,
+        Offline,
+    };
+
+    struct ImageVersion
+    {
+        UInt32 Major;
+        UInt32 Minor;
+        UInt32 Build;
+        UInt32 Revision;
+    };
+
+    runtimeclass ImageModel
+    {
+        SessionModel OpenSession(UInt32 option);
+
+        StoreModel SxsStore();
+
+        String Bootdrive();
+        String WinDir();
+        String GetRegistryHive(String hive_id);
+
+        ImageType Type();
+        ImageVersion Version();
+        String Edition();
+        String Architecture();
+        Boolean IsWinPE();
+    }
+
+    runtimeclass Host
+    {
+        Guid Id { get; };
+        String Bootdrive { get; };
+
+        void Ping();
+
+        ImageModel Image{ get; };
+    }
+
+    [default_interface]
+    runtimeclass HostManager
+    {
+        void RegisterHost(Host host);
+        void UnregisterHost(Host host);
+    }
+
+    [default_interface]
+    runtimeclass HostManagerSingleton {
+    
+      HostManagerSingleton();
+
+      HostManager Current();
+    
+    }
+}
+
+
+namespace UFCase.Host
+{
+
+    runtimeclass GeneratorIterator : [default] Windows.Foundation.Collections.IIterator<Object>
+    {
+        
+    }
+
+    runtimeclass GeneratorIterable : [default] Windows.Foundation.Collections.IIterable<Object>
+    {
+        
+    }
+}

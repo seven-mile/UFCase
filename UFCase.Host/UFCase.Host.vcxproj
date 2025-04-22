@@ -108,7 +108,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;ServicingApi\$(Platform)\$(Configuration);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;ServicingApi\$(Platform)\$(Configuration);$(SolutionDir)UFCase.Interface\Generated Files;$(IncludePath)</IncludePath>
     <MultiProcMIDL>true</MultiProcMIDL>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -188,10 +188,7 @@
     <ClInclude Include="CCbsUIHandler.h" />
     <ClInclude Include="ComponentModel.h" />
     <ClInclude Include="FeatureModel.h" />
-    <ClInclude Include="GeneratorIterable.h">
-      <DependentUpon>GeneratorIterable.idl</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
+    <ClInclude Include="GeneratorIterable.h" />
     <ClInclude Include="Host.h" />
     <ClInclude Include="ImageModel.h" />
     <ClInclude Include="PackageModel.h" />
@@ -215,10 +212,7 @@
   <ItemGroup>
     <ClCompile Include="ComponentModel.cpp" />
     <ClCompile Include="FeatureModel.cpp" />
-    <ClCompile Include="GeneratorIterable.cpp">
-      <DependentUpon>GeneratorIterable.idl</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
+    <ClCompile Include="GeneratorIterable.cpp" />
     <ClCompile Include="Host.cpp" />
     <ClCompile Include="ImageModel.cpp" />
     <ClCompile Include="ImageModel.Parse.cpp" />
@@ -244,9 +238,6 @@
     <None Include="PropertySheet.props" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="GeneratorIterable.idl">
-      <SubType>Designer</SubType>
-    </Midl>
     <CustomBuild Include="ServicingApi\CbsApi.idl">
       <Command Condition="'$(Platform)'=='Win32'">midl.exe /win32 /client stub "%(FullPath)" /out %(RelativeDir)$(Platform)\$(Configuration)\</Command>
       <Command Condition="'$(Platform)'=='x64'">midl.exe /amd64 /client stub "%(FullPath)" /out %(RelativeDir)$(Platform)\$(Configuration)\</Command>
@@ -254,11 +245,13 @@
       <Command Condition="'$(Platform)'=='ARM64'">midl.exe /arm64 /client stub "%(FullPath)" /out %(RelativeDir)$(Platform)\$(Configuration)\</Command>
       <Outputs>%(RelativeDir)$(Platform)\$(Configuration)\CbsApi_i.c; %(RelativeDir)$(Platform)\$(Configuration)\CbsApi_p.c; %(RelativeDir)$(Platform)\$(Configuration)\dlldata.c; %(RelativeDir)$(Platform)\$(Configuration)\CbsApi.h</Outputs>
     </CustomBuild>
-    <Midl Include="UFCase.Isolation.idl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFCase.Host.Manifest\UFCase.Host.Manifest.csproj">
       <Project>{731603da-8257-4e50-a9a9-c47d3c9f8233}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
+      <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
