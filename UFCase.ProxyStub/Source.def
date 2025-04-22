@@ -1,4 +1,4 @@
-﻿LIBRARY "UFCase.ProxyStub.dll"
+﻿LIBRARY
 EXPORTS
-    DllGetClassObject
-    DllCanUnloadNow
+    DllGetClassObject PRIVATE
+    DllCanUnloadNow PRIVATE

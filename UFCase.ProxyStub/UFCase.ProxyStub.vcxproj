@@ -130,10 +130,10 @@
     <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFileName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetFileName>
-    <TargetFileName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetFileName>
-    <TargetFileName Condition="'$(Platform)'=='Win32'">$(ProjectName).x86</TargetFileName>
-    <TargetFileName Condition="'$(Platform)'=='x64'">$(ProjectName).amd64</TargetFileName>
+    <TargetName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetName>
+    <TargetName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetName>
+    <TargetName Condition="'$(Platform)'=='Win32'">$(ProjectName).x86</TargetName>
+    <TargetName Condition="'$(Platform)'=='x64'">$(ProjectName).amd64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
