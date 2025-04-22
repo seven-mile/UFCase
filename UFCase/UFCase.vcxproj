@@ -698,9 +698,24 @@
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets'))" />
   </Target>
   <!-- Custom Build Targets -->
-  <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
+  <Target Name="CopyHostExecutablesToOutputDir">
+    <!-- Call MSBild of Host and ProxyStub projects -->
+    <!-- TODO: Support incremental build -->
+    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=Win32" />
+    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM" />
+    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=Win32" />
+    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM" />
+    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64" />
+    <Copy SourceFiles="$(SolutionDir)Win32\$(Configuration)\UFCase.Host\UFCase.Host.x86.exe" DestinationFiles="$(OutDir)UFCase.Host.x86.exe" />
     <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.amd64.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
+    <Copy SourceFiles="$(SolutionDir)ARM\$(Configuration)\UFCase.Host\UFCase.Host.arm32.exe" DestinationFiles="$(OutDir)UFCase.Host.arm32.exe" />
     <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.Host\UFCase.Host.arm64.exe" DestinationFiles="$(OutDir)UFCase.Host.arm64.exe" />
-    <!-- todo: other arch support -->
+    <Copy SourceFiles="$(SolutionDir)Win32\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.x86.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.x86.dll" />
+    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.amd64.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.amd64.dll" />
+    <Copy SourceFiles="$(SolutionDir)ARM\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.arm32.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.arm32.dll" />
+    <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.arm64.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.arm64.dll" />
   </Target>
 </Project>
