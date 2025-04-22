@@ -198,6 +198,9 @@
     <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
       <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\UFCase.ProxyStub\UFCase.ProxyStub.vcxproj">
+      <Project>{22aeb5f9-4edf-4d9e-9e67-6c298f730e89}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />

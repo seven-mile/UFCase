@@ -690,6 +690,9 @@
     <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
       <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\UFCase.ProxyStub\UFCase.ProxyStub.vcxproj">
+      <Project>{22aeb5f9-4edf-4d9e-9e67-6c298f730e89}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -714,8 +717,8 @@
   </Target>
   <!-- Custom Build Targets -->
   <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
-    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
-    <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.arm64.exe" />
+    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.amd64.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
+    <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.Host\UFCase.Host.arm64.exe" DestinationFiles="$(OutDir)UFCase.Host.arm64.exe" />
     <!-- todo: other arch support -->
   </Target>
 </Project>

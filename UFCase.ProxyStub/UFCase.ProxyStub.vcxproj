@@ -129,6 +129,12 @@
   <PropertyGroup>
     <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetFileName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetFileName>
+    <TargetFileName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetFileName>
+    <TargetFileName Condition="'$(Platform)'=='Win32'">$(ProjectName).x86</TargetFileName>
+    <TargetFileName Condition="'$(Platform)'=='x64'">$(ProjectName).amd64</TargetFileName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -306,17 +312,6 @@
     <None Include="Source.def" />
   </ItemGroup>
   <!-- Process input winmds. -->
-  <ItemGroup>
-    <ProjectReference Include="..\UFCase.Host.Manifest\UFCase.Host.Manifest.csproj">
-      <Project>{731603da-8257-4e50-a9a9-c47d3c9f8233}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\UFCase.Host\UFCase.Host.vcxproj">
-      <Project>{72710aa5-7cc4-4f1d-9560-89cb778e65f5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\UFCase\UFCase.vcxproj">
-      <Project>{40ce98ad-3b3a-4c6d-9c01-2116eb9d5834}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <!-- Define the generated files tracking ItemGroup -->
   <PropertyGroup>
     <_ProxyStubWorkspace>$(ProjectDir)$(IntDir)ProxyStub</_ProxyStubWorkspace>
@@ -328,8 +323,14 @@
   </ItemGroup>
   <!-- Input WinMD files -->
   <ItemGroup>
-    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase\UFCase.Host.Manifest.winmd" />
-    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase\UFCase.Isolation.winmd" />
+    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase.Interface\UFCase.Host.Manifest.winmd" />
+    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase.Interface\UFCase.Isolation.winmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
+      <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemGroup>
   <Target Name="CheckPython" BeforeTargets="ProcessWinMD">
     <Exec Command="python --version" IgnoreExitCode="true" ConsoleToMSBuild="true">
