@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
   <assemblyIdentity version="1.0.0.0" name="UFCase.Host"/>
-  <file name="WinRT.Host.dll">
+  <file name="WinRT.Host.${{Platform}}.dll">
     <activatableClass
         name="UFCase.Host.Manifest.ManifestParser"
         threadingModel="both"

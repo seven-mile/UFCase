@@ -683,9 +683,6 @@
     <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
       <Project>{772fd1d4-4ed1-43ef-b86e-6f3ed70d858d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\UFCase.ProxyStub\UFCase.ProxyStub.vcxproj">
-      <Project>{22aeb5f9-4edf-4d9e-9e67-6c298f730e89}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -713,21 +710,44 @@
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets'))" />
   </Target>
   <!-- Custom Build Targets -->
+  
+  <Target Name="ExcludeWinRTHostFromTransitiveCopySource" BeforeTargets="_CopyOutOfDateSourceItemsToOutputDirectory">
+    <ItemGroup>
+      <_SourceItemsToCopyToOutputDirectoryAlways Remove="@(_SourceItemsToCopyToOutputDirectoryAlways)" Condition="'%(Filename)%(Extension)' == 'WinRT.Host.dll'" />
+      <_SourceItemsToCopyToOutputDirectory Remove="@(_SourceItemsToCopyToOutputDirectory)" Condition="'%(Filename)%(Extension)' == 'WinRT.Host.dll'" />
+      <_SourceItemsToCopyToOutputDirectoryIfDifferent Remove="@(_SourceItemsToCopyToOutputDirectoryIfDifferent)" Condition="'%(Filename)%(Extension)' == 'WinRT.Host.dll'" />
+    </ItemGroup>
+  </Target>
+  <Target Name="ExcludeWinRTHostFromCopyLocal" BeforeTargets="_CopyFilesMarkedCopyLocal">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)%(Extension)' == 'WinRT.Host.dll'" />
+    </ItemGroup>
+  </Target>
   <Target Name="CopyHostExecutablesToOutputDir" AfterTargets="Build">
     <!-- Call MSBild of Host and ProxyStub projects -->
     <!-- TODO: Support incremental build -->
-    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=Win32" />
-    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64" />
-    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM" />
-    <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64" />
-    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=Win32" />
-    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64" />
-    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM" />
-    <MSBuild Projects="$(SolutionDir)UFCase.ProxyStub\UFCase.ProxyStub.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host_Manifest" Properties="Configuration=$(Configuration);Platform=Win32" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_ProxyStub" Properties="Configuration=$(Configuration);Platform=Win32" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host" Properties="Configuration=$(Configuration);Platform=Win32" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host_Manifest" Properties="Configuration=$(Configuration);Platform=x64" /> 
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_ProxyStub" Properties="Configuration=$(Configuration);Platform=x64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host" Properties="Configuration=$(Configuration);Platform=x64" /> 
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host_Manifest" Properties="Configuration=$(Configuration);Platform=ARM" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_ProxyStub" Properties="Configuration=$(Configuration);Platform=ARM" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host" Properties="Configuration=$(Configuration);Platform=ARM" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host_Manifest" Properties="Configuration=$(Configuration);Platform=ARM64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_ProxyStub" Properties="Configuration=$(Configuration);Platform=ARM64" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host" Properties="Configuration=$(Configuration);Platform=ARM64" />
     <Copy SourceFiles="$(SolutionDir)Win32\$(Configuration)\UFCase.Host\UFCase.Host.x86.exe" DestinationFiles="$(OutDir)UFCase.Host.x86.exe" />
     <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.amd64.exe" DestinationFiles="$(OutDir)UFCase.Host.amd64.exe" />
     <Copy SourceFiles="$(SolutionDir)ARM\$(Configuration)\UFCase.Host\UFCase.Host.arm32.exe" DestinationFiles="$(OutDir)UFCase.Host.arm32.exe" />
     <Copy SourceFiles="$(SolutionDir)ARM64\$(Configuration)\UFCase.Host\UFCase.Host.arm64.exe" DestinationFiles="$(OutDir)UFCase.Host.arm64.exe" />
+    <Copy SourceFiles="$(SolutionDir)UFCase.Host.Manifest\bin\x86\$(Configuration)\net6.0-windows10.0.19041.0\WinRT.Host.dll" DestinationFiles="$(OutDir)WinRT.Host.x86.dll" />
+    <Copy SourceFiles="$(SolutionDir)UFCase.Host.Manifest\bin\x64\$(Configuration)\net6.0-windows10.0.19041.0\WinRT.Host.dll" DestinationFiles="$(OutDir)WinRT.Host.amd64.dll" />
+    <Copy SourceFiles="$(SolutionDir)UFCase.Host.Manifest\bin\ARM64\$(Configuration)\net6.0-windows10.0.19041.0\WinRT.Host.dll" DestinationFiles="$(OutDir)WinRT.Host.arm64.dll" />
+    <Copy SourceFiles="$(OutDir)WinRT.Host.runtimeconfig.json" DestinationFiles="$(OutDir)WinRT.Host.x86.runtimeconfig.json" />
+    <Copy SourceFiles="$(OutDir)WinRT.Host.runtimeconfig.json" DestinationFiles="$(OutDir)WinRT.Host.amd64.runtimeconfig.json" />
+    <Copy SourceFiles="$(OutDir)WinRT.Host.runtimeconfig.json" DestinationFiles="$(OutDir)WinRT.Host.arm64.runtimeconfig.json" />
     <Copy SourceFiles="$(SolutionDir)Win32\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.x86.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.x86.dll" />
     <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.amd64.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.amd64.dll" />
     <Copy SourceFiles="$(SolutionDir)ARM\$(Configuration)\UFCase.ProxyStub\UFCase.ProxyStub.arm32.dll" DestinationFiles="$(OutDir)UFCase.ProxyStub.arm32.dll" />
