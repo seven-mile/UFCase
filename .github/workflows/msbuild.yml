@@ -57,13 +57,21 @@ jobs:
         cp ./UFCase/Microsoft.WindowsAppRuntime.Bootstrap.dll ./Artifact
         cp ./UFCase/UFCase.exe ./Artifact
         cp ./UFCase/UFCase.pri ./Artifact
-        cp ./UFCase/UFCase.ProxyStub.dll ./Artifact
+        cp ./UFCase/UFCase.ProxyStub.x86.dll ./Artifact
+        cp ./UFCase/UFCase.ProxyStub.amd64.dll ./Artifact
+        cp ./UFCase/UFCase.ProxyStub.arm32.dll ./Artifact
+        cp ./UFCase/UFCase.ProxyStub.arm64.dll ./Artifact
+        cp ./UFCase/UFCase.Host.x86.exe ./Artifact
         cp ./UFCase/UFCase.Host.amd64.exe ./Artifact
+        cp ./UFCase/UFCase.Host.arm32.exe ./Artifact
         cp ./UFCase/UFCase.Host.arm64.exe ./Artifact
         cp ./UFCase/UFCase.Host.Manifest.dll ./Artifact
-        cp ./UFCase/WinRT.Host.dll ./Artifact
-        cp ./UFCase/WinRT.Host.dll.mui ./Artifact
-        cp ./UFCase/WinRT.Host.runtimeconfig.json ./Artifact
+        cp ./UFCase/WinRT.Host.x86.dll ./Artifact
+        cp ./UFCase/WinRT.Host.amd64.dll ./Artifact
+        cp ./UFCase/WinRT.Host.arm64.dll ./Artifact
+        cp ./UFCase/WinRT.Host.x86.runtimeconfig.json ./Artifact
+        cp ./UFCase/WinRT.Host.amd64.runtimeconfig.json ./Artifact
+        cp ./UFCase/WinRT.Host.arm64.runtimeconfig.json ./Artifact
         cp ./UFCase/WinRT.Host.Shim.dll ./Artifact
         cp ./UFCase/WinRT.Runtime.dll ./Artifact
 
