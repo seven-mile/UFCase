@@ -619,8 +619,6 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".clang-format" />
-    <None Include=".editorconfig" />
     <Image Include="Assets\winfluent.svg" />
     <Image Include="Assets\winaero.svg" />
     <Image Include="Assets\winmodern.svg" />

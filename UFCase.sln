@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UFCase.Host.Manifest", "UFC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9FE8FE7D-4261-49E4-BC80-C5A041292EEF}"
 	ProjectSection(SolutionItems) = preProject
+		.clang-format = .clang-format
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		readme.md = readme.md
 	EndProjectSection
