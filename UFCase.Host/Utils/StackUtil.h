@@ -42,12 +42,14 @@ namespace winrt::UFCase::Isolation::implementation
         DWORD arrArchs[] = {
 #ifdef _M_AMD64
             PROCESSOR_ARCHITECTURE_AMD64,
-#elif _WIN32
+#elif _M_IX86
             PROCESSOR_ARCHITECTURE_INTEL,
 #elif _M_ARM64
             PROCESSOR_ARCHITECTURE_ARM64,
 #elif _M_ARM
             PROCESSOR_ARCHITECTURE_ARM,
+#else
+#error "Unknown architecture"
 #endif
         };
         param.cntArchs = _countof(arrArchs);
