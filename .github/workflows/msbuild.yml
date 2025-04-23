@@ -37,12 +37,6 @@ jobs:
         nuget restore ./UFCase.Host.Test/packages.config -SolutionDirectory .
         msbuild -t:restore ./UFCase.Host.Manifest
 
-    - name: Build UFCase - isolation host part
-      working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: |
-        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:UFCase_Host /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=x64
-        msbuild ${{ env.SOLUTION_FILE_PATH }} /t:UFCase_Host /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=ARM64
-
     - name: Build UFCase - client part
       working-directory: ${{ env.GITHUB_WORKSPACE }}
       run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }}

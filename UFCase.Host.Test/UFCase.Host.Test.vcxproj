@@ -193,11 +193,6 @@
     <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.1742\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.1742\build\Microsoft.Windows.SDK.BuildTools.targets')" />
     <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets')" />
   </ImportGroup>
-  <Target Name="CopyHostExecutablesToOutputDir" BeforeTargets="AfterBuild">
-    <Message Text="Copying $(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe to $(OutDir)UFCase.Host.exe" Importance="High" />
-    <Copy SourceFiles="$(SolutionDir)x64\$(Configuration)\UFCase.Host\UFCase.Host.exe" DestinationFiles="$(OutDir)UFCase.Host.exe" />
-    <!-- todo: other arch support -->
-  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
