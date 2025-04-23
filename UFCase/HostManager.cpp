@@ -6,6 +6,8 @@
 
 #include <wil/cppwinrt_wrl.h>
 
+#include "PEUtil.h"
+
 namespace winrt::UFCase::Isolation::implementation
 {
 
@@ -81,14 +83,31 @@ namespace winrt::UFCase::Isolation::implementation
         m_hosts.erase(host.Bootdrive().c_str());
     }
 
-    inline static std::filesystem::path GetHostExePath(std::wstring const &arch)
+    inline static std::filesystem::path GetHostExePath(DWORD arch)
     {
         WCHAR szPath[MAX_PATH];
         ::GetModuleFileName(::GetModuleHandle(NULL), szPath, MAX_PATH);
 
         winrt::check_win32(GetLastError());
 
-        auto exeName = std::format(L"UFCase.Host.{}.exe", arch);
+        std::wstring arch_str;
+        switch (arch) {
+        case PROCESSOR_ARCHITECTURE_AMD64:
+            arch_str = L"amd64";
+            break;
+        case PROCESSOR_ARCHITECTURE_ARM64:
+            arch_str = L"arm64";
+            break;
+        case PROCESSOR_ARCHITECTURE_INTEL:
+            arch_str = L"x86";
+            break;
+        case PROCESSOR_ARCHITECTURE_ARM:
+            arch_str = L"arm";
+            break;
+        default:
+            throw_hresult(E_INVALIDARG);
+        }
+        auto exeName = std::format(L"UFCase.Host.{}.exe", arch_str);
 
         std::filesystem::path mainExePath{szPath};
         {
@@ -114,18 +133,14 @@ namespace winrt::UFCase::Isolation::implementation
             }
         }
 
-        // todo: detect host architecture
-#if defined(_M_ARM64)
-        auto hostArch = L"arm64";
-#elif defined(_M_ARM)
-        auto hostArch = L"arm32";
-#elif defined(_M_X64)
-        auto hostArch = L"amd64";
-#elif defined(_M_X86)
-        auto hostArch = L"x86";
-#else
-#error "Unknown architecture"
-#endif
+        auto ntoskrnlPath = bootdrive / L"Windows" / L"System32" / L"ntoskrnl.exe";
+        if (!std::filesystem::exists(ntoskrnlPath)) {
+            OutputDebugString(
+                winrt::format(L"ntoskrnl.exe not found in {}, aborting\n", bootdrive.c_str())
+                    .c_str());
+            THROW_WIN32(ERROR_FILE_NOT_FOUND);
+        }
+        auto hostArch = GetExecutableProcessArchitecture(ntoskrnlPath);
 
         auto hostExePath = GetHostExePath(hostArch);
         auto hostExeDir = hostExePath.parent_path();
