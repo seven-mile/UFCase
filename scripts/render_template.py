@@ -8,7 +8,7 @@ def get_localname(node):
 def parse_vars(var_file):
     with open(var_file, 'r', encoding='utf-8') as f:
         xml_str = f.read()
-    # 因为传入的是多个同级节点，需要包装一个根节点
+    # Since we're passing multiple sibling nodes, wrap them in a root node.
     wrapped_xml = f"<root>{xml_str}</root>"
     root = ET.fromstring(wrapped_xml)
     
@@ -20,22 +20,22 @@ def parse_vars(var_file):
 def render_template(template_path, variables, output_path=None):
     template_path = Path(template_path)
     if not template_path.exists():
-        print(f"模板文件 {template_path} 不存在。")
+        print(f"Template file {template_path} does not exist.")
         return
 
     if output_path is None:
-        output_path = template_path.with_suffix('')  # 去掉 .in 后缀
+        output_path = template_path.with_suffix('')  # Remove .in extension.
     else:
         output_path = Path(output_path)
 
     content = template_path.read_text(encoding='utf-8')
 
     for key, value in variables.items():
-        # 普通替换：${{key}}
+        # Simple replacement: ${{key}}.
         placeholder = f"${{{{{key}}}}}"
         content = content.replace(placeholder, value)
 
-        # 文件内容替换：$[[key]]
+        # File content replacement: $[[key]].
         file_placeholder = f"$[[{key}]]"
         if file_placeholder in content:
             file_path = Path(value)
@@ -43,17 +43,17 @@ def render_template(template_path, variables, output_path=None):
                 file_content = file_path.read_text(encoding='utf-8')
                 content = content.replace(file_placeholder, file_content)
             else:
-                print(f"警告: 用于 $[[{key}]] 的文件 {value} 不存在")
+                print(f"Warning: File {value} for $[[{key}]] does not exist")
 
     output_path.write_text(content, encoding='utf-8')
-    print(f"生成文件: {output_path}")
+    print(f"Generated file: {output_path}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("用法: python render.py <模板文件.in> <字典文件.var> [输出文件]")
+        print("Usage: python render.py <template_file.in> <variables_file.var> [output_file]")
     else:
         template_file = sys.argv[1]
         variables = parse_vars(sys.argv[2])
         output_file = sys.argv[3] if len(sys.argv) > 3 else None
-        # print(f"解析变量: {variables}")
+        # print(f"Parsed variables: {variables}")
         render_template(template_file, variables, output_file)
