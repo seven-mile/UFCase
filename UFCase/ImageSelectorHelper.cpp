@@ -85,9 +85,9 @@ namespace winrt::UFCase
             // wil::unique_hkey hkeyCurImg;
             // RegOpenKey(hkeyImgList.get(), nameGuid, wil::out_param(hkeyCurImg));
             wchar_t pathMount[MAX_PATH];
-            DWORD dwType{}, cbData{};
-            winrt::check_win32(::RegGetValue(hkeyImgList.get(), nameGuid, L"Mount Path", NULL,
-                                             &dwType, pathMount, &cbData));
+            DWORD dwType{}, cbData{sizeof(pathMount)};
+            winrt::check_win32(::RegGetValue(hkeyImgList.get(), nameGuid, L"Mount Path",
+                                             RRF_RT_REG_SZ, &dwType, pathMount, &cbData));
             std::filesystem::path bootdrive = pathMount;
             if (!std::filesystem::exists(bootdrive))
             {
