@@ -148,8 +148,21 @@
       <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
+  <PropertyGroup>
+    <PlatformEnv Condition="'$(Platform)'=='Win32'">x86</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='x64'">amd64</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='ARM'">arm32</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='ARM64'">arm64</PlatformEnv>
+  </PropertyGroup>
   <ItemGroup>
-    <Manifest Include="app.manifest" />
+    <InTemplate Include="app.manifest.in">
+      <Variables>
+        <Platform>$(PlatformEnv)</Platform>
+        <ProxyStubInterfaces>$(SolutionDir)UFCase.Interface\ProxyStubInterfaces.txt</ProxyStubInterfaces>
+      </Variables>
+      <OutputFile>$(IntDir)app.manifest</OutputFile>
+    </InTemplate>
+    <Manifest Include="$(IntDir)app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
@@ -684,6 +697,10 @@
     <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3124.44\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3124.44\build\native\Microsoft.Web.WebView2.targets')" />
     <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets')" />
   </ImportGroup>
+  <Import Project="..\scripts\InTemplate.targets" Condition="Exists('..\scripts\InTemplate.targets')" />
+  <Target Name="CheckInTemplateTargets" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('..\scripts\InTemplate.targets')" Text="The file '..\scripts\InTemplate.targets' does not exist. Please ensure that the file exists and is accessible." />
+  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
@@ -698,7 +715,7 @@
     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250401001\build\native\Microsoft.WindowsAppSDK.targets'))" />
   </Target>
   <!-- Custom Build Targets -->
-  <Target Name="CopyHostExecutablesToOutputDir">
+  <Target Name="CopyHostExecutablesToOutputDir" AfterTargets="Build">
     <!-- Call MSBild of Host and ProxyStub projects -->
     <!-- TODO: Support incremental build -->
     <MSBuild Projects="$(SolutionDir)UFCase.Host\UFCase.Host.vcxproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=Win32" />

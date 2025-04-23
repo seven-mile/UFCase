@@ -130,10 +130,10 @@
     <IncludePath>$(SolutionDir)UFCase.Host\RpcProxyPolyfill;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetName>
-    <TargetName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetName>
     <TargetName Condition="'$(Platform)'=='Win32'">$(ProjectName).x86</TargetName>
     <TargetName Condition="'$(Platform)'=='x64'">$(ProjectName).amd64</TargetName>
+    <TargetName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetName>
+    <TargetName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -364,16 +364,16 @@
     <Error Condition="!Exists('%(WinMDFiles.Identity)')" Text="Required WinMD file not found: %(WinMDFiles.Identity)" />
     <!-- Process each WinMD file -->
     <PropertyGroup>
-      <PlatformEnv Condition="'$(Platform)'=='x64'">x64</PlatformEnv>
-      <PlatformEnv Condition="'$(Platform)'=='Win32'">win32</PlatformEnv>
-      <PlatformEnv Condition="'$(Platform)'=='ARM64'">arm64</PlatformEnv>
-      <PlatformEnv Condition="'$(Platform)'=='ARM'">arm32</PlatformEnv>
+      <MIdlPlatformEnv Condition="'$(Platform)'=='Win32'">win32</MIdlPlatformEnv>
+      <MIdlPlatformEnv Condition="'$(Platform)'=='x64'">x64</MIdlPlatformEnv>
+      <MIdlPlatformEnv Condition="'$(Platform)'=='ARM64'">arm64</MIdlPlatformEnv>
+      <MIdlPlatformEnv Condition="'$(Platform)'=='ARM'">arm32</MIdlPlatformEnv>
     </PropertyGroup>
-    <Error Condition="'$(PlatformEnv)'==''" Text="Unsupported client platform." />
+    <Error Condition="'$(MIdlPlatformEnv)'==''" Text="Unsupported client platform." />
     <ItemGroup>
       <_ProcessItem Include="@(WinMDFiles)">
         <Command1>WinMdIdl.exe /outdir:"$(_ProxyStubWorkspace)" "%(Identity)"</Command1>
-        <Command2>MIdl.exe /env $(PlatformEnv) /winrt /ns_prefix /dlldata "%(DllDataFile)" /metadata_dir "$(WindowsSDK_UnionMetadataPath)" /I "$(_ProxyStubWorkspace)" /out "$(_ProxyStubWorkspace)" "$(_ProxyStubWorkspace)\%(IdlFileName)"</Command2>
+        <Command2>MIdl.exe /env $(MIdlPlatformEnv) /winrt /ns_prefix /dlldata "%(DllDataFile)" /metadata_dir "$(WindowsSDK_UnionMetadataPath)" /I "$(_ProxyStubWorkspace)" /out "$(_ProxyStubWorkspace)" "$(_ProxyStubWorkspace)\%(IdlFileName)"</Command2>
       </_ProcessItem>
     </ItemGroup>
     <!-- Execute the generation commands -->

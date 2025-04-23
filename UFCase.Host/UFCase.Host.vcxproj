@@ -23,10 +23,10 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetName>
-    <TargetName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetName>
     <TargetName Condition="'$(Platform)'=='Win32'">$(ProjectName).x86</TargetName>
     <TargetName Condition="'$(Platform)'=='x64'">$(ProjectName).amd64</TargetName>
+    <TargetName Condition="'$(Platform)'=='ARM'">$(ProjectName).arm32</TargetName>
+    <TargetName Condition="'$(Platform)'=='ARM64'">$(ProjectName).arm64</TargetName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -242,14 +242,31 @@
       <Project>{22aeb5f9-4edf-4d9e-9e67-6c298f730e89}</Project>
     </ProjectReference>
   </ItemGroup>
+  <PropertyGroup>
+    <PlatformEnv Condition="'$(Platform)'=='Win32'">x86</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='x64'">amd64</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='ARM'">arm32</PlatformEnv>
+    <PlatformEnv Condition="'$(Platform)'=='ARM64'">arm64</PlatformEnv>
+  </PropertyGroup>
   <ItemGroup>
-    <Manifest Include="app.manifest" />
+    <InTemplate Include="app.manifest.in">
+      <Variables>
+        <Platform>$(PlatformEnv)</Platform>
+        <ProxyStubInterfaces>$(SolutionDir)UFCase.Interface\ProxyStubInterfaces.txt</ProxyStubInterfaces>
+      </Variables>
+      <OutputFile>$(IntDir)app.manifest</OutputFile>
+    </InTemplate>
+    <Manifest Include="$(IntDir)app.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.240405.15\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.240405.15\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.240803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.240803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
   </ImportGroup>
+  <Import Project="..\scripts\InTemplate.targets" Condition="Exists('..\scripts\InTemplate.targets')" />
+  <Target Name="CheckInTemplateTargets" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('..\scripts\InTemplate.targets')" Text="The file '..\scripts\InTemplate.targets' does not exist. Please ensure that the file exists and is accessible." />
+  </Target>
   <!-- Custom Build Targets -->
   <Target Name="ExcludeManifestWinmdFromCopyLocal" BeforeTargets="_CopyFilesMarkedCopyLocal">
     <ItemGroup>
