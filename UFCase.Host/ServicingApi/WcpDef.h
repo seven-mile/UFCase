@@ -4,7 +4,7 @@
 
 typedef struct _LUNICODE_STRING
 {
-  UINT64 Length;
-  UINT64 MaximumLength;
+  UINT_PTR Length;
+  UINT_PTR MaximumLength;
   LPWSTR Data;
 } LUNICODE_STRING;

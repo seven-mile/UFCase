@@ -18,7 +18,7 @@ typedef struct _FOUR_PART_VERSION
 typedef struct _SSS_OFFLINE_IMAGE
 {
     UINT cbSize;
-    UINT dwFlags;
+    DWORD dwFlags;
     LPCWSTR pcwszWindir;
 } SSS_OFFLINE_IMAGE;
 
@@ -44,10 +44,10 @@ typedef struct _SSS_BIND_PARAMETERS
     UINT cbSize;
     DWORD dwFlags; // use SSS_BIND_CONDITION_FLAGS
     FOUR_PART_VERSION fpvVersion;
-    UINT64 cntArchs;
+    SIZE_T cntArchs;
     DWORD *arrArchs;
     _SSS_OFFLINE_IMAGE *pOfflineImage;
-    UINT64 cntAlts;
+    SIZE_T cntAlts;
     void *arrAlts;
     LPWSTR pszTemporaryLocation;
 } SSS_BIND_PARAMETERS;
@@ -68,5 +68,5 @@ typedef HRESULT(__stdcall *PSSS_GET_SERVICING_STACK_FILE_PATH_LENGTH_FUNCTION)(
     _Out_ UINT64 *pLen);
 
 typedef HRESULT(__stdcall *PSSS_GET_SERVICING_STACK_FILE_PATH_FUNCTION)(
-    _In_ int dwFlags, _In_ SSS_COOKIE *pCookie, _In_ LPCWSTR pszFile, _In_ UINT64 cchBuffer,
+    _In_ int dwFlags, _In_ SSS_COOKIE *pCookie, _In_ LPCWSTR pszFile, _In_ DWORD cchBuffer,
     _Out_ LPWSTR bufferPath, _Out_ UINT64 *pGotLen);

@@ -107,30 +107,30 @@ struct __declspec(uuid("465F1EC1-7F1D-4A85-A30B-AE1090F212DB")) ICSIStore
   virtual ULONG STDMETHODCALLTYPE Release(void) override = 0;
 
   virtual HRESULT STDMETHODCALLTYPE BeginTransaction(
-      ULONG, _GUID const &, LPCTSTR client_id, _Out_ ICSITransaction **) = 0;
-  virtual HRESULT STDMETHODCALLTYPE CancelPendingTransaction(ULONG,
+      DWORD, _GUID const &, LPCTSTR client_id, _Out_ ICSITransaction **) = 0;
+  virtual HRESULT STDMETHODCALLTYPE CancelPendingTransaction(DWORD,
                                                              _GUID const &,
                                                              LPCTSTR,
                                                              _Out_ ULONG *) = 0;
   virtual HRESULT STDMETHODCALLTYPE BeginRepairTransaction(
-      ULONG, _Out_ ICSIRepairTransaction **, _Out_ ULONG *) = 0;
+      DWORD, _Out_ ICSIRepairTransaction **, _Out_ ULONG *) = 0;
   virtual HRESULT STDMETHODCALLTYPE
   CancelPendingRepairTransaction(ULONG, _Out_ ULONG *) = 0;
   virtual HRESULT STDMETHODCALLTYPE GetComponentManifests(
-      DWORD dwFlags, UINT64 cnt, IDefinitionIdentity *def_idents[],
+      DWORD dwFlags, SIZE_T cnt, IDefinitionIdentity *def_idents[],
       _GUID const &, _Out_ IUnknown *manifests[]) = 0;
   virtual HRESULT STDMETHODCALLTYPE GetComponentInstalledVersions(
-      ULONG dwFlags, UINT64 cnt_idents, _Out_ IDefinitionIdentity *def_idents[],
+      DWORD dwFlags, SIZE_T cnt_idents, _Out_ IDefinitionIdentity *def_idents[],
       _Out_ ULONG *cnt_versions, _Out_ COMPONENT_VERSION versions[]) = 0;
   virtual HRESULT STDMETHODCALLTYPE GetComponentInformation(
-      ULONG dwFlags, ICSISTORE_GET_COMPONENT_INFORMATION_CLASS dwClass,
-      IDefinitionIdentity *, UINT64 cbSize, _Out_ void *) = 0;
-  virtual HRESULT STDMETHODCALLTYPE ReplaceMacros(ULONG, IDefinitionIdentity *,
+      DWORD dwFlags, ICSISTORE_GET_COMPONENT_INFORMATION_CLASS dwClass,
+      IDefinitionIdentity *, SIZE_T cbSize, _Out_ void *) = 0;
+  virtual HRESULT STDMETHODCALLTYPE ReplaceMacros(DWORD, IDefinitionIdentity *,
                                                   LPCTSTR, _Out_ LPTSTR *) = 0;
   virtual HRESULT STDMETHODCALLTYPE
-  EnumPendingTransactions(ULONG, _GUID const &, _Out_ IUnknown **) = 0;
+  EnumPendingTransactions(DWORD, _GUID const &, _Out_ IUnknown **) = 0;
   virtual HRESULT STDMETHODCALLTYPE CancelPendingTransactions(
-      ULONG, UINT64, _Out_ LPCTSTR const *, _Out_ ULONG *) = 0;
+      DWORD, UINT64, _Out_ LPCTSTR const *, _Out_ ULONG *) = 0;
 };
 
 template <class T> struct Windows_Vector {};
