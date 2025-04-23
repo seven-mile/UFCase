@@ -323,8 +323,8 @@
   </ItemGroup>
   <!-- Input WinMD files -->
   <ItemGroup>
-    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase.Interface\UFCase.Host.Manifest.winmd" />
-    <_WinMDPaths Include="$(SolutionDir)$(Platform)\$(Configuration)\UFCase.Interface\UFCase.Isolation.winmd" />
+    <_WinMDPaths Include="$(SolutionDir)$(Configuration)\UFCase.Interface\UFCase.Host.Manifest.winmd" />
+    <_WinMDPaths Include="$(SolutionDir)$(Configuration)\UFCase.Interface\UFCase.Isolation.winmd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFCase.Interface\UFCase.Interface.vcxproj">
