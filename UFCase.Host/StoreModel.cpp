@@ -142,7 +142,7 @@ namespace winrt::UFCase::Isolation::implementation
                                                     nullptr, &dwType, (LPBYTE)szProfileDir,
                                                     &dwLen));
                     wil::zwstring_view profile_dir{szProfileDir};
-                    constexpr wil::zwstring_view SYSTEM_DRIVE_ENV = L"%SystemDrive%";
+                    constexpr wil::zwstring_view SYSTEM_DRIVE_ENV = L"%SystemDrive%\\";
                     if (!profile_dir.starts_with(SYSTEM_DRIVE_ENV))
                     {
                         throw_hresult(E_INVALIDARG);
@@ -177,7 +177,7 @@ namespace winrt::UFCase::Isolation::implementation
             }
 
             SYSTEM_INFO info;
-            GetNativeSystemInfo(&info);
+            GetSystemInfo(&info);
 
             OFFLINE_STORE_CREATION_PARAMETERS params{
                 .cbSize = sizeof(params),
