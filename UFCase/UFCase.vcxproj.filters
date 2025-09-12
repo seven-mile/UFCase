@@ -183,6 +183,7 @@
     <ClInclude Include="IdentityUtil.h">
       <Filter>libraries\utils</Filter>
     </ClInclude>
+    <ClInclude Include="PEUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="framework">
@@ -250,9 +251,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="app.manifest">
-      <Filter>framework</Filter>
-    </Manifest>
+    <Manifest Include="$(IntDir)app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -263,8 +262,6 @@
     <None Include="packages.config">
       <Filter>framework</Filter>
     </None>
-    <None Include=".editorconfig" />
-    <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
