@@ -53,11 +53,9 @@ jobs:
         cp ./UFCase/UFCase.pri ./Artifact
         cp ./UFCase/UFCase.ProxyStub.x86.dll ./Artifact
         cp ./UFCase/UFCase.ProxyStub.amd64.dll ./Artifact
-        cp ./UFCase/UFCase.ProxyStub.arm32.dll ./Artifact
         cp ./UFCase/UFCase.ProxyStub.arm64.dll ./Artifact
         cp ./UFCase/UFCase.Host.x86.exe ./Artifact
         cp ./UFCase/UFCase.Host.amd64.exe ./Artifact
-        cp ./UFCase/UFCase.Host.arm32.exe ./Artifact
         cp ./UFCase/UFCase.Host.arm64.exe ./Artifact
         cp ./UFCase/UFCase.Host.Manifest.dll ./Artifact
         cp ./UFCase/WinRT.Host.x86.dll ./Artifact

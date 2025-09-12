@@ -101,9 +101,6 @@ namespace winrt::UFCase::Isolation::implementation
         case PROCESSOR_ARCHITECTURE_INTEL:
             arch_str = L"x86";
             break;
-        case PROCESSOR_ARCHITECTURE_ARM:
-            arch_str = L"arm";
-            break;
         default:
             throw_hresult(E_INVALIDARG);
         }
