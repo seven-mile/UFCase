@@ -39,7 +39,7 @@ jobs:
 
     - name: Build UFCase - client part
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }}
+      run: msbuild ${{ env.SOLUTION_FILE_PATH }} /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }} /p:BuildAllArchitectures=true
 
     # Collect the outputs into one folder for packaging
     - name: Collect output files

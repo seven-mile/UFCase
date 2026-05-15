@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildThisFileDirectory)Host.Platform.props" />
+
+  <PropertyGroup>
+    <BuildAllHostPlatforms Condition="'$(BuildAllHostPlatforms)'==''">$(DefaultHostPlatforms)</BuildAllHostPlatforms>
+  </PropertyGroup>
+
+  <Target Name="BuildAllHosts" AfterTargets="Build" Condition="'$(BuildAllArchitectures)'=='true'">
+    <!-- Select HostPlatformMetadata entries whose Identity is listed in BuildAllHostPlatforms.
+         We use a helper item to turn the property into an item list, then intersect. -->
+    <ItemGroup>
+      <_RequestedPlatformKey Include="$(BuildAllHostPlatforms)" />
+    </ItemGroup>
+
+    <!-- Copy all HostPlatformMetadata, then remove those not requested -->
+    <ItemGroup>
+      <_PlatformToBuild Include="@(HostPlatformMetadata)" />
+      <_PlatformToBuild Remove="@(_PlatformToBuild)" Condition="'@(_RequestedPlatformKey)' == ''" />
+    </ItemGroup>
+    <ItemGroup>
+      <_PlatformToRemove Include="@(_PlatformToBuild)" />
+      <_PlatformToRemove Remove="@(_RequestedPlatformKey)" />
+      <_PlatformToBuild Remove="@(_PlatformToRemove)" />
+    </ItemGroup>
+
+    <!-- Build Host.Manifest, ProxyStub and Host for each requested platform -->
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host_Manifest" Properties="Configuration=$(Configuration);Platform=%(_PlatformToBuild.Identity);BuildAllArchitectures=false" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_ProxyStub" Properties="Configuration=$(Configuration);Platform=%(_PlatformToBuild.Identity);BuildAllArchitectures=false" />
+    <MSBuild Projects="$(SolutionDir)UFCase.sln" Targets="UFCase_Host" Properties="Configuration=$(Configuration);Platform=%(_PlatformToBuild.Identity);BuildAllArchitectures=false" />
+
+    <!-- Copy Host outputs to main app OutDir -->
+    <Copy SourceFiles="$(SolutionDir)%(_PlatformToBuild.Identity)\$(Configuration)\UFCase.Host\%(_PlatformToBuild.HostExecutableFileName)" DestinationFiles="$(OutDir)%(_PlatformToBuild.HostExecutableFileName)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(SolutionDir)UFCase.Host.Manifest\bin\%(_PlatformToBuild.CsWinRTPlatform)\$(Configuration)\$(HostManifestTargetFramework)\WinRT.Host.dll" DestinationFiles="$(OutDir)%(_PlatformToBuild.HostWinRTDllFileName)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(OutDir)WinRT.Host.runtimeconfig.json" DestinationFiles="$(OutDir)%(_PlatformToBuild.HostWinRTRuntimeConfigFileName)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(SolutionDir)%(_PlatformToBuild.Identity)\$(Configuration)\UFCase.ProxyStub\%(_PlatformToBuild.ProxyStubDllFileName)" DestinationFiles="$(OutDir)%(_PlatformToBuild.ProxyStubDllFileName)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
