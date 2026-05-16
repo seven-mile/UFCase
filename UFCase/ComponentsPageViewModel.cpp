@@ -65,6 +65,20 @@ namespace winrt::UFCase::implementation
         return make<ComponentDetails>(*record->Details);
     }
 
+    void ComponentsPageViewModel::SelectComponentByIndex(int32_t index)
+    {
+        m_selected_index = index;
+        if (index < 0 || static_cast<size_t>(index) >= m_records.size())
+        {
+            SelectedComponent(nullptr);
+        }
+        else
+        {
+            SelectedComponent(m_records[index].Item);
+        }
+        NotifyPropChange(L"SelectedComponentIndex");
+    }
+
     bool ComponentsPageViewModel::MatchingComponent(ComponentRecord const &record)
     {
         if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompId)
@@ -109,6 +123,7 @@ namespace winrt::UFCase::implementation
         m_record_index_by_id.clear();
         m_record_id_by_name.clear();
         m_selected = nullptr;
+        m_selected_index = -1;
         m_selected_details = nullptr;
 
         auto store = m_image.get().Store();
@@ -145,7 +160,7 @@ namespace winrt::UFCase::implementation
                     // reference: https://stackoverflow.com/questions/12108464/let-listview-scroll-to-selected-item
                     // also: oneway / twoway binding bizarre
                     m_components.Append(comp_vm);
-                    SelectedComponent(comp_vm);
+                    SelectComponentByIndex(static_cast<int32_t>(record_index));
                     Navigated.invoke(*this, m_nav_ctx);
                 });
                 matched_flag = true;
@@ -179,7 +194,7 @@ namespace winrt::UFCase::implementation
         }
 
         NotifyPropChange(L"Components");
-        NotifyPropChange(L"SelectedComponent");
+        NotifyPropChange(L"SelectedComponentIndex");
         NotifyPropChange(L"SelectedComponentDetails");
 
         report_progress(100);
@@ -187,8 +202,9 @@ namespace winrt::UFCase::implementation
         if (!matched_flag)
         {
             m_selected = nullptr;
+            m_selected_index = -1;
             m_selected_details = nullptr;
-            NotifyPropChange(L"SelectedComponent");
+            NotifyPropChange(L"SelectedComponentIndex");
             NotifyPropChange(L"SelectedComponentDetails");
             Navigated.invoke(*this, m_nav_ctx);
         }
@@ -216,32 +232,34 @@ namespace winrt::UFCase::implementation
             // find the component and select it
             if (m_nav_ctx && m_nav_ctx.Type() != UFCase::ComponentsPageNavigationContextType::None)
             {
-                UFCase::ComponentListItem component_to_select{nullptr};
+                int32_t component_index_to_select{-1};
                 if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompId)
                 {
                     auto it = m_record_id_by_name.find(
                         std::wstring(m_nav_ctx.SelectCompId().c_str()));
                     if (it != m_record_id_by_name.end())
                     {
-                        if (auto record = FindComponentRecord(it->second))
+                        auto index_it = m_record_index_by_id.find(it->second);
+                        if (index_it != m_record_index_by_id.end())
                         {
-                            component_to_select = record->Item;
+                            component_index_to_select = static_cast<int32_t>(index_it->second);
                         }
                     }
                 }
                 else
                 {
-                    for (auto const &record : m_records)
+                    for (size_t record_index = 0; record_index < m_records.size(); ++record_index)
                     {
+                        auto const &record = m_records[record_index];
                         if (MatchingComponent(record))
                         {
-                            component_to_select = record.Item;
+                            component_index_to_select = static_cast<int32_t>(record_index);
                             break;
                         }
                     }
                 }
                 co_await ui_thread;
-                SelectedComponent(component_to_select);
+                SelectComponentByIndex(component_index_to_select);
                 Navigated.invoke(*this, m_nav_ctx);
             }
         }

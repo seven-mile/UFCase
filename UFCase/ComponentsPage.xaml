@@ -146,8 +146,7 @@
                 ContextFlyout="{StaticResource ComponentItemActionsMenu}"
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Components, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectedComponent, Mode=OneWay}"
-                SelectionChanged="CompList_SelectionChanged"
+                SelectedIndex="{x:Bind ViewModel.SelectedComponentIndex, Mode=TwoWay}"
                 SelectionMode="Single">
                 <ListView.ItemContainerTransitions>
                     <TransitionCollection>

@@ -72,11 +72,24 @@ namespace winrt::UFCase::implementation
             return m_selected;
         }
 
+        int32_t SelectedComponentIndex()
+        {
+            return m_selected_index;
+        }
+
+        void SelectedComponentIndex(int32_t value)
+        {
+            if (m_selected_index == value)
+            {
+                return;
+            }
+            SelectComponentByIndex(value);
+        }
+
         void SelectedComponent(UFCase::ComponentListItem value)
         {
             m_selected = value;
             m_selected_details = value ? EnsureComponentDetails(value) : nullptr;
-            NotifyPropChange(L"SelectedComponent");
             NotifyPropChange(L"SelectedComponentDetails");
             NotifyPropChange(L"SelectedComponentName");
             NotifyPropChange(L"SelectedComponentKeyForm");
@@ -169,6 +182,7 @@ namespace winrt::UFCase::implementation
         weak_ref<UFCase::ImageViewModel> m_image;
 
         UFCase::ComponentListItem m_selected{nullptr};
+        int32_t m_selected_index{-1};
         UFCase::ComponentDetails m_selected_details{nullptr};
         Collections::IObservableVector<UFCase::ComponentListItem> m_components;
         std::vector<ComponentRecord> m_records;
@@ -180,6 +194,7 @@ namespace winrt::UFCase::implementation
         ComponentRecord *FindComponentRecord(UFCase::ComponentListItem const &item);
         Isolation::ComponentModel SelectedComponentModel();
         UFCase::ComponentDetails EnsureComponentDetails(UFCase::ComponentListItem const &item);
+        void SelectComponentByIndex(int32_t index);
         bool MatchingComponent(ComponentRecord const &record);
         IAsyncActionWithProgress<uint32_t> PullData(apartment_context);
     };

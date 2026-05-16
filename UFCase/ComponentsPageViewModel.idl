@@ -44,6 +44,7 @@ namespace UFCase
 
         Windows.Foundation.Collections.IObservableVector<ComponentListItem> Components{ get; };
 
+        Int32 SelectedComponentIndex;
         ComponentListItem SelectedComponent;
         ComponentDetails SelectedComponentDetails{ get; };
         String SelectedComponentName{ get; };
