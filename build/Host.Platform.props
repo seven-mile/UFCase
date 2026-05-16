@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DefaultHostPlatforms>Win32;x64;ARM64</DefaultHostPlatforms>
+    <SupportedHostPlatforms>Win32;x64;ARM;ARM64</SupportedHostPlatforms>
+    <CsWinRTPlatforms>x64;ARM64;x86;ARM32</CsWinRTPlatforms>
+    <HostManifestTargetFramework>net6.0-windows10.0.26100.0</HostManifestTargetFramework>
+
+    <MidlEnv Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">win32</MidlEnv>
+    <MidlEnv Condition="'$(Platform)'=='x64'">x64</MidlEnv>
+    <MidlEnv Condition="'$(Platform)'=='ARM' Or '$(Platform)'=='ARM32'">arm32</MidlEnv>
+    <MidlEnv Condition="'$(Platform)'=='ARM64'">arm64</MidlEnv>
+    <PlatformEnv Condition="'$(PlatformEnv)'=='' And '$(MidlEnv)'!=''">$(MidlEnv)</PlatformEnv>
+
+    <MidlCommandSwitch Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">win32</MidlCommandSwitch>
+    <MidlCommandSwitch Condition="'$(Platform)'=='x64'">amd64</MidlCommandSwitch>
+    <MidlCommandSwitch Condition="'$(Platform)'=='ARM' Or '$(Platform)'=='ARM32'">arm32</MidlCommandSwitch>
+    <MidlCommandSwitch Condition="'$(Platform)'=='ARM64'">arm64</MidlCommandSwitch>
+
+    <HostExecutableSuffix Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">x86</HostExecutableSuffix>
+    <HostExecutableSuffix Condition="'$(Platform)'=='x64'">amd64</HostExecutableSuffix>
+    <HostExecutableSuffix Condition="'$(Platform)'=='ARM' Or '$(Platform)'=='ARM32'">arm32</HostExecutableSuffix>
+    <HostExecutableSuffix Condition="'$(Platform)'=='ARM64'">arm64</HostExecutableSuffix>
+    <ProxyStubDllSuffix>$(HostExecutableSuffix)</ProxyStubDllSuffix>
+
+    <CsWinRTPlatform Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">x86</CsWinRTPlatform>
+    <CsWinRTPlatform Condition="'$(Platform)'=='x64'">x64</CsWinRTPlatform>
+    <CsWinRTPlatform Condition="'$(Platform)'=='ARM' Or '$(Platform)'=='ARM32'">ARM32</CsWinRTPlatform>
+    <CsWinRTPlatform Condition="'$(Platform)'=='ARM64'">ARM64</CsWinRTPlatform>
+
+    <HostExecutableFileName Condition="'$(HostExecutableSuffix)'!=''">UFCase.Host.$(HostExecutableSuffix).exe</HostExecutableFileName>
+    <ProxyStubDllFileName Condition="'$(ProxyStubDllSuffix)'!=''">UFCase.ProxyStub.$(ProxyStubDllSuffix).dll</ProxyStubDllFileName>
+    <HostWinRTDllFileName Condition="'$(HostExecutableSuffix)'!=''">WinRT.Host.$(HostExecutableSuffix).dll</HostWinRTDllFileName>
+    <HostWinRTRuntimeConfigFileName Condition="'$(HostExecutableSuffix)'!=''">WinRT.Host.$(HostExecutableSuffix).runtimeconfig.json</HostWinRTRuntimeConfigFileName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <HostPlatformMetadata Include="Win32">
+      <PlatformEnv>win32</PlatformEnv>
+      <MidlEnv>win32</MidlEnv>
+      <MidlCommandSwitch>win32</MidlCommandSwitch>
+      <HostExecutableSuffix>x86</HostExecutableSuffix>
+      <ProxyStubDllSuffix>x86</ProxyStubDllSuffix>
+      <CsWinRTPlatform>x86</CsWinRTPlatform>
+      <HostExecutableFileName>UFCase.Host.x86.exe</HostExecutableFileName>
+      <ProxyStubDllFileName>UFCase.ProxyStub.x86.dll</ProxyStubDllFileName>
+      <HostWinRTDllFileName>WinRT.Host.x86.dll</HostWinRTDllFileName>
+      <HostWinRTRuntimeConfigFileName>WinRT.Host.x86.runtimeconfig.json</HostWinRTRuntimeConfigFileName>
+    </HostPlatformMetadata>
+    <HostPlatformMetadata Include="x64">
+      <PlatformEnv>x64</PlatformEnv>
+      <MidlEnv>x64</MidlEnv>
+      <MidlCommandSwitch>amd64</MidlCommandSwitch>
+      <HostExecutableSuffix>amd64</HostExecutableSuffix>
+      <ProxyStubDllSuffix>amd64</ProxyStubDllSuffix>
+      <CsWinRTPlatform>x64</CsWinRTPlatform>
+      <HostExecutableFileName>UFCase.Host.amd64.exe</HostExecutableFileName>
+      <ProxyStubDllFileName>UFCase.ProxyStub.amd64.dll</ProxyStubDllFileName>
+      <HostWinRTDllFileName>WinRT.Host.amd64.dll</HostWinRTDllFileName>
+      <HostWinRTRuntimeConfigFileName>WinRT.Host.amd64.runtimeconfig.json</HostWinRTRuntimeConfigFileName>
+    </HostPlatformMetadata>
+    <HostPlatformMetadata Include="ARM">
+      <PlatformEnv>arm32</PlatformEnv>
+      <MidlEnv>arm32</MidlEnv>
+      <MidlCommandSwitch>arm32</MidlCommandSwitch>
+      <HostExecutableSuffix>arm32</HostExecutableSuffix>
+      <ProxyStubDllSuffix>arm32</ProxyStubDllSuffix>
+      <CsWinRTPlatform>ARM32</CsWinRTPlatform>
+      <HostExecutableFileName>UFCase.Host.arm32.exe</HostExecutableFileName>
+      <ProxyStubDllFileName>UFCase.ProxyStub.arm32.dll</ProxyStubDllFileName>
+      <HostWinRTDllFileName>WinRT.Host.arm32.dll</HostWinRTDllFileName>
+      <HostWinRTRuntimeConfigFileName>WinRT.Host.arm32.runtimeconfig.json</HostWinRTRuntimeConfigFileName>
+    </HostPlatformMetadata>
+    <HostPlatformMetadata Include="ARM64">
+      <PlatformEnv>arm64</PlatformEnv>
+      <MidlEnv>arm64</MidlEnv>
+      <MidlCommandSwitch>arm64</MidlCommandSwitch>
+      <HostExecutableSuffix>arm64</HostExecutableSuffix>
+      <ProxyStubDllSuffix>arm64</ProxyStubDllSuffix>
+      <CsWinRTPlatform>ARM64</CsWinRTPlatform>
+      <HostExecutableFileName>UFCase.Host.arm64.exe</HostExecutableFileName>
+      <ProxyStubDllFileName>UFCase.ProxyStub.arm64.dll</ProxyStubDllFileName>
+      <HostWinRTDllFileName>WinRT.Host.arm64.dll</HostWinRTDllFileName>
+      <HostWinRTRuntimeConfigFileName>WinRT.Host.arm64.runtimeconfig.json</HostWinRTRuntimeConfigFileName>
+    </HostPlatformMetadata>
+  </ItemGroup>
+</Project>
