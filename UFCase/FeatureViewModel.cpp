@@ -120,9 +120,9 @@ namespace winrt::UFCase::implementation
         return m_model.SetMembership();
     }
 
-    UFCase::PackageViewModel FeatureViewModel::ContentPackage()
+    hstring FeatureViewModel::ContentPackageIdentity()
     {
-        return UFCase::PackageViewModel(m_model.ContentPackage());
+        return m_model.ContentPackage().Identity();
     }
 
     FeatureViewModel::child_t FeatureViewModel::Children()

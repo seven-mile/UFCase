@@ -32,6 +32,7 @@ namespace UFCase
         Uninitialized,
         Idle,
         Loading,
+        Failed,
     };
 
     [default_interface]
@@ -41,9 +42,13 @@ namespace UFCase
 
         ComponentsPageViewModelState State{ get; };
 
-        Windows.Foundation.Collections.IObservableVector<ComponentViewModel> Components{ get; };
+        Windows.Foundation.Collections.IObservableVector<ComponentListItem> Components{ get; };
 
-        ComponentViewModel SelectedComponent;
+        ComponentListItem SelectedComponent;
+        ComponentDetails SelectedComponentDetails{ get; };
+        String SelectedComponentName{ get; };
+        String SelectedComponentKeyForm{ get; };
+        String SelectedComponentPayloadPath{ get; };
 
         RelayCommand ComponentShowManifestRelay{ get; };
         RelayCommand ComponentShowInFileExplorerRelay{ get; };

@@ -14,8 +14,14 @@
 
 #include <fstream>
 #include <filesystem>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
 #include <wil/stl.h>
 #include <wil/cppwinrt_authoring.h>
+
+#include "PackageViewModel.h"
 
 namespace winrt::UFCase::implementation
 {
@@ -70,20 +76,57 @@ namespace winrt::UFCase::implementation
             return m_image.get();
         }
 
-        IObservableVector<UFCase::PackageViewModel> Packages()
+        IObservableVector<UFCase::PackageListItem> Packages()
         {
             return m_packages;
         }
 
-        UFCase::PackageViewModel SelectedPackage()
+        UFCase::PackageListItem SelectedPackage()
         {
             return m_selected;
         }
 
-        void SelectedPackage(UFCase::PackageViewModel value)
+        void SelectedPackage(UFCase::PackageListItem value)
         {
             m_selected = value;
+            m_selected_details = value ? EnsurePackageDetails(value) : nullptr;
             NotifyPropChange(L"SelectedPackage");
+            NotifyPropChange(L"SelectedPackageDetails");
+            NotifyPropChange(L"SelectedPackageDetailName");
+            NotifyPropChange(L"SelectedPackageDetailIdentity");
+            NotifyPropChange(L"SelectedPackageDescription");
+            NotifyPropChange(L"SelectedPackageInstallTime");
+            NotifyPropChange(L"SelectedPackageInstallClient");
+        }
+
+        UFCase::PackageDetails SelectedPackageDetails()
+        {
+            return m_selected_details;
+        }
+
+        hstring SelectedPackageDetailName()
+        {
+            return m_selected_details ? m_selected_details.DetailName() : L"";
+        }
+
+        hstring SelectedPackageDetailIdentity()
+        {
+            return m_selected_details ? m_selected_details.DetailIdentity() : L"";
+        }
+
+        hstring SelectedPackageDescription()
+        {
+            return m_selected_details ? m_selected_details.Description() : L"";
+        }
+
+        hstring SelectedPackageInstallTime()
+        {
+            return m_selected_details ? m_selected_details.InstallTime() : L"";
+        }
+
+        hstring SelectedPackageInstallClient()
+        {
+            return m_selected_details ? m_selected_details.InstallClient() : L"";
         }
 
         fire_and_forget Navigate(UFCase::PackagesPageNavigationContext const &nav_ctx);
@@ -95,7 +138,11 @@ namespace winrt::UFCase::implementation
             if (!m_selected)
                 co_return;
 
-            auto m_model = m_selected.Model();
+            auto m_model = SelectedPackageModel();
+            if (!m_model)
+            {
+                co_return;
+            }
 
             if (!GlobalRes::WindowServ().TryActivateWindow(m_model))
             {
@@ -120,7 +167,9 @@ namespace winrt::UFCase::implementation
 
 #pragma warning(push)
 #pragma warning(disable : 4090)
-            if (ITEMIDLIST *pidl = ILCreateFromPath(m_selected.ManifestFilePath().c_str()))
+            auto details = m_selected_details;
+            ITEMIDLIST *pidl = details ? ILCreateFromPath(details.ManifestFilePath().c_str()) : nullptr;
+            if (pidl)
             {
                 LOG_IF_FAILED(SHOpenFolderAndSelectItems(pidl, 0, 0, 0));
                 ILFree(pidl);
@@ -135,23 +184,46 @@ namespace winrt::UFCase::implementation
                 return;
             }
 
+            auto details = m_selected_details;
+            if (!details)
+            {
+                return;
+            }
+
             ::RegSetKeyValue(HKEY_CURRENT_USER,
                              L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit",
-                             L"LastKey", REG_SZ, m_selected.RegistryPath().c_str(),
-                             (m_selected.RegistryPath().size() + 1) * sizeof(wchar_t));
+                             L"LastKey", REG_SZ, details.RegistryPath().c_str(),
+                             (details.RegistryPath().size() + 1) * sizeof(wchar_t));
 
             ::ShellExecute(nullptr, L"open", L"regedit", L"", L"", SW_SHOW);
             LOG_IF_FAILED(HRESULT_FROM_WIN32(GetLastError()));
         }
 
       private:
+        struct PackageRecord
+        {
+            uint32_t RecordId{};
+            UFCase::PackageListItem Item{nullptr};
+            Isolation::PackageModel Model{nullptr};
+            std::optional<PackageDetailsSnapshot> Details;
+        };
+
         PackagesPageViewModelState m_state{PackagesPageViewModelState::Uninitialized};
+        uint64_t m_load_generation{};
         weak_ref<UFCase::ImageViewModel> m_image{nullptr};
-        IObservableVector<UFCase::PackageViewModel> m_packages{nullptr};
-        UFCase::PackageViewModel m_selected{nullptr};
+        IObservableVector<UFCase::PackageListItem> m_packages{nullptr};
+        std::vector<PackageRecord> m_records;
+        std::unordered_map<uint32_t, size_t> m_record_index_by_id;
+        std::unordered_map<std::wstring, uint32_t> m_record_id_by_identity;
+        UFCase::PackageListItem m_selected{nullptr};
+        UFCase::PackageDetails m_selected_details{nullptr};
         UFCase::PackagesPageNavigationContext m_nav_ctx;
 
-        bool MatchingPackage(UFCase::PackageViewModel pkg);
+        PackageRecord *FindPackageRecord(uint32_t record_id);
+        PackageRecord *FindPackageRecord(UFCase::PackageListItem const &item);
+        Isolation::PackageModel SelectedPackageModel();
+        UFCase::PackageDetails EnsurePackageDetails(UFCase::PackageListItem const &item);
+        bool MatchingPackage(PackageRecord const &record);
         IAsyncActionWithProgress<uint32_t> PullData(apartment_context ui_thread);
     };
 

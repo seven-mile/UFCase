@@ -12,24 +12,74 @@
 #include "AsyncUtil.h"
 #include "IdentityUtil.h"
 
-#include <ranges>
+#include <memory>
 
 namespace winrt::UFCase::implementation
 {
     ComponentsPageViewModel::ComponentsPageViewModel(UFCase::ImageViewModel image) : m_image(image)
     {
-        m_components = multi_threaded_observable_vector<UFCase::ComponentViewModel>();
+        m_components = multi_threaded_observable_vector<UFCase::ComponentListItem>();
     }
 
-    bool ComponentsPageViewModel::MatchingComponent(UFCase::ComponentViewModel const &comp)
+    ComponentsPageViewModel::ComponentRecord *ComponentsPageViewModel::FindComponentRecord(
+        uint32_t record_id)
+    {
+        auto it = m_record_index_by_id.find(record_id);
+        if (it == m_record_index_by_id.end() || it->second >= m_records.size())
+        {
+            return nullptr;
+        }
+        return std::addressof(m_records[it->second]);
+    }
+
+    ComponentsPageViewModel::ComponentRecord *ComponentsPageViewModel::FindComponentRecord(
+        UFCase::ComponentListItem const &item)
+    {
+        return item ? FindComponentRecord(get_self<ComponentListItem>(item)->RecordId()) : nullptr;
+    }
+
+    Isolation::ComponentModel ComponentsPageViewModel::SelectedComponentModel()
+    {
+        if (!m_selected)
+        {
+            return nullptr;
+        }
+
+        auto record = FindComponentRecord(m_selected);
+        return record ? record->Model : nullptr;
+    }
+
+    UFCase::ComponentDetails ComponentsPageViewModel::EnsureComponentDetails(
+        UFCase::ComponentListItem const &item)
+    {
+        auto record = FindComponentRecord(item);
+        if (!record)
+        {
+            return nullptr;
+        }
+
+        if (!record->Details)
+        {
+            record->Details = ReadComponentDetailsSnapshot(record->Model);
+        }
+        return make<ComponentDetails>(*record->Details);
+    }
+
+    bool ComponentsPageViewModel::MatchingComponent(ComponentRecord const &record)
     {
         if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompId)
         {
-            return comp.Name() == m_nav_ctx.SelectCompId();
+            return record.Item.Name() == m_nav_ctx.SelectCompId();
         }
         else if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompIdentity)
         {
-            auto comp_ident = IdentityUtil::GetIdentityFromComponent(comp);
+            UFCase::Identity comp_ident;
+            comp_ident.Name(IdentityUtil::MapIdentityValue(record.Item.Name()));
+            comp_ident.Version(IdentityUtil::MapIdentityValue(record.Item.Version()));
+            comp_ident.PublicKeyToken(IdentityUtil::MapIdentityValue(record.Item.PublicKeyToken()));
+            comp_ident.ProcessorArchitecture(
+                IdentityUtil::MapIdentityValue(record.Item.ProcessorArchitecture()));
+            comp_ident.Culture(IdentityUtil::MapIdentityValue(record.Item.Culture()));
             return IdentityUtil::RoughMatch(comp_ident, m_nav_ctx.SelectCompIdentity());
         }
         return false;
@@ -52,8 +102,14 @@ namespace winrt::UFCase::implementation
         }
 
         auto report_progress = co_await get_progress_token();
+        auto load_generation = ++m_load_generation;
 
         m_components.Clear();
+        m_records.clear();
+        m_record_index_by_id.clear();
+        m_record_id_by_name.clear();
+        m_selected = nullptr;
+        m_selected_details = nullptr;
 
         auto store = m_image.get().Store();
 
@@ -65,27 +121,48 @@ namespace winrt::UFCase::implementation
         SIZE_T comps_count = 15000;
 
         bool matched_flag = false;
+        uint32_t next_record_id = 1;
         for (SIZE_T idx = 0; auto comp_ : comps)
         {
             auto comp = comp_.as<Isolation::ComponentModel>();
-            UFCase::ComponentViewModel comp_vm{comp};
+            auto record_id = next_record_id++;
+            auto comp_vm = make<ComponentListItem>(record_id, ReadComponentListSnapshot(comp));
             // todo: batching for better performance
-            if (MatchingComponent(comp_vm))
+            ComponentRecord record{record_id, comp_vm, comp, std::nullopt};
+            if (MatchingComponent(record))
             {
                 RunUITask([=, lifetime = lifetime] {
+                    if (load_generation != m_load_generation)
+                    {
+                        return;
+                    }
+                    auto record_index = m_records.size();
+                    m_records.push_back(record);
+                    m_record_index_by_id.emplace(record.RecordId, record_index);
+                    m_record_id_by_name.emplace(std::wstring(record.Item.Name().c_str()),
+                                                record.RecordId);
                     // todo: fix the selection bug
                     // reference: https://stackoverflow.com/questions/12108464/let-listview-scroll-to-selected-item
                     // also: oneway / twoway binding bizarre
-                    m_selected = comp_vm;
-                    NotifyPropChange(L"SelectedComponent");
-                    Navigated.invoke(*this, m_nav_ctx);
                     m_components.Append(comp_vm);
+                    SelectedComponent(comp_vm);
+                    Navigated.invoke(*this, m_nav_ctx);
                 });
                 matched_flag = true;
             }
             else
             {
-                RunUITask([=, lifetime = lifetime] { m_components.Append(comp_vm); });
+                RunUITask([=, lifetime = lifetime] {
+                    if (load_generation == m_load_generation)
+                    {
+                        auto record_index = m_records.size();
+                        m_records.push_back(record);
+                        m_record_index_by_id.emplace(record.RecordId, record_index);
+                        m_record_id_by_name.emplace(std::wstring(record.Item.Name().c_str()),
+                                                    record.RecordId);
+                        m_components.Append(comp_vm);
+                    }
+                });
             }
 
             ++idx;
@@ -96,15 +173,23 @@ namespace winrt::UFCase::implementation
         }
 
         co_await ui_thread;
+        if (load_generation != m_load_generation)
+        {
+            co_return;
+        }
 
         NotifyPropChange(L"Components");
+        NotifyPropChange(L"SelectedComponent");
+        NotifyPropChange(L"SelectedComponentDetails");
 
         report_progress(100);
 
         if (!matched_flag)
         {
             m_selected = nullptr;
+            m_selected_details = nullptr;
             NotifyPropChange(L"SelectedComponent");
+            NotifyPropChange(L"SelectedComponentDetails");
             Navigated.invoke(*this, m_nav_ctx);
         }
 
@@ -131,18 +216,33 @@ namespace winrt::UFCase::implementation
             // find the component and select it
             if (m_nav_ctx && m_nav_ctx.Type() != UFCase::ComponentsPageNavigationContextType::None)
             {
-                m_selected = nullptr;
-                for (auto comp : m_components)
+                UFCase::ComponentListItem component_to_select{nullptr};
+                if (m_nav_ctx.Type() == ComponentsPageNavigationContextType::SelectCompId)
                 {
-                    if (MatchingComponent(comp))
+                    auto it = m_record_id_by_name.find(
+                        std::wstring(m_nav_ctx.SelectCompId().c_str()));
+                    if (it != m_record_id_by_name.end())
                     {
-                        m_selected = comp;
-                        co_await ui_thread;
-                        NotifyPropChange(L"SelectedComponent");
-                        Navigated.invoke(*this, m_nav_ctx);
-                        break;
+                        if (auto record = FindComponentRecord(it->second))
+                        {
+                            component_to_select = record->Item;
+                        }
                     }
                 }
+                else
+                {
+                    for (auto const &record : m_records)
+                    {
+                        if (MatchingComponent(record))
+                        {
+                            component_to_select = record.Item;
+                            break;
+                        }
+                    }
+                }
+                co_await ui_thread;
+                SelectedComponent(component_to_select);
+                Navigated.invoke(*this, m_nav_ctx);
             }
         }
 

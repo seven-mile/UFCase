@@ -104,26 +104,26 @@
                                                 <Run
                                                     FontSize="{StaticResource SubtitleTextBlockFontSize}"
                                                     FontWeight="SemiBold"
-                                                    Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailName), Mode=OneWay}" />
+                                                    Text="{x:Bind ViewModel.SelectedPackageDetailName, Mode=OneWay}" />
                                                 <Run
                                                     FontSize="{StaticResource SecondaryTextFontSize}"
                                                     Foreground="{StaticResource TextFillColorSecondaryBrush}"
-                                                    Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.DetailIdentity), Mode=OneWay}" />
+                                                    Text="{x:Bind ViewModel.SelectedPackageDetailIdentity, Mode=OneWay}" />
                                             </Paragraph>
                                         </RichTextBlock>
                                         <TextBlock
                                             Margin="0,5,0,0"
                                             Style="{StaticResource SecondaryTextBlockStyle}"
-                                            Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.Description), Mode=OneWay}"
+                                            Text="{x:Bind ViewModel.SelectedPackageDescription, Mode=OneWay}"
                                             TextWrapping="Wrap" />
                                         <TextBlock
                                             Margin="0,5,0,0"
                                             Style="{StaticResource SecondaryTextBlockStyle}"
                                             TextWrapping="Wrap">
                                             <Run Text="Installed at" />
-                                            <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.InstallTime), Mode=OneWay}" />
+                                            <Run Text="{x:Bind ViewModel.SelectedPackageInstallTime, Mode=OneWay}" />
                                             <Run Text="by" />
-                                            <Run Text="{x:Bind PkgList.SelectedItem.(local:PackageViewModel.InstallClient), Mode=OneWay}" />
+                                            <Run Text="{x:Bind ViewModel.SelectedPackageInstallClient, Mode=OneWay}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </Border>
@@ -239,7 +239,7 @@
                             </TransitionCollection>
                         </ListView.ItemContainerTransitions>
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:PackageViewModel">
+                            <DataTemplate x:DataType="local:PackageListItem">
                                 <ListViewItem RightTapped="ListViewItem_RightTapped">
                                     <Grid HorizontalAlignment="Stretch">
                                         <Grid.RowDefinitions>

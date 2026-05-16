@@ -61,7 +61,7 @@ namespace winrt::UFCase::implementation
     {
         if (auto item = CompList().SelectedItem())
         {
-            ViewModel().SelectedComponent(item.as<UFCase::ComponentViewModel>());
+            ViewModel().SelectedComponent(item.as<UFCase::ComponentListItem>());
         }
     }
 } // namespace winrt::UFCase::implementation

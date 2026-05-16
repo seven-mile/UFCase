@@ -72,16 +72,16 @@
                                         <Run
                                             FontSize="{StaticResource SubtitleTextBlockFontSize}"
                                             FontWeight="SemiBold"
-                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.Name), Mode=OneWay}" />
+                                            Text="{x:Bind ViewModel.SelectedComponentName, Mode=OneWay}" />
                                         <Run
                                             FontSize="{StaticResource SecondaryTextFontSize}"
                                             Foreground="{StaticResource TextFillColorSecondaryBrush}"
-                                            Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.KeyForm), Mode=OneWay}" />
+                                            Text="{x:Bind ViewModel.SelectedComponentKeyForm, Mode=OneWay}" />
                                     </Paragraph>
                                 </RichTextBlock>
                                 <TextBlock
                                     Style="{StaticResource SecondaryTextBlockStyle}"
-                                    Text="{x:Bind CompList.SelectedItem.(local:ComponentViewModel.PayloadPath), Mode=OneWay}"
+                                    Text="{x:Bind ViewModel.SelectedComponentPayloadPath, Mode=OneWay}"
                                     TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
@@ -155,7 +155,7 @@
                     </TransitionCollection>
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:ComponentViewModel">
+                    <DataTemplate x:DataType="local:ComponentListItem">
                         <ListViewItem RightTapped="ListViewItem_RightTapped">
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.RowDefinitions>
@@ -236,7 +236,7 @@
                                             Foreground="White"
                                             Style="{StaticResource SecondaryTextBlockStyle}"
                                             TextTrimming="CharacterEllipsis">
-                                            <Run Text="{x:Bind Files.Size}" /> <Run Text="Files" />
+                                            <Run Text="{x:Bind VersionScope}" />
                                         </TextBlock>
                                     </Border>
 
@@ -244,7 +244,7 @@
                                         Grid.Column="4"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource SecondaryTextBlockStyle}"
-                                        Text="{x:Bind PayloadPath}"
+                                        Text="{x:Bind TextForm}"
                                         TextTrimming="CharacterEllipsis" />
                                 </Grid>
                             </Grid>

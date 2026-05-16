@@ -19,18 +19,6 @@ namespace winrt::UFCase::IdentityUtil
         return dep_ident;
     }
 
-    UFCase::Identity GetIdentityFromComponent(UFCase::ComponentViewModel const &comp)
-    {
-        UFCase::Identity comp_ident;
-        comp_ident.Name(MapIdentityValue(comp.Name()));
-        comp_ident.Version(MapIdentityValue(comp.Version()));
-        comp_ident.PublicKeyToken(MapIdentityValue(comp.PublicKeyToken()));
-        comp_ident.ProcessorArchitecture(MapIdentityValue(comp.ProcessorArchitecture()));
-        comp_ident.Culture(MapIdentityValue(comp.Culture()));
-
-        return comp_ident;
-    }
-
     // Name~PublicKeyToken~Architecture~Culture~Version
     // Containers-ApplicationGuard-Package~31bf3856ad364e35~amd64~~10.0.22621.2792
     UFCase::Identity GetIdentityFromPkgKeyForm(hstring const &pkg_key_form)

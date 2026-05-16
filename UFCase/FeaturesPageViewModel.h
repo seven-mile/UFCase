@@ -85,11 +85,8 @@ namespace winrt::UFCase::implementation
                 return;
             }
 
-            auto ppvm = m_image.get().PackagesPageViewModel();
-            ppvm.SelectedPackage(m_selected.ContentPackage());
-
             auto nav_ctx = PackagesPageNavigationContext::GetFromId(
-                m_selected.ContentPackage().DetailIdentity());
+                m_selected.ContentPackageIdentity());
             GlobalRes::MainNavServ().NavigateTo(L"Packages", nav_ctx);
         }
 

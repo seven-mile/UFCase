@@ -30,8 +30,6 @@ namespace winrt::UFCase::IdentityUtil
 
     UFCase::Identity GetIdentityFromAsmDep(UFCase::Host::Manifest::AssemblyDependency const &dep);
 
-    UFCase::Identity GetIdentityFromComponent(UFCase::ComponentViewModel const &comp);
-
     // Name~PublicKeyToken~Architecture~Culture~Version
     // Containers-ApplicationGuard-Package~31bf3856ad364e35~amd64~~10.0.22621.2792
     UFCase::Identity GetIdentityFromPkgKeyForm(hstring const &pkg_key_form);

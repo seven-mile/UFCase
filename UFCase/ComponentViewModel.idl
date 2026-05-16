@@ -1,18 +1,8 @@
 namespace UFCase
 {
-    struct ComponentFileViewModel
-    {
-        String Name;
-        String Status;
-    };
-
     [default_interface]
-    runtimeclass ComponentViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    runtimeclass ComponentListItem
     {
-        ComponentViewModel(UFCase.Isolation.ComponentModel model);
-
-        UFCase.Isolation.ComponentModel Model{ get; };
-
         String TextForm{ get; };
         String KeyForm{ get; };
 
@@ -23,11 +13,17 @@ namespace UFCase
         String ProcessorArchitecture{ get; };
         String VersionScope{ get; };
 
-        String Manifest{ get; };
-
         String Status{ get; };
-        String PayloadPath{ get; };
+    }
 
-        Windows.Foundation.Collections.IObservableVector<ComponentFileViewModel> Files{ get; };
+    [default_interface]
+    runtimeclass ComponentDetails
+    {
+        String TextForm{ get; };
+        String KeyForm{ get; };
+
+        String Name{ get; };
+        String PayloadPath{ get; };
+        String Manifest{ get; };
     }
 }

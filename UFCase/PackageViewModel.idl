@@ -20,21 +20,26 @@ namespace UFCase
 
     [bindable]
     [default_interface]
-    runtimeclass PackageViewModel
+    runtimeclass PackageListItem
     {
-        PackageViewModel(UFCase.Isolation.PackageModel model);
-
-        UFCase.Isolation.PackageModel Model { get; };
-
         String ListName { get; };
         String ListIdentity { get; };
         Microsoft.UI.Xaml.Visibility ListIdentityVisibility { get; };
 
+        String Identity { get; };
+        String ReleaseType { get; };
+        String State { get; };
+        String Description { get; };
+        Boolean IsApplicable { get; };
+    }
+
+    [bindable]
+    [default_interface]
+    runtimeclass PackageDetails
+    {
         String DetailName{ get; };
         String DetailIdentity{ get; };
 
-        String ReleaseType { get; };
-        String State { get; };
         String Description { get; };
         String RestartRequired { get; };
         String ProductName { get; };
@@ -49,9 +54,9 @@ namespace UFCase
         String InstallLocation { get; };
         String InstallClient { get; };
         String InstallUserName { get; };
-        Boolean IsApplicable { get; };
 
         String ManifestFilePath { get; };
         String RegistryPath { get; };
     }
+
 }

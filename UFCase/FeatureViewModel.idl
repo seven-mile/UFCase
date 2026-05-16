@@ -1,5 +1,3 @@
-import "PackageViewModel.idl";
-
 namespace UFCase
 {
     enum FeatureState
@@ -31,7 +29,7 @@ namespace UFCase
         String DownloadSize{ get; };
         String SetMembership{ get; };
 
-        PackageViewModel ContentPackage{ get; };
+        String ContentPackageIdentity{ get; };
 
         Windows.Foundation.Collections.IObservableVector<FeatureViewModel> Children{ get; };
 

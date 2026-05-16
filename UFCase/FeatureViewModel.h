@@ -39,7 +39,7 @@ namespace winrt::UFCase::implementation
         hstring DownloadSizeRaw();
         hstring SetMembershipRaw();
 
-        UFCase::PackageViewModel ContentPackage();
+        hstring ContentPackageIdentity();
 
         child_t Children();
 

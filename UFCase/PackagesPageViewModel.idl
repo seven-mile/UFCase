@@ -30,6 +30,7 @@ namespace UFCase
         Uninitialized,
         Idle,
         Loading,
+        Failed,
     };
 
     [bindable]
@@ -41,8 +42,14 @@ namespace UFCase
         PackagesPageViewModelState State{ get; };
 
         ImageViewModel Image{ get; };
-        Windows.Foundation.Collections.IObservableVector<PackageViewModel> Packages{ get; };
-        PackageViewModel SelectedPackage;
+        Windows.Foundation.Collections.IObservableVector<PackageListItem> Packages{ get; };
+        PackageListItem SelectedPackage;
+        PackageDetails SelectedPackageDetails{ get; };
+        String SelectedPackageDetailName{ get; };
+        String SelectedPackageDetailIdentity{ get; };
+        String SelectedPackageDescription{ get; };
+        String SelectedPackageInstallTime{ get; };
+        String SelectedPackageInstallClient{ get; };
 
         RelayCommand PackageShowManifestRelay{ get; };
         RelayCommand PackageShowInFileExplorerRelay{ get; };

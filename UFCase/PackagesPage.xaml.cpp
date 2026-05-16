@@ -72,7 +72,7 @@ namespace winrt::UFCase::implementation
     {
         if (auto item = PkgList().SelectedItem())
         {
-            ViewModel().SelectedPackage(item.as<UFCase::PackageViewModel>());
+            ViewModel().SelectedPackage(item.as<UFCase::PackageListItem>());
         }
     }
 

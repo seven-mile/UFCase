@@ -7,25 +7,67 @@
 #include "PackagesPageViewModel.g.cpp"
 #endif
 
-#include "PackageViewModel.g.h"
-
 #include "IdentityUtil.h"
+
+#include <memory>
 
 namespace winrt::UFCase::implementation
 {
+    PackagesPageViewModel::PackageRecord *PackagesPageViewModel::FindPackageRecord(
+        uint32_t record_id)
+    {
+        auto it = m_record_index_by_id.find(record_id);
+        if (it == m_record_index_by_id.end() || it->second >= m_records.size())
+        {
+            return nullptr;
+        }
+        return std::addressof(m_records[it->second]);
+    }
 
-    bool PackagesPageViewModel::MatchingPackage(UFCase::PackageViewModel pkg)
+    PackagesPageViewModel::PackageRecord *PackagesPageViewModel::FindPackageRecord(
+        UFCase::PackageListItem const &item)
+    {
+        return item ? FindPackageRecord(get_self<PackageListItem>(item)->RecordId()) : nullptr;
+    }
+
+    Isolation::PackageModel PackagesPageViewModel::SelectedPackageModel()
+    {
+        if (!m_selected)
+        {
+            return nullptr;
+        }
+
+        auto record = FindPackageRecord(m_selected);
+        return record ? record->Model : nullptr;
+    }
+
+    UFCase::PackageDetails PackagesPageViewModel::EnsurePackageDetails(
+        UFCase::PackageListItem const &item)
+    {
+        auto record = FindPackageRecord(item);
+        if (!record)
+        {
+            return nullptr;
+        }
+
+        if (!record->Details)
+        {
+            record->Details = ReadPackageDetailsSnapshot(record->Model);
+        }
+        return make<PackageDetails>(*record->Details);
+    }
+    bool PackagesPageViewModel::MatchingPackage(PackageRecord const &record)
     {
         if (!m_nav_ctx)
             return false;
 
         if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgStringId)
         {
-            return pkg.DetailIdentity() == m_nav_ctx.SelectPkgStringId();
+            return record.Item.Identity() == m_nav_ctx.SelectPkgStringId();
         }
         else if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgIdentity)
         {
-            auto pkg_ident = IdentityUtil::GetIdentityFromPkgKeyForm(pkg.Model().Identity());
+            auto pkg_ident = IdentityUtil::GetIdentityFromPkgKeyForm(record.Item.Identity());
             return IdentityUtil::RoughMatch(pkg_ident, m_nav_ctx.SelectPkgIdentity());
         }
         return false;
@@ -33,8 +75,13 @@ namespace winrt::UFCase::implementation
 
     IAsyncActionWithProgress<uint32_t> PackagesPageViewModel::PullData(apartment_context ui_thread)
     {
-        m_packages = multi_threaded_observable_vector<UFCase::PackageViewModel>();
+        auto load_generation = ++m_load_generation;
+        m_packages = multi_threaded_observable_vector<UFCase::PackageListItem>();
+        m_records.clear();
+        m_record_index_by_id.clear();
+        m_record_id_by_identity.clear();
         m_selected = {nullptr};
+        m_selected_details = {nullptr};
 
         co_await resume_background();
 
@@ -54,19 +101,36 @@ namespace winrt::UFCase::implementation
         auto &&pkgs = session.GetPackageCollection(0x70);
         report_prog(50);
         uint32_t cnt = 0;
+        uint32_t next_record_id = 1;
 
         // todo: batching task submissions for better performance
         for (auto pkg : pkgs)
         {
-            UFCase::PackageViewModel pkg_vm(pkg);
-            RunUITask([=] { m_packages.Append(pkg_vm); });
+            auto record_id = next_record_id++;
+            auto pkg_item = make<PackageListItem>(record_id, ReadPackageListSnapshot(pkg));
+            RunUITask([=] {
+                if (load_generation == m_load_generation)
+                {
+                    auto record_index = m_records.size();
+                    m_records.push_back(PackageRecord{record_id, pkg_item, pkg, std::nullopt});
+                    m_record_index_by_id.emplace(record_id, record_index);
+                    m_record_id_by_identity.emplace(std::wstring(pkg_item.Identity().c_str()),
+                                                    record_id);
+                    m_packages.Append(pkg_item);
+                }
+            });
             report_prog(static_cast<uint32_t>(50 + 50 * ++cnt / pkgs.Size()));
         }
 
         co_await ui_thread;
+        if (load_generation != m_load_generation)
+        {
+            co_return;
+        }
 
         NotifyPropChange(L"Packages");
         NotifyPropChange(L"SelectedPackage");
+        NotifyPropChange(L"SelectedPackageDetails");
 
         m_state = PackagesPageViewModelState::Idle;
 
@@ -90,17 +154,32 @@ namespace winrt::UFCase::implementation
         // find the package and select it
         if (m_nav_ctx && m_nav_ctx.Type() != UFCase::PackagesPageNavigationContextType::None)
         {
-            m_selected = nullptr;
-            for (auto pkg : m_packages)
+            UFCase::PackageListItem package_to_select{nullptr};
+            if (m_nav_ctx.Type() == UFCase::PackagesPageNavigationContextType::SelectPkgStringId)
             {
-                if (MatchingPackage(pkg))
+                auto it = m_record_id_by_identity.find(
+                    std::wstring(m_nav_ctx.SelectPkgStringId().c_str()));
+                if (it != m_record_id_by_identity.end())
                 {
-                    m_selected = pkg;
-                    break;
+                    if (auto record = FindPackageRecord(it->second))
+                    {
+                        package_to_select = record->Item;
+                    }
+                }
+            }
+            else
+            {
+                for (auto const &record : m_records)
+                {
+                    if (MatchingPackage(record))
+                    {
+                        package_to_select = record.Item;
+                        break;
+                    }
                 }
             }
             co_await ui_thread;
-            NotifyPropChange(L"SelectedPackage");
+            SelectedPackage(package_to_select);
         }
 
         Navigated.invoke(*this, m_nav_ctx);
