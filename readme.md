@@ -1,135 +1,148 @@
-# UFCase - Deep Dive into "Servicing Stack"
+# UFCase - Windows Servicing Explorer
 
 > [!IMPORTANT]
-> This tool is experimental and requires full control on your PC. Please DO NOT use it under production environment, especially for the mutation functionalities, which are not properly tested for now.
+> UFCase is experimental software that works with low-level Windows servicing APIs and runs with elevated privileges. Do not use it on production systems, especially for package or feature mutation operations.
 
-Windows Servicing Stack is the main infrastructure that integrated with the update of Windows internal components, generally.
+UFCase (Utility Functions Case) is a WinUI 3 desktop tool for inspecting and managing Windows servicing state. It helps Windows power users and servicing researchers explore online and offline Windows images through the same concepts used by CBS, DISM, WinSxS, package manifests, component manifests, and optional features.
 
-UFCase (Utility Functions Case) provides overall enumeration (and possibly deployment in the future) of multi-level abstractions of these Windows components.
+Microsoft's [Understanding Component-Based Servicing](https://techcommunity.microsoft.com/t5/ask-the-performance-team/understanding-component-based-servicing/ba-p/373012) is a good public starting point. UFCase goes further into the undocumented layers that connect Windows Update metadata, registry-backed servicing state, WinSxS components, and native servicing APIs.
 
-The article [Understanding Component-Based Servicing
-](https://techcommunity.microsoft.com/t5/ask-the-performance-team/understanding-component-based-servicing/ba-p/373012) provides the overview on the Servicing Stack and how it roughly works when an update is installed or removed.
+## What UFCase Manages
 
-### Releases
+- Inspect the current online Windows image, mounted WIM images, and offline Windows installations found on local drives.
+- Browse CBS packages, optional features, and WinSxS components.
+- View package manifests (`.mum`) and component manifests.
+- Follow manifest references from packages to packages/components and from component dependencies to components.
+- Inspect component files, component identity, status, payload path, registry entries, and manifest dependencies.
+- Perform experimental servicing state changes, including feature enable/disable and package install/remove/stage operations.
 
-I'll publish breaking changes for UFCase in the [GitHub releases](https://github.com/seven-mile/UFCase/releases). And the CI will upload nightly build artifacts of the newest commit. Go to [GitHub actions](https://github.com/seven-mile/UFCase/actions), click the commit you prefer and download `UFCase_portable.zip` from the row `Artifacts`.
+## Servicing Stack Concepts
 
-### Runtime Dependencies
+The Windows servicing stack is not just Windows Update. Updates arrive as MSU/CAB payloads, CBS models them as packages and updates, WinSxS stores versioned components, and registry hives record servicing state. Package and component manifests are two important places where these relationships become inspectable.
 
-Core dependencies:
+UFCase documents these concepts because much of the useful detail is undocumented or only visible through internal interfaces. Read [Servicing Stack Concepts](./docs/servicing_stack_concepts.md) first for the power-user level overview, then continue to [Manifest Schema Notes](./docs/manifest_schema.md) for the lower-level XML/schema research.
 
-* Windows 10 1809 or later
-* Windows App Runtime (WinAppSDK)
-  * Generally latest stable channel. Note that some old releases may unexpectedly build with preview or experimental channel, please use the recent releases.
-* Microsoft Visual C++ 2015-2022 Redistributable
-  * `UFCase.Host` requires it. 
+## Architecture
 
-Optional dependencies:
+UFCase keeps the UI and servicing work separated. The WinUI process owns navigation and view models; per-image host processes load CBS/WCP/CSI APIs and expose image, package, feature, component, and manifest data back to the UI through WinRT/COM interfaces.
 
-* .Net 6.0 Desktop Runtime
-  * The C# module `UFCase.Host.Manifest` requires it. Without the runtime, you may encounter crash when opening the manifest viewer.
+```mermaid
+flowchart LR
+    UI["UFCase UI<br/>WinUI 3"]
+    Manager["Host Manager"]
+    Host["Image Host<br/>out of process"]
+    Image["Windows Image<br/>online or offline"]
+    CBS["CBS Session<br/>packages and features"]
+    Store["Component Store<br/>WCP and CSI"]
+    Manifest["Manifest Helper<br/>CMI parser"]
+    Viewers["Manifest Viewers<br/>package and component"]
 
-### Glossary
+    UI --> Manager
+    Manager --> Host
+    Host --> Image
+    Image --> CBS
+    Image --> Store
+    CBS --> Viewers
+    Store --> Viewers
+    Store --> Manifest
+    Viewers --> UI
+```
 
-All the descriptions below are woven by my own understanding. For your information only.
+## Project Organization
 
-Firstly, let's take a look at the underlying mechanisms, which interact with our well-known filesystems and registry.
+- `UFCase`: the WinUI 3 frontend, navigation, view models, image selector, package/component/feature pages, and manifest viewer windows.
+- `UFCase.Host`: the out-of-process C++/WinRT servicing host for one Windows image.
+- `UFCase.Interface`: the shared WinRT interface contract used across the UI, host, and proxy/stub.
+- `UFCase.ProxyStub`: COM proxy/stub support for cross-process WinRT interfaces.
+- `UFCase.Host.Manifest`: a C# WinRT component that wraps the native CMI serializer for cooked component manifests.
+- `docs`: servicing concept notes, manifest schema research, and collected manifest samples.
 
-* **Assembly**, is a core concept from .Net but used by Windows Componentization Platform. [Assemblies in .NET
-](https://learn.microsoft.com/en-us/dotnet/standard/assembly/)
-  * The concept of assembly connects different layers of servicing stack.
-  * Its **Manifest** uses xml format with schema denoted as `urn:schemas-microsoft-com:asm.v[1~3]`. This article [Manifest File Schema
-](https://learn.microsoft.com/en-us/windows/win32/sbscs/manifest-file-schema) describes the public parts. But most of the schema about windows native components is stripped. There's also a binary representation rather than dumb XML format.
-* **Component**, is a native assembly that compose Windows in the end. Almost everything in Windows can be traced back to a component, including NT Kernel, NTFS driver, servicing stack itself, C runtime framework, system apps and localization resources. The main contents of a real component are a group of files and registry values, with other metadata like
-  * the source and target concerning installation 
-  * security descriptors signing how they are protected by the system (Windows Resource Protection)
-  * hash values validating the integrity of the component
-  * other registration mechanisms like COM interfaces and Win32 window classes
-  * dependencies
-* **Deployment**, is a special component that defines a bunch of deployable contents by its assembly dependencies.
-* **WinSxS**, or **Component Store**, is a strong naming, dependency-aware, version-controlled, digitally-signed, corruption-detectable, transactional and hard linking component store organized by assemblies. Popularly speaking, a private package manager for windows itself.
-  * `SxS` expands to `Side by Side`, denoting the components with multiple versions can live within your system side by side.
-  * Built on the filesystem and registry directly. Therefore, compared with a typical database, it behaves like a turtle.
-  * The directory `%WINDIR%\WinSxS`
-  * The registry hive `HKEY_LOCAL_MACHINE\COMPONENTS` from `%WINDIR%\System32\config`
-  * The registry key `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\SideBySide`
-* **Windows Componentization Platform**, a.k.a. `wcp.dll` from servicing stack, is a native implementation of assembly store, or technically "Isolation Interface". Correspondingly, .Net Framework used to have its own isolation implementation. Many DLLs *probably* had a version that implemented isolation, includes `sxs.dll`, `isowin32.dll`, `isoman.dll`, `clr.dll`, `coreclr.dll`, and even `ntdll.dll`.
+## Design Notes
 
-Now let's change our point of view to the upper layers. After the **Updates (Windows Update)** are downloaded into the `SoftwareDistribution`, what information do they take and which contents do they ship?
+### Host Isolation
 
-* **Update (Windows Update)**, also known as `*.msu`. The `.msu` file archives some other `.cab` recursively - some contain metadata (`CompDB` or `OfflineSyncPackage`), some are the payloads, which are in fact called "Package".
-* **Package (CBS)**, is a high-level assembly. They can be queried using `Dism /Online /Get-Packages`. The package has many available formats. Some well known technologies like msdelta a delta package format are used on it. But again and again... all of them have two parts: manifest and payload. The manifest of packages ends with `.mum`, describing:
-  * which updates (CBS) are included, this is the payload descriptor
-  * which packages are its parents, some pack has lang packs as their children
-* **Capability (CBS)**, also known as **Feature on Demand**. They can be queried with `Dism /Online /Get-Capabilities`. Capabilities are generally a bunch of packages. They are not present in your disk at the first time, and can be downloaded from Windows Update Server.
-* **Update (CBS)**, is a logical concept that only exists in the manifest of packages. It reference to an assembly, wrapped by
-  * a `component` element, which is an ordinary WinSxS assembly component
-  * a `package` element, which refer to another package
-  * a `driver` element, which is a driver
-* **Feature (CBS)**, actually should be called **Optional Feature**, differing from **Feature on Demand**. Features are the updates of the special package `Microsoft-Windows-Foundation-Package`, and can be queried by `Dism /Online /Get-Features`. These features are staged in WinSxS but not usable directly. If you need it you can enable it *without network connection*.
+The servicing stack is process-global and version-sensitive. UFCase therefore runs privileged servicing work in separate host processes instead of loading every servicing stack into the UI process.
 
-### Manifest Schema
+This design gives UFCase independent image lifetime control, cross-thread-friendly out-of-process COM calls, and a path toward future caching or service layers. It also makes offline image inspection more realistic because the host can load servicing binaries from the target Windows image rather than assuming the running OS is the only servicing stack in play.
 
-I'm completing an unofficial schema documentation of general isolation manifests. The current progress is under the directory `./docs`. And the main page is [here](./docs/manifest_schema.md).
+### Packaged vs. Unpackaged
 
-If you are interested, contributions are welcomed. Just use UFCase to inspect manifests of packages and components, and fill in the unknown elements with your inference. It would be better if you can attach full-text xml manifests.
+UFCase is currently configured as an unpackaged desktop app (`WindowsPackageType=None`, `AppxPackage=false`). Full-trust packaged apps isolate local COM registration, which makes packaged UI processes difficult to combine with elevated out-of-process hosts. Keeping both sides unpackaged avoids that PackagedCOM visibility problem for now.
 
-### Screenshots
+### Manifest Viewing
 
-![a766fd23677d1826eaaa042662ec1296](https://github.com/seven-mile/UFCase/assets/56445491/efbbe1d3-b0da-4e2e-a09f-e7cf33961b37)
+UFCase currently focuses on package and component manifests. Package manifests and component manifests are different formats, although they share some assembly identity and XML namespace conventions. Package manifests describe package-level metadata, parents, and update entries. Component manifests describe component-level payload such as files, registry data, dependencies, and registration metadata.
 
-![fe2fbb78bdd175ccd9c5aa3b5655d942](https://github.com/seven-mile/UFCase/assets/56445491/e51b00a4-69b4-403b-b326-e30074c6c819)
+Manifest viewing is not just raw XML display: UFCase uses these manifests to expose references that users can navigate through, and the same research feeds the schema documentation under `docs`.
+
+## Runtime Dependencies
+
+Core runtime requirements:
+
+- Windows 10 1809 or later.
+- Windows App Runtime / Windows App SDK runtime compatible with the project package references.
+- Microsoft Visual C++ runtime for host binaries when using non-static debug or development builds.
+
+Optional runtime requirement:
+
+- .NET 6 Desktop Runtime. `UFCase.Host.Manifest` targets `net6.0-windows10.0.26100.0`; without the runtime, component manifest parsing/viewing can fail.
+
+## Building
+
+Open `UFCase.sln` in Visual Studio and restore NuGet packages.
+
+Useful build details:
+
+- The project uses C++20, C++/WinRT, WinUI 3, WIL, WebView2, and Windows App SDK 1.8 package references.
+- The main app currently defines x64 and ARM64 configurations.
+- `build/BuildAllHosts.targets` can build and copy host, proxy/stub, and C# WinRT outputs for requested host architectures when `BuildAllArchitectures=true`.
+- `scripts/InTemplate.targets` renders `app.manifest.in` so generated manifests can include architecture-specific proxy/stub registration.
+
+## Roadmap
+
+### Current
+
+- Online, mounted, and offline image inspection.
+- Package, optional feature, and component browsing.
+- Package and component manifest viewers.
+- Initial manifest-driven navigation between packages and components.
+- Out-of-process servicing hosts as the foundation for safer image lifetime and API isolation.
+
+### Near Term
+
+- Search and filtering for Packages and Components pages.
+- Direct component reference query input.
+- Cross-reference views for files, registry entries, components, and packages.
+- Safer mutation UX with clearer confirmations, source handling, progress, errors, and rollback guidance.
+- Better list batching and navigation selection behavior for large component stores.
+
+### Long Term
+
+- Runtime or persistent indexing for faster lookup.
+- A cache/service layer between UI and isolated hosts.
+- Broader package/component manifest schema coverage.
+- Better MSIX/packaged deployment story if elevated COM visibility constraints can be solved cleanly.
+- Memory and performance improvements for very large component stores.
+
+## Known Limitations
+
+- Mutation operations are experimental and should be tested only on disposable images.
+- Online component payload paths can fail on some Windows builds. Offline images are currently the most reliable workaround.
+- `Optionals` is present in navigation but is not implemented as a separate page yet.
+- The host process model assumes matching unpackaged COM visibility between the UI and host.
+
+## Releases
+
+Breaking changes are published through [GitHub releases](https://github.com/seven-mile/UFCase/releases). CI builds may also publish `UFCase_portable.zip` artifacts from [GitHub Actions](https://github.com/seven-mile/UFCase/actions).
+
+## Screenshots
+
+![UFCase main window](https://github.com/seven-mile/UFCase/assets/56445491/efbbe1d3-b0da-4e2e-a09f-e7cf33961b37)
+
+![UFCase package list](https://github.com/seven-mile/UFCase/assets/56445491/e51b00a4-69b4-403b-b326-e30074c6c819)
 
 ![Component Manifest Viewer](https://github.com/seven-mile/UFCase/assets/56445491/c76e17df-ff7c-4442-898a-b51a51ff9177)
 
 ![Package Manifest Viewer](https://github.com/seven-mile/UFCase/assets/56445491/31e5f654-12b1-4eef-af03-b78d461740db)
 
-![Package Manifest Viewer (Raw)](https://github.com/seven-mile/UFCase/assets/56445491/b31f5633-036f-4e44-baf5-b7d8399dd556)
-
-### Future Todo
-
-Priority undetermined.
-
-- [x] **Host isolation**
-  * Run high-elevated operations like calling CBS APIs in *a seperate process for each image*
-  * See more benefits in the section "Known Issues" below.
-- [x] Manifest Viewer
-  * View XML in new window
-  * Long term: Jump to some references like package identity or component identity
-- [ ] Component reference querying
-  * The isolation support a default keyword querying, we should implement it using a search box
-  * Bonus: a proper `IReferenceIdentity` input box
-- [ ] Non-searching filters for "packages" and "components" tabs
-- [ ] For faster querying
-  * Export the data from "components" tab to SQLite
-  * Or construct a index at runtime manually
-- [ ] Xref for `Files -> Components` `Registry -> Components` `Component -> Packages`
-
-Long term:
-
-- [ ] Optimize object memory management
-  * Partially done for not fetching manifest for every component. But the memory consumption of UI process is still **5x** of the backend process. (Win11 Components 80MB vs 400MB).
-
-### Known Issues
-
-* For online images, the payload path of components cannot be fetched. I believe this is caused by an OS bug. See [this repro](https://github.com/seven-mile/BugRepro_PackagedRegOpenKeyEx) for detail.
-  * Workaround1: modify UFCase to an unpackaged app, and build from source
-  * Workaround2: boot from another OS and access as offline image
-  * Update: after some tests, I found that
-    * Payload path works on
-      * Win11 Canary Build 25947
-      * Win10 Stable Build 19045
-    * Payload path errors on
-      * Win11 Dev Build 23545
-      * Win11 Stable Build 22621
-    * I think it's some kernel regressions that caused the issue of `NtRegOpenKey`, but I don't have time to investigate into kernel internals.
-* **Host isolation** means run high-elevated operations like calling CBS APIs in *a seperate process for each image*.
-  * This brings the following benefits:
-    * Reconstruct the threading model - out-of-proc COM objects can be called from any thread context. And we don't need to use anymore arena-based hierarchal memory allocation which is brought by naive implementation of `GITObject`.
-    * Flexible and layered design, the UI can be rewritten freely, and another layer for cache.
-    * Highly controllable image resource lifetime.
-    * Run multiple versions of offline servicing stack in multiple processes. We cannot load wcp.dll for Win10 and Win7 at the same time for one single process.
-  * But for now it also has some limitations:
-    * The isolation host and UI process must be both unpackaged, or both packaged. Because even for full trust packaged apps, their out-of-proc COM registration is isolated in a sandbox. I'm not sure, but I think it's still a mechanism called `PackagedCOM`. The COM objects registered by packaged UI process is NOT visible to elevated processes. See [microsoft/WindowsAppSDK #567](https://github.com/microsoft/WindowsAppSDK/issues/567) for details. I don't know whether DynamicDependency can provide some helps -- I'll give a try in future.
-
-So I decided to leave UFCase an unpackaged app for now. I surely prefer MSIX packaging, and UFCase is still packagable except for having the first payload path bug. If you have need for a msix package of the newest build, please feel free to contact me.
+![Package Manifest Viewer Raw XML](https://github.com/seven-mile/UFCase/assets/56445491/b31f5633-036f-4e44-baf5-b7d8399dd556)
