@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "FeaturesPage.g.h"
-#include "FeatureViewModel.g.h"
+#include "FeatureTreeItem.g.h"
 #include "FeaturesPageViewModel.g.h"
 
 #include <winrt/Microsoft.UI.Xaml.Input.h>

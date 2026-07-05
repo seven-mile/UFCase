@@ -1,5 +1,5 @@
 import "ImageViewModel.idl";
-import "FeatureViewModel.idl";
+import "FeatureTreeItem.idl";
 
 import "RelayCommand.idl";
 
@@ -22,9 +22,10 @@ namespace UFCase
         FeaturesPageViewModelState State{ get; };
 
         ImageViewModel Image{ get; };
-        Windows.Foundation.Collections.IObservableVector<FeatureViewModel> RootFeatures{ get; };
+        Windows.Foundation.Collections.IObservableVector<FeatureTreeItem> RootFeatures{ get; };
 
-        FeatureViewModel SelectedFeature;
+        FeatureTreeItem SelectedFeature;
+        FeatureDetails SelectedFeatureDetails{ get; };
 
         Windows.Foundation.IAsyncActionWithProgress<UInt32> PullData();
 

@@ -233,7 +233,7 @@
                     </MenuFlyout>
                 </TreeView.ContextFlyout>
                 <TreeView.ItemTemplate>
-                    <DataTemplate x:DataType="local:FeatureViewModel">
+                    <DataTemplate x:DataType="local:FeatureTreeItem">
                         <TreeViewItem
                             DoubleTapped="FeatureTreeItem_DoubleTapped"
                             ItemsSource="{x:Bind Children}"
