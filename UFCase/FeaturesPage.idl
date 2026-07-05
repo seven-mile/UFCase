@@ -1,4 +1,4 @@
-import "FeatureViewModel.idl";
+import "FeatureTreeItem.idl";
 import "FeaturesPageViewModel.idl";
 
 namespace UFCase
