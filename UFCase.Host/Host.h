@@ -37,12 +37,16 @@ namespace winrt::UFCase::Isolation::implementation
 
         Isolation::ImageModel Image()
         {
-            static Isolation::ImageModel instance = make<implementation::ImageModel>(m_bootdrive);
-            return instance;
+            if (!m_image)
+            {
+                m_image = make<implementation::ImageModel>(m_bootdrive);
+            }
+            return m_image;
         }
 
       private:
         guid m_id;
         std::filesystem::path m_bootdrive;
+        Isolation::ImageModel m_image{nullptr};
     };
 } // namespace winrt::UFCase::Isolation::implementation
