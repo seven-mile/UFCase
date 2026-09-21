@@ -53,7 +53,7 @@ namespace winrt::UFCase::implementation
     void FeaturesPage::FeatureTreeItem_RightTapped(IInspectable const &sender,
                                                    Input::RightTappedRoutedEventArgs const &)
     {
-        auto feature = sender.as<FrameworkElement>().DataContext().as<FeatureViewModel>();
+        auto feature = sender.as<FrameworkElement>().DataContext().as<FeatureTreeItem>();
         m_view_model.SelectedFeature(feature);
     }
 
@@ -67,7 +67,7 @@ namespace winrt::UFCase::implementation
 
         if (auto item = e.AddedItems().GetAt(0))
         {
-            ViewModel().SelectedFeature(item.as<UFCase::FeatureViewModel>());
+            ViewModel().SelectedFeature(item.as<UFCase::FeatureTreeItem>());
         }
     }
 

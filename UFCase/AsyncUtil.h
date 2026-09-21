@@ -6,7 +6,11 @@
 
 #include <type_traits>
 #include <coroutine>
+#include <exception>
 #include <functional>
+#include <memory>
+#include <mutex>
+#include <wil/resource.h>
 
 namespace winrt::UFCase
 {
@@ -48,13 +52,37 @@ namespace winrt::UFCase
                              Microsoft::UI::Dispatching::DispatcherQueuePriority P =
                                  Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal)
     {
+        if (!Q.TryEnqueue(P, H))
+        {
+            throw hresult_error(E_ABORT, L"The dispatcher queue is shutting down.");
+        }
+    }
 
-        auto *pH = new std::function<void()>{H};
+    struct DispatchTaskState
+    {
+        explicit DispatchTaskState(std::function<IAsyncAction()> const &handler)
+            : Handler(handler), Completion(wil::EventOptions::None)
+        {
+        }
 
-        Q.TryEnqueue(P, [pH]() -> void {
-            (*pH)();
-            delete pH;
-        });
+        std::function<IAsyncAction()> Handler;
+        wil::unique_event Completion;
+        std::mutex Mutex;
+        std::exception_ptr Error;
+    };
+
+    inline fire_and_forget DispatchTaskAsyncWorker(std::shared_ptr<DispatchTaskState> state)
+    {
+        try
+        {
+            co_await state->Handler();
+        }
+        catch (...)
+        {
+            std::scoped_lock lock(state->Mutex);
+            state->Error = std::current_exception();
+        }
+        state->Completion.SetEvent();
     }
 
     inline IAsyncAction DispatchTaskAsync(
@@ -62,24 +90,22 @@ namespace winrt::UFCase
         Microsoft::UI::Dispatching::DispatcherQueuePriority P =
             Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal)
     {
+        auto state = std::make_shared<DispatchTaskState>(H);
 
-        HANDLE comp_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-        auto *pH = new std::function<IAsyncAction()>{H};
+        if (!Q.TryEnqueue(P, [state]() { DispatchTaskAsyncWorker(state); }))
+        {
+            throw hresult_error(E_ABORT, L"The dispatcher queue is shutting down.");
+        }
 
-        Q.TryEnqueue(P, [=]() -> IAsyncAction {
-            // use it after the suspension point
-            auto *copied_pH = pH;
-            auto *copied_comp_event = comp_event;
-            co_await (*pH)();
-            SetEvent(copied_comp_event);
-            CloseHandle(copied_comp_event);
-            delete copied_pH;
-        });
-
-        co_await resume_on_signal(comp_event);
-        co_return;
+        co_await resume_on_signal(state->Completion.get());
+        {
+            std::scoped_lock lock(state->Mutex);
+            if (state->Error)
+            {
+                std::rethrow_exception(state->Error);
+            }
+        }
     }
-
     inline void RunUITask(std::function<void()> const &H,
                           Microsoft::UI::Dispatching::DispatcherQueuePriority P =
                               Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal)

@@ -209,8 +209,8 @@
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FeatureViewModel.h">
-      <DependentUpon>FeatureViewModel.idl</DependentUpon>
+    <ClInclude Include="FeatureTreeItem.h">
+      <DependentUpon>FeatureTreeItem.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="GlobalUtil.h" />
@@ -400,8 +400,8 @@
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FeatureViewModel.cpp">
-      <DependentUpon>FeatureViewModel.idl</DependentUpon>
+    <ClCompile Include="FeatureTreeItem.cpp">
+      <DependentUpon>FeatureTreeItem.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="GlobalUtil.cpp" />
@@ -544,7 +544,7 @@
       <DependentUpon>FeaturesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="FeatureViewModel.idl">
+    <Midl Include="FeatureTreeItem.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="GlyphButton.idl">
