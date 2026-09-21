@@ -36,13 +36,21 @@ inline void EnsureBackupRestorePrivilege()
 
     winrt::check_bool(LookupPrivilegeValue(nullptr, SE_BACKUP_NAME, &tp.Privileges[0].Luid));
 
-    winrt::check_bool(
-        AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
+    auto adjust_privilege = [&] {
+        SetLastError(ERROR_SUCCESS);
+        winrt::check_bool(
+            AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
+        if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
+        {
+            winrt::throw_hresult(HRESULT_FROM_WIN32(ERROR_NOT_ALL_ASSIGNED));
+        }
+    };
+
+    adjust_privilege();
 
     winrt::check_bool(LookupPrivilegeValue(nullptr, SE_RESTORE_NAME, &tp.Privileges[0].Luid));
 
-    winrt::check_bool(
-        AdjustTokenPrivileges(hToken.get(), FALSE, &tp, sizeof(tp), nullptr, nullptr));
+    adjust_privilege();
 }
 
 #ifdef _DEBUG
@@ -99,7 +107,11 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     auto cmd_line = GetCommandLine();
     int argc{-1};
-    auto argv = CommandLineToArgvW(cmd_line, &argc);
+    wil::unique_hlocal_ptr<LPWSTR[]> argv{CommandLineToArgvW(cmd_line, &argc)};
+    if (!argv)
+    {
+        return HRESULT_FROM_WIN32(GetLastError());
+    }
 
     if (argc != 3)
     {
@@ -135,8 +147,18 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     // process messages, for long run
     MSG msg{};
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (true)
     {
+        const auto message_result = GetMessage(&msg, nullptr, 0, 0);
+        if (message_result == -1)
+        {
+            return HRESULT_FROM_WIN32(GetLastError());
+        }
+        if (message_result == 0)
+        {
+            break;
+        }
+
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }

@@ -8,8 +8,11 @@
 
 #include <wil/resource.h>
 
+#include <algorithm>
+#include <cmath>
 #include <unordered_map>
 #include <format>
+#include <mutex>
 
 namespace winrt::UFCase::implementation
 {
@@ -23,19 +26,14 @@ namespace winrt::UFCase::implementation
 
         uint32_t CurrentProgress()
         {
-            if (!_weight_sum)
-                return 100;
-
-            return static_cast<uint32_t>(std::round(1.0 * _progress_product_sum / _weight_sum));
+            std::scoped_lock lock(_progress_mutex);
+            return CurrentProgressLocked();
         }
 
         Visibility Visibility()
         {
-            if (!_weight_sum)
-            {
-                return Visibility::Collapsed;
-            }
-            return Visibility::Visible;
+            std::scoped_lock lock(_progress_mutex);
+            return _weight_sum ? Visibility::Visible : Visibility::Collapsed;
         }
 
         void ReportStateChange()
@@ -49,50 +47,89 @@ namespace winrt::UFCase::implementation
 
         IAsyncAction InsertTask(IAsyncActionWithProgress<uint32_t> provider, uint32_t weight)
         {
-            //_progress_list.insert(std::make_pair(provider, weight));
             if (weight == 0)
                 co_return;
-            _weight_sum += weight;
-            _progress_list[provider] = 0;
 
-            HANDLE comp_event = CreateEvent(NULL, FALSE, FALSE, nullptr);
+            auto self = get_strong();
+            {
+                std::scoped_lock lock(_progress_mutex);
+                if (_progress_list.contains(provider))
+                    throw_hresult(E_INVALIDARG);
 
-            provider.Progress([this, weight](auto const &provider, uint32_t prog) {
-                auto prev_total_prog = CurrentProgress();
+                _weight_sum += weight;
+                _progress_list.emplace(provider, 0);
+            }
 
-                auto &cur_prog = _progress_list[provider];
-                assert(prog >= cur_prog);
-                _progress_product_sum += (prog - cur_prog) * weight;
-                // OutputDebugString(std::format(L"==-= update prog: {} -> {} size = {}, [{} /
-                // {}]\n",
-                //     cur_prog, prog, _progress_list.size(), _progress_product_sum,
-                //     _weight_sum).c_str());
-                cur_prog = prog;
+            try
+            {
+                provider.Progress([weak = get_weak(), weight](auto const &provider, uint32_t prog) {
+                    if (auto self = weak.get())
+                    {
+                        bool changed = false;
+                        {
+                            std::scoped_lock lock(self->_progress_mutex);
+                            auto const entry = self->_progress_list.find(provider);
+                            if (entry == self->_progress_list.end())
+                                return;
 
-                if (CurrentProgress() != prev_total_prog)
-                    ReportStateChange();
-            });
+                            auto const previous_progress = self->CurrentProgressLocked();
+                            auto &current_progress = entry->second;
+                            if (prog < current_progress)
+                                return;
 
-            provider.Completed([this, weight, comp_event](auto const &provider, auto const &) {
-                _progress_product_sum -= _progress_list[provider] * weight;
-                _weight_sum -= weight;
-                _progress_list.erase(provider);
+                            prog = std::min(prog, 100u);
+                            self->_progress_product_sum +=
+                                static_cast<uint64_t>(prog - current_progress) * weight;
+                            current_progress = prog;
+                            changed = self->CurrentProgressLocked() != previous_progress;
+                        }
 
-                // OutputDebugString(std::format(L"==-= completed: size = {}, [{} / {}]\n",
-                //     _progress_list.size(), _progress_product_sum, _weight_sum).c_str());
+                        if (changed)
+                            self->ReportStateChange();
+                    }
+                });
 
-                ReportStateChange();
-                SetEvent(comp_event);
-            });
+                co_await provider;
+            }
+            catch (...)
+            {
+                RemoveTask(provider, weight);
+                throw;
+            }
 
-            co_await resume_on_signal(comp_event);
-            CloseHandle(comp_event);
-
-            co_return;
+            RemoveTask(provider, weight);
         }
 
+      private:
+        uint32_t CurrentProgressLocked() const
+        {
+            if (!_weight_sum)
+                return 100;
+
+            return static_cast<uint32_t>(std::round(
+                static_cast<double>(_progress_product_sum) / _weight_sum));
+        }
+
+        void RemoveTask(IAsyncActionWithProgress<uint32_t> const &provider, uint32_t weight)
+        {
+            {
+                std::scoped_lock lock(_progress_mutex);
+                auto const entry = _progress_list.find(provider);
+                if (entry == _progress_list.end())
+                    return;
+
+                _progress_product_sum -= static_cast<uint64_t>(entry->second) * weight;
+                _weight_sum -= weight;
+                _progress_list.erase(entry);
+            }
+
+            ReportStateChange();
+        }
+
+        std::mutex _progress_mutex;
         std::unordered_map<IAsyncActionWithProgress<uint32_t>, uint32_t> _progress_list;
-        uint32_t _progress_product_sum = 0, _weight_sum = 0;
+        uint64_t _progress_product_sum = 0;
+        uint64_t _weight_sum = 0;
     };
 } // namespace winrt::UFCase::implementation
 
