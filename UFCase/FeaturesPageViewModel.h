@@ -3,14 +3,20 @@
 #include "FeaturesPageViewModel.g.h"
 #include "ImageViewModel.g.h"
 
-#include "XamlUtil.h"
+#include "FeatureTreeItem.h"
 #include "PropChgUtil.h"
+#include "XamlUtil.h"
 
 #include <winrt/Windows.ApplicationModel.DataTransfer.h>
 #include <winrt/Windows.System.h>
 
-#include <wil/resource.h>
 #include <filesystem>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include <wil/resource.h>
 
 namespace winrt::UFCase::implementation
 {
@@ -19,6 +25,7 @@ namespace winrt::UFCase::implementation
     {
         FeaturesPageViewModel(ImageViewModel image) : m_image(image)
         {
+            m_features = multi_threaded_observable_vector<UFCase::FeatureTreeItem>();
         }
 
         FeaturesPageViewModelState State()
@@ -30,51 +37,60 @@ namespace winrt::UFCase::implementation
         {
             return m_image.get();
         }
-        IObservableVector<FeatureViewModel> RootFeatures()
+
+        IObservableVector<UFCase::FeatureTreeItem> RootFeatures()
         {
             return m_features;
         }
 
         IAsyncActionWithProgress<uint32_t> PullData();
 
-        FeatureViewModel SelectedFeature()
+        UFCase::FeatureTreeItem SelectedFeature()
         {
             return m_selected;
         }
 
-        void SelectedFeature(FeatureViewModel feature)
+        void SelectedFeature(UFCase::FeatureTreeItem feature)
         {
             m_selected = feature;
+            m_selected_details = feature ? EnsureFeatureDetails(feature) : nullptr;
             NotifyPropChange(L"SelectedFeature");
-
+            NotifyPropChange(L"SelectedFeatureDetails");
             NotifyCommandsCanExecuteChanged();
+        }
+
+        UFCase::FeatureDetails SelectedFeatureDetails()
+        {
+            return m_selected_details;
         }
 
         HandleCommandEx(FeatureEnable, [this](IInspectable) {
             if (!m_selected)
                 return false;
-            auto &&state = m_selected.State();
+            auto state = m_selected.State();
             return state != FeatureState::PartiallyEnabled && state != FeatureState::Enabled;
         })
         {
-            if (!m_selected)
-                return;
-            m_selected.Enable();
-
+            if (auto record = SelectedFeatureRecord())
+            {
+                record->Model.Enable();
+                RefreshFeatureRecord(*record);
+            }
             NotifyCommandsCanExecuteChanged();
         }
 
         HandleCommandEx(FeatureDisable, [this](IInspectable) {
             if (!m_selected)
                 return false;
-            auto &&state = m_selected.State();
+            auto state = m_selected.State();
             return state == FeatureState::PartiallyEnabled || state == FeatureState::Enabled;
         })
         {
-            if (!m_selected)
-                return;
-            m_selected.Disable();
-
+            if (auto record = SelectedFeatureRecord())
+            {
+                record->Model.Disable();
+                RefreshFeatureRecord(*record);
+            }
             NotifyCommandsCanExecuteChanged();
         }
 
@@ -85,8 +101,14 @@ namespace winrt::UFCase::implementation
                 return;
             }
 
+            auto details = m_selected_details ? m_selected_details : EnsureFeatureDetails(m_selected);
+            if (!details)
+            {
+                return;
+            }
+
             auto nav_ctx = PackagesPageNavigationContext::GetFromId(
-                m_selected.ContentPackageIdentity());
+                details.ContentPackageIdentity());
             GlobalRes::MainNavServ().NavigateTo(L"Packages", nav_ctx);
         }
 
@@ -106,7 +128,6 @@ namespace winrt::UFCase::implementation
                     if (auto path = std::filesystem::path(addSrcDlg.SourcePath().c_str());
                         std::filesystem::exists(path) && std::filesystem::is_directory(path))
                     {
-
                         OutputDebugString(
                             std::format(L"added install source path: \"{}\"", path.c_str())
                                 .c_str());
@@ -116,47 +137,55 @@ namespace winrt::UFCase::implementation
                         OutputDebugString(L"error: invalid path provided!");
                     }
                 }
-                else
-                {
-                    return;
-                }
             });
         }
 
         HandleCommandAsync(Commit)
         {
             apartment_context ui_thread;
-            // set change flag to save updates
             Session().FoundationPackage().Install();
             co_await GlobalRes::MainProgServ().InsertTask(Session().SaveChanges(), 200);
 
-            // dispose the finalized session
             m_session = nullptr;
 
             co_await ui_thread;
-
-            // clear all packages and updates, which is not usable anymore
-            Refresh_cmd.Execute(nullptr);
+            RefreshRelay().Execute(nullptr);
 
             co_return;
         }
 
         HandleCommandAsync(Refresh)
         {
-            // clear selection
             m_selected = nullptr;
+            m_selected_details = nullptr;
             NotifyPropChange(L"SelectedFeature");
+            NotifyPropChange(L"SelectedFeatureDetails");
 
             co_await GlobalRes::MainProgServ().InsertTask(PullData(), 100);
             co_return;
         }
 
       private:
+        struct FeatureRecord
+        {
+            uint32_t RecordId{};
+            UFCase::FeatureTreeItem Item{nullptr};
+            Isolation::FeatureModel Model{nullptr};
+            uint32_t ParentRecordId{};
+            std::vector<uint32_t> ChildRecordIds;
+            std::optional<FeatureDetailsSnapshot> Details;
+        };
+
         FeaturesPageViewModelState m_state{FeaturesPageViewModelState::Uninitialized};
+        uint64_t m_load_generation{};
 
         weak_ref<ImageViewModel> m_image{nullptr};
-        IObservableVector<FeatureViewModel> m_features{nullptr};
-        FeatureViewModel m_selected{nullptr};
+        IObservableVector<UFCase::FeatureTreeItem> m_features{nullptr};
+        std::vector<FeatureRecord> m_records;
+        std::unordered_map<uint32_t, size_t> m_record_index_by_id;
+        std::unordered_map<std::wstring, uint32_t> m_record_id_by_name;
+        UFCase::FeatureTreeItem m_selected{nullptr};
+        UFCase::FeatureDetails m_selected_details{nullptr};
         Isolation::SessionModel m_session{nullptr};
 
         Isolation::SessionModel Session()
@@ -168,6 +197,12 @@ namespace winrt::UFCase::implementation
             return m_session = m_image.get().OpenSession();
         }
 
+        FeatureRecord *FindFeatureRecord(uint32_t record_id);
+        FeatureRecord *FindFeatureRecord(UFCase::FeatureTreeItem const &item);
+        FeatureRecord *SelectedFeatureRecord();
+        UFCase::FeatureDetails EnsureFeatureDetails(UFCase::FeatureTreeItem const &item);
+        void RefreshFeatureRecord(FeatureRecord &record);
+
         void NotifyCommandsCanExecuteChanged()
         {
             FeatureEnableRelay().NotifyCanExecuteChanged();
@@ -175,7 +210,6 @@ namespace winrt::UFCase::implementation
             FeatureGotoPackageRelay().NotifyCanExecuteChanged();
         }
     };
-
 } // namespace winrt::UFCase::implementation
 
 namespace winrt::UFCase::factory_implementation

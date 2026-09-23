@@ -65,7 +65,7 @@
     <Midl Include="ComponentViewModel.idl">
       <Filter>view_models\objects</Filter>
     </Midl>
-    <Midl Include="FeatureViewModel.idl">
+    <Midl Include="FeatureTreeItem.idl">
       <Filter>view_models\objects</Filter>
     </Midl>
     <Midl Include="ImageViewModel.idl">
