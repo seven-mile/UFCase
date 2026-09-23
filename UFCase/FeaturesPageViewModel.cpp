@@ -7,17 +7,106 @@
 #include "CbsApi.h"
 
 #include <functional>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
 namespace winrt::UFCase::implementation
 {
-    // the children of nullptr is the root features
-    static std::unordered_map<hstring, std::vector<hstring>> child_models;
-    static std::unordered_map<hstring, Isolation::FeatureModel> id_to_models;
+    FeaturesPageViewModel::FeatureRecord *FeaturesPageViewModel::FindFeatureRecord(
+        uint32_t record_id)
+    {
+        auto it = m_record_index_by_id.find(record_id);
+        if (it == m_record_index_by_id.end() || it->second >= m_records.size())
+        {
+            return nullptr;
+        }
+        return std::addressof(m_records[it->second]);
+    }
+
+    FeaturesPageViewModel::FeatureRecord *FeaturesPageViewModel::FindFeatureRecord(
+        UFCase::FeatureTreeItem const &item)
+    {
+        return item ? FindFeatureRecord(get_self<FeatureTreeItem>(item)->RecordId()) : nullptr;
+    }
+
+    FeaturesPageViewModel::FeatureRecord *FeaturesPageViewModel::SelectedFeatureRecord()
+    {
+        return FindFeatureRecord(m_selected);
+    }
+
+    fire_and_forget FeaturesPageViewModel::LoadSelectedFeatureDetails(
+        UFCase::FeatureTreeItem item, uint64_t details_generation)
+    {
+        auto lifetime{get_strong()};
+        auto record = FindFeatureRecord(item);
+        if (!record)
+        {
+            co_return;
+        }
+
+        auto record_id = record->RecordId;
+        auto model = record->Model;
+        if (record->Details)
+        {
+            m_selected_details = make<FeatureDetails>(*record->Details);
+            NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+            co_return;
+        }
+
+        apartment_context ui_thread{};
+        co_await resume_background();
+        std::optional<FeatureDetailsSnapshot> details;
+        try
+        {
+            details = ReadFeatureDetailsSnapshot(model);
+        }
+        catch (hresult_error const &error)
+        {
+            OutputDebugString(winrt::format(L"failed to load feature details: 0x{:08X}\n",
+                                            static_cast<uint32_t>(error.code()))
+                                  .c_str());
+        }
+        catch (...)
+        {
+            OutputDebugString(L"failed to load feature details\n");
+        }
+
+        co_await ui_thread;
+        if (!details || details_generation != m_details_generation || !m_selected ||
+            get_self<FeatureTreeItem>(m_selected)->RecordId() != record_id)
+        {
+            co_return;
+        }
+
+        if (auto current_record = FindFeatureRecord(record_id))
+        {
+            current_record->Details = std::move(details);
+            m_selected_details = make<FeatureDetails>(*current_record->Details);
+            NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+        }
+    }
+
+    void FeaturesPageViewModel::RefreshFeatureRecord(FeatureRecord &record)
+    {
+        get_self<FeatureTreeItem>(record.Item)->UpdateSnapshot(
+            ReadFeatureTreeItemSnapshot(record.Model));
+        record.Details.reset();
+        if (m_selected && get_self<FeatureTreeItem>(m_selected)->RecordId() == record.RecordId)
+        {
+            m_selected_details = nullptr;
+            auto details_generation = ++m_details_generation;
+            NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+            LoadSelectedFeatureDetails(record.Item, details_generation);
+        }
+    }
 
     IAsyncActionWithProgress<uint32_t> FeaturesPageViewModel::PullData()
     {
+        auto lifetime{get_strong()};
         winrt::apartment_context ui_thread{};
 
         co_await resume_background();
@@ -31,87 +120,107 @@ namespace winrt::UFCase::implementation
             break;
         }
 
-        child_models.clear();
+        auto report_progress = co_await get_progress_token();
+        auto load_generation = ++m_load_generation;
+        report_progress(10);
 
-        auto found = Session().FoundationPackage();
+        auto foundation = Session().FoundationPackage();
 
-        auto report_prog = co_await get_progress_token();
-        report_prog(10);
+        std::vector<Isolation::FeatureModel> roots;
+        std::vector<Isolation::FeatureModel> children;
+        for (auto feature :
+             foundation.GetFeatureCollection(CbsApplicabilityApplicable, CbsSelectabilityRootClass))
+        {
+            roots.push_back(feature);
+        }
+        report_progress(30);
 
-        auto joinUpdates = [](const std::vector<Isolation::FeatureModel> &updates)
-            -> IAsyncActionWithProgress<uint32_t> {
-            auto report_prog = co_await get_progress_token();
+        for (auto feature :
+             foundation.GetFeatureCollection(CbsApplicabilityNeedsParent, CbsSelectabilityAllClass))
+        {
+            children.push_back(feature);
+        }
+        report_progress(50);
 
-            const uint32_t ENUM_UPDATE_PROG = 30; // 30%
-            report_prog(ENUM_UPDATE_PROG);
+        std::unordered_map<std::wstring, Isolation::FeatureModel> model_by_name;
+        std::unordered_map<std::wstring, std::vector<std::wstring>> children_by_parent;
 
-            // co_await resume_background();
+        auto add_feature = [&](Isolation::FeatureModel const &feature) {
+            auto name = std::wstring(feature.Name().c_str());
+            model_by_name.emplace(name, feature);
 
-            uint32_t idx = 0, all = static_cast<uint32_t>(updates.size());
-
-            for (auto &update : updates)
-            {
-                // for debug
-                // using namespace std::chrono_literals;
-                // co_await 50ms;
-
-                report_prog(ENUM_UPDATE_PROG +
-                            uint32_t(std::floor(1.0 * idx / all * (100 - ENUM_UPDATE_PROG))));
-
-                id_to_models.emplace(update.Name(), update);
-                auto parents = update.GetParentFeatureCollection().First();
-                child_models[parents.HasCurrent() ? parents.Current().Name() : L""].push_back(
-                    update.Name());
-                idx++;
-            }
-            co_return;
+            auto parents = feature.GetParentFeatureCollection().First();
+            auto parent_name = parents.HasCurrent()
+                                   ? std::wstring(parents.Current().Name().c_str())
+                                   : std::wstring{};
+            children_by_parent[parent_name].push_back(name);
         };
 
-        std::vector<Isolation::FeatureModel> it1, it2;
-        for (auto fm :
-             found.GetFeatureCollection(CbsApplicabilityApplicable, CbsSelectabilityRootClass))
-            it1.push_back(fm);
+        for (auto const &feature : roots)
+        {
+            add_feature(feature);
+        }
+        for (auto const &feature : children)
+        {
+            add_feature(feature);
+        }
+        report_progress(70);
 
-        for (auto fm :
-             found.GetFeatureCollection(CbsApplicabilityNeedsParent, CbsSelectabilityAllClass))
-            it2.push_back(fm);
+        auto new_root_features = multi_threaded_observable_vector<UFCase::FeatureTreeItem>();
+        std::vector<FeatureRecord> new_records;
+        std::unordered_map<uint32_t, size_t> new_record_index_by_id;
+        std::unordered_map<std::wstring, uint32_t> new_record_id_by_name;
+        uint32_t next_record_id = 1;
 
-        auto op1 = joinUpdates(it1), op2 = joinUpdates(it2);
-        uint32_t prog1 = 0, prog2 = 0;
-        op1.Progress([&](const auto &, const uint32_t &pr) {
-            prog1 = pr;
-            report_prog(30 + 3 * ((prog1 + prog2) / 2) / 5);
-        });
-        op2.Progress([&](const auto &, const uint32_t &pr) {
-            prog2 = pr;
-            report_prog(30 + 3 * ((prog1 + prog2) / 2) / 5);
-        });
+        std::function<UFCase::FeatureTreeItem(std::wstring const &, uint32_t)> build_feature;
+        build_feature = [&](std::wstring const &name,
+                            uint32_t parent_record_id) -> UFCase::FeatureTreeItem {
+            auto model = model_by_name.at(name);
+            auto record_id = next_record_id++;
+            auto item = make<FeatureTreeItem>(record_id, ReadFeatureTreeItemSnapshot(model));
+            auto record_index = new_records.size();
+            new_records.push_back(
+                FeatureRecord{record_id, item, model, parent_record_id, {}, std::nullopt});
+            new_record_index_by_id.emplace(record_id, record_index);
+            new_record_id_by_name.emplace(name, record_id);
 
-        co_await op1;
-        co_await op2;
-
-        std::function<void(IObservableVector<FeatureViewModel>, Isolation::FeatureModel)> dfs;
-        dfs = [&](IObservableVector<FeatureViewModel> child, Isolation::FeatureModel cur) {
-            child.Clear();
-            for (auto child_name : child_models[cur ? cur.Name() : L""])
+            for (auto const &child_name : children_by_parent[name])
             {
-                auto child_model = id_to_models.at(child_name);
-                FeatureViewModel vm{child_model};
-                dfs(vm.Children(), child_model);
-                child.Append(vm);
+                auto child_item = build_feature(child_name, record_id);
+                auto child_record_id = get_self<FeatureTreeItem>(child_item)->RecordId();
+                new_records[record_index].ChildRecordIds.push_back(child_record_id);
+                item.Children().Append(child_item);
             }
+            return item;
         };
 
-        m_features = multi_threaded_observable_vector<FeatureViewModel>();
-        dfs(m_features, 0);
-        report_prog(100);
+        for (auto const &root_name : children_by_parent[std::wstring{}])
+        {
+            new_root_features.Append(build_feature(root_name, 0));
+        }
+        report_progress(90);
 
         co_await ui_thread;
+        if (load_generation != m_load_generation)
+        {
+            co_return;
+        }
+
+        m_features = new_root_features;
+        m_records = std::move(new_records);
+        m_record_index_by_id = std::move(new_record_index_by_id);
+        m_record_id_by_name = std::move(new_record_id_by_name);
+        m_selected = nullptr;
+        m_selected_details = nullptr;
+        ++m_details_generation;
 
         m_state = FeaturesPageViewModelState::Idle;
         NotifyPropChange(L"RootFeatures");
+        NotifyPropChange(L"SelectedFeature");
+        NotifyPropChange(L"SelectedFeatureDetails");
+        NotifyCommandsCanExecuteChanged();
 
+        report_progress(100);
         co_return;
     }
-
 } // namespace winrt::UFCase::implementation
