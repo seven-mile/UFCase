@@ -185,7 +185,8 @@ namespace winrt::UFCase::Isolation::implementation
 
             std::wstring command_line = winrt::format(L"\"{}\" \"{}\" \"{}\"",
                                                       hostExePath.wstring(), client_id,
-                                                      bootdrive.c_str());
+                                                      bootdrive.c_str())
+                                            .c_str();
             auto command_line_buffer = wil::make_unique_hlocal_nothrow<wchar_t[]>(command_line.size() + 1);
             if (!command_line_buffer)
             {
