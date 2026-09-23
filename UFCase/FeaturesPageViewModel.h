@@ -53,10 +53,15 @@ namespace winrt::UFCase::implementation
         void SelectedFeature(UFCase::FeatureTreeItem feature)
         {
             m_selected = feature;
-            m_selected_details = feature ? EnsureFeatureDetails(feature) : nullptr;
+            m_selected_details = nullptr;
+            auto details_generation = ++m_details_generation;
             NotifyPropChange(L"SelectedFeature");
             NotifyPropChange(L"SelectedFeatureDetails");
             NotifyCommandsCanExecuteChanged();
+            if (feature)
+            {
+                LoadSelectedFeatureDetails(feature, details_generation);
+            }
         }
 
         UFCase::FeatureDetails SelectedFeatureDetails()
@@ -94,14 +99,14 @@ namespace winrt::UFCase::implementation
             NotifyCommandsCanExecuteChanged();
         }
 
-        HandleCommandEx(FeatureGotoPackage, [this](IInspectable) { return !!m_selected; })
+        HandleCommandEx(FeatureGotoPackage, [this](IInspectable) { return !!m_selected_details; })
         {
             if (!m_selected)
             {
                 return;
             }
 
-            auto details = m_selected_details ? m_selected_details : EnsureFeatureDetails(m_selected);
+            auto details = m_selected_details;
             if (!details)
             {
                 return;
@@ -158,6 +163,7 @@ namespace winrt::UFCase::implementation
         {
             m_selected = nullptr;
             m_selected_details = nullptr;
+            ++m_details_generation;
             NotifyPropChange(L"SelectedFeature");
             NotifyPropChange(L"SelectedFeatureDetails");
 
@@ -178,6 +184,7 @@ namespace winrt::UFCase::implementation
 
         FeaturesPageViewModelState m_state{FeaturesPageViewModelState::Uninitialized};
         uint64_t m_load_generation{};
+        uint64_t m_details_generation{};
 
         weak_ref<ImageViewModel> m_image{nullptr};
         IObservableVector<UFCase::FeatureTreeItem> m_features{nullptr};
@@ -200,7 +207,8 @@ namespace winrt::UFCase::implementation
         FeatureRecord *FindFeatureRecord(uint32_t record_id);
         FeatureRecord *FindFeatureRecord(UFCase::FeatureTreeItem const &item);
         FeatureRecord *SelectedFeatureRecord();
-        UFCase::FeatureDetails EnsureFeatureDetails(UFCase::FeatureTreeItem const &item);
+        fire_and_forget LoadSelectedFeatureDetails(UFCase::FeatureTreeItem item,
+                                                  uint64_t details_generation);
         void RefreshFeatureRecord(FeatureRecord &record);
 
         void NotifyCommandsCanExecuteChanged()

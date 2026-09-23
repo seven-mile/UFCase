@@ -35,31 +35,72 @@ namespace winrt::UFCase::implementation
         return FindFeatureRecord(m_selected);
     }
 
-    UFCase::FeatureDetails FeaturesPageViewModel::EnsureFeatureDetails(
-        UFCase::FeatureTreeItem const &item)
+    fire_and_forget FeaturesPageViewModel::LoadSelectedFeatureDetails(
+        UFCase::FeatureTreeItem item, uint64_t details_generation)
     {
+        auto lifetime{get_strong()};
         auto record = FindFeatureRecord(item);
         if (!record)
         {
-            return nullptr;
+            co_return;
         }
 
-        if (!record->Details)
+        auto record_id = record->RecordId;
+        auto model = record->Model;
+        if (record->Details)
         {
-            record->Details = ReadFeatureDetailsSnapshot(record->Model);
+            m_selected_details = make<FeatureDetails>(*record->Details);
+            NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+            co_return;
         }
-        return make<FeatureDetails>(*record->Details);
+
+        apartment_context ui_thread{};
+        co_await resume_background();
+        std::optional<FeatureDetailsSnapshot> details;
+        try
+        {
+            details = ReadFeatureDetailsSnapshot(model);
+        }
+        catch (hresult_error const &error)
+        {
+            OutputDebugString(winrt::format(L"failed to load feature details: 0x{:08X}\n",
+                                            static_cast<uint32_t>(error.code()))
+                                  .c_str());
+        }
+        catch (...)
+        {
+            OutputDebugString(L"failed to load feature details\n");
+        }
+
+        co_await ui_thread;
+        if (!details || details_generation != m_details_generation || !m_selected ||
+            get_self<FeatureTreeItem>(m_selected)->RecordId() != record_id)
+        {
+            co_return;
+        }
+
+        if (auto current_record = FindFeatureRecord(record_id))
+        {
+            current_record->Details = std::move(details);
+            m_selected_details = make<FeatureDetails>(*current_record->Details);
+            NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+        }
     }
 
     void FeaturesPageViewModel::RefreshFeatureRecord(FeatureRecord &record)
     {
         get_self<FeatureTreeItem>(record.Item)->UpdateSnapshot(
             ReadFeatureTreeItemSnapshot(record.Model));
-        record.Details = ReadFeatureDetailsSnapshot(record.Model);
+        record.Details.reset();
         if (m_selected && get_self<FeatureTreeItem>(m_selected)->RecordId() == record.RecordId)
         {
-            m_selected_details = make<FeatureDetails>(*record.Details);
+            m_selected_details = nullptr;
+            auto details_generation = ++m_details_generation;
             NotifyPropChange(L"SelectedFeatureDetails");
+            NotifyCommandsCanExecuteChanged();
+            LoadSelectedFeatureDetails(record.Item, details_generation);
         }
     }
 
@@ -171,6 +212,7 @@ namespace winrt::UFCase::implementation
         m_record_id_by_name = std::move(new_record_id_by_name);
         m_selected = nullptr;
         m_selected_details = nullptr;
+        ++m_details_generation;
 
         m_state = FeaturesPageViewModelState::Idle;
         NotifyPropChange(L"RootFeatures");

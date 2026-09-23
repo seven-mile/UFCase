@@ -46,6 +46,7 @@ namespace winrt::UFCase::implementation
     FeatureDetailsSnapshot ReadFeatureDetailsSnapshot(Isolation::FeatureModel const &model)
     {
         auto tree_data = ReadFeatureTreeItemSnapshot(model);
+        auto content_package = model.ContentPackage();
         return FeatureDetailsSnapshot{
             .Name = tree_data.Name,
             .Description = tree_data.Description,
@@ -55,7 +56,7 @@ namespace winrt::UFCase::implementation
             .PsfName = model.PsfName(),
             .DownloadSize = model.DownloadSize(),
             .SetMembership = model.SetMembership(),
-            .ContentPackageIdentity = model.ContentPackage().Identity(),
+            .ContentPackageIdentity = content_package ? content_package.Identity() : hstring{},
         };
     }
 
